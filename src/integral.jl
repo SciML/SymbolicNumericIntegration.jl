@@ -234,7 +234,7 @@ function integrate_term(eq, x; kwargs...)
         end
     end
 
-    if accept_solution(eq, x, y₀; abstol)
+    if accept_solution(eq, x, y₀; abstol=abstol*10)
         if verbose printstyled("rescue\n"; color=:yellow) end
         return y₀, 0, ϵ₀
     else
@@ -291,7 +291,7 @@ function try_integrate(T, eq, x, basis, Δbasis, radius, margin=1.0; kwargs...)
     end
 
     # find a linearly independent subset of the basis
-    l = find_independent_subset(A; abstol)    
+    l = find_independent_subset(A; abstol)
     A, b, basis, Δbasis, n = A[l,l], b[l], basis[l], Δbasis[l], sum(l)
 
     if det(A) ≈ 0 return nothing, 1e6 end
@@ -435,6 +435,8 @@ x_rule_j4 = @rule acsc(~x) => log(sqrt(1+1.0/x^2) + 1.0/x)
 x_rule_j5 = @rule asec(~x) => log(1.0/x + sqrt(1-1.0/x^2))
 x_rule_j6 = @rule acot(~x) => 1/2 * log((1.0/x + 1) / (-1.0/x + 1))
 
+x_rule_e1 = @acrule exp(~x) * exp(~y) => exp(~x + ~y)
+
 expansion_rules = [
     x_rule_g1,
     x_rule_g2,
@@ -456,8 +458,9 @@ expansion_rules = [
     x_rule_i4,
     x_rule_i5,
     x_rule_i6,
-]
 
+    x_rule_e1,
+]
 
 apply_expansion(eq) = Fixpoint(Prewalk(PassThrough(Chain(expansion_rules))))(value(eq))
 
