@@ -114,7 +114,7 @@ end
 function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=10, radius=1.0,
                    show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
                    attempt_ratio=5, symbolic=true, bypart=true, max_basis=110,
-                   verbose=false)
+                   verbose=false, margin=1.0)
     eq = expand(eq)
 
     if x == nothing
@@ -140,14 +140,14 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=10, radiu
 
     s₁, u₁, ϵ = integrate_sum(eq, x; bypass, abstol, num_trials, num_steps,
                               radius, show_basis, opt, attempt_ratio, symbolic,
-                              max_basis, verbose)
+                              max_basis, verbose, margin)
 
     if isequal(u₁, 0) || !bypart
         return s₁, u₁, ϵ
     else
         s₂, u₂, ϵ = try_integration_by_parts(u₁, x; abstol, num_trials, num_steps,
                                              radius, show_basis, opt, attempt_ratio,
-                                             symbolic, max_basis, verbose)
+                                             symbolic, max_basis, verbose, margin)
         return s₁ + s₂, u₂, ϵ
     end
 end
@@ -178,9 +178,9 @@ function integrate_sum(eq, x; kwargs...)
     integrate_term(eq, x; kwargs...)
 end
 
-function accept_solution(eq, x, sol; abstol=1e-6)
+function accept_solution(eq, x, sol, radius, margin; abstol=1e-6)
     try
-        Δ = substitute(expand_derivatives(Differential(x)(sol)-eq), Dict(x => Complex(rand())))
+        Δ = substitute(expand_derivatives(Differential(x)(sol)-eq), Dict(x => test_point(radius, margin)))
         return abs(Δ) < abstol
     catch e
         #
@@ -190,9 +190,9 @@ end
 
 function integrate_term(eq, x; kwargs...)
     args = Dict(kwargs)
-    abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis, radius =
+    abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis, radius, margin =
         args[:abstol], args[:num_steps], args[:num_trials], args[:show_basis],
-        args[:symbolic], args[:verbose], args[:max_basis], args[:radius]
+        args[:symbolic], args[:verbose], args[:max_basis], args[:radius], args[:margin]
 
     # note that the order of the operations is important!
     # first, collecing hints, then applying transformation rules, and finally finding the basis.
@@ -212,19 +212,23 @@ function integrate_term(eq, x; kwargs...)
     for i = 1:num_steps
         basis = unique([basis; basis*x])
         Δbasis = [expand_derivatives(D(f)) for f in basis]
+
         if show_basis println(basis) end
 
         if symbolic
             y, ϵ = try_symbolic(Float64, eq, x, basis, Δbasis; kwargs...)
-            if !isequal(y, 0) && accept_solution(eq, x, y; abstol)
+
+            if !isequal(y, 0) && accept_solution(eq, x, y, radius, margin; abstol)
                 if verbose printstyled("$i, symbolic\n"; color=:yellow) end
                 return y, 0, 0
             end
         end
 
         for j = 1:num_trials
-            y, ϵ = try_integrate(Float64, eq, x, basis, Δbasis, radius*sqrt(2)^j, 1.0; kwargs...)
-            if ϵ < abstol && accept_solution(eq, x, y; abstol)
+            r = radius*sqrt(2)^j
+            y, ϵ = try_integrate(Float64, eq, x, basis, Δbasis, r, margin; kwargs...)
+
+            if ϵ < abstol && accept_solution(eq, x, y, r, margin; abstol)
                 if verbose printstyled("$i, $j\n"; color=:yellow) end
                 return y, 0, ϵ
             else
@@ -234,7 +238,7 @@ function integrate_term(eq, x; kwargs...)
         end
     end
 
-    if accept_solution(eq, x, y₀; abstol=abstol*10)
+    if accept_solution(eq, x, y₀, radius, margin; abstol=abstol*10)
         if verbose printstyled("rescue\n"; color=:yellow) end
         return y₀, 0, ϵ₀
     else
@@ -243,6 +247,17 @@ function integrate_term(eq, x; kwargs...)
 end
 
 rms(x) = sqrt(sum(x.^2) / length(x))
+
+function test_point(radius, margin)
+    # select a quadrant
+    s1 = rand([-1,1])
+    s2 = rand([-1,1])
+
+    x = s1*(margin + rand()*radius)
+    y = s2*(margin + rand()*radius)
+
+    return Complex(x, y)
+end
 
 """
     the core of the randomized parameter-fitting algorithm
@@ -267,21 +282,14 @@ function try_integrate(T, eq, x, basis, Δbasis, radius, margin=1.0; kwargs...)
     i = 1
     k = 1
 
-    # select quadrant
-    s1 = rand([-1,1])
-    s2 = rand([-1,1])
-
     while i <= n
-        x₀ = Complex{T}(s1*(margin + rand()*radius), s2*(margin + rand()*radius))
-
+        x₀ = test_point(radius, margin)
         d = Dict(x => x₀)
         try
+            b₀ = Complex{T}(substitute(eq, d))
             for j = 1:n
-                A[i, j] = Complex{T}(substitute(Δbasis[j], d))
+                A[i, j] = Complex{T}(substitute(Δbasis[j], d)) / b₀
             end
-            b[i] = Complex{T}(substitute(eq, d))
-            A[i, :] .= A[i, :] ./ b[i]
-            b[i] = one(T)
             i += 1
         catch e
             println("basis matrix error: ", e)
@@ -292,7 +300,7 @@ function try_integrate(T, eq, x, basis, Δbasis, radius, margin=1.0; kwargs...)
 
     # find a linearly independent subset of the basis
     l = find_independent_subset(A; abstol)
-    A, b, basis, Δbasis, n = A[l,l], b[l], basis[l], Δbasis[l], sum(l)
+    A, basis, Δbasis, n = A[l,l], basis[l], Δbasis[l], sum(l)
 
     if det(A) ≈ 0 return nothing, 1e6 end
 
@@ -304,6 +312,7 @@ function try_integrate(T, eq, x, basis, Δbasis, radius, margin=1.0; kwargs...)
 
     # q₀ = A \ b
     try
+        b = ones(n)
         q₀ = Optimize.init(opt, A, b)
         @views Optimize.sparse_regression!(q₀, A, permutedims(b)', opt, maxiter = 1000)
         ϵ = rms(A * q₀ - b)
