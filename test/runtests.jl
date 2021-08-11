@@ -1,4 +1,4 @@
-# using SymbolicIntegration
+using SymbolicIntegration
 using SymbolicUtils
 using Test
 
@@ -216,4 +216,4 @@ function test_integrals(; symbolic=true, verbose=true, bypart=true)
     return true
 end
 
-# @testset "integral" begin test_integrals() end
+@testset "integral" begin test_integrals() end

@@ -1,4 +1,4 @@
-# module SymbolicIntegration
+module SymbolicIntegration
 
 using SymbolicUtils
 using SymbolicUtils: istree, operation, arguments
@@ -23,4 +23,4 @@ export integrate, generate_basis, test_integrals
 include("symbolic.jl")
 include("integration_by_parts.jl")
 
-# end # module
+end # module
