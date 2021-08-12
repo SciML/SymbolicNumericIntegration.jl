@@ -274,10 +274,8 @@ function try_integrate(T, eq, x, basis, Δbasis, radius, margin=1.0; kwargs...)
     abstol, opt, attempt_ratio = args[:abstol], args[:opt], args[:attempt_ratio]
 
     n = length(basis)
-    # A is an nxn matrix holding the values of the fragments at n random points
-    # b hold the value of the input function at those points
+    # A is an nxn matrix holding the values of the fragments at n random points    
     A = zeros(Complex{T}, (n, n))
-    b = zeros(Complex{T}, n)
 
     i = 1
     k = 1
