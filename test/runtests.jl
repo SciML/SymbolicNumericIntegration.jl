@@ -1,4 +1,4 @@
-using SymbolicIntegration
+using SymbolicNumericIntegration
 using SymbolicUtils
 using Test
 
