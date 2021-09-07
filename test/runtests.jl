@@ -187,7 +187,7 @@ basic_integrals = [
     1/log(x) - 1/log(x)^2,
 ]
 
-function test_integrals(; symbolic=true, verbose=true, bypart=true)
+function test_integrals(; symbolic=false, verbose=true, bypart=true)
     bypass = false
     misses = []
 
@@ -196,9 +196,9 @@ function test_integrals(; symbolic=true, verbose=true, bypart=true)
             printstyled("**** bypass on ****\n"; color=:red)
             bypass = true
         else
-            printstyled(eq, " =>\t"; color=:green)
+            printstyled(eq, " =>\n"; color=:green)
             solved, unsolved = integrate(eq; bypass, symbolic, verbose, bypart)
-            printstyled(solved; color=:white)
+            printstyled('\t', solved; color=:white)
             if isequal(unsolved, 0)
                 println()
             else

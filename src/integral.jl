@@ -1,5 +1,5 @@
 using LinearAlgebra
-# using SpecialFunctions
+using Statistics: mean, std
 
 Base.signbit(z::Complex{T}) where T<:Number = signbit(real(z))
 
@@ -111,10 +111,10 @@ end
     a pair of expressions, solved is the solved integral and unsolved is the residual unsolved
     portion of the input
 """
-function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=10, radius=1.0,
+function integrate(eq, x=nothing; abstol=1e-6, num_steps=3, num_trials=2, radius=1.0,
                    show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
                    attempt_ratio=5, symbolic=true, bypart=true, max_basis=110,
-                   verbose=false, margin=1.0)
+                   verbose=false, margin=1.0, complex_plane=true)
     eq = expand(eq)
 
     if x == nothing
@@ -140,14 +140,15 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=10, radiu
 
     s₁, u₁, ϵ = integrate_sum(eq, x; bypass, abstol, num_trials, num_steps,
                               radius, show_basis, opt, attempt_ratio, symbolic,
-                              max_basis, verbose, margin)
+                              max_basis, verbose, margin, complex_plane)
 
     if isequal(u₁, 0) || !bypart
         return s₁, u₁, ϵ
     else
         s₂, u₂, ϵ = try_integration_by_parts(u₁, x; abstol, num_trials, num_steps,
                                              radius, show_basis, opt, attempt_ratio,
-                                             symbolic, max_basis, verbose, margin)
+                                             symbolic, max_basis, verbose, margin,
+                                             complex_plane)
         return s₁ + s₂, u₂, ϵ
     end
 end
@@ -190,19 +191,30 @@ end
 
 function integrate_term(eq, x; kwargs...)
     args = Dict(kwargs)
+    abstol = args[:abstol]
+    h = collect_hints(eq, x)
+    s, u, ϵ = integrate_term_main(eq, x, h; kwargs...)
+    if isequal(u, 0)
+        return s, u, ϵ
+    else
+        eq = apply_integration_rules(eq)
+        return integrate_term_main(eq, x, h; kwargs...)
+    end
+end
+
+function integrate_term_main(eq, x, h; kwargs...)
+    args = Dict(kwargs)
     abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis, radius, margin =
         args[:abstol], args[:num_steps], args[:num_trials], args[:show_basis],
         args[:symbolic], args[:verbose], args[:max_basis], args[:radius], args[:margin]
 
     # note that the order of the operations is important!
     # first, collecing hints, then applying transformation rules, and finally finding the basis.
-    h = collect_hints(eq, x)
-    eq = apply_integration_rules(eq)
     basis = generate_basis(eq, x, h)
 
     # basis = filter(u -> !(deg(u,x)>0), basis)
 
-    if verbose printstyled("|β| = ", length(basis), ". "; color=:yellow) end
+    if verbose printstyled("|β| = ", length(basis), '\n'; color=:yellow) end
     if length(basis) > max_basis return 0, eq, Inf end
 
     D = Differential(x)
@@ -226,7 +238,7 @@ function integrate_term(eq, x; kwargs...)
 
         for j = 1:num_trials
             r = radius*sqrt(2)^j
-            y, ϵ = try_integrate(Float64, eq, x, basis, Δbasis, r, margin; kwargs...)
+            y, ϵ = try_integrate2(Float64, eq, x, basis, Δbasis, r, margin; kwargs...)
 
             if ϵ < abstol && accept_solution(eq, x, y, r, margin; abstol)
                 if verbose printstyled("$i, $j\n"; color=:yellow) end
@@ -274,7 +286,7 @@ function try_integrate(T, eq, x, basis, Δbasis, radius, margin=1.0; kwargs...)
     abstol, opt, attempt_ratio = args[:abstol], args[:opt], args[:attempt_ratio]
 
     n = length(basis)
-    # A is an nxn matrix holding the values of the fragments at n random points    
+    # A is an nxn matrix holding the values of the fragments at n random points
     A = zeros(Complex{T}, (n, n))
 
     i = 1
@@ -384,140 +396,130 @@ function nice_parameter(u::Complex{T}; abstol=1e-3, M=10) where T<:Real
     return β ≈ 0 ? α : Complex(α, β)
 end
 
-########################## Transformation Rules ###############################
-
-trig_rule1 = @rule tan(~x) => sin(~x) / cos(~x)
-trig_rule2 = @rule sec(~x) => one(~x) / cos(~x)
-# trig_rule2 = @rule sec(~x) => (tan(~x)/cos(~x) + 1/cos(~x)^2) / (tan(~x) + 1/cos(~x))
-trig_rule3 = @rule csc(~x) => one(~x) / sin(~x)
-# trig_rule3 = @rule csc(~x) => (cot(~x)/sin(~x) + 1/sin(~x)^2) / (cot(~x) + 1/sin(~x))
-trig_rule4 = @rule cot(~x) => cos(~x) / sin(~x)
-
-trig_rules = [trig_rule1, trig_rule2, trig_rule3, trig_rule4]
-
-hyper_rule1 = @rule tanh(~x) => sinh(~x) / cosh(~x)
-hyper_rule2 = @rule sech(~x) => one(~x) / cosh(~x)
-hyper_rule3 = @rule csch(~x) => one(~x) / sinh(~x)
-hyper_rule4 = @rule coth(~x) => cosh(~x) / sinh(~x)
-
-hyper_rules = [hyper_rule1, hyper_rule2, hyper_rule3, hyper_rule4]
-
-misc_rule1 = @rule sqrt(~x) => ^(~x, 0.5)
-misc_rule2 = @acrule exp(~x) * exp(~y) => exp(~x + ~y)
-
-misc_rules = [misc_rule1]
-
-int_rules = [trig_rules; hyper_rules; misc_rules]
-# int_rules = misc_rules
-
-apply_integration_rules(eq) = Fixpoint(Prewalk(PassThrough(Chain(int_rules))))(value(eq))
-
-########################## Expansion Rules ####################################
-
-x_rule_g1 = @rule sin(~x) => (exp(im * ~x) - exp(-im * ~x)) / 2im
-x_rule_g2 = @rule cos(~x) => (exp(im * ~x) + exp(-im * ~x)) / 2
-x_rule_g3 = @rule tan(~x) => -im * (exp(2im * ~x) - 1) / (exp(2im * ~x) + 1)
-x_rule_g4 = @rule csc(~x) => -2im / (exp(im * ~x) - exp(-im * ~x))
-x_rule_g5 = @rule sec(~x) => 2 / (exp(im * ~x) + exp(im * ~x))
-x_rule_g6 = @rule cot(~x) => im * (exp(2im * ~x) + 1) / (exp(2im * ~x) - 1)
-
-x_rule_h1 = @rule sinh(~x) => (exp(~x) - exp(-~x)) / 2
-x_rule_h2 = @rule cosh(~x) => (exp(~x) + exp(-~x)) / 2
-x_rule_h3 = @rule tanh(~x) => (exp(2 * ~x) - 1) / (exp(2 * ~x) + 1)
-x_rule_h4 = @rule csch(~x) => 2 / (exp(~x) - exp(-~x))
-x_rule_h5 = @rule sech(~x) => 2 / (exp(~x) + exp(-~x))
-x_rule_h6 = @rule coth(~x) => (exp(2 * ~x) + 1) / (exp(2 * ~x) - 1)
-
-x_rule_i1 = @rule asin(~x) => -im * log(sqrt(1-x^2) + im*x)
-x_rule_i2 = @rule acos(~x) => -im * log(x + im*sqrt(1-x^2))
-x_rule_i3 = @rule atan(~x) => im/2 * log((x + im) / (-x + im))
-x_rule_i4 = @rule acsc(~x) => -im * log(sqrt(1-1.0/x^2) + im/x)
-x_rule_i5 = @rule asec(~x) => -im * log(1.0/x + im*sqrt(1-1.0/x^2))
-x_rule_i6 = @rule acot(~x) => im/2 * log((1.0/x + im) / (-1.0/x + im))
-
-x_rule_j1 = @rule asin(~x) => log(sqrt(1+x^2) + x)
-x_rule_j2 = @rule acos(~x) => log(x + sqrt(1-x^2))
-x_rule_j3 = @rule atan(~x) => 1/2 * log((x + 1) / (-x + 1))
-x_rule_j4 = @rule acsc(~x) => log(sqrt(1+1.0/x^2) + 1.0/x)
-x_rule_j5 = @rule asec(~x) => log(1.0/x + sqrt(1-1.0/x^2))
-x_rule_j6 = @rule acot(~x) => 1/2 * log((1.0/x + 1) / (-1.0/x + 1))
-
-x_rule_e1 = @acrule exp(~x) * exp(~y) => exp(~x + ~y)
-
-expansion_rules = [
-    x_rule_g1,
-    x_rule_g2,
-    x_rule_g3,
-    x_rule_g4,
-    x_rule_g5,
-    x_rule_g6,
-
-    x_rule_h1,
-    x_rule_h2,
-    x_rule_h3,
-    x_rule_h4,
-    x_rule_h5,
-    x_rule_h6,
-
-    x_rule_i1,
-    x_rule_i2,
-    x_rule_i3,
-    x_rule_i4,
-    x_rule_i5,
-    x_rule_i6,
-
-    x_rule_e1,
-]
-
-apply_expansion(eq) = Fixpoint(Prewalk(PassThrough(Chain(expansion_rules))))(value(eq))
-
-
 ###############################################################################
 
-
-function U(u...)
-    u = map(x -> x isa AbstractArray ? x : [], u)
-    return union(u...)
+function fibonacci_spiral(n, radius=1.0)
+    z = zeros(Complex{Float64}, n)
+    ϕ = (1 + sqrt(5)) / 2
+    for i = 1:n
+        θ, r = mod((i-1)/ϕ, 1), (i-1)/n
+        z[i] = radius*sqrt(r)*cis(2π*θ)
+    end
+    return z
 end
 
-hints(eq::SymbolicUtils.Add, x, h) = map(t->hints(t,x,h), arguments(eq))
-hints(eq::SymbolicUtils.Mul, x, h) = map(t->hints(t,x,h), arguments(eq))
-hints(eq::SymbolicUtils.Pow, x, h) = hints(arguments(eq)[1],x,h)
+is_proper(x) = !isnan(x) && !isinf(x)
 
-function hints(eq::SymbolicUtils.Term, x, h)
-    s = Symbol(operation(eq))
-    u = arguments(eq)[1]
+function try_integrate2(T, eq, x, basis, Δbasis, radius, margin=1.0; kwargs...)
+    args = Dict(kwargs)
+    abstol, opt, attempt_ratio, complex_plane, verbose =
+        args[:abstol], args[:opt], args[:attempt_ratio], args[:complex_plane], args[:verbose]
 
-    if s == :sec
-        push!(h, log(1/cos(u) + sin(u)/cos(u)))
-    elseif s == :csc
-        push!(h, log(1/sin(u) - cos(u)/sin(u)))
-    elseif s == :tan
-        push!(h, log(cos(u)))
-    elseif s == :cot
-        push!(h, log(sin(u)))
-    elseif s == :tanh
-        push!(h, log(cosh(u)))
-    elseif s == :log
-        if check_poly(u, x) == :real_poly && deg(u, x) == 2
-            r, s = find_roots(u, x)
-            if !isempty(r)
-                push!(h, log(x - r[1]))
-                push!(h, log(x - r[2]))
+    basis = basis[2:end]    # remove 1 from the beginning
+    Δbasis = Δbasis[2:end]
+    n = length(basis)
+
+    # A is an nxn matrix holding the values of the fragments at n random points
+    A = zeros(Complex{T}, (n, n))
+    X = zeros(Complex{T}, n)
+
+    init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abstol)
+
+    y₀, ϵ₀ = find_singlet(T, A, basis; abstol)
+    if ϵ₀ < abstol
+        return y₀, ϵ₀
+    end
+
+    y₁, ϵ₁ = sparse_fit(T, A, x, basis, Δbasis, opt; abstol)
+    if ϵ₁ < abstol
+        return y₁, ϵ₁
+    end
+
+    ∂eq = expand_derivatives(Differential(x)(eq))
+    modify_basis_matrix!(T, A, X, x, eq, ∂eq, Δbasis, radius; abstol)
+    y₂, ϵ₂ = sparse_fit(T, A, x, basis, Δbasis, opt; abstol)
+    if ϵ₂ < abstol || ϵ₂ < ϵ₁
+        if verbose printstyled("improvement after moving toward poles\n"; color=:blue) end
+        return y₂, ϵ₂
+    else
+        return y₁, ϵ₁
+    end
+end
+
+function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abstol=1e-6)
+    n = size(A, 1)
+    X = zeros(Complex{T}, n)
+    k = 1
+    while k <= n
+        try
+            if complex_plane
+                x₀ = radius * sqrt(rand()) * cis(2π*rand())
             else
-                push!(h, log(u))
+                x₀ = Complex(radius * (2*rand() - 1))
             end
+
+            X[k] = x₀
+            d = Dict(x => x₀)
+            b₀ = Complex{T}(substitute(eq, d))
+            if is_proper(b₀)
+                for j = 1:n
+                    A[k,j] = Complex{T}(substitute(Δbasis[j], d)) / b₀
+                end
+                if all(is_proper, A[k,:])
+                    k += 1
+                end
+            end
+        catch e
+            # println(e)
         end
     end
 end
 
-function hints(eq, x, h)
+function modify_basis_matrix!(T, A, X, x, eq, ∂eq, Δbasis, radius; abstol=1e-6)
+    n = size(A, 1)
+    k = 1
+    for k = 1:n
+        d = Dict(x => X[k])
+        # One Newton iteration toward the poles
+        x₀ = X[k] + Complex{T}(substitute(eq, d)) / Complex{T}(substitute(∂eq, d))
+        X[k] = x₀
+        d = Dict(x => x₀)
+        b₀ = Complex{T}(substitute(eq, d))
+        for j = 1:n
+            A[k,j] = Complex{T}(substitute(Δbasis[j], d)) / b₀
+        end
+    end
 end
 
-function collect_hints(eq, x)
-    h = []
-    hints(eq, x, h)
-    h
+function sparse_fit(T, A, x, basis, Δbasis, opt; abstol=1e-6)
+    n = length(basis)
+    # find a linearly independent subset of the basis
+    l = find_independent_subset(A; abstol)
+    A, basis, Δbasis, n = A[l,l], basis[l], Δbasis[l], sum(l)
+
+    try
+        b = ones(n)
+        q₀ = Optimize.init(opt, A, b)
+        @views Optimize.sparse_regression!(q₀, A, permutedims(b)', opt, maxiter = 1000)
+        ϵ = rms(A * q₀ - b)
+        q = nice_parameter.(q₀)
+        return sum(q[i]*basis[i] for i = 1:length(basis) if q[i] != 0; init=zero(x)), abs(ϵ)
+    catch e
+        println(e)
+        return nothing, Inf
+    end
+end
+
+function find_singlet(T, A, basis; abstol)
+    σ = vec(std(A; dims=1))
+    μ = vec(mean(A; dims=1))
+    l = (σ .< abstol) .* (abs.(μ) .> abstol)
+    if sum(l) == 1
+        k = findfirst(l)
+        return nice_parameter(1/μ[k]) * basis[k], σ[k]
+    else
+        return nothing, Inf
+    end
 end
 
 ########################## Convert to a Polynomial? #############################
@@ -535,6 +537,8 @@ coef(eq, x) = 1
 
 ##################### Special Functions ######################################
 
+# using SpecialFunctions
+#
 # """
 #     logarithmic integral
 # """
