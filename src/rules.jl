@@ -133,13 +133,20 @@ function U(u...)
     return union(u...)
 end
 
-hints(eq::SymbolicUtils.Add, x, h) = map(t->hints(t,x,h), arguments(eq))
-hints(eq::SymbolicUtils.Mul, x, h) = map(t->hints(t,x,h), arguments(eq))
-hints(eq::SymbolicUtils.Pow, x, h) = hints(arguments(eq)[1],x,h)
+hints(eq::SymbolicUtils.Add, x, h, k) = map(t->hints(t,x,h,k), arguments(eq))
+hints(eq::SymbolicUtils.Mul, x, h, k) = map(t->hints(t,x,h,k), arguments(eq))
+hints(eq::SymbolicUtils.Pow, x, h, k) = hints(arguments(eq)[1],x,h,k)
 
-function hints(eq::SymbolicUtils.Term, x, h)
+function hints(eq::SymbolicUtils.Term, x, h, k)
     s = Symbol(operation(eq))
     u = arguments(eq)[1]
+
+    if !isequal(u, x)
+        _, _, islinear = Symbolics.linear_expansion(u, x)
+        if islinear
+            push!(k, u)
+        end
+    end
 
     if s == :sec
         push!(h, log(1/cos(u) + sin(u)/cos(u)))
@@ -149,26 +156,27 @@ function hints(eq::SymbolicUtils.Term, x, h)
         push!(h, log(cos(u)))
     elseif s == :cot
         push!(h, log(sin(u)))
-    elseif s == :tanh
+    else s == :tanh
         push!(h, log(cosh(u)))
-    elseif s == :log
-        if check_poly(u, x) == :real_poly && deg(u, x) == 2
-            r, s = find_roots(u, x)
-            if !isempty(r)
-                push!(h, log(x - r[1]))
-                push!(h, log(x - r[2]))
-            else
-                push!(h, log(u))
-            end
-        end
+    # elseif s == :log
+    #     if check_poly(u, x) == :real_poly && deg(u, x) == 2
+    #         r, s = find_roots(u, x)
+    #         if !isempty(r)
+    #             push!(h, log(x - r[1]))
+    #             push!(h, log(x - r[2]))
+    #         else
+    #             push!(h, log(u))
+    #         end
+    #     end
     end
 end
 
-function hints(eq, x, h)
+function hints(eq, x, h, k)
 end
 
 function collect_hints(eq, x)
-    h = []
-    hints(eq, x, h)
-    h
+    h = []  # hints
+    k = []  # kernels
+    hints(eq, x, h, k)
+    h, k
 end

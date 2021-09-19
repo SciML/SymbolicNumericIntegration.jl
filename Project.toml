@@ -1,10 +1,11 @@
 name = "SymbolicNumericIntegration"
 uuid = "78aadeae-fbc0-11eb-17b6-c7ec0477ba9e"
 authors = ["Shahriar Iravanian <siravan@svtsim.com>"]
-version = "0.3.0"
+version = "0.4.0"
 
 [deps]
 DataDrivenDiffEq = "2445eb08-9709-466a-b3fc-47e12bd697a2"
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 SymbolicUtils = "d1185830-fcd6-423d-90d6-eec64667417b"
@@ -12,8 +13,7 @@ Symbolics = "0c5d862f-8b57-4792-8d23-62f2024744c7"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
-SymbolicUtils = "0.13.1"
 DataDrivenDiffEq = "0.6.5"
+SymbolicUtils = "0.13.1"
 Symbolics = "1.4.2"
 julia = "1.6"
-

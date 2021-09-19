@@ -18,9 +18,12 @@ is_number(x) = false
 function check_poly(eq, x)
     if deg(eq, x) == 0 return :not_poly end
     coefs = values(collect_powers(value(eq), x))
+    if any(z -> isdependent(restore_x(z,x),x), coefs) return :not_poly end
     if any(z -> z isa Complex, coefs) return :complex_poly end
     return :real_poly
 end
+
+is_linear_poly(eq, x) = check_poly(eq, x) != :not_poly && deg(eq, x) == 1
 
 function leading(eq, x)
     l = 0
@@ -78,6 +81,12 @@ get_coef(p) = is_pox(p) ? arguments(p)[1] : p
 get_power(p) = is_pox(p) ? arguments(p)[2] : 0
 
 replace_x(eq, x) = substitute(eq, Dict(x => pox(1,1)))
+
+function restore_x(eq, x)
+    r = @rule pox(~k, ~n) => ~k*x^~n
+    Prewalk(PassThrough(r))(eq)
+end
+
 
 iscomplex(x) = x isa Complex
 

@@ -17,6 +17,7 @@ include("roots.jl")
 export solve_newton, find_roots, find_poles
 
 include("rules.jl")
+include("candidates.jl")
 include("integral.jl")
 
 export integrate, generate_basis, test_integrals
