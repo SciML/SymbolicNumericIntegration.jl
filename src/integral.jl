@@ -391,17 +391,18 @@ function try_integrate2(T, eq, x, basis, Δbasis, radius, margin=1.0; kwargs...)
         return y₂, ϵ₂
     end
 
-    # if n < 8    # 8 is arbitrary here and signifies a small basis
+    if n < 8    # 8 is arbitrary here and signifies a small basis
         y₃, ϵ₃ = find_dense(T, A, basis; abstol)
         if ϵ₃ < abstol
             return y₃, ϵ₃
         end
-    # end
+    end
 
     ∂eq = expand_derivatives(Differential(x)(eq))
     modify_basis_matrix!(T, A, X, x, eq, ∂eq, Δbasis, radius; abstol)
     y₄, ϵ₄ = sparse_fit(T, A, x, basis, Δbasis, opt; abstol)
-    if ϵ₄ < abstol || ϵ₄ < ϵ₄
+
+    if ϵ₄ < abstol || ϵ₄ < ϵ₁
         if verbose printstyled("improvement after moving toward poles\n"; color=:blue) end
         return y₄, ϵ₄
     else

@@ -13,9 +13,8 @@ function generate_basis(eq, x, h=[]; use_closure=true)
     g = eq / f
     h , _ = collect_hints(g, x)
     H = prod(h; init=one(x))
-    println(H)
     Δg = expand_derivatives(Differential(x)(g))
-    kers = expand((g + Δg + H))
+    kers = expand(g + Δg + H)
     C₁ = [one(x); candidates(kers, x)]
 
     # println("C₁ = ", C₁)
@@ -69,7 +68,7 @@ function candidates(eq::SymbolicUtils.Pow, x)
         if check_poly(p,x) == :real_poly && leading(p,x) < 0 p = -p end
         # ∫ √f(x) dx = ... + c * log(df/dx + √f) if deg(f) == 2
         Δ = expand_derivatives(Differential(x)(p))
-        return [[p^k, p^(k+1)]; log(0.5*Δ + sqrt(p))]
+        return [p^k, p^(k+1), log(0.5*Δ + sqrt(p))]
     elseif k < 0
         return [p^i for i=k:0 if i<0]
     end

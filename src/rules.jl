@@ -156,7 +156,7 @@ function hints(eq::SymbolicUtils.Term, x, h, k)
         push!(h, log(cos(u)))
     elseif s == :cot
         push!(h, log(sin(u)))
-    else s == :tanh
+    elseif s == :tanh
         push!(h, log(cosh(u)))
     # elseif s == :log
     #     if check_poly(u, x) == :real_poly && deg(u, x) == 2
