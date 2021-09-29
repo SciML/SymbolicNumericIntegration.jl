@@ -26,7 +26,7 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=3, radius
                    show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
                    attempt_ratio=5, symbolic=true, bypart=true, max_basis=110,
                    verbose=false, margin=1.0, complex_plane=true,
-                   sub_inner=false, use_closure=true)
+                   sub_inner=false, use_closure=true, use_rules=false)
     eq = expand(eq)
 
     if x == nothing
@@ -53,7 +53,7 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=3, radius
     s₁, u₁, ϵ = integrate_sum(eq, x; bypass, abstol, num_trials, num_steps,
                               radius, show_basis, opt, attempt_ratio, symbolic,
                               max_basis, verbose, margin, complex_plane,
-                              sub_inner, use_closure)
+                              sub_inner, use_closure, use_rules)
 
     if isequal(u₁, 0) || !bypart
         return s₁, u₁, ϵ
@@ -61,7 +61,8 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=3, radius
         s₂, u₂, ϵ = try_integration_by_parts(u₁, x; abstol, num_trials, num_steps,
                                              radius, show_basis, opt, attempt_ratio,
                                              symbolic, max_basis, verbose, margin,
-                                             complex_plane, sub_inner, use_closure)
+                                             complex_plane, sub_inner, use_closure,
+                                             use_rules)
         return s₁ + s₂, u₂, ϵ
     end
 end
@@ -160,14 +161,15 @@ end
 
 function integrate_term(eq, x, h; kwargs...)
     args = Dict(kwargs)
-    abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis, radius, margin, use_closure =
+    abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
+    radius, margin, use_closure, use_rules =
         args[:abstol], args[:num_steps], args[:num_trials], args[:show_basis],
         args[:symbolic], args[:verbose], args[:max_basis], args[:radius],
-        args[:margin], args[:use_closure]
+        args[:margin], args[:use_closure], args[:use_rules]
 
     # note that the order of the operations is important!
     # first, collecing hints, then applying transformation rules, and finally finding the basis.
-    basis = generate_basis(eq, x, h; use_closure)
+    basis = generate_basis(eq, x, h; use_closure, use_rules)
 
     # basis = filter(u -> !(deg(u,x)>0), basis)
 

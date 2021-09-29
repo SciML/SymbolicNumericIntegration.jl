@@ -1,7 +1,7 @@
 using DataStructures
 
 # this is the main heurisctic used to find the test fragments
-function generate_basis(eq, x, h=[]; use_closure=true)
+function generate_basis(eq, x, h=[]; use_closure=true, use_rules=false)
     if use_closure
         f = kernel(eq, x)
         C₂ = find_candidates(f, x)
@@ -11,16 +11,37 @@ function generate_basis(eq, x, h=[]; use_closure=true)
     end
 
     g = eq / f
-    h , _ = collect_hints(g, x)
-    H = prod(h; init=one(x))
-    Δg = expand_derivatives(Differential(x)(g))
-    kers = expand(g + Δg + H)
-    C₁ = [one(x); candidates(kers, x)]
+
+    if use_rules
+        C₁ = find_candidates_nonsolvable(g, x)
+    else
+        h , _ = collect_hints(g, x)
+        H = prod(h; init=one(x))
+        Δg = expand_derivatives(Differential(x)(g))
+        kers = expand(g + Δg + H)
+        C₁ = [one(x); candidates(kers, x)]
+    end
 
     # println("C₁ = ", C₁)
     # println("C₂ = ", C₂)
 
     return [c₁*c₂ for c₁ in C₁ for c₂ in C₂]
+end
+
+function find_candidates_nonsolvable(eq, x)
+    eq = apply_d_rules(eq)
+    # println(">>> ", eq)
+    D = Differential(x)
+    S = Set{Any}()
+    q = Queue{Any}()
+    enqueue_expr_ex!(S, q, eq, x)
+
+    for y in q
+        ∂y = expand_derivatives(D(y))
+        enqueue_expr_ex!(S, ∂y, x)
+    end
+
+    return unique([one(x); [s for s in S]])
 end
 
 """
@@ -53,6 +74,46 @@ function candidates(eq::SymbolicUtils.Mul, x)
 
     unique(l[2:end])    # removing the initial 1
 end
+
+function candidates_ex(eq::SymbolicUtils.Mul, x)
+    terms = [sum(candidates(q,x); init=1) for q in arguments(eq)]
+    # println(">> ", terms)
+    eq = expand(prod(terms; init=1))
+    # println(">>> ", eq)
+    D = Differential(x)
+    S = Set{Any}()
+    q = Queue{Any}()
+    enqueue_expr_ex!(S, q, eq, x)
+
+    for y in q
+        ∂y = expand_derivatives(D(y))
+        enqueue_expr_ex!(S, ∂y, x)
+    end
+
+    return [one(x); [s for s in S]]
+end
+
+function enqueue_expr_ex!(S, q, eq::SymbolicUtils.Add, x)
+    for t in arguments(eq)
+        enqueue_expr_ex!(S, q, t, x)
+    end
+end
+
+function enqueue_expr_ex!(S, q, eq, x)
+    y = eq / coef(eq, x)
+    if y ∉ S && isdependent(y, x)
+        enqueue!(q, y)
+        push!(S, y)
+    end
+end
+
+function enqueue_expr_ex!(S, eq, x)
+    y = eq / coef(eq, x)
+    if y ∉ S && isdependent(y, x)
+        push!(S, y)
+    end
+end
+
 
 # the candidates of a Pow encode different integration rules
 function candidates(eq::SymbolicUtils.Pow, x)
@@ -124,7 +185,7 @@ function enqueue_expr!(S, q, eq, x)
     end
 end
 
-function closure(eq, x; max_terms=100)
+function closure(eq, x; max_terms=50)
     if !isdependent(eq, x) return [one(x)] end
     D = Differential(x)
     S = Set{Any}()

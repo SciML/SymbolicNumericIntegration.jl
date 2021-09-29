@@ -180,3 +180,76 @@ function collect_hints(eq, x)
     hints(eq, x, h, k)
     h, k
 end
+
+##############################################################################
+
+@syms 𝛷(x)
+
+d_rule_g1 = @rule 𝛷(sin(~x)) => one(~x) + sin(~x) + cos(~x)
+d_rule_g2 = @rule 𝛷(cos(~x)) => one(~x) + cos(~x) + sin(~x)
+d_rule_g3 = @rule 𝛷(tan(~x)) => one(~x) + tan(~x) + log(cos(~x))
+d_rule_g4 = @rule 𝛷(csc(~x)) => one(~x) + csc(~x) + log(1/sin(~x) - cos(~x)/sin(~x))
+d_rule_g5 = @rule 𝛷(sec(~x)) => one(~x) + sec(~x) + log(1/cos(~x) + sin(~x)/cos(~x))
+d_rule_g6 = @rule 𝛷(cot(~x)) => one(~x) + cot(~x) + log(sin(~x))
+
+d_rule_h1 = @rule 𝛷(sinh(~x)) => one(~x) + sinh(~x) + cosh(~x)
+d_rule_h2 = @rule 𝛷(cosh(~x)) => one(~x) + cosh(~x) + sinh(~x)
+d_rule_h3 = @rule 𝛷(tanh(~x)) => one(~x) + tanh(~x) + log(cosh(~x))
+d_rule_h4 = @rule 𝛷(csch(~x)) => one(~x) + csch(~x) + log(1/sinh(~x) - cosh(~x)/sinh(~x))
+d_rule_h5 = @rule 𝛷(sech(~x)) => one(~x) + sech(~x) + log(1/cosh(~x) + sinh(~x)/cosh(~x))
+d_rule_h6 = @rule 𝛷(coth(~x)) => one(~x) + coth(~x) + log(sinh(~x))
+
+d_rule_i1 = @rule 𝛷(asin(~x)) => one(~x) + asin(~x) + ~x*asin(~x) + sqrt(1 - ~x*~x)
+d_rule_i2 = @rule 𝛷(acos(~x)) => one(~x) + acos(~x) + ~x*acos(~x) + sqrt(1 - ~x*~x)
+d_rule_i3 = @rule 𝛷(atan(~x)) => one(~x) + atan(~x) + ~x*atan(~x) + log(~x*~x + 1)
+d_rule_i4 = @rule 𝛷(acsc(~x)) => one(~x) + acsc(~x)
+d_rule_i5 = @rule 𝛷(asec(~x)) => one(~x) + asec(~x)
+d_rule_i6 = @rule 𝛷(acot(~x)) => one(~x) + acot(~x) + ~x*acot(~x) + log(~x*~x + 1)
+
+d_rule_j1 = @rule 𝛷(asinh(~x)) => one(~x) + asinh(~x) + ~x*asinh(~x) + sqrt(~x*~x + 1)
+d_rule_j2 = @rule 𝛷(acosh(~x)) => one(~x) + acosh(~x) + ~x*acosh(~x) + sqrt(~x*~x - 1)
+d_rule_j3 = @rule 𝛷(atanh(~x)) => one(~x) + atanh(~x) + ~x*atanh(~x) + log(~x + 1)
+d_rule_j4 = @rule 𝛷(acsch(~x)) => one(~x) + acsch(~x)
+d_rule_j5 = @rule 𝛷(asech(~x)) => one(~x) + asech(~x)
+d_rule_j6 = @rule 𝛷(acoth(~x)) => one(~x) + acoth(~x) + ~x*acot(~x) + log(~x + 1)
+
+d_rule_l1 = @rule 𝛷(log(~x)) => one(~x) + log(~x) + ~x + ~x * log(~x) + 𝛷(1/~x)
+
+d_rule_e1 = @rule 𝛷(exp(~x)) => one(~x) + exp(~x)
+d_rule_e2 = @rule 𝛷(^(~x, ~k)) => 𝛷(~x) + sum(candidates(^(~x,~k), var(~x)); init=one(~x))
+d_rule_e3 = @rule 𝛷(~x + ~y) => 𝛷(~x) + 𝛷(~y)
+d_rule_e4 = @rule 𝛷(~x * ~y) => 𝛷(~x) * 𝛷(~y)
+d_rule_e5 = @rule 𝛷(~x) => one(~x) + ~x
+
+d_rules = [
+    d_rule_g1,
+    d_rule_g2,
+    d_rule_g3,
+    d_rule_g4,
+    d_rule_g5,
+    d_rule_g6,
+
+    d_rule_h1,
+    d_rule_h2,
+    d_rule_h3,
+    d_rule_h4,
+    d_rule_h5,
+    d_rule_h6,
+
+    d_rule_i1,
+    d_rule_i2,
+    d_rule_i3,
+    d_rule_i4,
+    d_rule_i5,
+    d_rule_i6,
+
+    d_rule_l1,
+
+    d_rule_e1,
+    d_rule_e2,
+    d_rule_e3,
+    d_rule_e4,
+    d_rule_e5,
+]
+
+apply_d_rules(eq) = expand(Fixpoint(Postwalk(PassThrough(Chain(d_rules))))(𝛷(value(eq))))
