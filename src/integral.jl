@@ -26,7 +26,7 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=3, radius
                    show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
                    attempt_ratio=5, symbolic=true, bypart=true, max_basis=110,
                    verbose=false, margin=1.0, complex_plane=true,
-                   sub_inner=false, use_closure=true, use_rules=false)
+                   sub_inner=false, use_closure=true, use_rules=true)
     eq = expand(eq)
 
     if x == nothing

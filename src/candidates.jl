@@ -3,7 +3,8 @@ using DataStructures
 # this is the main heurisctic used to find the test fragments
 function generate_basis(eq, x, h=[]; use_closure=true, use_rules=false)
     if use_closure
-        f = kernel(eq, x)
+        # f = kernel(eq, x)
+        f = kernel(eq)
         C₂ = find_candidates(f, x)
     else
         f = 1
@@ -30,8 +31,8 @@ end
 
 function find_candidates_nonsolvable(eq, x)
     eq = apply_d_rules(eq)
-    # println(">>> ", eq)
     D = Differential(x)
+
     S = Set{Any}()
     q = Queue{Any}()
     enqueue_expr_ex!(S, q, eq, x)
@@ -107,6 +108,12 @@ function enqueue_expr_ex!(S, q, eq, x)
     end
 end
 
+function enqueue_expr_ex!(S, eq::SymbolicUtils.Add, x)
+    for t in arguments(eq)
+        enqueue_expr_ex!(S, t, x)
+    end
+end
+
 function enqueue_expr_ex!(S, eq, x)
     y = eq / coef(eq, x)
     if y ∉ S && isdependent(y, x)
@@ -114,6 +121,11 @@ function enqueue_expr_ex!(S, eq, x)
     end
 end
 
+function candidates(eq)
+    x = var(eq)
+    # eq += expand_derivatives(Differential(x)(eq))
+    candidates(eq, x)
+end
 
 # the candidates of a Pow encode different integration rules
 function candidates(eq::SymbolicUtils.Pow, x)
@@ -124,14 +136,12 @@ function candidates(eq::SymbolicUtils.Pow, x)
 
     # if k < 0 && k ≈ round(k)
     if k ≈ -1
-        return candidate_pow_minus(p, k, x)
+        return candidate_pow_minus(p, k)
     elseif k ≈ 0.5 || k ≈ -0.5
-        if check_poly(p,x) == :real_poly && leading(p,x) < 0 p = -p end
-        # ∫ √f(x) dx = ... + c * log(df/dx + √f) if deg(f) == 2
         Δ = expand_derivatives(Differential(x)(p))
         return [p^k, p^(k+1), log(0.5*Δ + sqrt(p))]
     elseif k < 0
-        return [p^i for i=k:0 if i<0]
+        return [log(p); [p^i for i=k:0 if i<0]]
     end
 
     # ∫ p^k dp = c * p^(k+1)
@@ -141,14 +151,12 @@ end
 
 nice_abs2(u) = abs2(u)     # nice_parameter(abs2(u))
 
-function candidate_pow_minus(p, k, x)
-    check = check_poly(p, x)
-    if check == :not_poly || check == :complex_poly
+function candidate_pow_minus(p, k)
+    if isnan(poly_deg(p))
         return [p^k, p^(k+1), log(p)]
-        # Δp = expand_derivatives(Differential(x)(p))
-        # return [p^k, p^(k+1), log(p); Δp]
     end
 
+    x = var(p)
     r, s = find_roots(p, x)
     s = s[1:2:end]
     r = nice_parameter.(r)
@@ -166,6 +174,33 @@ function candidate_pow_minus(p, k, x)
     else
         return [[p^k, p^(k+1)]; q]
     end
+end
+
+function candidate_sqrt(p, k)
+    x = var(p)
+
+    h = Any[p^k, p^(k+1)]
+
+    if poly_deg(p) == 2
+        r, s = find_roots(p, x)
+        l = leading(p, x)
+        if length(r) == 2
+            if sum(r) ≈ 0
+                r₁ = abs(r[1])
+                if l > 0
+                    push!(h, acosh(x/r₁))
+                else
+                    push!(h, asin(x/r₁))
+                end
+            end
+        elseif real(s[1]) ≈ 0
+            push!(h, asinh(x/imag.(s[1])))
+        end
+    end
+
+    Δ = expand_derivatives(Differential(x)(p))
+    push!(h, log(0.5*Δ + sqrt(p)))
+    return h
 end
 
 ###############################################################################
@@ -196,7 +231,7 @@ function closure(eq, x; max_terms=50)
         y = dequeue!(q)
         enqueue_expr!(S, q, expand_derivatives(D(y)), x)
     end
-    [one(x); [s for s in S]]
+    unique([one(x); [s for s in S]; [s*x for s in S]])
 end
 
 function find_candidates(eq, x)
@@ -247,30 +282,30 @@ extract_factors(eq::SymbolicUtils.Pow) = [arguments(eq)[1]]
 extract_factors(eq::SymbolicUtils.Mul) = unique(union([extract_factors(t) for t in arguments(eq)]...))
 extract_factors(eq) = [eq]
 
-###############################################################################
-
-kernel(eq::SymbolicUtils.Add, x) = sum(kernel(t,x) for t in arguments(eq); init=0)
-kernel(eq::SymbolicUtils.Mul, x) = prod(kernel(t,x) for t in arguments(eq); init=1)
-
-function kernel(eq::SymbolicUtils.Pow, x)
-    p = arguments(eq)[1]    # eq = p ^ k
-    k = arguments(eq)[2]
-    if isinteger(k) && k >= 0
-        kernel(p, x)^k
-    else
-        return 1
-    end
-end
-
-function kernel(eq::SymbolicUtils.Term, x)
-    op = operation(eq)
-    p = arguments(eq)[1]
-
-    if is_linear_poly(p,x) && (op == sin || op == cos || op == exp || op == sinh || op == cosh)
-        return eq
-    else
-        return 1
-    end
-end
-
-kernel(eq, x) = isequal(eq, x) ? x : 1
+# ###############################################################################
+#
+# kernel(eq::SymbolicUtils.Add, x) = sum(kernel(t,x) for t in arguments(eq); init=0)
+# kernel(eq::SymbolicUtils.Mul, x) = prod(kernel(t,x) for t in arguments(eq); init=1)
+#
+# function kernel(eq::SymbolicUtils.Pow, x)
+#     p = arguments(eq)[1]    # eq = p ^ k
+#     k = arguments(eq)[2]
+#     if isinteger(k) && k >= 0
+#         kernel(p, x)^k
+#     else
+#         return 1
+#     end
+# end
+#
+# function kernel(eq::SymbolicUtils.Term, x)
+#     op = operation(eq)
+#     p = arguments(eq)[1]
+#
+#     if poly_deg(p) == 1 && (op == sin || op == cos || op == exp || op == sinh || op == cosh)
+#         return eq
+#     else
+#         return 1
+#     end
+# end
+#
+# kernel(eq, x) = isequal(eq, x) ? x : 1
