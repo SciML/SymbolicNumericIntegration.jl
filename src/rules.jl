@@ -102,19 +102,15 @@ d_rule_l2 = @rule 𝛷(sqrt(~x)) => sum(candidate_sqrt(~x,0.5); init=one(~x))
 d_rule_l3 = @rule 𝛷(^(sqrt(~x),-1)) => 𝛷(^(~x,-0.5))
 d_rule_l4 = @rule 𝛷(cbrt(~x)) => one(~x) + cbrt(~x) + ^(~x, 4/3)
 
-d_rule_p1 = @rule 𝛷(^(~x, ~k::is_pos)) => one(~x) + ^(~x,~k+1) + 𝛷(~x)
+d_rule_p1 = @rule 𝛷(^(~x, ~k::is_abs_half)) => sum(candidate_sqrt(~x,~k); init=𝛷(~x))
 d_rule_p2 = @rule 𝛷(^(~x, ~k::is_neg)) => sum(candidate_pow_minus(~x,~k); init=𝛷(~x))
-d_rule_p3 = @rule 𝛷(^(~x, ~k::is_neg_one)) => sum(candidate_pow_minus(~x,~k); init=𝛷(~x))
-d_rule_p4 = @rule 𝛷(^(~x, ~k::is_abs_half)) => sum(candidate_sqrt(~x,~k); init=𝛷(~x))
+d_rule_p3 = @rule 𝛷(^(~x, ~k::is_pos)) => one(~x) + ^(~x,~k+1) + 𝛷(~x)
 
 d_rule_e1 = @rule 𝛷(exp(~x)) => one(~x) + exp(~x)
-# d_rule_e2 = @rule 𝛷(^(~x, ~k)) => sum(candidates(^(~x,~k)); init=one(~x))
-# d_rule_e3 = @rule 𝛷(~x + ~y) => 𝛷(~x) + 𝛷(~y)
-# d_rule_e4 = @rule 𝛷(~x * ~y) => 𝛷(~x) * 𝛷(~y)
-d_rule_e3 = @rule 𝛷(+(~~xs)) => sum(map(𝛷, ~~xs))
-d_rule_e4 = @rule 𝛷(*(~~xs)) => prod(map(𝛷, ~~xs))
-d_rule_e5 = @rule 𝛷(~x) => one(~x) + ~x
-d_rule_e6 = @rule 𝛷(-~x) => -𝛷(~x)
+d_rule_e2 = @rule 𝛷(+(~~xs)) => sum(map(𝛷, ~~xs))
+d_rule_e3 = @rule 𝛷(*(~~xs)) => prod(map(𝛷, ~~xs))
+d_rule_e4 = @rule 𝛷(~x) => one(~x) + ~x
+d_rule_e5 = @rule 𝛷(-~x) => -𝛷(~x)
 
 
 d_rules = [
@@ -144,17 +140,15 @@ d_rules = [
     d_rule_l3,
     # d_rule_l4,
 
-    d_rule_p4,
-    d_rule_p2,
     d_rule_p1,
-    # d_rule_p3,
+    d_rule_p2,
+    d_rule_p3,
 
     d_rule_e1,
-    # d_rule_e2,
+    d_rule_e2,
     d_rule_e3,
     d_rule_e4,
     d_rule_e5,
-    d_rule_e6,
 ]
 
 apply_d_rules(eq) = expand(Fixpoint(Prewalk(PassThrough(Chain(d_rules))))(𝛷(value(eq))))
@@ -173,7 +167,7 @@ p_rules = [
     @rule Ω(^(~x, ~k)) => ~k >= 0 ? ~k * Ω(~x) : NaN
     @rule Ω(~x::is_number) => 0
     @rule Ω(~x::is_var) => 1
-    @rule (~f)(~x) => NaN
+    @rule Ω(~x) => NaN    
 ]
 
 function poly_deg(eq)

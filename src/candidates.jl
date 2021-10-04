@@ -26,7 +26,7 @@ function generate_basis(eq, x, h=[]; use_closure=true, use_rules=false)
     # println("C₁ = ", C₁)
     # println("C₂ = ", C₂)
 
-    return [c₁*c₂ for c₁ in C₁ for c₂ in C₂]
+    return unique([c₁*c₂ for c₁ in C₁ for c₂ in C₂])
 end
 
 function find_candidates_nonsolvable(eq, x)

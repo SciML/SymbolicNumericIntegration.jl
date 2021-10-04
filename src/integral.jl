@@ -383,6 +383,9 @@ function try_integrate2(T, eq, x, basis, Δbasis, radius, margin=1.0; kwargs...)
 
     init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abstol)
 
+    # println(A)
+    # println(X)
+
     y₁, ϵ₁ = sparse_fit(T, A, x, basis, Δbasis, opt; abstol)
     if ϵ₁ < abstol
         return y₁, ϵ₁
@@ -414,7 +417,7 @@ end
 
 function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abstol=1e-6)
     n = size(A, 1)
-    X = zeros(Complex{T}, n)
+    # X = zeros(Complex{T}, n)
     k = 1
     i = 1
 
@@ -469,6 +472,7 @@ function sparse_fit(T, A, x, basis, Δbasis, opt; abstol=1e-6)
 
     try
         b = ones(n)
+        # q₀ = A \ b
         q₀ = Optimize.init(opt, A, b)
         @views Optimize.sparse_regression!(q₀, A, permutedims(b)', opt, maxiter = 1000)
         ϵ = rms(A * q₀ - b)
