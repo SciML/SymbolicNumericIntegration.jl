@@ -25,7 +25,7 @@ Base.signbit(z::Complex{T}) where T<:Number = signbit(real(z))
 function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=3, radius=1.0,
                    show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
                    attempt_ratio=5, symbolic=true, bypart=true, max_basis=110,
-                   verbose=false, margin=1.0, complex_plane=true,
+                   verbose=false, complex_plane=true,
                    sub_inner=false, use_closure=true, use_rules=true)
     eq = expand(eq)
 
@@ -52,7 +52,7 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=3, radius
 
     s₁, u₁, ϵ = integrate_sum(eq, x; bypass, abstol, num_trials, num_steps,
                               radius, show_basis, opt, attempt_ratio, symbolic,
-                              max_basis, verbose, margin, complex_plane,
+                              max_basis, verbose, complex_plane,
                               sub_inner, use_closure, use_rules)
 
     if isequal(u₁, 0) || !bypart
@@ -60,7 +60,7 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=3, radius
     else
         s₂, u₂, ϵ = try_integration_by_parts(u₁, x; abstol, num_trials, num_steps,
                                              radius, show_basis, opt, attempt_ratio,
-                                             symbolic, max_basis, verbose, margin,
+                                             symbolic, max_basis, verbose,
                                              complex_plane, sub_inner, use_closure,
                                              use_rules)
         return s₁ + s₂, u₂, ϵ
@@ -110,19 +110,21 @@ function integrate_sum(eq::SymbolicUtils.Add, x, h; bypass=false, kwargs...)
     end
 end
 
-function integrate_sum(eq, x; kwargs...)
-    # println("C: ", eq)
-    integrate_term(eq, x; kwargs...)
+integrate_sum(eq, x; kwargs...) = integrate_term(eq, x; kwargs...)
+integrate_sum(eq, x, h; kwargs...) = integrate_term(eq, x, h; kwargs...)
+
+function test_point(complex_plane, radius)
+    if complex_plane
+        return radius * sqrt(rand()) * cis(2π*rand())
+    else
+        return Complex(radius * (2*rand() - 1))
+    end
 end
 
-function integrate_sum(eq, x, h; kwargs...)
-    # println("D: ", eq)
-    integrate_term(eq, x, h; kwargs...)
-end
-
-function accept_solution(eq, x, sol, radius, margin; abstol=1e-6)
+function accept_solution(eq, x, sol, radius; abstol=1e-6)
     try
-        Δ = substitute(expand_derivatives(Differential(x)(sol)-eq), Dict(x => test_point(radius, margin)))
+        x₀ = test_point(true, radius)
+        Δ = substitute(expand_derivatives(Differential(x)(sol)-eq), Dict(x => x₀))
         return abs(Δ) < abstol
     catch e
         #
@@ -162,10 +164,10 @@ end
 function integrate_term(eq, x, h; kwargs...)
     args = Dict(kwargs)
     abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
-    radius, margin, use_closure, use_rules =
+    radius, use_closure, use_rules =
         args[:abstol], args[:num_steps], args[:num_trials], args[:show_basis],
         args[:symbolic], args[:verbose], args[:max_basis], args[:radius],
-        args[:margin], args[:use_closure], args[:use_rules]
+        args[:use_closure], args[:use_rules]
 
     # note that the order of the operations is important!
     # first, collecing hints, then applying transformation rules, and finally finding the basis.
@@ -188,7 +190,7 @@ function integrate_term(eq, x, h; kwargs...)
         if symbolic
             y, ϵ = try_symbolic(Float64, eq, x, basis, Δbasis; kwargs...)
 
-            if !isequal(y, 0) && accept_solution(eq, x, y, radius, margin; abstol)
+            if !isequal(y, 0) && accept_solution(eq, x, y, radius; abstol)
                 if verbose printstyled("$i, symbolic\n"; color=:yellow) end
                 return y, 0, 0
             end
@@ -196,9 +198,9 @@ function integrate_term(eq, x, h; kwargs...)
 
         for j = 1:num_trials
             r = radius*sqrt(2)^j
-            y, ϵ = try_integrate2(Float64, eq, x, basis, Δbasis, r, margin; kwargs...)
+            y, ϵ = try_integrate(Float64, eq, x, basis, Δbasis, r; kwargs...)
 
-            if ϵ < abstol && accept_solution(eq, x, y, r, margin; abstol)
+            if ϵ < abstol && accept_solution(eq, x, y, r; abstol)
                 if verbose printstyled("$i, $j\n"; color=:yellow) end
                 return y, 0, ϵ
             else
@@ -212,7 +214,7 @@ function integrate_term(eq, x, h; kwargs...)
         end
     end
 
-    if accept_solution(eq, x, y₀, radius, margin; abstol=abstol*10)
+    if accept_solution(eq, x, y₀, radius; abstol=abstol*10)
         if verbose printstyled("rescue\n"; color=:yellow) end
         return y₀, 0, ϵ₀
     else
@@ -222,97 +224,12 @@ end
 
 rms(x) = sqrt(sum(x.^2) / length(x))
 
-function test_point(radius, margin)
-    # select a quadrant
-    s1 = rand([-1,1])
-    s2 = rand([-1,1])
-
-    x = s1*(margin + rand()*radius)
-    y = s2*(margin + rand()*radius)
-
-    return Complex(x, y)
-end
-
-"""
-    the core of the randomized parameter-fitting algorithm
-
-    `try_integrate` tries to find a linear combination of the basis, whose
-    derivative is equal to eq
-
-    output
-    -------
-    integral, error
-"""
-function try_integrate(T, eq, x, basis, Δbasis, radius, margin=1.0; kwargs...)
-    args = Dict(kwargs)
-    abstol, opt, attempt_ratio = args[:abstol], args[:opt], args[:attempt_ratio]
-
-    n = length(basis)
-    # A is an nxn matrix holding the values of the fragments at n random points
-    A = zeros(Complex{T}, (n, n))
-
-    i = 1
-    k = 1
-
-    while i <= n
-        x₀ = test_point(radius, margin)
-        d = Dict(x => x₀)
-        try
-            b₀ = Complex{T}(substitute(eq, d))
-            for j = 1:n
-                A[i, j] = Complex{T}(substitute(Δbasis[j], d)) / b₀
-            end
-            i += 1
-        catch e
-            println("basis matrix error: ", e)
-        end
-        if k > attempt_ratio*n return nothing, 1e6 end
-        k += 1
-    end
-
-    # find a linearly independent subset of the basis
-    l = find_independent_subset(A; abstol)
-    A, basis, Δbasis, n = A[l,l], basis[l], Δbasis[l], sum(l)
-
-    if det(A) ≈ 0 return nothing, 1e6 end
-
-    coefs = ones(Complex{T}, n)
-    for j = 1:n
-        coefs[j] = coef(Δbasis[j], x)
-        A[:,j] /= coefs[j]
-    end
-
-    # q₀ = A \ b
-    try
-        b = ones(n)
-        q₀ = Optimize.init(opt, A, b)
-        @views Optimize.sparse_regression!(q₀, A, permutedims(b)', opt, maxiter = 1000)
-        ϵ = rms(A * q₀ - b)
-        q = nice_parameter.(q₀ ./ coefs)
-        return sum(q[i]*basis[i] for i = 1:length(basis) if q[i] != 0; init=zero(x)), abs(ϵ)
-    catch e
-        return nothing, 1e6
-    end
-end
-
 """
     returns a list of the indices of a linearly independent subset of the columns of A
 """
 function find_independent_subset(A; abstol=1e-3)
     Q, R = qr(A)
     abs.(diag(R)) .> abstol
-end
-
-function find_independent_subset2(A; abstol=1e-3)
-    n = size(A, 1)
-    l = BitVector(undef, n)
-    for i = 1:n
-        l[i] = 1
-        if abs(det(A[l,l])) < abstol
-            l[i] = 0
-        end
-    end
-    l
 end
 
 """
@@ -360,15 +277,19 @@ end
 
 ###############################################################################
 
-function fibonacci_spiral(n, i)
-    ϕ = (1 + sqrt(5)) / 2
-    θ, r = mod((i-1)/ϕ, 1), (i-1)/n
-    sqrt(r)*cis(2π*θ)
-end
-
 is_proper(x) = !isnan(x) && !isinf(x)
 
-function try_integrate2(T, eq, x, basis, Δbasis, radius, margin=1.0; kwargs...)
+"""
+    the core of the randomized parameter-fitting algorithm
+
+    `try_integrate` tries to find a linear combination of the basis, whose
+    derivative is equal to eq
+
+    output
+    -------
+    integral, error
+"""
+function try_integrate(T, eq, x, basis, Δbasis, radius; kwargs...)
     args = Dict(kwargs)
     abstol, opt, attempt_ratio, complex_plane, verbose =
         args[:abstol], args[:opt], args[:attempt_ratio], args[:complex_plane], args[:verbose]
@@ -382,9 +303,6 @@ function try_integrate2(T, eq, x, basis, Δbasis, radius, margin=1.0; kwargs...)
     X = zeros(Complex{T}, n)
 
     init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abstol)
-
-    # println(A)
-    # println(X)
 
     y₁, ϵ₁ = sparse_fit(T, A, x, basis, Δbasis, opt; abstol)
     if ϵ₁ < abstol
@@ -423,16 +341,10 @@ function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abst
 
     while k <= n
         try
-            if complex_plane
-                x₀ = radius * sqrt(rand()) * cis(2π*rand())
-                # x₀ = radius * fibonacci_spiral(n, i)
-                i += 1
-            else
-                x₀ = Complex(radius * (2*rand() - 1))
-            end
-
+            x₀ = test_point(complex_plane, radius)
             X[k] = x₀
             d = Dict(x => x₀)
+
             b₀ = Complex{T}(substitute(eq, d))
             if is_proper(b₀)
                 for j = 1:n
@@ -443,7 +355,7 @@ function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abst
                 end
             end
         catch e
-            # println(e)
+            println(e)
         end
     end
 end
@@ -514,29 +426,3 @@ function find_dense(T, A, basis; abstol=1e-6)
     end
     return nothing, Inf
 end
-
-########################## Convert to a Polynomial? #############################
-
-# is_multiple_x(p::SymbolicUtils.Add, x) = all(is_multiple_x(t,x) for t in arguments(p))
-# is_multiple_x(p::SymbolicUtils.Mul, x) = any(is_multiple_x(t,x) for t in arguments(p))
-# is_multiple_x(p::SymbolicUtils.Pow, x) = isequal(arguments(p)[1], x) && arguments(p)[2] >= 1
-# is_multiple_x(p::SymbolicUtils.Sym, x) = isequal(p, x)
-# is_multiple_x(p, x) = false
-
-
-coef(eq::SymbolicUtils.Mul, x) = prod(t for t in arguments(eq) if !isdependent(t,x); init=1)
-coef(eq::SymbolicUtils.Add, x) = minimum(abs(coef(t,x)) for t in arguments(eq))
-coef(eq, x) = 1
-
-##################### Special Functions ######################################
-
-# using SpecialFunctions
-#
-# """
-#     logarithmic integral
-# """
-# function li(x; n=10)
-#     z = log(abs(x))
-#     s = sum(z^k / (factorial(k) * k) for k = 1:n)
-#     return SpecialFunctions.γ + log(z) + s
-# end

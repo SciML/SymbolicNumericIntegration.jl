@@ -167,7 +167,7 @@ p_rules = [
     @rule Ω(^(~x, ~k)) => ~k >= 0 ? ~k * Ω(~x) : NaN
     @rule Ω(~x::is_number) => 0
     @rule Ω(~x::is_var) => 1
-    @rule Ω(~x) => NaN    
+    @rule Ω(~x) => NaN
 ]
 
 function poly_deg(eq)
@@ -211,6 +211,10 @@ n_rules = [
 ]
 
 inners(eq) = Fixpoint(Prewalk(PassThrough(Chain(n_rules))))(Ω(value(eq)))
+
+coef(eq::SymbolicUtils.Mul, x) = prod(t for t in arguments(eq) if !isdependent(t,x); init=1)
+coef(eq::SymbolicUtils.Add, x) = minimum(abs(coef(t,x)) for t in arguments(eq))
+coef(eq, x) = 1
 
 ########################## Transformation Rules ###############################
 
