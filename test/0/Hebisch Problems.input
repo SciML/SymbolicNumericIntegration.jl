@@ -1,0 +1,22 @@
+-- Axiom integration test file: "0 Independent test suites\Hebisch Problems.input"
+
+lst: '[
+
+-- Waldek Hebisch - email May 2013
+
+-- Problem #1
+[(1-x^3+x^4-x^5+x^6)*exp(x),x,25,871*%e^x-870*%e^x*x+435*%e^x*x^2-145*%e^x*x^3+36*%e^x*x^4-7*%e^x*x^5+%e^x*x^6],
+
+-- Problem #2
+[(2-x^2)*exp(x/(2+x^2))/(2*x+x^3),x,-5,Ei(x/(2+x^2))],
+[(2+2*x+3*x^2-x^3+2*x^4)*exp(x/(2+x^2))/(2*x+x^3),x,-5,%e^(x/(2+x^2))*(2+x^2)+Ei(x/(2+x^2))],
+
+-- Problem #3
+[(1+exp(x))*exp(x+exp(x))/(x+exp(x)),x,2,Ei(%e^x+x)],
+
+-- Problem #4
+[(1-3*x-x^2+x^3)*exp(1/(-1+x^2))/(1-x-x^2+x^3),x,-6,%e^(1/(-1+x^2))*(1+x)],
+
+-- Problem #5
+[exp(1+1/log(x))*(-1+log(x)^2)/log(x)^2,x,1,%e^(1+1/log(x))*x],
+[exp(x+1/log(x))*(-1+(1+x)*log(x)^2)/log(x)^2,x,-2,%e^(x+1/log(x))*x]]

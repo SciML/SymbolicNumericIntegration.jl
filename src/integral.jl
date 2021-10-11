@@ -22,11 +22,10 @@ Base.signbit(z::Complex{T}) where T<:Number = signbit(real(z))
     a pair of expressions, solved is the solved integral and unsolved is the residual unsolved
     portion of the input
 """
-function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=3, radius=1.0,
+function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius=1.0,
                    show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
-                   attempt_ratio=5, symbolic=true, bypart=true, max_basis=110,
-                   verbose=false, complex_plane=true,
-                   sub_inner=false, use_closure=true, use_rules=true)
+                   symbolic=true, bypart=true, max_basis=110,
+                   verbose=false, complex_plane=true)
     eq = expand(eq)
 
     if x == nothing
@@ -51,18 +50,15 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=3, radius
     # end
 
     s₁, u₁, ϵ = integrate_sum(eq, x; bypass, abstol, num_trials, num_steps,
-                              radius, show_basis, opt, attempt_ratio, symbolic,
-                              max_basis, verbose, complex_plane,
-                              sub_inner, use_closure, use_rules)
+                              radius, show_basis, opt, symbolic,
+                              max_basis, verbose, complex_plane)
 
     if isequal(u₁, 0) || !bypart
         return s₁, u₁, ϵ
     else
         s₂, u₂, ϵ = try_integration_by_parts(u₁, x; abstol, num_trials, num_steps,
-                                             radius, show_basis, opt, attempt_ratio,
-                                             symbolic, max_basis, verbose,
-                                             complex_plane, sub_inner, use_closure,
-                                             use_rules)
+                                             radius, show_basis, opt, symbolic,
+                                             max_basis, verbose, complex_plane)
         return s₁ + s₂, u₂, ϵ
     end
 end
@@ -70,48 +66,38 @@ end
 """
     ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
 """
-function integrate_sum(eq::SymbolicUtils.Add, x; bypass=false, kwargs...)
-    # println("A: ", eq)
-    if bypass
-        return integrate_term(eq, x; kwargs...)
-    else
-        solved = 0
-        unsolved = 0
-        ϵ₀ = 0
+function integrate_sum(eq, x; bypass=false, kwargs...)
+    args = Dict(kwargs)
+    verbose = args[:verbose]
 
-        for p in arguments(eq)
-            s, u, ϵ = integrate_term(p, x; kwargs...)
-            solved += s
-            unsolved += u
-            ϵ₀ = max(ϵ₀, ϵ)
-        end
+    solved = 0
+    unsolved = 0
+    ϵ₀ = 0
 
-        return solved, unsolved, ϵ₀
+    for p in (bypass ? [eq] : terms(eq))
+        s, u, ϵ = integrate_term(p, x; kwargs...)
+        solved += s
+        unsolved += u
+        ϵ₀ = max(ϵ₀, ϵ)
     end
-end
 
-function integrate_sum(eq::SymbolicUtils.Add, x, h; bypass=false, kwargs...)
-    # println("B: ", eq)
-    if bypass
-        return integrate_term(eq, x, h; kwargs...)
-    else
-        solved = 0
-        unsolved = 0
-        ϵ₀ = 0
-
-        for p in arguments(eq)
-            s, u, ϵ = integrate_term(p, x, h; kwargs...)
-            solved += s
-            unsolved += u
-            ϵ₀ = max(ϵ₀, ϵ)
+    if !isequal(unsolved, 0)
+        eq = apply_q_rules(apply_integration_rules(unsolved))
+        if !isequal(eq, unsolved)
+            if verbose printstyled("transforming the expression\n"; color=:magenta) end
+            unsolved = 0
+            ϵ₀ = 0
+            for p in (bypass ? [eq] : terms(eq))
+                s, u, ϵ = integrate_term(p, x; kwargs...)
+                solved += s
+                unsolved += u
+                ϵ₀ = max(ϵ₀, ϵ)
+            end
         end
-
-        return solved, unsolved, ϵ₀
     end
-end
 
-integrate_sum(eq, x; kwargs...) = integrate_term(eq, x; kwargs...)
-integrate_sum(eq, x, h; kwargs...) = integrate_term(eq, x, h; kwargs...)
+    return solved, unsolved, ϵ₀
+end
 
 function test_point(complex_plane, radius)
     if complex_plane
@@ -133,45 +119,14 @@ function accept_solution(eq, x, sol, radius; abstol=1e-6)
 end
 
 function integrate_term(eq, x; kwargs...)
-    @syms 𝑥
     args = Dict(kwargs)
-    abstol, sub_inner, verbose = args[:abstol], args[:sub_inner], args[:verbose]
-
-    h, kers = collect_hints(eq, x)
-    s₀, u₀, ϵ₀ = integrate_term(eq, x, h; kwargs...)
-    if isequal(u₀, 0)
-        return s₀, u₀, ϵ₀
-    else
-        eq = apply_integration_rules(u₀)
-        s₁, u₁, ϵ₁ = integrate_sum(eq, x, h; kwargs...)
-        if isequal(u₁, 0) || !sub_inner return s₁, u₁, ϵ₁ end
-
-        for k in kers
-            if verbose println("try substitution 𝑥 = ", k) end
-            S = q -> substitute(q, Dict(x => Symbolics.solve_for(k ~ 𝑥, x)))
-            U = q -> substitute(q, Dict(𝑥 => k))
-            s₂, u₂, ϵ₂ = integrate_sum(S(u₁), 𝑥, S.(h); kwargs...)
-            s₁ += U(s₂)
-            u₁ = U(u₂)
-            if isequal(u₁, 0)
-                return s₁, u₁, ϵ₁
-            end
-        end
-        return s₁, u₁, ϵ₁
-    end
-end
-
-function integrate_term(eq, x, h; kwargs...)
-    args = Dict(kwargs)
-    abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
-    radius, use_closure, use_rules =
+    abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis, radius =
         args[:abstol], args[:num_steps], args[:num_trials], args[:show_basis],
-        args[:symbolic], args[:verbose], args[:max_basis], args[:radius],
-        args[:use_closure], args[:use_rules]
+        args[:symbolic], args[:verbose], args[:max_basis], args[:radius]
 
     # note that the order of the operations is important!
     # first, collecing hints, then applying transformation rules, and finally finding the basis.
-    basis = generate_basis(eq, x, h; use_closure, use_rules)
+    basis = generate_basis(eq, x)
 
     # basis = filter(u -> !(deg(u,x)>0), basis)
 
@@ -277,8 +232,6 @@ end
 
 ###############################################################################
 
-is_proper(x) = !isnan(x) && !isinf(x)
-
 """
     the core of the randomized parameter-fitting algorithm
 
@@ -291,8 +244,8 @@ is_proper(x) = !isnan(x) && !isinf(x)
 """
 function try_integrate(T, eq, x, basis, Δbasis, radius; kwargs...)
     args = Dict(kwargs)
-    abstol, opt, attempt_ratio, complex_plane, verbose =
-        args[:abstol], args[:opt], args[:attempt_ratio], args[:complex_plane], args[:verbose]
+    abstol, opt, complex_plane, verbose =
+        args[:abstol], args[:opt], args[:complex_plane], args[:verbose]
 
     basis = basis[2:end]    # remove 1 from the beginning
     Δbasis = Δbasis[2:end]

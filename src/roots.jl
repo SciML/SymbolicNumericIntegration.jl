@@ -24,17 +24,28 @@ function solve_newton(T, p, ∂p, x, x₀, zs; abstol=1e-10, maxiter=50, s=1)
     return nothing
 end
 
-function find_roots(T, p, x; abstol=1e-10, num_roots=0)
-    n = (num_roots == 0 ? deg(p, x) : num_roots)
+function find_roots(T, p, x; abstol=1e-8, num_roots=0)
+    n = (num_roots == 0 ? poly_deg(p) : num_roots)
     abstol = T(abstol)
-    ∂p = expand_derivatives(Differential(x)(p))
 
     zs = Complex{T}[]
     r = T[]
     s = Complex{T}[]
 
+    while !isequal(p, 0)
+        q = expand(p / x)
+        if !is_poly(q) break end
+        push!(r, 0)
+        p = q
+        n -= 1
+    end
+
+    if isequal(p, 0) return r, s end
+
+    ∂p = expand_derivatives(Differential(x)(p))
+
     while length(zs) < n
-        z = solve_newton(Complex{T}, p, ∂p, x, cis(2π*rand()), zs; abstol)
+        z = solve_newton(Complex{T}, p, ∂p, x, cis(2π*rand()), zs; abstol)        
         if z != nothing
             if abs(imag(z)) < abstol
                 push!(zs, Complex(real(z)))
@@ -60,7 +71,7 @@ function find_roots(T, p, x; abstol=1e-10, num_roots=0)
     sort(r), s
 end
 
-find_roots(p, x; abstol=1e-10, num_roots=0) = find_roots(Float64, p, x; num_roots, abstol)
+find_roots(p, x; abstol=1e-8, num_roots=0) = find_roots(Float64, p, x; num_roots, abstol)
 
 function find_poles(T, p, x; abstol=1e-10)
     abstol = Float64(abstol)

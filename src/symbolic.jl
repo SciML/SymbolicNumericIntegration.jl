@@ -2,7 +2,7 @@ function try_symbolic(T, eq, x, basis, Δbasis; kwargs...)
     n = length(basis)
     @syms θ[1:n]
 
-    Δeq = sum(θ[j]*Δbasis[j] for j=1:n) - eq
+    Δeq = sum(θ[j]*Δbasis[j] for j=1:n) - eq    
     Δeq = expand(Δeq)
 
     terms = collect_terms(Δeq, x)

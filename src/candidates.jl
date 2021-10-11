@@ -1,32 +1,23 @@
 using DataStructures
 
 # this is the main heurisctic used to find the test fragments
-function generate_basis(eq, x, h=[]; use_closure=true, use_rules=false)
-    if use_closure
-        # f = kernel(eq, x)
-        f = kernel(eq)
-        C₂ = find_candidates(f, x)
-    else
-        f = 1
-        C₂ = [one(x)]
+function generate_basis(eq, x)
+    # C = []
+    S = Set{Any}()
+    for t in terms(eq)
+        q = t / coef(t, x)
+        f = kernel(q)
+        C₁ = find_candidates(f, x)
+        C₂ = find_candidates_nonsolvable(q / f, x)
+        for c₁ in C₁
+            for c₂ in C₂
+                enqueue_expr_ex!(S, expand(c₁*c₂), x)
+            end
+        end
+        #append!(C, [c₁*c₂ ])
     end
-
-    g = eq / f
-
-    if use_rules
-        C₁ = find_candidates_nonsolvable(g, x)
-    else
-        h , _ = collect_hints(g, x)
-        H = prod(h; init=one(x))
-        Δg = expand_derivatives(Differential(x)(g))
-        kers = expand(g + Δg + H)
-        C₁ = [one(x); candidates(kers, x)]
-    end
-
-    # println("C₁ = ", C₁)
-    # println("C₂ = ", C₂)
-
-    return unique([c₁*c₂ for c₁ in C₁ for c₂ in C₂])
+    #return unique(C)
+    return [one(x); [s for s in S]]
 end
 
 function find_candidates_nonsolvable(eq, x)
@@ -149,9 +140,7 @@ function candidates(eq::SymbolicUtils.Pow, x)
     return [p^i for i=k+1:-1:0 if i>0]
 end
 
-nice_abs2(u) = abs2(u)     # nice_parameter(abs2(u))
-
-function candidate_pow_minus(p, k)
+function candidate_pow_minus(p, k; abstol=1e-8)
     if isnan(poly_deg(p))
         return [p^k, p^(k+1), log(p)]
     end
@@ -163,10 +152,17 @@ function candidate_pow_minus(p, k)
     s = nice_parameter.(s)
 
     # ∫ 1 / ((x-z₁)(x-z₂)) dx = ... + c₁ * log(x-z₁) + c₂ * log(x-z₂)
-    q = [[log(x - u) for u in r];
-          [atan((x - real(u))/imag(u)) for u in s];
-          [log(x^2 - 2*real(u)*x + nice_abs2(u)) for u in s]
-         ]
+    q = Any[log(x - u) for u in r]
+    for i in eachindex(s)
+        β = s[i]
+        if abs(imag(β)) > abstol
+            push!(q, atan((x - real(β))/imag(β)))
+            push!(q, (1+x)*log(x^2 - 2*real(β)*x + abs2(β)))
+        else
+            push!(q, log(x - real(β)))
+        end
+    end
+    q = unique(q)
 
     # return [[p^k, p^(k+1)]; candidates(q₁, x)]
     if k ≈ -1

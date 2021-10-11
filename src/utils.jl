@@ -12,6 +12,8 @@ is_number(x::T) where T<:Complex = true
 is_number(x::T) where T<:Rational = true
 is_number(x) = false
 
+is_proper(x) = is_number(x) && !isnan(x) && !isinf(x)
+
 """
     check_poly checks if a Symbolic expression is a polynomial
 """

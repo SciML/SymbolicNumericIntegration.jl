@@ -1,0 +1,365 @@
+-- Axiom integration test file: "0 Independent test suites\Hearn Problems.input"
+
+lst: '[
+
+-- Anthony Hearn - Reduce Integration Test Package
+
+-- Polynomial and rational function examples
+[1+x+x^2,x,1,x+1/2*x^2+1/3*x^3],
+[x^2*(x+2*x^2)^2,x,3,1/5*x^5+2/3*x^6+4/7*x^7],
+[x*(1+2*x+x^2),x,2,1/2*x^2+2/3*x^3+1/4*x^4],
+[1/x,x,1,log(x)],
+[(1+x)^3/(-1+x)^4,x,2,8/3/(1-x)^3+(-6)/(1-x)^2+6/(1-x)+log(1-x)],
+[1/((-1+x)*x*(1+x)^2),x,2,(-1/2)/(1+x)+1/4*log(1-x)-log(x)+3/4*log(1+x)],
+[(b+a*x)/((-p+x)*(-q+x)),x,2,(b+a*p)*log(p-x)/(p-q)-(b+a*q)*log(q-x)/(p-q)],
+[1/(c+b*x+a*x^2),x,2,-2*atanh((b+2*a*x)/sqrt(b^2-4*a*c))/sqrt(b^2-4*a*c)],
+[(b+a*x)/(1+x^2),x,3,b*atan(x)+1/2*a*log(1+x^2)],
+[1/(3-2*x+x^2),x,2,-atan((1-x)/sqrt(2))/sqrt(2)],
+
+-- Rational function examples from Hardy, Pure Mathematics, p 253 et seq.
+[1/((-1+x)^2*(1+x^2)^2),x,6,1/4/(1-x)+(-1/4)/(1+x^2)+1/4*atan(x)-1/2*log(1-x)+1/4*log(1+x^2)],
+[x/((-a+x)*(-b+x)*(-c+x)),x,2,a*log(a-x)/((a-b)*(a-c))-b*log(b-x)/((a-b)*(b-c))+c*log(c-x)/((a-c)*(b-c))],
+[x/((a^2+x^2)*(b^2+x^2)),x,4,-1/2*log(a^2+x^2)/(a^2-b^2)+1/2*log(b^2+x^2)/(a^2-b^2)],
+[x^2/((a^2+x^2)*(b^2+x^2)),x,3,a*atan(x/a)/(a^2-b^2)-b*atan(x/b)/(a^2-b^2)],
+[x/((-1+x)*(1+x^2)),x,5,1/2*atan(x)+1/2*log(1-x)-1/4*log(1+x^2)],
+[x/(1+x^3),x,6,-1/3*log(1+x)+1/6*log(1-x+x^2)-atan((1-2*x)/sqrt(3))/sqrt(3)],
+[x^3/((-1+x)^2*(1+x^3)),x,3,1/2/(1-x)+3/4*log(1-x)-1/12*log(1+x)-1/3*log(1-x+x^2)],
+[1/(1+x^4),x,9,-1/2*atan(1-x*sqrt(2))/sqrt(2)+1/2*atan(1+x*sqrt(2))/sqrt(2)-1/4*log(1+x^2-x*sqrt(2))/sqrt(2)+1/4*log(1+x^2+x*sqrt(2))/sqrt(2)],
+[x^2/(1+x^4),x,9,-1/2*atan(1-x*sqrt(2))/sqrt(2)+1/2*atan(1+x*sqrt(2))/sqrt(2)+1/4*log(1+x^2-x*sqrt(2))/sqrt(2)-1/4*log(1+x^2+x*sqrt(2))/sqrt(2)],
+[1/(1+x^2+x^4),x,9,-1/4*log(1-x+x^2)+1/4*log(1+x+x^2)-1/2*atan((1-2*x)/sqrt(3))/sqrt(3)+1/2*atan((1+2*x)/sqrt(3))/sqrt(3)],
+
+-- Examples involving a+b*x
+[(a+b*x)^p,x,1,(a+b*x)^(1+p)/(b*(1+p))],
+[x*(a+b*x)^p,x,2,-a*(a+b*x)^(1+p)/(b^2*(1+p))+(a+b*x)^(2+p)/(b^2*(2+p))],
+[x^2*(a+b*x)^p,x,2,a^2*(a+b*x)^(1+p)/(b^3*(1+p))-2*a*(a+b*x)^(2+p)/(b^3*(2+p))+(a+b*x)^(3+p)/(b^3*(3+p))],
+[1/(a+b*x),x,1,log(a+b*x)/b],
+[1/(a+b*x)^2,x,1,(-1)/(b*(a+b*x))],
+[x/(a+b*x),x,2,x/b-a*log(a+b*x)/b^2],
+[x^2/(a+b*x),x,2,-a*x/b^2+1/2*x^2/b+a^2*log(a+b*x)/b^3],
+[1/(x*(a+b*x)),x,3,log(x)/a-log(a+b*x)/a],
+[1/(x^2*(a+b*x)),x,2,(-1)/(a*x)-b*log(x)/a^2+b*log(a+b*x)/a^2],
+[1/(x^2*(a+b*x)^2),x,2,(-1)/(a^2*x)-b/(a^2*(a+b*x))-2*b*log(x)/a^3+2*b*log(a+b*x)/a^3],
+[1/(c^2+x^2),x,1,atan(x/c)/c],
+[1/(c^2-x^2),x,1,atanh(x/c)/c],
+
+-- More complicated rational function examples
+
+--  Mostly examples contributed by David M. Dahm, who also developed the code to integrate them. 
+[1/(-1+2*x^3),x,6,1/3*log(1-2^(1/3)*x)/2^(1/3)-1/6*log(1+2^(1/3)*x+2^(2/3)*x^2)/2^(1/3)-atan((1+2*2^(1/3)*x)/sqrt(3))/(2^(1/3)*sqrt(3))],
+[1/(-2+x^3),x,6,1/3*log(2^(1/3)-x)/2^(2/3)-1/6*log(2^(2/3)+2^(1/3)*x+x^2)/2^(2/3)-atan((1+2^(2/3)*x)/sqrt(3))/(2^(2/3)*sqrt(3))],
+[1/(-b+a*x^3),x,6,1/3*log(b^(1/3)-a^(1/3)*x)/(a^(1/3)*b^(2/3))-1/6*log(b^(2/3)+a^(1/3)*b^(1/3)*x+a^(2/3)*x^2)/(a^(1/3)*b^(2/3))-atan((b^(1/3)+2*a^(1/3)*x)/(b^(1/3)*sqrt(3)))/(a^(1/3)*b^(2/3)*sqrt(3))],
+[1/(-2+x^4),x,3,-1/2*atan(x/2^(1/4))/2^(3/4)-1/2*atanh(x/2^(1/4))/2^(3/4)],
+[1/(-1+5*x^4),x,3,-1/2*atan(5^(1/4)*x)/5^(1/4)-1/2*atanh(5^(1/4)*x)/5^(1/4)],
+[1/(7+3*x^4),x,9,-1/2*atan(1-(3/7)^(1/4)*x*sqrt(2))/(3^(1/4)*7^(3/4)*sqrt(2))+1/2*atan(1+(3/7)^(1/4)*x*sqrt(2))/(3^(1/4)*7^(3/4)*sqrt(2))-1/4*log(3*x^2-3^(3/4)*7^(1/4)*x*sqrt(2)+sqrt(21))/(3^(1/4)*7^(3/4)*sqrt(2))+1/4*log(3*x^2+3^(3/4)*7^(1/4)*x*sqrt(2)+sqrt(21))/(3^(1/4)*7^(3/4)*sqrt(2))],
+[1/(-1+3*x^2+x^4),x,3,-atan(x*sqrt(2/(3+sqrt(13))))*sqrt(2/13/(3+sqrt(13)))-atanh(x*sqrt(2/(-3+sqrt(13))))*sqrt(1/26*(3+sqrt(13)))],
+[1/(-1-3*x^2+x^4),x,3,-atanh(x*sqrt(2/(3+sqrt(13))))*sqrt(2/13/(3+sqrt(13)))-atan(x*sqrt(2/(-3+sqrt(13))))*sqrt(1/26*(3+sqrt(13)))],
+[1/(1-3*x^2+x^4),x,3,-atanh(x*sqrt(2/(3+sqrt(5))))*sqrt(2/5/(3+sqrt(5)))+atanh(x*sqrt(1/2*(3+sqrt(5))))*sqrt(1/10*(3+sqrt(5)))],
+[1/(1-4*x^2+x^4),x,3,1/2*atanh(x/sqrt(2-sqrt(3)))/sqrt(3*(2-sqrt(3)))-1/2*atanh(x/sqrt(2+sqrt(3)))/sqrt(3*(2+sqrt(3)))],
+[1/(1+4*x^2+x^4),x,3,1/2*atan(x/sqrt(2-sqrt(3)))/sqrt(3*(2-sqrt(3)))-1/2*atan(x/sqrt(2+sqrt(3)))/sqrt(3*(2+sqrt(3)))],
+[1/(2+x^2+x^4),x,9,-1/2*atan((-2*x+sqrt(-1+2*sqrt(2)))/sqrt(1+2*sqrt(2)))*sqrt(1/14*(-1+2*sqrt(2)))+1/2*atan((2*x+sqrt(-1+2*sqrt(2)))/sqrt(1+2*sqrt(2)))*sqrt(1/14*(-1+2*sqrt(2)))-1/4*log(x^2+sqrt(2)-x*sqrt(-1+2*sqrt(2)))/sqrt(2*(-1+2*sqrt(2)))+1/4*log(x^2+sqrt(2)+x*sqrt(-1+2*sqrt(2)))/sqrt(2*(-1+2*sqrt(2)))],
+[1/(2-x^2+x^4),x,9,-1/2*atan((-2*x+sqrt(1+2*sqrt(2)))/sqrt(-1+2*sqrt(2)))*sqrt(1/14*(1+2*sqrt(2)))+1/2*atan((2*x+sqrt(1+2*sqrt(2)))/sqrt(-1+2*sqrt(2)))*sqrt(1/14*(1+2*sqrt(2)))-1/4*log(x^2+sqrt(2)-x*sqrt(1+2*sqrt(2)))/sqrt(2*(1+2*sqrt(2)))+1/4*log(x^2+sqrt(2)+x*sqrt(1+2*sqrt(2)))/sqrt(2*(1+2*sqrt(2)))],
+[1/(-1+x^6),x,10,-1/3*atanh(x)+1/12*log(1-x+x^2)-1/12*log(1+x+x^2)+1/2*atan((1-2*x)/sqrt(3))/sqrt(3)-1/2*atan((1+2*x)/sqrt(3))/sqrt(3)],
+[1/(-2+x^6),x,10,-1/3*atanh(x/2^(1/6))/2^(5/6)+1/12*log(2^(1/3)-2^(1/6)*x+x^2)/2^(5/6)-1/12*log(2^(1/3)+2^(1/6)*x+x^2)/2^(5/6)+1/2*atan(1/sqrt(3)-2^(5/6)*x/sqrt(3))/(2^(5/6)*sqrt(3))-1/2*atan(1/sqrt(3)+2^(5/6)*x/sqrt(3))/(2^(5/6)*sqrt(3))],
+[1/(2+x^6),x,10,1/3*atan(x/2^(1/6))/2^(5/6)-1/6*atan(-2^(5/6)*x+sqrt(3))/2^(5/6)+1/6*atan(2^(5/6)*x+sqrt(3))/2^(5/6)-1/4*log(2^(1/3)+x^2-2^(1/6)*x*sqrt(3))/(2^(5/6)*sqrt(3))+1/4*log(2^(1/3)+x^2+2^(1/6)*x*sqrt(3))/(2^(5/6)*sqrt(3))],
+[1/(1+x^8),x,19,-1/16*log(1+x^2-x*sqrt(2-sqrt(2)))*sqrt(2-sqrt(2))+1/16*log(1+x^2+x*sqrt(2-sqrt(2)))*sqrt(2-sqrt(2))-1/4*atan((-2*x+sqrt(2-sqrt(2)))/sqrt(2+sqrt(2)))/sqrt(2*(2-sqrt(2)))+1/4*atan((2*x+sqrt(2-sqrt(2)))/sqrt(2+sqrt(2)))/sqrt(2*(2-sqrt(2)))-1/16*log(1+x^2-x*sqrt(2+sqrt(2)))*sqrt(2+sqrt(2))+1/16*log(1+x^2+x*sqrt(2+sqrt(2)))*sqrt(2+sqrt(2))-1/4*atan((-2*x+sqrt(2+sqrt(2)))/sqrt(2-sqrt(2)))/sqrt(2*(2+sqrt(2)))+1/4*atan((2*x+sqrt(2+sqrt(2)))/sqrt(2-sqrt(2)))/sqrt(2*(2+sqrt(2)))],
+[1/(-1+x^8),x,13,-1/4*atan(x)-1/4*atanh(x)+1/4*atan(1-x*sqrt(2))/sqrt(2)-1/4*atan(1+x*sqrt(2))/sqrt(2)+1/8*log(1+x^2-x*sqrt(2))/sqrt(2)-1/8*log(1+x^2+x*sqrt(2))/sqrt(2)],
+[1/(1-x^4+x^8),x,19,-1/2*atan((-2*x+sqrt(2-sqrt(3)))/sqrt(2+sqrt(3)))/sqrt(6)+1/2*atan((2*x+sqrt(2-sqrt(3)))/sqrt(2+sqrt(3)))/sqrt(6)-1/2*atan((-2*x+sqrt(2+sqrt(3)))/sqrt(2-sqrt(3)))/sqrt(6)+1/2*atan((2*x+sqrt(2+sqrt(3)))/sqrt(2-sqrt(3)))/sqrt(6)-1/4*log(1+x^2-x*sqrt(2-sqrt(3)))/sqrt(6)+1/4*log(1+x^2+x*sqrt(2-sqrt(3)))/sqrt(6)-1/4*log(1+x^2-x*sqrt(2+sqrt(3)))/sqrt(6)+1/4*log(1+x^2+x*sqrt(2+sqrt(3)))/sqrt(6)],
+[x^7/(1+x^12),x,7,-1/12*log(1+x^4)+1/24*log(1-x^4+x^8)-1/4*atan((1-2*x^4)/sqrt(3))/sqrt(3)],
+
+-- Examples involving logarithms
+[log(x),x,1,-x+x*log(x)],
+[x*log(x),x,1,-1/4*x^2+1/2*x^2*log(x)],
+[x^2*log(x),x,1,-1/9*x^3+1/3*x^3*log(x)],
+[x^p*log(x),x,1,-x^(1+p)/(1+p)^2+x^(1+p)*log(x)/(1+p)],
+[log(x)^2,x,2,2*x-2*x*log(x)+x*log(x)^2],
+[x^9*log(x)^11,x,11,-6237/156250000*x^10+6237/15625000*x^10*log(x)-6237/3125000*x^10*log(x)^2+2079/312500*x^10*log(x)^3-2079/125000*x^10*log(x)^4+2079/62500*x^10*log(x)^5-693/12500*x^10*log(x)^6+99/1250*x^10*log(x)^7-99/1000*x^10*log(x)^8+11/100*x^10*log(x)^9-11/100*x^10*log(x)^10+1/10*x^10*log(x)^11],
+[log(x)^2/x,x,2,1/3*log(x)^3],
+[1/log(x),x,1,Li(x)],
+[1/log(1+x),x,2,Li(1+x)],
+[1/(x*log(x)),x,2,log(log(x))],
+[1/(x^2*log(x)^2),x,3,-Ei(-log(x))+(-1)/(x*log(x))],
+[log(x)^p/x,x,2,log(x)^(1+p)/(1+p)],
+[(b+a*x)*log(x),x,2,-b*x-1/4*a*x^2+b*x*log(x)+1/2*a*x^2*log(x)],
+[(b+a*x)^2*log(x),x,4,-b^2*x-1/2*a*b*x^2-1/9*a^2*x^3-1/3*b^3*log(x)/a+1/3*(b+a*x)^3*log(x)/a],
+[log(x)/(b+a*x)^2,x,2,x*log(x)/(b*(b+a*x))-log(b+a*x)/(a*b)],
+[x*log(b+a*x),x,3,1/2*b*x/a-1/4*x^2-1/2*b^2*log(b+a*x)/a^2+1/2*x^2*log(b+a*x)],
+[x^2*log(b+a*x),x,3,-1/3*b^2*x/a^2+1/6*b*x^2/a-1/9*x^3+1/3*b^3*log(b+a*x)/a^3+1/3*x^3*log(b+a*x)],
+[log(a^2+x^2),x,3,-2*x+2*a*atan(x/a)+x*log(a^2+x^2)],
+[x*log(a^2+x^2),x,3,-1/2*x^2+1/2*(a^2+x^2)*log(a^2+x^2)],
+[x^2*log(a^2+x^2),x,4,2/3*a^2*x-2/9*x^3-2/3*a^3*atan(x/a)+1/3*x^3*log(a^2+x^2)],
+[x^4*log(a^2+x^2),x,4,-2/5*a^4*x+2/15*a^2*x^3-2/25*x^5+2/5*a^5*atan(x/a)+1/5*x^5*log(a^2+x^2)],
+[log(-a^2+x^2),x,3,-2*x+2*a*atanh(x/a)+x*log(-a^2+x^2)],
+[log(log(log(log(x)))),x,0,CannotIntegrate(log(log(log(log(x)))),x)],
+
+-- Examples involving circular functions
+[sin(x),x,1,-cos(x)],
+[cos(x),x,1,sin(x)],
+[tan(x),x,1,-log(cos(x))],
+[1/tan(x),x,1,log(sin(x))],
+[1/(1+tan(x))^2,x,2,1/2*log(cos(x)+sin(x))+(-1/2)/(1+tan(x))],
+[1/cos(x),x,1,atanh(sin(x))],
+[1/sin(x),x,1,-atanh(cos(x))],
+[sin(x)^2,x,2,1/2*x-1/2*cos(x)*sin(x)],
+[x^3*sin(x^2),x,3,-1/2*x^2*cos(x^2)+1/2*sin(x^2)],
+[sin(x)^3,x,2,-cos(x)+1/3*cos(x)^3],
+[sin(x)^p,x,1,cos(x)*hypergeometric(1/2,1/2*(1+p),1/2*(3+p),sin(x)^2)*sin(x)^(1+p)/((1+p)*sqrt(cos(x)^2))],
+[cos(x)*(1+sin(x)^2)^2,x,3,sin(x)+2/3*sin(x)^3+1/5*sin(x)^5],
+[cos(x)^2,x,2,1/2*x+1/2*cos(x)*sin(x)],
+[cos(x)^3,x,2,sin(x)-1/3*sin(x)^3],
+[1/cos(x)^2,x,2,tan(x)],
+[sin(x)*sin(2*x),x,1,1/2*sin(x)-1/6*sin(3*x)],
+[x*sin(x),x,2,-x*cos(x)+sin(x)],
+[x^2*sin(x),x,3,2*cos(x)-x^2*cos(x)+2*x*sin(x)],
+[x*sin(x)^2,x,2,1/4*x^2-1/2*x*cos(x)*sin(x)+1/4*sin(x)^2],
+[x^2*sin(x)^2,x,4,-1/4*x+1/6*x^3+1/4*cos(x)*sin(x)-1/2*x^2*cos(x)*sin(x)+1/2*x*sin(x)^2],
+[x*sin(x)^3,x,3,-2/3*x*cos(x)+2/3*sin(x)-1/3*x*cos(x)*sin(x)^2+1/9*sin(x)^3],
+[x*cos(x),x,2,cos(x)+x*sin(x)],
+[x^2*cos(x),x,3,2*x*cos(x)-2*sin(x)+x^2*sin(x)],
+[x*cos(x)^2,x,2,1/4*x^2+1/4*cos(x)^2+1/2*x*cos(x)*sin(x)],
+[x^2*cos(x)^2,x,4,-1/4*x+1/6*x^3+1/2*x*cos(x)^2-1/4*cos(x)*sin(x)+1/2*x^2*cos(x)*sin(x)],
+[x*cos(x)^3,x,3,2/3*cos(x)+1/9*cos(x)^3+2/3*x*sin(x)+1/3*x*cos(x)^2*sin(x)],
+[sin(x)/x,x,1,Si(x)],
+[cos(x)/x,x,1,Ci(x)],
+[sin(x)/x^2,x,2,Ci(x)-sin(x)/x],
+[sin(x)^2/x,x,3,-1/2*Ci(2*x)+1/2*log(x)],
+[tan(x)^3,x,2,log(cos(x))+1/2*tan(x)^2],
+[sin(a+b*x),x,1,-cos(a+b*x)/b],
+[cos(a+b*x),x,1,sin(a+b*x)/b],
+[tan(a+b*x),x,1,-log(cos(a+b*x))/b],
+[1/tan(a+b*x),x,1,log(sin(a+b*x))/b],
+[1/sin(a+b*x),x,1,-atanh(cos(a+b*x))/b],
+[1/cos(a+b*x),x,1,atanh(sin(a+b*x))/b],
+[sin(a+b*x)^2,x,2,1/2*x-1/2*cos(a+b*x)*sin(a+b*x)/b],
+[sin(a+b*x)^3,x,2,-cos(a+b*x)/b+1/3*cos(a+b*x)^3/b],
+[cos(a+b*x)^2,x,2,1/2*x+1/2*cos(a+b*x)*sin(a+b*x)/b],
+[cos(a+b*x)^3,x,2,sin(a+b*x)/b-1/3*sin(a+b*x)^3/b],
+[1/cos(a+b*x)^2,x,2,tan(a+b*x)/b],
+[1/(1+cos(x)),x,1,sin(x)/(1+cos(x))],
+[1/(1-cos(x)),x,1,-sin(x)/(1-cos(x))],
+[1/(1+sin(x)),x,1,-cos(x)/(1+sin(x))],
+[1/(1-sin(x)),x,1,cos(x)/(1-sin(x))],
+[1/(a+b*sin(x)),x,3,2*atan((b+a*tan(1/2*x))/sqrt(a^2-b^2))/sqrt(a^2-b^2)],
+[1/(a+cos(x)+b*sin(x)),x,3,-2*atanh((b-(1-a)*tan(1/2*x))/sqrt(1-a^2+b^2))/sqrt(1-a^2+b^2)],
+[x^2*sin(a+b*x)^2,x,4,-1/4*x/b^2+1/6*x^3+1/4*cos(a+b*x)*sin(a+b*x)/b^3-1/2*x^2*cos(a+b*x)*sin(a+b*x)/b+1/2*x*sin(a+b*x)^2/b^2],
+[cos(x)*cos(2*x),x,1,1/2*sin(x)+1/6*sin(3*x)],
+[x^2*cos(a+b*x)^2,x,4,-1/4*x/b^2+1/6*x^3+1/2*x*cos(a+b*x)^2/b^2-1/4*cos(a+b*x)*sin(a+b*x)/b^3+1/2*x^2*cos(a+b*x)*sin(a+b*x)/b],
+[1/tan(x)^3,x,2,-1/2*cot(x)^2-log(sin(x))],
+[x^3*tan(x)^4,x,17,-1/2*x^2+4/3*%i*x^3+1/4*x^4-4*x^2*log(1+%e^(2*%i*x))+log(cos(x))+4*%i*x*polylog(2,-%e^(2*%i*x))-2*polylog(3,-%e^(2*%i*x))+x*tan(x)-x^3*tan(x)-1/2*x^2*tan(x)^2+1/3*x^3*tan(x)^3],
+[x^3*tan(x)^6,x,34,19/20*x^2-23/15*%i*x^3-1/4*x^4+23/5*x^2*log(1+%e^(2*%i*x))-2*log(cos(x))-23/5*%i*x*polylog(2,-%e^(2*%i*x))+23/10*polylog(3,-%e^(2*%i*x))-19/10*x*tan(x)+x^3*tan(x)-1/20*tan(x)^2+4/5*x^2*tan(x)^2+1/10*x*tan(x)^3-1/3*x^3*tan(x)^3-3/20*x^2*tan(x)^4+1/5*x^3*tan(x)^5],
+[x*tan(x)^2,x,3,-1/2*x^2+log(cos(x))+x*tan(x)],
+[cos(3*x)*sin(2*x),x,1,1/2*cos(x)-1/10*cos(5*x)],
+[cos(x)^2*sin(x)^2,x,3,1/8*x+1/8*cos(x)*sin(x)-1/4*cos(x)^3*sin(x)],
+[1/(cos(x)^2*sin(x)^2),x,3,-cot(x)+tan(x)],
+[d^x*sin(x),x,1,-d^x*cos(x)/(1+log(d)^2)+d^x*log(d)*sin(x)/(1+log(d)^2)],
+[d^x*cos(x),x,1,d^x*cos(x)*log(d)/(1+log(d)^2)+d^x*sin(x)/(1+log(d)^2)],
+[d^x*x*sin(x),x,4,2*d^x*cos(x)*log(d)/(1+log(d)^2)^2-d^x*x*cos(x)/(1+log(d)^2)+d^x*sin(x)/(1+log(d)^2)^2-d^x*log(d)^2*sin(x)/(1+log(d)^2)^2+d^x*x*log(d)*sin(x)/(1+log(d)^2)],
+[d^x*x*cos(x),x,4,d^x*cos(x)/(1+log(d)^2)^2-d^x*cos(x)*log(d)^2/(1+log(d)^2)^2+d^x*x*cos(x)*log(d)/(1+log(d)^2)-2*d^x*log(d)*sin(x)/(1+log(d)^2)^2+d^x*x*sin(x)/(1+log(d)^2)],
+[d^x*x^2*sin(x),x,11,2*d^x*cos(x)/(1+log(d)^2)^3-6*d^x*cos(x)*log(d)^2/(1+log(d)^2)^3+4*d^x*x*cos(x)*log(d)/(1+log(d)^2)^2-d^x*x^2*cos(x)/(1+log(d)^2)-6*d^x*log(d)*sin(x)/(1+log(d)^2)^3+2*d^x*log(d)^3*sin(x)/(1+log(d)^2)^3+2*d^x*x*sin(x)/(1+log(d)^2)^2-2*d^x*x*log(d)^2*sin(x)/(1+log(d)^2)^2+d^x*x^2*log(d)*sin(x)/(1+log(d)^2)],
+[d^x*x^2*cos(x),x,11,-6*d^x*cos(x)*log(d)/(1+log(d)^2)^3+2*d^x*cos(x)*log(d)^3/(1+log(d)^2)^3+2*d^x*x*cos(x)/(1+log(d)^2)^2-2*d^x*x*cos(x)*log(d)^2/(1+log(d)^2)^2+d^x*x^2*cos(x)*log(d)/(1+log(d)^2)-2*d^x*sin(x)/(1+log(d)^2)^3+6*d^x*log(d)^2*sin(x)/(1+log(d)^2)^3-4*d^x*x*log(d)*sin(x)/(1+log(d)^2)^2+d^x*x^2*sin(x)/(1+log(d)^2)],
+[d^x*x^3*sin(x),x,25,-24*d^x*cos(x)*log(d)/(1+log(d)^2)^4+24*d^x*cos(x)*log(d)^3/(1+log(d)^2)^4+6*d^x*x*cos(x)/(1+log(d)^2)^3-18*d^x*x*cos(x)*log(d)^2/(1+log(d)^2)^3+6*d^x*x^2*cos(x)*log(d)/(1+log(d)^2)^2-d^x*x^3*cos(x)/(1+log(d)^2)-6*d^x*sin(x)/(1+log(d)^2)^4+36*d^x*log(d)^2*sin(x)/(1+log(d)^2)^4-6*d^x*log(d)^4*sin(x)/(1+log(d)^2)^4-18*d^x*x*log(d)*sin(x)/(1+log(d)^2)^3+6*d^x*x*log(d)^3*sin(x)/(1+log(d)^2)^3+3*d^x*x^2*sin(x)/(1+log(d)^2)^2-3*d^x*x^2*log(d)^2*sin(x)/(1+log(d)^2)^2+d^x*x^3*log(d)*sin(x)/(1+log(d)^2)],
+[d^x*x^3*cos(x),x,25,-6*d^x*cos(x)/(1+log(d)^2)^4+36*d^x*cos(x)*log(d)^2/(1+log(d)^2)^4-6*d^x*cos(x)*log(d)^4/(1+log(d)^2)^4-18*d^x*x*cos(x)*log(d)/(1+log(d)^2)^3+6*d^x*x*cos(x)*log(d)^3/(1+log(d)^2)^3+3*d^x*x^2*cos(x)/(1+log(d)^2)^2-3*d^x*x^2*cos(x)*log(d)^2/(1+log(d)^2)^2+d^x*x^3*cos(x)*log(d)/(1+log(d)^2)+24*d^x*log(d)*sin(x)/(1+log(d)^2)^4-24*d^x*log(d)^3*sin(x)/(1+log(d)^2)^4-6*d^x*x*sin(x)/(1+log(d)^2)^3+18*d^x*x*log(d)^2*sin(x)/(1+log(d)^2)^3-6*d^x*x^2*log(d)*sin(x)/(1+log(d)^2)^2+d^x*x^3*sin(x)/(1+log(d)^2)],
+[sin(x)*sin(2*x)*sin(3*x),x,5,-1/8*cos(2*x)-1/16*cos(4*x)+1/24*cos(6*x)],
+[cos(x)*cos(2*x)*cos(3*x),x,5,1/4*x+1/8*sin(2*x)+1/16*sin(4*x)+1/24*sin(6*x)],
+[x^2*sin(k*x)^3,x,6,14/9*cos(k*x)/k^3-2/3*x^2*cos(k*x)/k-2/27*cos(k*x)^3/k^3+4/3*x*sin(k*x)/k^2-1/3*x^2*cos(k*x)*sin(k*x)^2/k+2/9*x*sin(k*x)^3/k^2],
+[x*cos(x)*cos(k/sin(x))/sin(x)^2,x,0,CannotIntegrate(x*cos(k*csc(x))*cot(x)*csc(x),x)],
+
+--  Mixed angles and half angles. 
+[cos(x)/(sin(x)*tan(1/2*x)),x,4,-x-cot(1/2*x)],
+[sin(a*x)/(b+c*sin(a*x))^2,x,5,-2*c*atan((c+b*tan(1/2*a*x))/sqrt(b^2-c^2))/(a*(b^2-c^2)^(3/2))-b*cos(a*x)/(a*(b^2-c^2)*(b+c*sin(a*x)))],
+
+-- Examples involving trig functions of logarithms
+[sin(log(x)),x,1,-1/2*x*cos(log(x))+1/2*x*sin(log(x))],
+[cos(log(x)),x,1,1/2*x*cos(log(x))+1/2*x*sin(log(x))],
+
+-- Examples involving exponentials
+[%e^x,x,1,%e^x],
+[a^x,x,1,a^x/log(a)],
+[%e^(a*x),x,1,%e^(a*x)/a],
+[%e^(a*x)/x,x,1,Ei(a*x)],
+[1/(a+%e^(m*x)*b),x,4,x/a-log(a+%e^(m*x)*b)/(a*m)],
+[%e^(2*x)/(1+%e^x),x,3,%e^x-log(1+%e^x)],
+[%e^(2*x+a*x),x,2,%e^((2+a)*x)/(2+a)],
+[1/(%e^(m*x)*a+b/%e^(m*x)),x,2,atan(%e^(m*x)*sqrt(a)/sqrt(b))/(m*sqrt(a)*sqrt(b))],
+[%e^(a*x)*x,x,2,-%e^(a*x)/a^2+%e^(a*x)*x/a],
+[%e^x*x^20,x,21,2432902008176640000*%e^x-2432902008176640000*%e^x*x+1216451004088320000*%e^x*x^2-405483668029440000*%e^x*x^3+101370917007360000*%e^x*x^4-20274183401472000*%e^x*x^5+3379030566912000*%e^x*x^6-482718652416000*%e^x*x^7+60339831552000*%e^x*x^8-6704425728000*%e^x*x^9+670442572800*%e^x*x^10-60949324800*%e^x*x^11+5079110400*%e^x*x^12-390700800*%e^x*x^13+27907200*%e^x*x^14-1860480*%e^x*x^15+116280*%e^x*x^16-6840*%e^x*x^17+380*%e^x*x^18-20*%e^x*x^19+%e^x*x^20],
+[a^x/b^x,x,2,a^x/(b^x*(log(a)-log(b)))],
+[a^x*b^x,x,2,a^x*b^x/(log(a)+log(b))],
+[a^x/x^2,x,2,-a^x/x+Ei(x*log(a))*log(a)],
+[a^x*x/(1+b*x)^2,x,5,a^x/(b^2*(1+b*x))+Ei((1+b*x)*log(a)/b)/(a^(1/b)*b^2)-Ei((1+b*x)*log(a)/b)*log(a)/(a^(1/b)*b^3)],
+[%e^(a*x)*x/(1+a*x)^2,x,1,%e^(a*x)/(a^2*(1+a*x))],
+[k^(x^2)*x,x,1,1/2*k^(x^2)/log(k)],
+[%e^(x^2),x,1,1/2*erfi(x)*sqrt(%pi)],
+[%e^(x^2)*x,x,1,1/2*%e^(x^2)],
+[%e^(1/x)*(1+x)/x^4,x,7,-%e^(1/x)-%e^(1/x)/x^2+%e^(1/x)/x],
+[%e^(1-%e^(x^2)*x+2*x^2)*(x+2*x^3)/(1-%e^(x^2)*x)^2,x,-3,-%e^(1-%e^(x^2)*x)/(-1+%e^(x^2)*x)],
+[%e^(%e^(%e^(%e^x))),x,1,CannotIntegrate(%e^(%e^(%e^(%e^x))),x)],
+
+--  Examples involving exponentials and logarithms. 
+[%e^x*log(x),x,2,-Ei(x)+%e^x*log(x)],
+[%e^x*x*log(x),x,5,-%e^x+Ei(x)-%e^x*log(x)+%e^x*x*log(x)],
+[%e^(2*x)*log(%e^x),x,3,-1/4*%e^(2*x)+1/2*%e^(2*x)*log(%e^x)],
+
+-- Examples involving square roots
+[2*x+x^2*sqrt(2),x,1,x^2+1/3*x^3*sqrt(2)],
+[log(x)/sqrt(b+a*x),x,4,4*atanh(sqrt(b+a*x)/sqrt(b))*sqrt(b)/a-4*sqrt(b+a*x)/a+2*log(x)*sqrt(b+a*x)/a],
+[sqrt(a+b*x)*sqrt(c+d*x),x,5,-1/4*(b*c-a*d)^2*atanh(sqrt(d)*sqrt(a+b*x)/(sqrt(b)*sqrt(c+d*x)))/(b^(3/2)*d^(3/2))+1/2*(a+b*x)^(3/2)*sqrt(c+d*x)/b+1/4*(b*c-a*d)*sqrt(a+b*x)*sqrt(c+d*x)/(b*d)],
+[sqrt(a+b*x),x,1,2/3*(a+b*x)^(3/2)/b],
+[x*sqrt(a+b*x),x,2,-2/3*a*(a+b*x)^(3/2)/b^2+2/5*(a+b*x)^(5/2)/b^2],
+[x^2*sqrt(a+b*x),x,2,2/3*a^2*(a+b*x)^(3/2)/b^3-4/5*a*(a+b*x)^(5/2)/b^3+2/7*(a+b*x)^(7/2)/b^3],
+[sqrt(a+b*x)/x,x,3,-2*atanh(sqrt(a+b*x)/sqrt(a))*sqrt(a)+2*sqrt(a+b*x)],
+[sqrt(a+b*x)/x^2,x,3,-b*atanh(sqrt(a+b*x)/sqrt(a))/sqrt(a)-sqrt(a+b*x)/x],
+[1/sqrt(a+b*x),x,1,2*sqrt(a+b*x)/b],
+[x/sqrt(a+b*x),x,2,2/3*(a+b*x)^(3/2)/b^2-2*a*sqrt(a+b*x)/b^2],
+[x^2/sqrt(a+b*x),x,2,-4/3*a*(a+b*x)^(3/2)/b^3+2/5*(a+b*x)^(5/2)/b^3+2*a^2*sqrt(a+b*x)/b^3],
+[1/(x*sqrt(a+b*x)),x,2,-2*atanh(sqrt(a+b*x)/sqrt(a))/sqrt(a)],
+[1/(x^2*sqrt(a+b*x)),x,3,b*atanh(sqrt(a+b*x)/sqrt(a))/a^(3/2)-sqrt(a+b*x)/(a*x)],
+[sqrt(a+b*x)^p,x,1,2*(a+b*x)^(1/2*(2+p))/(b*(2+p))],
+[x*sqrt(a+b*x)^p,x,2,-2*a*(a+b*x)^(1/2*(2+p))/(b^2*(2+p))+2*(a+b*x)^(1/2*(4+p))/(b^2*(4+p))],
+[atan((2*x-sqrt(2))/sqrt(2)),x,6,-x*atan(1-x*sqrt(2))+atan(1-x*sqrt(2))/sqrt(2)-1/2*log(1+x^2-x*sqrt(2))/sqrt(2)],
+[1/sqrt(-1+x^2),x,2,atanh(x/sqrt(-1+x^2))],
+[sqrt(x)*sqrt(1+x),x,4,-1/4*asinh(sqrt(x))+1/2*x^(3/2)*sqrt(1+x)+1/4*sqrt(x)*sqrt(1+x)],
+[sin(sqrt(x)),x,3,2*sin(sqrt(x))-2*cos(sqrt(x))*sqrt(x)],
+[x/sqrt(1-x^2)^(9/4),x,1,4/(1-x^2)^(1/8)],
+[x/sqrt(1-x^4),x,2,1/2*asin(x^2)],
+[1/(x*sqrt(1+x^4)),x,3,-1/2*atanh(sqrt(1+x^4))],
+[x/sqrt(1+x^2+x^4),x,3,1/2*asinh((1+2*x^2)/sqrt(3))],
+[1/(x*sqrt(-1+x^2-x^4)),x,3,-1/2*atan(1/2*(2-x^2)/sqrt(-1+x^2-x^4))],
+
+--  Examples generated by differentiating various functions. 
+[(1+x)/((1-x)^2*sqrt(1+x^2)),x,1,sqrt(1+x^2)/(1-x)],
+[1/sqrt(1+x^2),x,1,asinh(x)],
+[1/2*(sqrt(x)*sqrt(1+x)+sqrt(x)*sqrt(2+x)+sqrt(1+x)*sqrt(2+x))/(sqrt(x)*sqrt(1+x)*sqrt(2+x)),x,3,sqrt(x)+sqrt(1+x)+sqrt(2+x)],
+[1/2*(-2*sqrt(1+x^3)+5*x^4*sqrt(1+x^3)-3*x^2*sqrt(1-2*x+x^5))/(sqrt(1+x^3)*sqrt(1-2*x+x^5)),x,5,-sqrt(1+x^3)+sqrt(1-2*x+x^5)],
+
+-- Examples from James Davenport's thesis
+[10/sqrt(-4+x^2)+1/sqrt(-1+x^2),x,5,10*atanh(x/sqrt(-4+x^2))+atanh(x/sqrt(-1+x^2))],
+[sqrt(x+sqrt(a^2+x^2))/x,x,6,-2*atan(sqrt(x+sqrt(a^2+x^2))/sqrt(a))*sqrt(a)-2*atanh(sqrt(x+sqrt(a^2+x^2))/sqrt(a))*sqrt(a)+2*sqrt(x+sqrt(a^2+x^2))],
+
+--  Another such example from James Davenport's thesis (p. 146). 
+
+--  It contains a point of order 3, which is found by use of Mazur's 
+
+--  bound on the torsion of elliptic curves over the rationals; 
+[3/2*x^2/(1+x^3+sqrt(1+x^3)),x,4,log(1+sqrt(1+x^3))],
+
+-- Examples quoted by Joel Moses
+[1/sqrt(-alpha^2+2*h*r^2),r,2,atanh(r*sqrt(2)*sqrt(h)/sqrt(-alpha^2+2*h*r^2))/(sqrt(2)*sqrt(h))],
+[1/(r*sqrt(-alpha^2-epsilon^2+2*h*r^2)),r,3,atan(sqrt(-alpha^2-epsilon^2+2*h*r^2)/sqrt(alpha^2+epsilon^2))/sqrt(alpha^2+epsilon^2)],
+[1/(r*sqrt(-alpha^2-2*k*r+2*h*r^2)),r,2,-atan((alpha^2+k*r)/(alpha*sqrt(-alpha^2-2*k*r+2*h*r^2)))/alpha],
+[1/(r*sqrt(-alpha^2-epsilon^2-2*k*r+2*h*r^2)),r,2,-atan((alpha^2+epsilon^2+k*r)/(sqrt(alpha^2+epsilon^2)*sqrt(-alpha^2-epsilon^2-2*k*r+2*h*r^2)))/sqrt(alpha^2+epsilon^2)],
+[r/sqrt(-alpha^2+2*e*r^2),r,1,1/2*sqrt(-alpha^2+2*e*r^2)/e],
+[r/sqrt(-alpha^2-epsilon^2+2*e*r^2),r,1,1/2*sqrt(-alpha^2-epsilon^2+2*e*r^2)/e],
+[r/sqrt(-alpha^2+2*e*r^2-2*k*r^4),r,3,-1/2*atan((e-2*k*r^2)/(sqrt(2)*sqrt(k)*sqrt(-alpha^2+2*e*r^2-2*k*r^4)))/(sqrt(2)*sqrt(k))],
+[r/sqrt(-alpha^2-2*k*r+2*e*r^2),r,3,-1/2*k*atanh((k-2*e*r)/(sqrt(2)*sqrt(e)*sqrt(-alpha^2-2*k*r+2*e*r^2)))/(e^(3/2)*sqrt(2))+1/2*sqrt(-alpha^2-2*k*r+2*e*r^2)/e],
+[1/(r*sqrt(-alpha^2+2*h*r^2-2*k*r^4)),r,3,-1/2*atan((alpha^2-h*r^2)/(alpha*sqrt(-alpha^2+2*h*r^2-2*k*r^4)))/alpha],
+[1/(r*sqrt(-alpha^2-epsilon^2+2*h*r^2-2*k*r^4)),r,3,-1/2*atan((alpha^2+epsilon^2-h*r^2)/(sqrt(alpha^2+epsilon^2)*sqrt(-alpha^2-epsilon^2+2*h*r^2-2*k*r^4)))/sqrt(alpha^2+epsilon^2)],
+
+-- Examples from Novosibirsk
+
+--  Many of these integrals used to require Steve Harrington's code to evaluate. 
+
+--  They originated in Novosibirsk as examples of using Analytik. 
+
+--  There are still a few examples that could be evaluated using better heuristics. 
+[a*cos(5+3*x)*sin(5+3*x)^2,x,3,1/9*a*sin(5+3*x)^3],
+[log(x^2)/x^3,x,1,(-1/2)/x^2-1/2*log(x^2)/x^2],
+[x*sin(a+x),x,2,-x*cos(a+x)+sin(a+x)],
+[(-1+(1-x)*log(x))/(%e^x*log(x)^2),x,1,x/(%e^x*log(x))],
+[x^3/(b+a*x^2),x,3,1/2*x^2/a-1/2*b*log(b+a*x^2)/a^2],
+[x^(1/2)/(1+x)^(7/2),x,2,2/5*x^(3/2)/(1+x)^(5/2)+4/15*x^(3/2)/(1+x)^(3/2)],
+[1/(x*(1+x)),x,3,log(x)-log(1+x)],
+[1/(x^(1/2)*(-1+2*x)),x,2,-atanh(sqrt(2)*sqrt(x))*sqrt(2)],
+[x^(1/2)*(1+x^2),x,2,2/3*x^(3/2)+2/7*x^(7/2)],
+[(-a+x)^(1/3)/x,x,5,3*(-a+x)^(1/3)+1/2*a^(1/3)*log(x)-3/2*a^(1/3)*log(a^(1/3)+(-a+x)^(1/3))+a^(1/3)*atan((a^(1/3)-2*(-a+x)^(1/3))/(a^(1/3)*sqrt(3)))*sqrt(3)],
+[x*sinh(x),x,2,x*cosh(x)-sinh(x)],
+[x*cosh(x),x,2,-cosh(x)+x*sinh(x)],
+[sinh(2*x)/cosh(2*x),x,1,1/2*log(cosh(2*x))],
+[(-1+%i*eps*sinh(x))/(%i*a-x+%i*eps*cosh(x)),x,1,log(a+%i*x+eps*cosh(x))],
+[cos(x)^2*sin(3+2*x),x,4,-1/4*cos(3+2*x)-1/16*cos(3+4*x)+1/4*x*sin(3)],
+[x*atan(x),x,3,-1/2*x+1/2*atan(x)+1/2*x^2*atan(x)],
+[x*acot(x),x,3,1/2*x+1/2*x^2*acot(x)-1/2*atan(x)],
+[x*log(a+x^2),x,3,-1/2*x^2+1/2*(a+x^2)*log(a+x^2)],
+[cos(x)*sin(a+x),x,3,-1/4*cos(a+2*x)+1/2*x*sin(a)],
+[cos(a+x)*sin(x),x,3,-1/4*cos(a+2*x)-1/2*x*sin(a)],
+[(1+sin(x))^(1/2),x,1,-2*cos(x)/sqrt(1+sin(x))],
+[(1-sin(x))^(1/2),x,1,2*cos(x)/sqrt(1-sin(x))],
+[(1+cos(x))^(1/2),x,1,2*sin(x)/sqrt(1+cos(x))],
+[(1-cos(x))^(1/2),x,1,-2*sin(x)/sqrt(1-cos(x))],
+[1/(-(-1+x)^(1/2)+x^(1/2)),x,3,2/3*(-1+x)^(3/2)+2/3*x^(3/2)],
+[1/(1-(1+x)^(1/2)),x,4,-2*log(1-sqrt(1+x))-2*sqrt(1+x)],
+[x/(36+x^4)^(1/2),x,2,1/2*asinh(1/6*x^2)],
+[1/(x^(1/3)+x^(1/2)),x,4,6*x^(1/6)-3*x^(1/3)-6*log(1+x^(1/6))+2*sqrt(x)],
+[log(2+3*x^2),x,3,-2*x+x*log(2+3*x^2)+2*atan(x*sqrt(3/2))*sqrt(2/3)],
+[cot(x),x,1,log(sin(x))],
+[cot(x)^4,x,3,x+cot(x)-1/3*cot(x)^3],
+[tanh(x),x,1,log(cosh(x))],
+[coth(x),x,1,log(sinh(x))],
+[b^x,x,1,b^x/log(b)],
+[(2+1/x^4+x^4)^(1/2),x,4,-x*sqrt(2+1/x^4+x^4)/(1+x^4)+1/3*x^5*sqrt(2+1/x^4+x^4)/(1+x^4)],
+[(1+2*x)/(2+3*x),x,2,2/3*x-1/9*log(2+3*x)],
+[x*log(x+(1+x^2)^(1/2)),x,3,1/4*asinh(x)+1/2*x^2*log(x+sqrt(1+x^2))-1/4*x*sqrt(1+x^2)],
+[x*(1+%e^x*sin(x))^2,x,14,-3/32*%e^(2*x)+1/8*%e^(2*x)*x+1/2*x^2+%e^x*cos(x)-%e^x*x*cos(x)-1/32*%e^(2*x)*cos(2*x)+%e^x*x*sin(x)+1/16*%e^(2*x)*cos(x)*sin(x)-1/4*%e^(2*x)*x*cos(x)*sin(x)-1/16*%e^(2*x)*sin(x)^2+1/4*%e^(2*x)*x*sin(x)^2+1/32*%e^(2*x)*sin(2*x)],
+[%e^x*x*cos(x),x,4,1/2*%e^x*x*cos(x)-1/2*%e^x*sin(x)+1/2*%e^x*x*sin(x)],
+
+-- Examples from Herbert Stoyan
+[1/(-3+x)^4,x,1,1/3/(3-x)^3],
+[x/(-1+x^3),x,6,1/3*log(1-x)-1/6*log(1+x+x^2)+atan((1+2*x)/sqrt(3))/sqrt(3)],
+[x/(-1+x^4),x,2,-1/2*atanh(x^2)],
+[(1+x^3)*log(x)/(2+x^4),x,10,1/8*(2+%i*(-2)^(1/4))*log(x)*log(1+(-1-%i)*x/2^(3/4))+1/16*(4+(1-%i)*2^(3/4))*log(x)*log(1+(1+%i)*x/2^(3/4))+1/8*(2+(-2)^(1/4))*log(x)*log(1-(-1)^(3/4)*x/2^(1/4))+1/8*(2-(-2)^(1/4))*log(x)*log(1+(-1)^(3/4)*x/2^(1/4))+1/16*(4+(1-%i)*2^(3/4))*polylog(2,(-1-%i)*x/2^(3/4))+1/8*(2+%i*(-2)^(1/4))*polylog(2,(1+%i)*x/2^(3/4))+1/8*(2-(-2)^(1/4))*polylog(2,-(-1)^(3/4)*x/2^(1/4))+1/8*(2+(-2)^(1/4))*polylog(2,(-1)^(3/4)*x/2^(1/4))],
+[log(x)+log(1+x)+log(2+x),x,6,-3*x+x*log(x)+(1+x)*log(1+x)+(2+x)*log(2+x)],
+[1/(5+x^3),x,6,1/3*log(5^(1/3)+x)/5^(2/3)-1/6*log(5^(2/3)-5^(1/3)*x+x^2)/5^(2/3)-atan((5^(1/3)-2*x)/(5^(1/3)*sqrt(3)))/(5^(2/3)*sqrt(3))],
+[1/sqrt(1+x^2),x,1,asinh(x)],
+[sqrt(3+x^2),x,2,3/2*asinh(x/sqrt(3))+1/2*x*sqrt(3+x^2)],
+[x/(1+x)^2,x,2,1/(1+x)+log(1+x)],
+
+-- Examples from Moses' SIN program
+[asin(x),x,2,x*asin(x)+sqrt(1-x^2)],
+[x^2*asin(x),x,4,-1/9*(1-x^2)^(3/2)+1/3*x^3*asin(x)+1/3*sqrt(1-x^2)],
+[sec(x)^2/(1+sec(x)^2-3*tan(x)),x,4,-log(cos(x)-sin(x))+log(2*cos(x)-sin(x))],
+[1/sec(x)^2,x,2,1/2*x+1/2*cos(x)*sin(x)],
+[(-2-3*x+5*x^2)/((-2+x)*x^2),x,2,(-1)/x+3*log(2-x)+2*log(x)],
+[1/(9+4*x^2)^(1/2),x,1,1/2*asinh(2/3*x)],
+[1/(4+x^2)^(1/2),x,1,asinh(1/2*x)],
+[1/(10-12*x+9*x^2),x,2,-1/3*atan((2-3*x)/sqrt(6))/sqrt(6)],
+[1/(x^4-2*x^5+2*x^6-2*x^7+x^8),x,3,1/2/(1-x)+(-1/3)/x^3+(-1)/x^2+(-2)/x-5/2*log(1-x)+2*log(x)+1/4*log(1+x^2)],
+[(d+c*x+b*x^2+a*x^3)/((-3+x)*x*(1+x)),x,2,a*x+1/12*(27*a+9*b+3*c+d)*log(3-x)-1/3*d*log(x)-1/4*(a-b+c-d)*log(1+x)],
+[1/(2-log(1+x^2))^5,x,0,Unintegrable(1/(2-log(1+x^2))^5,x)],
+
+-- Miscellaneous examples
+
+--  The next integral appeared in Risch's 1968 paper. 
+[%e^(x^2)/x+2*%e^(x^2)*x*log(x)+(-2+log(x))/(x+log(x)^2)^2+(1+1/x+2*log(x)/x)/(x+log(x)^2),x,9,%e^(x^2)*log(x)-log(x)/(x+log(x)^2)+log(x+log(x)^2)],
+
+--  The following integral would not evaluate in REDUCE 3.3. 
+[x^4*exp(1/2*x+x*z)*sin(%pi*z)^4,z,4,24*%e^(1/2*x+x*z)*%pi^4*x^3/(64*%pi^4+20*%pi^2*x^2+x^4)-24*%e^(1/2*x+x*z)*%pi^3*x^4*cos(%pi*z)*sin(%pi*z)/(64*%pi^4+20*%pi^2*x^2+x^4)+12*%e^(1/2*x+x*z)*%pi^2*x^5*sin(%pi*z)^2/(64*%pi^4+20*%pi^2*x^2+x^4)-4*%e^(1/2*x+x*z)*%pi*x^4*cos(%pi*z)*sin(%pi*z)^3/(16*%pi^2+x^2)+%e^(1/2*x+x*z)*x^5*sin(%pi*z)^4/(16*%pi^2+x^2)],
+
+--  Examples involving the error function. 
+[erf(x),x,1,x*erf(x)+1/(%e^(x^2)*sqrt(%pi))],
+[erf(a+x),x,1,(a+x)*erf(a+x)+1/(%e^((a+x)^2)*sqrt(%pi))],
+
+--  Some interesting integrals of algebraic functions; 
+
+--  The Chebyshev integral. 
+[(-8-8*x-x^2-3*x^3+7*x^4+4*x^5+2*x^6)/((-1+2*x^2)^2*sqrt(1+2*x^2+4*x^3+x^4)),x,-10,-atanh(x*(2+x)*(7-x+27*x^2+33*x^3)/((2+37*x^2+31*x^3)*sqrt(1+2*x^2+4*x^3+x^4)))+1/2*(1+2*x)*sqrt(1+2*x^2+4*x^3+x^4)/(-1+2*x^2)],
+
+--  This integral came from Dr. G.S. Joyce of Imperial College London. 
+[(1+2*y)*sqrt(1-5*y-5*y^2)/(y*(1+y)*(2+y)*sqrt(1-y-y^2)),y,-2,-1/4*atanh((1-3*y)*sqrt(1-5*y-5*y^2)/((1-5*y)*sqrt(1-y-y^2)))-1/2*atanh((4+3*y)*sqrt(1-5*y-5*y^2)/((6+5*y)*sqrt(1-y-y^2)))+9/4*atanh(1/3*(11+7*y)*sqrt(1-5*y-5*y^2)/((7+5*y)*sqrt(1-y-y^2)))],
+
+--  This one has a simple result. 
+[x*(-sqrt(-4+x^2)+x^2*sqrt(-4+x^2)-4*sqrt(-1+x^2)+x^2*sqrt(-1+x^2))/((4-5*x^2+x^4)*(1+sqrt(-4+x^2)+sqrt(-1+x^2))),x,1,log(1+sqrt(-4+x^2)+sqrt(-1+x^2))],
+
+--  This used to reveal bugs in the integrator which have been fixed. 
+[-sqrt(2)*sqrt(1+4*x+2*x^2+x^4)+x*sqrt(9-4*sqrt(2)),x,-1,1/2*x^2*sqrt(9-4*sqrt(2))-sqrt(2)*(-1/3*sqrt(1+4*x+2*x^2+x^4)+1/3*(1+x)*sqrt(1+4*x+2*x^2+x^4)+4*%i*(-13+3*sqrt(33))^(1/3)*sqrt(1+4*x+2*x^2+x^4)/(4*2^(2/3)*(-%i+sqrt(3))-2*%i*(-13+3*sqrt(33))^(1/3)+6*%i*x*(-13+3*sqrt(33))^(1/3)+2^(1/3)*(%i+sqrt(3))*(-13+3*sqrt(33))^(2/3))-8*2^(2/3)*elliptic_e(asin(sqrt(26-6*sqrt(33)+6*x*(-13+3*sqrt(33))+(-13-13*%i*sqrt(3)+9*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)+4*%i*(%i+sqrt(3))*(-26+6*sqrt(33))^(2/3))/(sqrt((39+13*%i*sqrt(3)-9*%i*sqrt(11)-9*sqrt(33)+4*(3-%i*sqrt(3))*(-26+6*sqrt(33))^(1/3))/(39-13*%i*sqrt(3)+9*%i*sqrt(11)-9*sqrt(33)+4*(3+%i*sqrt(3))*(-26+6*sqrt(33))^(1/3)))*sqrt(26-6*sqrt(33)+6*x*(-13+3*sqrt(33))+(-13+13*%i*sqrt(3)-9*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)+(-4-4*%i*sqrt(3))*(-26+6*sqrt(33))^(2/3)))),(4*(21+7*%i*sqrt(3)-3*%i*sqrt(11)-3*sqrt(33))+(3-%i*sqrt(3)-3*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3))/(4*(21-7*%i*sqrt(3)+3*%i*sqrt(11)-3*sqrt(33))+(3+%i*sqrt(3)+3*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)))*sqrt(1+4*x+2*x^2+x^4)*sqrt(3/(-13+3*sqrt(33)+4*(-26+6*sqrt(33))^(1/3)))*sqrt(%i*(-19899+x*(59697-10335*sqrt(33))+3445*sqrt(33)+(-26+6*sqrt(33))^(2/3)*(-2574+466*sqrt(33))+(-26+6*sqrt(33))^(1/3)*(-19899+3445*sqrt(33)))/((-39-13*%i*sqrt(3)+9*%i*sqrt(11)+9*sqrt(33)+4*%i*(3*%i+sqrt(3))*(-26+6*sqrt(33))^(1/3))*(26-6*sqrt(33)+6*x*(-13+3*sqrt(33))+(-13+13*%i*sqrt(3)-9*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)+(-4-4*%i*sqrt(3))*(-26+6*sqrt(33))^(2/3))))/((4*2^(2/3)-(-13+3*sqrt(33))^(1/3)+3*x*(-13+3*sqrt(33))^(1/3)-2^(1/3)*(-13+3*sqrt(33))^(2/3))*sqrt(26-6*sqrt(33)+6*x*(-13+3*sqrt(33))+(-13+13*%i*sqrt(3)-9*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)+(-4-4*%i*sqrt(3))*(-26+6*sqrt(33))^(2/3))*sqrt(%i*(1+x)/((26-6*sqrt(33)+6*x*(-13+3*sqrt(33))+(-13+13*%i*sqrt(3)-9*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)+(-4-4*%i*sqrt(3))*(-26+6*sqrt(33))^(2/3))*(104-24*sqrt(33)+(-13-13*%i*sqrt(3)+9*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)+4*%i*(%i+sqrt(3))*(-26+6*sqrt(33))^(2/3))))*sqrt(26-6*sqrt(33)+6*x*(-13+3*sqrt(33))+(-13-13*%i*sqrt(3)+9*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)+4*%i*(%i+sqrt(3))*(-26+6*sqrt(33))^(2/3)))+elliptic_pi(2^(1/3)*(4*2^(1/3)*(-3*%i+sqrt(3))+(3*%i+sqrt(3))*(-13+3*sqrt(33))^(2/3))/(4*2^(2/3)*(-%i+sqrt(3))-8*%i*(-13+3*sqrt(33))^(1/3)+2^(1/3)*(%i+sqrt(3))*(-13+3*sqrt(33))^(2/3)),asin(sqrt(13-3*sqrt(33)-2^(1/3)*(-13+3*sqrt(33))^(4/3)+4*(-26+6*sqrt(33))^(2/3)+x*(-39+9*sqrt(33)))/(2^(1/6)*sqrt(3)*(-13+3*sqrt(33))^(2/3)*sqrt(1+x)*sqrt((-39+13*%i*sqrt(3)-9*%i*sqrt(11)+9*sqrt(33)-4*%i*(-3*%i+sqrt(3))*(-26+6*sqrt(33))^(1/3))/(104-24*sqrt(33)+(-13+13*%i*sqrt(3)-9*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)+(-4-4*%i*sqrt(3))*(-26+6*sqrt(33))^(2/3))))),(4*(21-7*%i*sqrt(3)+3*%i*sqrt(11)-3*sqrt(33))+(3+%i*sqrt(3)+3*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3))/(4*(21+7*%i*sqrt(3)-3*%i*sqrt(11)-3*sqrt(33))+(3-%i*sqrt(3)-3*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)))*(4*2^(2/3)+2*(-13+3*sqrt(33))^(1/3)-2^(1/3)*(-13+3*sqrt(33))^(2/3))*(4*2^(2/3)*(%i+sqrt(3))-4*%i*(-13+3*sqrt(33))^(1/3)+2^(1/3)*(-%i+sqrt(3))*(-13+3*sqrt(33))^(2/3))*(4*2^(2/3)*(-%i+sqrt(3))+4*%i*(-13+3*sqrt(33))^(1/3)+2^(1/3)*(%i+sqrt(3))*(-13+3*sqrt(33))^(2/3))*sqrt(1+x)*sqrt(1+4*x+2*x^2+x^4)*sqrt((-39+13*%i*sqrt(3)-9*%i*sqrt(11)+9*sqrt(33)-4*%i*(-3*%i+sqrt(3))*(-26+6*sqrt(33))^(1/3))/(104-24*sqrt(33)+(-13+13*%i*sqrt(3)-9*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)+(-4-4*%i*sqrt(3))*(-26+6*sqrt(33))^(2/3)))*sqrt((104-24*sqrt(33)+2*(1+14*%i*sqrt(3)-6*%i*sqrt(11)+sqrt(33))*(-26+6*sqrt(33))^(1/3)+(-7-%i*sqrt(3)-3*%i*sqrt(11)+sqrt(33))*(-26+6*sqrt(33))^(2/3)+2*x*(-52+12*sqrt(33)+2^(1/3)*(-13+3*sqrt(33))^(4/3)-4*(-26+6*sqrt(33))^(2/3)))/((1+x)*(-39+13*%i*sqrt(3)-9*%i*sqrt(11)+9*sqrt(33)-4*%i*(-3*%i+sqrt(3))*(-26+6*sqrt(33))^(1/3))))*sqrt((104-24*sqrt(33)+2*(1-14*%i*sqrt(3)+6*%i*sqrt(11)+sqrt(33))*(-26+6*sqrt(33))^(1/3)+(-7+%i*sqrt(3)+3*%i*sqrt(11)+sqrt(33))*(-26+6*sqrt(33))^(2/3)+2*x*(-52+12*sqrt(33)+2^(1/3)*(-13+3*sqrt(33))^(4/3)-4*(-26+6*sqrt(33))^(2/3)))/((1+x)*(-39-13*%i*sqrt(3)+9*%i*sqrt(11)+9*sqrt(33)+4*%i*(3*%i+sqrt(3))*(-26+6*sqrt(33))^(1/3))))/(2^(1/6)*sqrt(3)*(4*2^(2/3)*(%i+sqrt(3))+2*%i*(-13+3*sqrt(33))^(1/3)-6*%i*x*(-13+3*sqrt(33))^(1/3)+2^(1/3)*(-%i+sqrt(3))*(-13+3*sqrt(33))^(2/3))*(4*2^(2/3)*(-%i+sqrt(3))-2*%i*(-13+3*sqrt(33))^(1/3)+6*%i*x*(-13+3*sqrt(33))^(1/3)+2^(1/3)*(%i+sqrt(3))*(-13+3*sqrt(33))^(2/3))*sqrt(13-3*sqrt(33)-2^(1/3)*(-13+3*sqrt(33))^(4/3)+4*(-26+6*sqrt(33))^(2/3)+x*(-39+9*sqrt(33))))+1/3*elliptic_f(asin(sqrt(52-12*sqrt(33)-2^(1/3)*(-13+3*sqrt(33))^(4/3)+4*(-26+6*sqrt(33))^(2/3))*sqrt(26-6*sqrt(33)+6*x*(-13+3*sqrt(33))+(-13-13*%i*sqrt(3)+9*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)+4*%i*(%i+sqrt(3))*(-26+6*sqrt(33))^(2/3))/(2^(1/6)*sqrt(3)*(-13+3*sqrt(33))^(2/3)*sqrt(1+x)*sqrt(39+13*%i*sqrt(3)-9*%i*sqrt(11)-9*sqrt(33)+4*(3-%i*sqrt(3))*(-26+6*sqrt(33))^(1/3)))),(4*(21*%i-7*sqrt(3)+3*sqrt(11)-3*%i*sqrt(33))+(3*%i+sqrt(3)+3*sqrt(11)+3*%i*sqrt(33))*(-26+6*sqrt(33))^(1/3))/(-56*sqrt(3)+24*sqrt(11)+2*(sqrt(3)+3*sqrt(11))*(-26+6*sqrt(33))^(1/3)))*(2^(1/3)*(13-13*%i*sqrt(3)+9*%i*sqrt(11)-3*sqrt(33))+4*2^(2/3)*(1+%i*sqrt(3))*(-13+3*sqrt(33))^(1/3)+20*(-13+3*sqrt(33))^(2/3))*(4*2^(2/3)*(%i+sqrt(3))+8*%i*(-13+3*sqrt(33))^(1/3)+2^(1/3)*(-%i+sqrt(3))*(-13+3*sqrt(33))^(2/3))*sqrt(1+4*x+2*x^2+x^4)*sqrt((52-12*sqrt(33)-2^(1/3)*(-13+3*sqrt(33))^(4/3)+4*(-26+6*sqrt(33))^(2/3))/(-13+3*sqrt(33)+4*(-26+6*sqrt(33))^(1/3)))*sqrt((-8*%i*(-13+3*sqrt(33))+(-43*%i-13*sqrt(3)+9*sqrt(11)+5*%i*sqrt(33))*(-26+6*sqrt(33))^(1/3)+(2*%i+4*sqrt(3)-2*%i*sqrt(33))*(-26+6*sqrt(33))^(2/3)+x*(8*%i*(-13+3*sqrt(33))+(13*%i-13*sqrt(3)+9*sqrt(11)-3*%i*sqrt(33))*(-26+6*sqrt(33))^(1/3)+4*(%i+sqrt(3))*(-26+6*sqrt(33))^(2/3)))/(1+x))/(2^(2/3)*3^(3/4)*(-13+3*sqrt(33))^(1/3)*(4*2^(2/3)*(-%i+sqrt(3))-2*%i*(-13+3*sqrt(33))^(1/3)+6*%i*x*(-13+3*sqrt(33))^(1/3)+2^(1/3)*(%i+sqrt(3))*(-13+3*sqrt(33))^(2/3))*sqrt(1+x)*sqrt(39+13*%i*sqrt(3)-9*%i*sqrt(11)-9*sqrt(33)+4*(3-%i*sqrt(3))*(-26+6*sqrt(33))^(1/3))*sqrt(26-6*sqrt(33)+6*x*(-13+3*sqrt(33))+(-13-13*%i*sqrt(3)+9*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)+4*%i*(%i+sqrt(3))*(-26+6*sqrt(33))^(2/3))*sqrt((8*(-13+3*sqrt(33))-(5-3*%i*sqrt(3)+3*%i*sqrt(11)+sqrt(33))*(-26+6*sqrt(33))^(2/3)+(-26+6*sqrt(33))^(1/3)*(-41+15*%i*sqrt(3)-3*%i*sqrt(11)+7*sqrt(33))+x*(104-24*sqrt(33)+(-13-13*%i*sqrt(3)+9*%i*sqrt(11)+3*sqrt(33))*(-26+6*sqrt(33))^(1/3)+4*%i*(%i+sqrt(3))*(-26+6*sqrt(33))^(2/3)))/((1+x)*(-39-13*%i*sqrt(3)+9*%i*sqrt(11)+9*sqrt(33)+4*%i*(3*%i+sqrt(3))*(-26+6*sqrt(33))^(1/3))))))],
+
+--  It is interesting to see how much of this one can be done; 
+[1/384*(%pi^2*(-3*mc^8+4*mc^9+24*mc^6*x-48*mc^7*x-144*mc^5*x^2-24*mc^2*x^3+176*mc^3*x^3+3*x^4+12*mc*x^4)+12*%pi^2*mc^3*(3*mc-12*mc^2-8*x)*x^2*log(x/mc^2))/(%e^(x/y)*x^2),x,20,1/384*%pi^2*(3-4*mc)*mc^8/(%e^(x/y)*x)+3/8*%pi^2*mc^5*y/%e^(x/y)+1/48*%pi^2*(3-22*mc)*mc^2*x*y/%e^(x/y)-1/128*%pi^2*(1+4*mc)*x^2*y/%e^(x/y)+1/48*%pi^2*(3-22*mc)*mc^2*y^2/%e^(x/y)+1/4*%pi^2*mc^3*y^2/%e^(x/y)-1/64*%pi^2*(1+4*mc)*x*y^2/%e^(x/y)-1/64*%pi^2*(1+4*mc)*y^3/%e^(x/y)+1/16*%pi^2*(1-2*mc)*mc^6*Ei(-x/y)+1/384*%pi^2*(3-4*mc)*mc^8*Ei(-x/y)/y+1/32*%pi^2*mc^3*(3*mc-12*mc^2-8*y)*y*Ei(-x/y)-1/32*%pi^2*mc^3*(3*(1-4*mc)*mc-8*x)*y*log(x/mc^2)/%e^(x/y)+1/4*%pi^2*mc^3*y^2*log(x/mc^2)/%e^(x/y)],
+
+--  The following integrals reveal deficiencies in the current integrator; 
+[sin(2*x)/cos(x),x,2,-2*cos(x)],
+
+--  This example, which appeared in Tobey's thesis, needs factorization 
+
+--  over algebraic fields. It currently gives an ugly answer and so has 
+
+--  been suppressed; 
+[(3+3*x-4*x^2-4*x^3-7*x^6+4*x^7+10*x^8+7*x^13)/(1+2*x-x^2-4*x^3-2*x^4-2*x^7-2*x^8+x^14),x,-5,1/2*(-log(-1+x^7+x*(-1+sqrt(2))+x^2*sqrt(2))*(-1+sqrt(2))+log(1+x-x^7+x*sqrt(2)+x^2*sqrt(2))*(1+sqrt(2)))]]

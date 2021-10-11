@@ -1,0 +1,284 @@
+-- Axiom integration test file: "0 Independent test suites\Apostol Problems.input"
+
+lst: '[
+
+-- Tom M. Apostol - Calculus, Volume I, Second Edition (1967)
+
+-- Section 5.8 Exercises (p. 216-217)
+
+-- Exercises 1 - 10
+[sqrt(1+2*x),x,1,1/3*(1+2*x)^(3/2)],
+[x*sqrt(1+3*x),x,2,-2/27*(1+3*x)^(3/2)+2/45*(1+3*x)^(5/2)],
+[x^2*sqrt(1+x),x,2,2/3*(1+x)^(3/2)-4/5*(1+x)^(5/2)+2/7*(1+x)^(7/2)],
+[x/sqrt(2-3*x),x,2,2/27*(2-3*x)^(3/2)-4/9*sqrt(2-3*x)],
+[(1+x)/(2+2*x+x^2)^3,x,1,(-1/4)/(2+2*x+x^2)^2],
+[sin(x)^3,x,2,-cos(x)+1/3*cos(x)^3],
+[(-1+z)^(1/3)*z,z,2,3/4*(-1+z)^(4/3)+3/7*(-1+z)^(7/3)],
+[cos(x)/sin(x)^3,x,2,-1/2*csc(x)^2],
+[cos(2*x)*sqrt(4-sin(2*x)),x,2,-1/3*(4-sin(2*x))^(3/2)],
+[sin(x)/(3+cos(x))^2,x,2,1/(3+cos(x))],
+
+-- Exercises 11 - 20
+[sin(x)/sqrt(cos(x)^3),x,3,2*cos(x)/sqrt(cos(x)^3)],
+[sin(sqrt(1+x))/sqrt(1+x),x,3,-2*cos(sqrt(1+x))],
+[x^(-1+n)*sin(x^n),x,2,-cos(x^n)/n],
+[x^5/sqrt(1-x^6),x,1,-1/3*sqrt(1-x^6)],
+[t*(1+t)^(1/4),t,2,-4/5*(1+t)^(5/4)+4/9*(1+t)^(9/4)],
+[1/(1+x^2)^(3/2),x,1,x/sqrt(1+x^2)],
+[x^2*(27+8*x^3)^(2/3),x,1,1/40*(27+8*x^3)^(5/3)],
+[(cos(x)+sin(x))/(-cos(x)+sin(x))^(1/3),x,1,3/2*(-cos(x)+sin(x))^(2/3)],
+[x/sqrt(1+x^2+(1+x^2)^(3/2)),x,3,2*sqrt((1+x^2)*(1+sqrt(1+x^2)))/sqrt(1+x^2)],
+[x/(sqrt(1+x^2)*sqrt(1+sqrt(1+x^2))),x,1,2*sqrt(1+sqrt(1+x^2))],
+[(1-2*x+x^2)^(1/5)/(1-x),x,2,-5/2*(1-2*x+x^2)^(1/5)],
+
+-- Section 5.10 Exercises (p. 220-222)
+
+-- Exercises 1 - 6
+[x*sin(x),x,2,-x*cos(x)+sin(x)],
+[x^2*sin(x),x,3,2*cos(x)-x^2*cos(x)+2*x*sin(x)],
+[x^3*cos(x),x,4,-6*cos(x)+3*x^2*cos(x)-6*x*sin(x)+x^3*sin(x)],
+[x^3*sin(x),x,4,6*x*cos(x)-x^3*cos(x)-6*sin(x)+3*x^2*sin(x)],
+[cos(x)*sin(x),x,2,1/2*sin(x)^2],
+[x*cos(x)*sin(x),x,3,-1/4*x+1/4*cos(x)*sin(x)+1/2*x*sin(x)^2],
+
+-- Exercises 7 - 10
+[sin(x)^2,x,2,1/2*x-1/2*cos(x)*sin(x)],
+[sin(x)^3,x,2,-cos(x)+1/3*cos(x)^3],
+[sin(x)^4,x,3,3/8*x-3/8*cos(x)*sin(x)-1/4*cos(x)*sin(x)^3],
+[sin(x)^5,x,2,-cos(x)+2/3*cos(x)^3-1/5*cos(x)^5],
+[sin(x)^6,x,4,5/16*x-5/16*cos(x)*sin(x)-5/24*cos(x)*sin(x)^3-1/6*cos(x)*sin(x)^5],
+
+-- Exercise 11
+[x*sin(x)^2,x,2,1/4*x^2-1/2*x*cos(x)*sin(x)+1/4*sin(x)^2],
+[x*sin(x)^3,x,3,-2/3*x*cos(x)+2/3*sin(x)-1/3*x*cos(x)*sin(x)^2+1/9*sin(x)^3],
+[x^2*sin(x)^2,x,4,-1/4*x+1/6*x^3+1/4*cos(x)*sin(x)-1/2*x^2*cos(x)*sin(x)+1/2*x*sin(x)^2],
+
+-- Exercise 13
+[cos(x)^2,x,2,1/2*x+1/2*cos(x)*sin(x)],
+[cos(x)^3,x,2,sin(x)-1/3*sin(x)^3],
+[cos(x)^4,x,3,3/8*x+3/8*cos(x)*sin(x)+1/4*cos(x)^3*sin(x)],
+
+-- Exercises 15 - 17
+[(a^2-x^2)^(5/2),x,5,5/24*a^2*x*(a^2-x^2)^(3/2)+1/6*x*(a^2-x^2)^(5/2)+5/16*a^6*atan(x/sqrt(a^2-x^2))+5/16*a^4*x*sqrt(a^2-x^2)],
+[x^5/sqrt(5+x^2),x,3,-10/3*(5+x^2)^(3/2)+1/5*(5+x^2)^(5/2)+25*sqrt(5+x^2)],
+[t^3/(4+t^3)^(1/2),t,2,2/5*t*sqrt(4+t^3)-8/5*2^(2/3)*(2^(2/3)+t)*elliptic_f(asin((t+2^(2/3)*(1-sqrt(3)))/(t+2^(2/3)*(1+sqrt(3)))),-7-4*sqrt(3))*sqrt(2+sqrt(3))*sqrt((2*2^(1/3)-2^(2/3)*t+t^2)/(t+2^(2/3)*(1+sqrt(3)))^2)/(3^(1/4)*sqrt(4+t^3)*sqrt((2^(2/3)+t)/(t+2^(2/3)*(1+sqrt(3)))^2))],
+
+-- Exercises 18 - 19
+[tan(x)^2,x,2,-x+tan(x)],
+[tan(x)^4,x,3,x-tan(x)+1/3*tan(x)^3],
+[cot(x)^2,x,2,-x-cot(x)],
+[cot(x)^4,x,3,x+cot(x)-1/3*cot(x)^3],
+
+-- Section 5.11 Miscellaneous review exercises (p. 222-225)
+
+-- Exercises 11 - 20
+[(2+3*x)*sin(5*x),x,2,-1/5*(2+3*x)*cos(5*x)+3/25*sin(5*x)],
+[x*sqrt(1+x^2),x,1,1/3*(1+x^2)^(3/2)],
+[x*(-1+x^2)^9,x,1,1/20*(1-x^2)^10],
+[(3+2*x)/(7+6*x)^3,x,1,-1/8*(3+2*x)^2/(7+6*x)^2],
+[x^4*(1+x^5)^5,x,1,1/30*(1+x^5)^6],
+[(1-x)^20*x^4,x,2,-1/21*(1-x)^21+2/11*(1-x)^22-6/23*(1-x)^23+1/6*(1-x)^24-1/25*(1-x)^25],
+[sin(1/x)/x^2,x,2,cos(1/x)],
+[sin((-1+x)^(1/4)),x,5,24*(-1+x)^(1/4)*cos((-1+x)^(1/4))-4*(-1+x)^(3/4)*cos((-1+x)^(1/4))-24*sin((-1+x)^(1/4))+12*sin((-1+x)^(1/4))*sqrt(-1+x)],
+[x*cos(x^2)*sin(x^2),x,1,1/4*sin(x^2)^2],
+[sin(2*x)*sqrt(1+3*cos(x)^2),x,3,-2/9*(4-3*sin(x)^2)^(3/2)],
+
+-- Section 6.9 Exercises (p. 236-238)
+
+-- Exercises 16 - 21
+[1/(2+3*x),x,1,1/3*log(2+3*x)],
+[log(x)^2,x,2,2*x-2*x*log(x)+x*log(x)^2],
+[x*log(x),x,1,-1/4*x^2+1/2*x^2*log(x)],
+[x*log(x)^2,x,2,1/4*x^2-1/2*x^2*log(x)+1/2*x^2*log(x)^2],
+[1/(1+t),t,1,log(1+t)],
+[cot(x),x,1,log(sin(x))],
+
+-- Exercises 22 - 27
+[x^n*log(a*x),x,1,-x^(1+n)/(1+n)^2+x^(1+n)*log(a*x)/(1+n)],
+[x^2*log(x)^2,x,2,2/27*x^3-2/9*x^3*log(x)+1/3*x^3*log(x)^2],
+[1/(x*log(x)),x,2,log(log(x))],
+[log(1-t)/(1-t),t,2,-1/2*log(1-t)^2],
+[log(x)/(x*sqrt(1+log(x))),x,3,2/3*(1+log(x))^(3/2)-2*sqrt(1+log(x))],
+[x^3*log(x)^3,x,3,-3/128*x^4+3/32*x^4*log(x)-3/16*x^4*log(x)^2+1/4*x^4*log(x)^3],
+
+-- Section 6.16 Differentiation and integration formulas involving exponentials (p. 245-248)
+
+-- Example 1
+[%e^(x^3)*x^2,x,1,1/3*%e^(x^3)],
+
+-- Example 2
+[2^sqrt(x)/sqrt(x),x,1,2^(1+sqrt(x))/log(2)],
+
+-- Example 3
+[%e^(2*sin(x))*cos(x),x,2,1/2*%e^(2*sin(x))],
+
+-- Example 4
+[%e^x*sin(x),x,1,-1/2*%e^x*cos(x)+1/2*%e^x*sin(x)],
+[%e^x*cos(x),x,1,1/2*%e^x*cos(x)+1/2*%e^x*sin(x)],
+
+-- Example 5
+[1/(1+%e^x),x,4,x-log(1+%e^x)],
+
+-- Section 6.17 Exercises (p. 248-250)
+
+-- Exercises 13 - 18
+[%e^x*x,x,2,-%e^x+%e^x*x],
+[x/%e^x,x,2,(-1)/%e^x-x/%e^x],
+[%e^x*x^2,x,3,2*%e^x-2*%e^x*x+%e^x*x^2],
+[x^2/%e^(2*x),x,3,(-1/4)/%e^(2*x)-1/2*x/%e^(2*x)-1/2*x^2/%e^(2*x)],
+[%e^sqrt(x),x,3,-2*%e^sqrt(x)+2*%e^sqrt(x)*sqrt(x)],
+[x^3/%e^(x^2),x,2,(-1/2)/%e^(x^2)-1/2*x^2/%e^(x^2)],
+
+-- Exercise 20
+[%e^(a*x)*cos(b*x),x,1,%e^(a*x)*a*cos(b*x)/(a^2+b^2)+%e^(a*x)*b*sin(b*x)/(a^2+b^2)],
+[%e^(a*x)*sin(b*x),x,1,-%e^(a*x)*b*cos(b*x)/(a^2+b^2)+%e^(a*x)*a*sin(b*x)/(a^2+b^2)],
+
+-- Section 6.22 Exercises (p. 256-258)
+
+-- Exercises 6 - 10
+[acot(x),x,2,x*acot(x)+1/2*log(1+x^2)],
+[asec(x),x,4,x*asec(x)-atanh(sqrt(1+(-1)/x^2))],
+[acsc(x),x,4,x*acsc(x)+atanh(sqrt(1+(-1)/x^2))],
+[asin(x)^2,x,3,-2*x+x*asin(x)^2+2*asin(x)*sqrt(1-x^2)],
+[asin(x)/x^2,x,4,-asin(x)/x-atanh(sqrt(1-x^2))],
+
+-- Exercises 29 - 37
+[1/sqrt(a^2-x^2),x,2,atan(x/sqrt(a^2-x^2))],
+[1/sqrt(1-2*x-x^2),x,2,asin((1+x)/sqrt(2))],
+[1/(a^2+x^2),x,1,atan(x/a)/a],
+[1/(a+b*x^2),x,1,atan(x*sqrt(b)/sqrt(a))/(sqrt(a)*sqrt(b))],
+[1/(2-x+x^2),x,2,-2*atan((1-2*x)/sqrt(7))/sqrt(7)],
+[x*atan(x),x,3,-1/2*x+1/2*atan(x)+1/2*x^2*atan(x)],
+[x^2*acos(x),x,4,1/9*(1-x^2)^(3/2)+1/3*x^3*acos(x)-1/3*sqrt(1-x^2)],
+[x*atan(x)^2,x,5,-x*atan(x)+1/2*atan(x)^2+1/2*x^2*atan(x)^2+1/2*log(1+x^2)],
+[atan(sqrt(x)),x,4,atan(sqrt(x))+x*atan(sqrt(x))-sqrt(x)],
+
+-- Exercises 38 - 47
+[atan(sqrt(x))/((1+x)*sqrt(x)),x,1,atan(sqrt(x))^2],
+[sqrt(1-x^2),x,2,1/2*asin(x)+1/2*x*sqrt(1-x^2)],
+[%e^atan(x)*x/(1+x^2)^(3/2),x,1,-1/2*%e^atan(x)*(1-x)/sqrt(1+x^2)],
+[%e^atan(x)/(1+x^2)^(3/2),x,1,1/2*%e^atan(x)*(1+x)/sqrt(1+x^2)],
+[x^2/(1+x^2)^2,x,2,-1/2*x/(1+x^2)+1/2*atan(x)],
+[%e^x/(1+%e^(2*x)),x,2,atan(%e^x)],
+[acot(%e^x)/%e^x,x,5,-x-acot(%e^x)/%e^x+1/2*log(1+%e^(2*x))],
+[((a+x)/(a-x))^(1/2),x,3,2*a*atan(sqrt((a+x)/(a-x)))-(a-x)*sqrt((a+x)/(a-x))],
+[sqrt((b-x)*(-a+x)),x,4,-1/8*(a-b)^2*atan(1/2*(a+b-2*x)/sqrt(-a*b+(a+b)*x-x^2))-1/4*(a+b-2*x)*sqrt(-a*b+(a+b)*x-x^2)],
+[1/sqrt((b-x)*(-a+x)),x,3,-atan(1/2*(a+b-2*x)/sqrt(-a*b+(a+b)*x-x^2))],
+
+-- Section 6.23 Integration by partial fractions (p. 258-264)
+
+-- Example 1
+[(3+5*x)/(-3+2*x+x^2),x,3,2*log(1-x)+3*log(3+x)],
+
+-- Example 2
+[(5+2*x)/(-3+2*x+x^2),x,3,7/4*log(1-x)+1/4*log(3+x)],
+[(3*x+x^3)/(-3-2*x+x^2),x,6,2*x+1/2*x^2+9*log(3-x)+log(1+x)],
+
+-- Example 3
+[(-1+5*x+2*x^2)/(-2*x+x^2+x^3),x,3,2*log(1-x)+1/2*log(x)-1/2*log(2+x)],
+
+-- Example 4
+[(3+2*x+x^2)/((-1+x)*(1+x)^2),x,2,1/(1+x)+3/2*log(1-x)-1/2*log(1+x)],
+
+-- Example 5
+[(-2+2*x+3*x^2)/(-1+x^3),x,5,log(1-x^3)+4*atan((1+2*x)/sqrt(3))/sqrt(3)],
+
+-- Example 6
+[(2-x+2*x^2-x^3+x^4)/((-1+x)*(2+x^2)^2),x,6,1/2/(2+x^2)+1/3*log(1-x)+1/3*log(2+x^2)-1/3*atan(x/sqrt(2))/sqrt(2)],
+
+-- Section 6.24 Integrals which can be transformed into integrals of rational functions (p. 264-266)
+
+-- Example 1
+[1/(cos(x)+sin(x)),x,2,-atanh((cos(x)-sin(x))/sqrt(2))/sqrt(2)],
+
+-- Example 2
+[x/(4-x^2+sqrt(4-x^2)),x,3,-log(1+sqrt(4-x^2))],
+
+-- Section 6.25 Exercises (p. 267-268)
+
+-- Exercises 1 - 10
+[(3+2*x)/((-2+x)*(5+x)),x,2,log(2-x)+log(5+x)],
+[x/((1+x)*(2+x)*(3+x)),x,2,-1/2*log(1+x)+2*log(2+x)-3/2*log(3+x)],
+[x/(2-3*x+x^3),x,2,1/3/(1-x)+2/9*log(1-x)-2/9*log(2+x)],
+[(-6+2*x+x^4)/(-2*x+x^2+x^3),x,3,-x+1/2*x^2-log(1-x)+3*log(x)+log(2+x)],
+[(7+8*x^3)/((1+x)*(1+2*x)^3),x,2,(-3)/(1+2*x)^2+3/(1+2*x)+log(1+x)],
+[(1+x+4*x^2)/(-1+x^3),x,3,2*log(1-x)+log(1+x+x^2)],
+[x^4/(4+5*x^2+x^4),x,4,x-8/3*atan(1/2*x)+1/3*atan(x)],
+[(2+x)/(x+x^2),x,2,2*log(x)-log(1+x)],
+[1/(x*(1+x^2)^2),x,3,1/2/(1+x^2)+log(x)-1/2*log(1+x^2)],
+[1/((1+x)*(2+x)^2*(3+x)^3),x,2,1/(2+x)+1/4/(3+x)^2+5/4/(3+x)+1/8*log(1+x)+2*log(2+x)-17/8*log(3+x)],
+
+-- Exercises 11 - 20
+[x/(1+x)^2,x,2,1/(1+x)+log(1+x)],
+[1/(-x+x^3),x,5,-log(x)+1/2*log(1-x^2)],
+[x^2/(-6+x+x^2),x,4,x+4/5*log(2-x)-9/5*log(3+x)],
+[(2+x)/(4-4*x+x^2),x,3,4/(2-x)+log(2-x)],
+[1/((4-4*x+x^2)*(5-4*x+x^2)),x,4,1/(2-x)+atan(2-x)],
+[(-3+x)/(2*x+3*x^2+x^3),x,3,-3/2*log(x)+4*log(1+x)-5/2*log(2+x)],
+[1/(-1+x^2)^2,x,2,1/2*x/(1-x^2)+1/2*atanh(x)],
+[(1+x)/(-1+x^3),x,3,2/3*log(1-x)-1/3*log(1+x+x^2)],
+[(1+x^4)/(x*(1+x^2)^2),x,3,1/(1+x^2)+log(x)],
+[1/(-2*x^3+x^4),x,3,1/4/x^2+1/4/x+1/8*log(2-x)-1/8*log(x)],
+
+-- Exercises 21 - 30
+[(1-x^3)/(x*(1+x^2)),x,5,-x+atan(x)+log(x)-1/2*log(1+x^2)],
+[1/(-1+x^4),x,3,-1/2*atan(x)-1/2*atanh(x)],
+[1/(1+x^4),x,9,-1/2*atan(1-x*sqrt(2))/sqrt(2)+1/2*atan(1+x*sqrt(2))/sqrt(2)-1/4*log(1+x^2-x*sqrt(2))/sqrt(2)+1/4*log(1+x^2+x*sqrt(2))/sqrt(2)],
+[x^2/(2+2*x+x^2)^2,x,3,-1/2*x*(2+x)/(2+2*x+x^2)+atan(1+x)],
+[(-1+4*x^5)/(1+x+x^5)^2,x,1,-x/(1+x+x^5)],
+[1/(5-cos(x)+2*sin(x)),x,3,1/2*x/sqrt(5)+atan((2*cos(x)+sin(x))/(5-cos(x)+2*sin(x)+2*sqrt(5)))/sqrt(5)],
+[1/(1+a*cos(x)),x,2,2*atan(sqrt(1-a)*tan(1/2*x)/sqrt(1+a))/sqrt(1-a^2)],
+[1/(1+2*cos(x)),x,2,-log(-sin(1/2*x)+cos(1/2*x)*sqrt(3))/sqrt(3)+log(sin(1/2*x)+cos(1/2*x)*sqrt(3))/sqrt(3)],
+[1/(1+1/2*cos(x)),x,1,2*x/sqrt(3)-4*atan(sin(x)/(2+cos(x)+sqrt(3)))/sqrt(3)],
+[sin(x)^2/(1+sin(x)^2),x,3,x-x/sqrt(2)-atan(cos(x)*sin(x)/(1+sin(x)^2+sqrt(2)))/sqrt(2)],
+[1/(b^2*cos(x)^2+a^2*sin(x)^2),x,2,atan(a*tan(x)/b)/(a*b)],
+
+-- Exercises 31 - 40
+[1/(b*cos(x)+a*sin(x))^2,x,1,sin(x)/(b*(b*cos(x)+a*sin(x)))],
+[sin(x)/(1+cos(x)+sin(x)),x,3,1/2*x-1/2*log(1+cos(x)+sin(x))-1/2*log(1+tan(1/2*x))],
+[sqrt(3-x^2),x,2,3/2*asin(x/sqrt(3))+1/2*x*sqrt(3-x^2)],
+[x/sqrt(3-x^2),x,1,-sqrt(3-x^2)],
+[sqrt(3-x^2)/x,x,4,-atanh(sqrt(3-x^2)/sqrt(3))*sqrt(3)+sqrt(3-x^2)],
+[sqrt(x+x^2)/x,x,3,atanh(x/sqrt(x+x^2))+sqrt(x+x^2)],
+[sqrt(5+x^2),x,2,5/2*asinh(x/sqrt(5))+1/2*x*sqrt(5+x^2)],
+[x/sqrt(1+x+x^2),x,3,-1/2*asinh((1+2*x)/sqrt(3))+sqrt(1+x+x^2)],
+[1/sqrt(x+x^2),x,2,2*atanh(x/sqrt(x+x^2))],
+[sqrt(2-x-x^2)/x^2,x,6,asin(1/3*(-1-2*x))+1/2*atanh(1/2*(4-x)/(sqrt(2)*sqrt(2-x-x^2)))/sqrt(2)-sqrt(2-x-x^2)/x],
+
+-- Section 6.26 Miscellaneous review exercises (p. 268-271)
+
+-- Exercise 1
+[log(t)/(1+t),t,2,log(t)*log(1+t)+polylog(2,-t)],
+
+-- Exercise 4
+[log(%e^cos(x)),x,3,-x*cos(x)+x*log(%e^cos(x))+sin(x)],
+
+-- Exercise 6
+[%e^t/t,t,1,Ei(t)],
+[%e^(a*t)/t,t,1,Ei(a*t)],
+[%e^t/t^2,t,2,-%e^t/t+Ei(t)],
+[%e^(1/t),t,2,%e^(1/t)*t-Ei(1/t)],
+
+-- Exercise 12
+[1/(%e^t*(-1-a+t)),t,1,%e^(-1-a)*Ei(1+a-t)],
+[%e^(t^2)*t/(1+t^2),t,2,1/2*Ei(1+t^2)/%e],
+[%e^t/(1+t)^2,t,2,-%e^t/(1+t)+Ei(1+t)/%e],
+[%e^t*log(1+t),t,2,-Ei(1+t)/%e+%e^t*log(1+t)],
+
+-- Exercise 25
+[t/%e^t,t,2,(-1)/%e^t-t/%e^t],
+[t^2/%e^t,t,3,(-2)/%e^t-2*t/%e^t-t^2/%e^t],
+[t^3/%e^t,t,4,(-6)/%e^t-6*t/%e^t-3*t^2/%e^t-t^3/%e^t],
+
+-- Exercise 26
+[(b1*cos(x)+a1*sin(x))/(b*cos(x)+a*sin(x)),x,1,(a*a1+b*b1)*x/(a^2+b^2)-(a1*b-a*b1)*log(b*cos(x)+a*sin(x))/(a^2+b^2)],
+
+-- Exercise 28
+[1/log(t),t,1,Li(t)],
+[1/log(t)^2,t,2,Li(t)-t/log(t)],
+[log(t)^(-1-n),t,2,-GAMMA(-n,-log(t))*(-log(t))^n/log(t)^n],
+[%e^(2*t)/(-1+t),t,1,%e^2*Ei(-2*(1-t))],
+[%e^(2*x)/(2-3*x+x^2),x,4,%e^4*Ei(-4+2*x)-%e^2*Ei(-2+2*x)],
+
+-- Exercise 30
+[1/(1+t^3)^(1/2),t,1,2*(1+t)*elliptic_f(asin((1+t-sqrt(3))/(1+t+sqrt(3))),-7-4*sqrt(3))*sqrt(2+sqrt(3))*sqrt((1-t+t^2)/(1+t+sqrt(3))^2)/(3^(1/4)*sqrt(1+t^3)*sqrt((1+t)/(1+t+sqrt(3))^2))]]

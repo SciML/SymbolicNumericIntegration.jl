@@ -1,0 +1,164 @@
+-- Axiom integration test file: "0 Independent test suites\Moses Problems.input"
+
+lst: '[
+
+-- Joel Moses - Symbolic Integration Ph.D. Thesis (1967)
+
+-- Chapter 2 - How SIN differs from SAINT
+[cot(x)^4,x,3,x+cot(x)-1/3*cot(x)^3],
+[1/(x^4*(1+x^2)),x,3,(-1/3)/x^3+1/x+atan(x)],
+[(x+x^2)/sqrt(x),x,2,2/3*x^(3/2)+2/5*x^(5/2)],
+[cos(x),x,1,sin(x)],
+[%e^(x^2)*x,x,1,1/2*%e^(x^2)],
+[sec(x)^2*tan(x),x,2,1/2*sec(x)^2],
+[x*sqrt(1+x^2),x,1,1/3*(1+x^2)^(3/2)],
+[%e^x*sin(x),x,1,-1/2*%e^x*cos(x)+1/2*%e^x*sin(x)],
+
+-- Chapter 3 - SCHATCHEN - A Matching Program for Algebraic Expressions
+[cos(x)*csc(x)^2/sin(x)^2,x,2,-1/3*csc(x)^3],
+
+-- Chapter 4 - The First Stage of Sin
+[sin(%e^x),x,2,Si(%e^x)],
+[sin(y)/y,y,1,Si(y)],
+[%e^x+sin(x),x,3,%e^x-cos(x)],
+[%e^(x^2)+2*%e^(x^2)*x^2,x,4,%e^(x^2)*x],
+[(%e^x+x)^2,x,5,-2*%e^x+1/2*%e^(2*x)+2*%e^x*x+1/3*x^3],
+[2*%e^x+%e^(2*x)+x^2,x,3,2*%e^x+1/2*%e^(2*x)+1/3*x^3],
+[cos(x)*sin(x),x,2,1/2*sin(x)^2],
+[%e^(x^2)*x,x,1,1/2*%e^(x^2)],
+[x*sqrt(1+x^2),x,1,1/3*(1+x^2)^(3/2)],
+[%e^x/(1+%e^x),x,2,log(1+%e^x)],
+[x^(3/2),x,1,2/5*x^(5/2)],
+[cos(3+2*x),x,1,1/2*sin(3+2*x)],
+[2*%e^(2*x)*y*z,x,2,%e^(2*x)*y*z],
+[%e^x*cos(%e^x)^2*sin(%e^x),x,3,-1/3*cos(%e^x)^3],
+
+-- Chapter 4 - The Second Stage of Sin
+[x*sqrt(1+x),x,2,-2/3*(1+x)^(3/2)+2/5*(1+x)^(5/2)],
+[1/(-1+x^4),x,3,-1/2*atan(x)-1/2*atanh(x)],
+
+-- Method 1)  Elementary function of exponentials
+[%e^x/(2+3*%e^(2*x)),x,2,atan(%e^x*sqrt(3/2))/sqrt(6)],
+[%e^(2*x)/(A+%e^(4*x)*B),x,2,1/2*atan(%e^(2*x)*sqrt(B)/sqrt(A))/(sqrt(A)*sqrt(B))],
+[%e^(1+x)/(1+%e^x),x,3,%e*log(1+%e^x)],
+[10^x*%e^x,x,1,10^x*%e^x/(1+log(10))],
+
+-- Method 2)  Substitution for an integral power
+[x^3*sin(x^2),x,3,-1/2*x^2*cos(x^2)+1/2*sin(x^2)],
+[x^7/(1+x^12),x,7,-1/12*log(1+x^4)+1/24*log(1-x^4+x^8)-1/4*atan((1-2*x^4)/sqrt(3))/sqrt(3)],
+[x^(3*a)*sin(x^(2*a)),x,3,1/4*%i*x^(1+3*a)*GAMMA(1/2*(3+1/a),-%i*x^(2*a))/(a*(-%i*x^(2*a))^(1/2*(1+3*a)/a))-1/4*%i*x^(1+3*a)*GAMMA(1/2*(3+1/a),%i*x^(2*a))/(a*(%i*x^(2*a))^(1/2*(1+3*a)/a))],
+
+-- Method 3)  Substitution for a rational root of a linear function of x
+[cos(sqrt(x)),x,3,2*cos(sqrt(x))+2*sin(sqrt(x))*sqrt(x)],
+[x*sqrt(1+x),x,2,-2/3*(1+x)^(3/2)+2/5*(1+x)^(5/2)],
+[1/(x^(1/3)+x^(1/2)),x,4,6*x^(1/6)-3*x^(1/3)-6*log(1+x^(1/6))+2*sqrt(x)],
+[sqrt((1+x)/(3+2*x)),x,4,-1/2*asinh(sqrt(2)*sqrt(1+x))/sqrt(2)+1/2*sqrt(1+x)*sqrt(3+2*x)],
+
+-- Method 4)  Binomial - Chebyschev
+[x^4/(1-x^2)^(5/2),x,3,1/3*x^3/(1-x^2)^(3/2)+asin(x)-x/sqrt(1-x^2)],
+[x^(1/2)*(1+x)^(5/2),x,6,5/24*x^(3/2)*(1+x)^(3/2)+1/4*x^(3/2)*(1+x)^(5/2)-5/64*asinh(sqrt(x))+5/32*x^(3/2)*sqrt(1+x)+5/64*sqrt(x)*sqrt(1+x)],
+
+-- Method 5)  Arctrigonometric substitutions
+[x^4/(1-x^2)^(5/2),x,3,1/3*x^3/(1-x^2)^(3/2)+asin(x)-x/sqrt(1-x^2)],
+[sqrt(A^2+B^2-B^2*y^2)/(1-y^2),y,5,B*atan(B*y/sqrt(A^2+B^2-B^2*y^2))+A*atanh(A*y/sqrt(A^2+B^2-B^2*y^2))],
+
+-- Method 6)  Elementary function of trigonometric functions
+[sin(x)^2,x,2,1/2*x-1/2*cos(x)*sin(x)],
+[sqrt(A^2+B^2*sin(x)^2)/sin(x),x,6,-B*atan(B*cos(x)/sqrt(A^2+B^2*sin(x)^2))-A*atanh(A*cos(x)/sqrt(A^2+B^2*sin(x)^2)),-B*atan(B*cos(x)/sqrt(A^2+B^2-B^2*cos(x)^2))-A*atanh(A*cos(x)/sqrt(A^2+B^2-B^2*cos(x)^2))],
+[1/(1+cos(x)),x,1,sin(x)/(1+cos(x))],
+
+-- Method 7)  Rational function times an exponential
+[%e^x*x,x,2,-%e^x+%e^x*x],
+[%e^x*x/(1+x)^2,x,1,%e^x/(1+x)],
+[%e^(x^2)*(1+2*x^2),x,5,%e^(x^2)*x],
+[%e^(x^2),x,1,1/2*erfi(x)*sqrt(%pi)],
+[%e^x/x,x,1,Ei(x)],
+
+-- Method 8)  Rational functions
+[x/(1+x^3),x,6,-1/3*log(1+x)+1/6*log(1-x+x^2)-atan((1-2*x)/sqrt(3))/sqrt(3)],
+[1/(-1+x^6),x,10,-1/3*atanh(x)-1/6*atanh(x/(1+x^2))-1/2*atan(x*sqrt(3)/(1-x^2))/sqrt(3),-1/3*atanh(x)+1/12*log(1-x+x^2)-1/12*log(1+x+x^2)+1/2*atan((1-2*x)/sqrt(3))/sqrt(3)-1/2*atan((1+2*x)/sqrt(3))/sqrt(3)],
+[1/(A^4-A^2*B^2+(-A^2+B^2)*x^2),x,1,atanh(x/A)/(A*(A^2-B^2))],
+
+-- Method 9)  Rational function times a log or arctrigonometric function
+[x*log(x),x,1,-1/4*x^2+1/2*x^2*log(x)],
+[x^2*asin(x),x,4,-1/9*(1-x^2)^(3/2)+1/3*x^3*asin(x)+1/3*sqrt(1-x^2)],
+[1/(1+2*x+x^2),x,2,(-1)/(1+x)],
+
+-- Method 10)  Rational function times an elementary function of log(a+b x)
+[log(x)/(1+log(x))^2,x,7,x/(1+log(x))],
+[1/(x*(1+log(x)^2)),x,2,atan(log(x))],
+[1/log(x),x,1,Li(x)],
+
+-- Method 11)  Expansion of the integrand
+[x*(cos(x)+sin(x)),x,6,cos(x)-x*cos(x)+sin(x)+x*sin(x)],
+[(%e^x+x)/%e^x,x,4,(-1)/%e^x+x-x/%e^x],
+[(1+%e^x)^2*x,x,6,-2*%e^x-1/4*%e^(2*x)+2*%e^x*x+1/2*%e^(2*x)*x+1/2*x^2],
+
+-- Chapter 4 - The Third Stage of Sin
+[x*cos(x),x,2,cos(x)+x*sin(x)],
+[cos(sqrt(x)),x,3,2*cos(sqrt(x))+2*sin(sqrt(x))*sqrt(x)],
+
+-- The Integration-by-Parts Methods
+[x*cos(x),x,2,cos(x)+x*sin(x)],
+[x*log(x)^2,x,2,1/4*x^2-1/2*x^2*log(x)+1/2*x^2*log(x)^2],
+
+-- The Derivative-divides Method
+[cos(x)*(1+sin(x)^3),x,2,sin(x)+1/4*sin(x)^4],
+[1/(x*(1+log(x)^2)),x,2,atan(log(x))],
+[1/((1+asin(x)^2)*sqrt(1-x^2)),x,2,atan(asin(x))],
+[sin(x)/(cos(x)+sin(x)),x,2,1/2*x-1/2*log(cos(x)+sin(x))],
+
+-- An Example of SIN's Performance
+[-sqrt(A^2+B^2*(1-y^2))/(1-y^2),y,6,-B*atan(B*y/sqrt(A^2+B^2-B^2*y^2))-A*atanh(A*y/sqrt(A^2+B^2-B^2*y^2))],
+[(-A^2-B^2)*cos(z)^2/(B*(1-(A^2+B^2)*sin(z)^2/B^2)),z,5,-B*z-A*atanh(A*tan(z)/B)],
+[(-A^2-B^2)/(B*(1+w^2)^2*(1-(A^2+B^2)*w^2/(B^2*(1+w^2)))),w,6,-B*atan(w)-A*atanh(A*w/B)],
+[-B*(A^2+B^2)/((1+w^2)*(B^2-A^2*w^2)),w,4,-B*atan(w)-A*atanh(A*w/B)],
+
+-- SAINT and SIN solutions of the same problem
+[x^4/(1-x^2)^(5/2),x,3,1/3*x^3/(1-x^2)^(3/2)+asin(x)-x/sqrt(1-x^2)],
+[sin(y)^4/cos(y)^4,y,3,y-tan(y)+1/3*tan(y)^3],
+[z^4/(1+z^2),z,3,-z+1/3*z^3+atan(z)],
+
+-- Chapter 5 - The Edge Heuristic
+[%e^(x^2)*(1+2*x^2),x,5,%e^(x^2)*x],
+[%e^(x^2)*(1+4*x^2+x^3+5*x^4+2*x^6)/(1+x^2)^2,x,10,%e^(x^2)*x+1/2*%e^(x^2)/(1+x^2)],
+[%e^(-1-x),x,1,-%e^(-1-x)],
+[(1/x+x)*log(x),x,5,-1/4*x^2+1/2*x^2*log(x)+1/2*log(x)^2],
+[x/(1+x^4),x,2,1/2*atan(x^2)],
+[x^5/(1+x^4),x,3,1/2*x^2-1/2*atan(x^2)],
+[1/(1+tan(x)^2),x,3,1/2*x+1/2*cos(x)*sin(x)],
+[x^4/(1-x^2)^(5/2),x,3,1/3*x^3/(1-x^2)^(3/2)+asin(x)-x/sqrt(1-x^2)],
+[-x^2/(1-x^2)^(3/2),x,2,asin(x)-x/sqrt(1-x^2)],
+[%e^x*sin(x),x,1,-1/2*%e^x*cos(x)+1/2*%e^x*sin(x)],
+
+-- Appendix C - Slagle's Thesis Integration Problems
+[1/x,x,1,log(x)],
+[sec(2*t)/(1+sec(t)^2+3*tan(t)),t,4,-1/12*log(cos(t)-sin(t))-1/4*log(cos(t)+sin(t))+1/3*log(2*cos(t)+sin(t))+(-1/2)/(1+tan(t))],
+[1/sec(x)^2,x,2,1/2*x+1/2*cos(x)*sin(x)],
+[(1+x^2)/sqrt(x),x,2,2/5*x^(5/2)+2*sqrt(x)],
+[x/sqrt(5+2*x+x^2),x,3,-asinh(1/2*(1+x))+sqrt(5+2*x+x^2)],
+[cos(x)*sin(x)^2,x,2,1/3*sin(x)^3],
+[%e^x/(1+%e^x),x,2,log(1+%e^x)],
+[%e^(2*x)/(1+%e^x),x,3,%e^x-log(1+%e^x)],
+[1/(1-cos(x)),x,1,-sin(x)/(1-cos(x))],
+[sec(x)^2*tan(x),x,2,1/2*sec(x)^2],
+[x*log(x),x,1,-1/4*x^2+1/2*x^2*log(x)],
+[cos(x)*sin(x),x,2,1/2*sin(x)^2],
+[(1+x)/sqrt(2*x-x^2),x,3,-2*asin(1-x)-sqrt(2*x-x^2)],
+[2*%e^x/(2+3*%e^(2*x)),x,3,atan(%e^x*sqrt(3/2))*sqrt(2/3)],
+[x^4/(1-x^2)^(5/2),x,3,1/3*x^3/(1-x^2)^(3/2)+asin(x)-x/sqrt(1-x^2)],
+[%e^(6*x)/(1+%e^(4*x)),x,3,1/2*%e^(2*x)-1/2*atan(%e^(2*x))],
+[log(2+3*x^2),x,3,-2*x+x*log(2+3*x^2)+2*atan(x*sqrt(3/2))*sqrt(2/3)],
+
+-- Appendix D - MacIntosh Integration Problems
+[1/(r*sqrt(-a^2+2*H*r^2)),x,1,x/(r*sqrt(-a^2+2*H*r^2))],
+[1/(r*sqrt(-a^2-e^2+2*H*r^2)),x,1,x/(r*sqrt(-a^2-e^2+2*H*r^2))],
+[1/(r*sqrt(-a^2+2*H*r^2-2*K*r^4)),x,1,x/(r*sqrt(-a^2+2*H*r^2-2*K*r^4))],
+[1/(r*sqrt(-a^2-e^2+2*H*r^2-2*K*r^4)),x,1,x/(r*sqrt(-a^2-e^2+2*H*r^2-2*K*r^4))],
+[1/(r*sqrt(-a^2-2*K*r+2*H*r^2)),x,1,x/(r*sqrt(-a^2-2*r*(K-H*r)))],
+[1/(r*sqrt(-a^2-e^2-2*K*r+2*H*r^2)),x,1,x/(r*sqrt(-a^2-e^2-2*K*r+2*H*r^2))],
+[r/sqrt(-a^2+2*%e*r^2),x,1,r*x/sqrt(-a^2+2*%e*r^2)],
+[r/sqrt(-a^2-e^2+2*%e*r^2),x,1,r*x/sqrt(-a^2-e^2+2*%e*r^2)],
+[r/sqrt(-a^2+2*%e*r^2-2*K*r^4),x,1,r*x/sqrt(-a^2+2*%e*r^2-2*K*r^4)],
+[r/sqrt(-a^2-e^2+2*%e*r^2-2*K*r^4),x,1,r*x/sqrt(-a^2-e^2+2*%e*r^2-2*K*r^4)],
+[r/sqrt(-a^2-e^2-2*K*r+2*H*r^2),x,1,r*x/sqrt(-a^2-e^2-2*K*r+2*H*r^2)]]

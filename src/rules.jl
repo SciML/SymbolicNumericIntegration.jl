@@ -1,26 +1,26 @@
 ########################## Predicates #########################################
 
-is_pos_int(x) = isinteger(x) && x > 0
-is_pos(x) = x > 0
-is_neg(x) = x < 0
-is_neg_one(x) = (x ≈ -1)
-is_pos_half(x) = (x ≈ 0.5)
-is_neg_half(x) = (x ≈ -0.5)
-is_abs_half(x) = (x ≈ -0.5 || x ≈ -0.5)
+is_pos_int(x) = is_proper(x) && isinteger(x) && x > 0
+is_neg_int(x) = is_proper(x) && isinteger(x) && x < 0
+is_int_gt_one(x) = is_proper(x) && isinteger(x) && x > 1
+is_pos(x) = is_proper(x) && x > 0
+is_neg(x) = is_proper(x) && x < 0
+is_neg_one(x) = is_proper(x) && (x ≈ -1)
+is_pos_half(x) = is_proper(x) && (x ≈ 0.5)
+is_neg_half(x) = is_proper(x) && (x ≈ -0.5)
+is_abs_half(x) = is_proper(x) && (x ≈ 0.5 || x ≈ -0.5)
 
 ###############################################################################
 
-function U(u...)
-    u = map(x -> x isa AbstractArray ? x : [], u)
-    return union(u...)
-end
+terms(eq::SymbolicUtils.Add) = [t for t in arguments(eq)]
+terms(eq) = [eq]
 
-hints(eq::SymbolicUtils.Add, x, h, k) = map(t->hints(t,x,h,k), arguments(eq))
-hints(eq::SymbolicUtils.Mul, x, h, k) = map(t->hints(t,x,h,k), arguments(eq))
-hints(eq::SymbolicUtils.Pow, x, h, k) = hints(arguments(eq)[1],x,h,k)
+hints(eq::SymbolicUtils.Add, x, k) = map(t->hints(t,x,k), arguments(eq))
+hints(eq::SymbolicUtils.Mul, x, k) = map(t->hints(t,x,k), arguments(eq))
+hints(eq::SymbolicUtils.Pow, x, k) = hints(arguments(eq)[1],x,k)
 
-function hints(eq::SymbolicUtils.Term, x, h, k)
-    s = Symbol(operation(eq))
+function hints(eq::SymbolicUtils.Term, x, k)
+    s = Symbol(operation(xq))
     u = arguments(eq)[1]
 
     if !isequal(u, x)
@@ -29,38 +29,12 @@ function hints(eq::SymbolicUtils.Term, x, h, k)
             push!(k, u)
         end
     end
-
-    if s == :sec
-        push!(h, log(1/cos(u) + sin(u)/cos(u)))
-    elseif s == :csc
-        push!(h, log(1/sin(u) - cos(u)/sin(u)))
-    elseif s == :tan
-        push!(h, log(cos(u)))
-    elseif s == :cot
-        push!(h, log(sin(u)))
-    elseif s == :tanh
-        push!(h, log(cosh(u)))
-    # elseif s == :log
-    #     if check_poly(u, x) == :real_poly && deg(u, x) == 2
-    #         r, s = find_roots(u, x)
-    #         if !isempty(r)
-    #             push!(h, log(x - r[1]))
-    #             push!(h, log(x - r[2]))
-    #         else
-    #             push!(h, log(u))
-    #         end
-    #     end
-    end
-end
-
-function hints(eq, x, h, k)
 end
 
 function collect_hints(eq, x)
-    h = []  # hints
     k = []  # kernels
-    hints(eq, x, h, k)
-    h, k
+    hints(eq, x, k)
+    k
 end
 
 ##############################################################################
@@ -164,7 +138,7 @@ is_var(eq) = isequal(eq, var(eq))
 p_rules = [
     @rule Ω(+(~~xs)) => max(map(Ω, ~~xs)...)
     @rule Ω(~x * ~y) => Ω(~x) + Ω(~y)
-    @rule Ω(^(~x, ~k)) => ~k >= 0 ? ~k * Ω(~x) : NaN
+    @rule Ω(^(~x, ~k::is_proper)) => is_pos_int(~k) ? ~k * Ω(~x) : NaN
     @rule Ω(~x::is_number) => 0
     @rule Ω(~x::is_var) => 1
     @rule Ω(~x) => NaN
@@ -202,83 +176,126 @@ s_rules = [
 
 kernel(eq) = Prewalk(Chain(s_rules))(Ω(value(eq)))
 
-n_rules = [
-    @rule Ω(+(~~xs)) => sum(map(Ω,~~xs))
-    @rule Ω(*(~~xs)) => union(map(Ω,~~xs))
-    @rule Ω(^(~x, ~k)) => Ω(~x)
-    @rule Ω((~f)(~x::is_linear_poly)) => [~x]
-    @rule Ω(~x) => []
-]
-
-inners(eq) = Fixpoint(Prewalk(PassThrough(Chain(n_rules))))(Ω(value(eq)))
-
 coef(eq::SymbolicUtils.Mul, x) = prod(t for t in arguments(eq) if !isdependent(t,x); init=1)
 coef(eq::SymbolicUtils.Add, x) = minimum(abs(coef(t,x)) for t in arguments(eq))
 coef(eq, x) = 1
 
 ########################## Transformation Rules ###############################
 
-is_int_gt_one(x) = isinteger(x) && x > 1
+int_rules = [
+    @rule tan(~x) => sin(~x) / cos(~x)
+    @rule sec(~x) => one(~x) / cos(~x)
+    @rule csc(~x) => one(~x) / sin(~x)
+    @rule cot(~x) => cos(~x) / sin(~x)
+    @rule sin(~n::is_int_gt_one*~x) => sin((~n - 1)*~x)*cos(~x) + cos((~n - 1)*~x)*sin(~x)
+    @rule cos(~n::is_int_gt_one*~x) => cos((~n - 1)*~x)*cos(~x) - sin((~n - 1)*~x)*sin(~x)
+    @rule tan(~n::is_int_gt_one*~x) => (tan((~n - 1)*~x) + tan(~x)) / (1 - tan((~n - 1)*~x)*tan(~x))
+    @rule csc(~n::is_int_gt_one*~x) => sec((~n - 1)*~x)*sec(~x)*csc((~n - 1)*~x)*csc(~x) / (sec((~n - 1)*~x)*csc(~x) + csc((~n - 1)*~x)*sec(~x))
+    @rule sec(~n::is_int_gt_one*~x) => sec((~n - 1)*~x)*sec(~x)*csc((~n - 1)*~x)*csc(~x) / (csc((~n - 1)*~x)*csc(~x) - sec((~n - 1)*~x)*sec(~x))
+    @rule cot(~n::is_int_gt_one*~x) => (cot((~n - 1)*~x)*cot(~x) - 1) / (cot((~n - 1)*~x) + cot(~x))
 
-trig_rule1 = @rule tan(~x) => sin(~x) / cos(~x)
-trig_rule2 = @rule sec(~x) => one(~x) / cos(~x)
-# trig_rule2 = @rule sec(~x) => (tan(~x)/cos(~x) + 1/cos(~x)^2) / (tan(~x) + 1/cos(~x))
-trig_rule3 = @rule csc(~x) => one(~x) / sin(~x)
-# trig_rule3 = @rule csc(~x) => (cot(~x)/sin(~x) + 1/sin(~x)^2) / (cot(~x) + 1/sin(~x))
-trig_rule4 = @rule cot(~x) => cos(~x) / sin(~x)
-trig_rule5 = @rule sin(~n::is_int_gt_one*~x) => sin((~n - 1)*~x)*cos(~x) + cos((~n - 1)*~x)*sin(~x)
-trig_rule6 = @rule cos(~n::is_int_gt_one*~x) => cos((~n - 1)*~x)*cos(~x) - sin((~n - 1)*~x)*sin(~x)
-trig_rule7 = @rule tan(~n::is_int_gt_one*~x) => (tan((~n - 1)*~x) + tan(~x)) / (1 - tan((~n - 1)*~x)*tan(~x))
-trig_rule8 = @rule csc(~n::is_int_gt_one*~x) => sec((~n - 1)*~x)*sec(~x)*csc((~n - 1)*~x)*csc(~x) / (sec((~n - 1)*~x)*csc(~x) + csc((~n - 1)*~x)*sec(~x))
-trig_rule9 = @rule sec(~n::is_int_gt_one*~x) => sec((~n - 1)*~x)*sec(~x)*csc((~n - 1)*~x)*csc(~x) / (csc((~n - 1)*~x)*csc(~x) - sec((~n - 1)*~x)*sec(~x))
-trig_rule10 = @rule cot(~n::is_int_gt_one*~x) => (cot((~n - 1)*~x)*cot(~x) - 1) / (cot((~n - 1)*~x) + cot(~x))
+    @rule ^(sin(~x), ~k::is_neg) => ^(csc(~x), -~k)
+    @rule ^(cos(~x), ~k::is_neg) => ^(sec(~x), -~k)
+    @rule ^(tan(~x), ~k::is_neg) => ^(cot(~x), -~k)
+    @rule ^(csc(~x), ~k::is_neg) => ^(sin(~x), -~k)
+    @rule ^(sec(~x), ~k::is_neg) => ^(cos(~x), -~k)
+    @rule ^(cot(~x), ~k::is_neg) => ^(tan(~x), -~k)
 
-trig_rule11 = @rule sin(~x + ~y) => sin(~x)*cos(~y) + cos(~x)*sin(~y)
-trig_rule12 = @rule cos(~x + ~y) => cos(~x)*cos(~y) - sin(~x)*sin(~y)
-trig_rule13 = @rule tan(~x + ~y) => (tan(~x) + tan(~y)) / (1 - tan(~x)*tan(~y))
-trig_rule14 = @rule csc(~x + ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) / (sec(~x)*csc(~y) + csc(~x)*sec(~y))
-trig_rule15 = @rule sec(~x + ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) / (csc(~x)*csc(~y) - sec(~x)*sec(~y))
-trig_rule16 = @rule cot(~x + ~y) => (cot(~x)*cot(~y) - 1) / (cot(~x) + cot(~y))
+    @rule sin(~x + ~y) => sin(~x)*cos(~y) + cos(~x)*sin(~y)
+    @rule cos(~x + ~y) => cos(~x)*cos(~y) - sin(~x)*sin(~y)
+    @rule tan(~x + ~y) => (tan(~x) + tan(~y)) / (1 - tan(~x)*tan(~y))
+    @rule csc(~x + ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) / (sec(~x)*csc(~y) + csc(~x)*sec(~y))
+    @rule sec(~x + ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) / (csc(~x)*csc(~y) - sec(~x)*sec(~y))
+    @rule cot(~x + ~y) => (cot(~x)*cot(~y) - 1) / (cot(~x) + cot(~y))
 
-trig_rule17 = @rule sin(~x - ~y) => sin(~x)*cos(~y) - cos(~x)*sin(~y)
-trig_rule18 = @rule cos(~x - ~y) => cos(~x)*cos(~y) + sin(~x)*sin(~y)
-trig_rule19 = @rule tan(~x - ~y) => (tan(~x) - tan(~y)) / (1 + tan(~x)*tan(~y))
-trig_rule20 = @rule csc(~x - ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) / (sec(~x)*csc(~y) - csc(~x)*sec(~y))
-trig_rule21 = @rule sec(~x - ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) / (csc(~x)*csc(~y) + sec(~x)*sec(~y))
-trig_rule22 = @rule cot(~x - ~y) => (cot(~x)*cot(~y) + 1) / (cot(~x) - cot(~y))
+    @rule sin(~x - ~y) => sin(~x)*cos(~y) - cos(~x)*sin(~y)
+    @rule cos(~x - ~y) => cos(~x)*cos(~y) + sin(~x)*sin(~y)
+    @rule tan(~x - ~y) => (tan(~x) - tan(~y)) / (1 + tan(~x)*tan(~y))
+    @rule csc(~x - ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) / (sec(~x)*csc(~y) - csc(~x)*sec(~y))
+    @rule sec(~x - ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) / (csc(~x)*csc(~y) + sec(~x)*sec(~y))
+    @rule cot(~x - ~y) => (cot(~x)*cot(~y) + 1) / (cot(~x) - cot(~y))
 
-# trig_rule5 = @rule sin(2*~x) => 2*sin(~x)*cos(~x)
-# trig_rule6 = @rule cos(2*~x) => 2*cos(~x)^2 - 1
-# trig_rule7 = @rule tan(2*~x) => 2*tan(~x) / (1 - tan(~x)^2)
-# trig_rule8 = @rule cot(2*~x) => (cot(~x)^2 - 1) / (2*cot(~x))
-# trig_rule9 = @rule sec(2*~x) => sec(~x)^2 / (2 - sec(~x)^2)
-# trig_rule10 = @rule csc(2*~x) => sec(~x)*csc(~x) / 2
-#
-# trig_rule11 = @rule sin(3*~x) => 3*sin(~x) - 4*sin(~x)^3
-# trig_rule12 = @rule cos(3*~x) => 4*cos(~x)^3 - 3*cos(~x)
-# trig_rule13 = @rule tan(3*~x) => (3*tan(~x) - tan(~x)^3) / (1 - 3*tan(~x)^2)
-# trig_rule14 = @rule cot(3*~x) => (3*cot(~x) - cot(~x)^3) / (1 - 3*cot(~x)^2)
-# trig_rule15 = @rule sec(3*~x) => sec(~x)^3 / (4 - 3*sec(~x)^2)
-# trig_rule16 = @rule csc(3*~x) => csc(~x)^3 / (3*csc(~x)^2 - 4)
+    # @rule sin(2*~x) => 2*sin(~x)*cos(~x)
+    # @rule cos(2*~x) => 2*cos(~x)^2 - 1
+    # @rule tan(2*~x) => 2*tan(~x) / (1 - tan(~x)^2)
+    # @rule cot(2*~x) => (cot(~x)^2 - 1) / (2*cot(~x))
+    # @rule sec(2*~x) => sec(~x)^2 / (2 - sec(~x)^2)
+    # @rule csc(2*~x) => sec(~x)*csc(~x) / 2
 
-trig_rules = [trig_rule1, trig_rule2, trig_rule3, trig_rule4,
-              trig_rule5, trig_rule6, trig_rule7, trig_rule8, trig_rule9, trig_rule10,
-              trig_rule11, trig_rule12, trig_rule13, trig_rule14, trig_rule15, trig_rule16,
-              trig_rule17, trig_rule18, trig_rule19, trig_rule20, trig_rule21, trig_rule22]
+    # @rule sin(3*~x) => 3*sin(~x) - 4*sin(~x)^3
+    # @rule cos(3*~x) => 4*cos(~x)^3 - 3*cos(~x)
+    # @rule tan(3*~x) => (3*tan(~x) - tan(~x)^3) / (1 - 3*tan(~x)^2)
+    # @rule cot(3*~x) => (3*cot(~x) - cot(~x)^3) / (1 - 3*cot(~x)^2)
+    # @rule sec(3*~x) => sec(~x)^3 / (4 - 3*sec(~x)^2)
+    # @rule csc(3*~x) => csc(~x)^3 / (3*csc(~x)^2 - 4)
 
-hyper_rule1 = @rule tanh(~x) => sinh(~x) / cosh(~x)
-hyper_rule2 = @rule sech(~x) => one(~x) / cosh(~x)
-hyper_rule3 = @rule csch(~x) => one(~x) / sinh(~x)
-hyper_rule4 = @rule coth(~x) => cosh(~x) / sinh(~x)
+    @rule tanh(~x) => sinh(~x) / cosh(~x)
+    @rule sech(~x) => one(~x) / cosh(~x)
+    @rule csch(~x) => one(~x) / sinh(~x)
+    @rule coth(~x) => cosh(~x) / sinh(~x)
 
-hyper_rules = [hyper_rule1, hyper_rule2, hyper_rule3, hyper_rule4]
-
-misc_rule1 = @rule sqrt(~x) => ^(~x, 0.5)
-misc_rule2 = @acrule exp(~x) * exp(~y) => exp(~x + ~y)
-
-misc_rules = [misc_rule1]
-
-int_rules = [trig_rules; hyper_rules; misc_rules]
-# int_rules = misc_rules
+    @rule sqrt(~x) => ^(~x, 0.5)
+    @acrule exp(~x) * exp(~y) => exp(~x + ~y)
+]
 
 apply_integration_rules(eq) = expand(Fixpoint(Prewalk(PassThrough(Chain(int_rules))))(value(eq)))
+
+##############################################################################
+
+function factor_poly(p)
+    x = var(p)
+    r, s = find_roots(p, x)
+    s = s[1:2:end]
+    r = nice_parameter.(r)
+    s = nice_parameter.(s)
+    return [[(x - u) for u in r];
+            [(x^2 - 2*real(u)*x + abs2(u)) for u in s]
+           ]
+end
+
+function decompose_rational(eq, k=1)
+    if poly_deg(1/eq) == 1 return eq^k end
+    x = var(eq)
+    r, s = find_roots(1/eq, x)
+    s = s[1:2:end]
+    r = nice_parameter.(r)
+    s = nice_parameter.(s)
+
+    F = [1/(x^2 - 2*real(u)*x + abs2(u)) for u in s] ∪
+        [x/(x^2 - 2*real(u)*x + abs2(u)) for u in s]
+    for i in eachindex(r)
+        μ = sum(r[1:i] .== r[i])
+        push!(F, 1/(x-r[i])^μ)
+    end
+    F = unique(F)
+    
+    n = length(F)
+    A = zeros(Complex, (n,n))
+    b = zeros(Complex, n)
+
+    for i = 1:n
+        x₀ = test_point(false, 1.0)
+        d = Dict(x => x₀)
+        b[i] = substitute(eq, d)
+        for j = 1:n
+            A[i,j] = substitute(F[j], d)
+        end
+    end
+
+    q₀ = A \ b
+    q = nice_parameter.(q₀)
+    p = sum(F[i]*q[i] for i=1:n if q[i] != 0; init=zero(x))
+    return expand(p^k)
+end
+
+q_rules = [
+    @rule Ω(+(~~xs)) => sum(map(Ω, ~~xs))
+    @rule Ω(*(~~xs)) => prod(map(Ω, ~~xs))
+    @rule Ω(^(~x::is_poly, ~k::is_neg_int)) => decompose_rational(1/~x, -~k)
+    # @rule Ω(^(~x,~k)) => ^(~x, ~k)
+    @rule Ω(sqrt(~x::is_poly)) => prod(sqrt(f) for f in factor_poly(~x))
+    @rule Ω(log(~x::is_poly)) => sum(log(f) for f in factor_poly(~x))
+    @rule Ω(~x) => ~x
+]
+
+apply_q_rules(eq) = Prewalk(PassThrough(Chain(q_rules)))(Ω(value(eq)))
