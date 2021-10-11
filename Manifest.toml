@@ -93,6 +93,12 @@ git-tree-sha1 = "d5b014b216dc891e81fea299638e4c10c657b582"
 uuid = "b152e2b5-7a66-4b01-a709-34e65c35f657"
 version = "0.1.2"
 
+[[Conda]]
+deps = ["JSON", "VersionParsing"]
+git-tree-sha1 = "299304989a5e6473d985212c28928899c74e9421"
+uuid = "8f4d0f93-b110-5947-807f-2305c1781a2d"
+version = "1.5.2"
+
 [[ConstructionBase]]
 deps = ["LinearAlgebra"]
 git-tree-sha1 = "f74e9d5388b8620b4cee35d4c5a618dd4dc547f4"
@@ -585,6 +591,12 @@ git-tree-sha1 = "afadeba63d90ff223a6a48d2009434ecee2ec9e8"
 uuid = "92933f4c-e287-5a05-a399-4b506db050ca"
 version = "1.7.1"
 
+[[PyCall]]
+deps = ["Conda", "Dates", "Libdl", "LinearAlgebra", "MacroTools", "Serialization", "VersionParsing"]
+git-tree-sha1 = "169bb8ea6b1b143c5cf57df6d34d022a7b60c6db"
+uuid = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
+version = "1.92.3"
+
 [[QuadGK]]
 deps = ["DataStructures", "LinearAlgebra"]
 git-tree-sha1 = "12fbe86da16df6679be7521dfb39fbc861e1dc7b"
@@ -854,6 +866,11 @@ deps = ["ArrayInterface", "CPUSummary", "HostCPUFeatures", "Hwloc", "IfElse", "L
 git-tree-sha1 = "5e6e23728d6c8d26d2826f6cb2cd21892a958a43"
 uuid = "3d5dd08c-fd9d-11e8-17fa-ed2836048c2f"
 version = "0.20.38"
+
+[[VersionParsing]]
+git-tree-sha1 = "80229be1f670524750d905f8fc8148e5a8c4537f"
+uuid = "81def892-9a0e-5fdd-b105-ffc91e053289"
+version = "1.2.0"
 
 [[VertexSafeGraphs]]
 deps = ["LightGraphs"]
