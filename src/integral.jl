@@ -27,6 +27,7 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius
                    symbolic=true, bypart=true, max_basis=110,
                    verbose=false, complex_plane=true)
     eq = expand(eq)
+    eq = apply_div_rule(eq)
 
     if x == nothing
         x = var(eq)

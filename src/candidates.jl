@@ -2,13 +2,14 @@ using DataStructures
 
 # this is the main heurisctic used to find the test fragments
 function generate_basis(eq, x)
+    eq = expand(eq)
     # C = []
     S = Set{Any}()
     for t in terms(eq)
         q = t / coef(t, x)
         f = kernel(q)
         C₁ = find_candidates(f, x)
-        C₂ = find_candidates_nonsolvable(q / f, x)
+        C₂ = find_candidates_nonsolvable(q * inverse(f), x)
         for c₁ in C₁
             for c₂ in C₂
                 enqueue_expr_ex!(S, expand(c₁*c₂), x)
@@ -234,7 +235,7 @@ function find_candidates(eq, x)
     P, Q = split_frac(eq)
     PP = closure(P, x)
     if isequal(Q, 1) return PP end
-    QQ = generate_basis(1/Q, x)
+    QQ = generate_basis(Q^-1, x)
 
     S = Set()
 

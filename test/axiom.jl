@@ -90,7 +90,7 @@ function accept_integral(sol, ans, x; radius=1.0, abstol=1e-3, n=5)
     return false
 end
 
-function test_axion(L, try_sympy=true; kwargs...)
+function test_axiom(L, try_sympy=true; kwargs...)
     n_ok = 0
     n_fail = 0
     n_diff = 0

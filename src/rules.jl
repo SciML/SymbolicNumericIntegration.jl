@@ -46,15 +46,15 @@ end
 d_rule_g1 = @rule 𝛷(sin(~x)) => one(~x) + sin(~x) + cos(~x)
 d_rule_g2 = @rule 𝛷(cos(~x)) => one(~x) + cos(~x) + sin(~x)
 d_rule_g3 = @rule 𝛷(tan(~x)) => one(~x) + tan(~x) + log(cos(~x))
-d_rule_g4 = @rule 𝛷(csc(~x)) => one(~x) + csc(~x) + log(1/sin(~x) - cos(~x)/sin(~x))
-d_rule_g5 = @rule 𝛷(sec(~x)) => one(~x) + sec(~x) + log(1/cos(~x) + sin(~x)/cos(~x))
+d_rule_g4 = @rule 𝛷(csc(~x)) => one(~x) + csc(~x) + log(sin(~x)^-1 - cos(~x)*sin(~x)^-1)
+d_rule_g5 = @rule 𝛷(sec(~x)) => one(~x) + sec(~x) + log(cos(~x)^-1 + sin(~x)*cos(~x)^-1)
 d_rule_g6 = @rule 𝛷(cot(~x)) => one(~x) + cot(~x) + log(sin(~x))
 
 d_rule_h1 = @rule 𝛷(sinh(~x)) => one(~x) + sinh(~x) + cosh(~x)
 d_rule_h2 = @rule 𝛷(cosh(~x)) => one(~x) + cosh(~x) + sinh(~x)
 d_rule_h3 = @rule 𝛷(tanh(~x)) => one(~x) + tanh(~x) + log(cosh(~x))
-d_rule_h4 = @rule 𝛷(csch(~x)) => one(~x) + csch(~x) + log(1/sinh(~x) - cosh(~x)/sinh(~x))
-d_rule_h5 = @rule 𝛷(sech(~x)) => one(~x) + sech(~x) + log(1/cosh(~x) + sinh(~x)/cosh(~x))
+d_rule_h4 = @rule 𝛷(csch(~x)) => one(~x) + csch(~x) + log(sinh(~x)^-1 - cosh(~x)*sinh(~x)^-1)
+d_rule_h5 = @rule 𝛷(sech(~x)) => one(~x) + sech(~x) + log(cosh(~x)^-1 + sinh(~x)*cosh(~x)^-1)
 d_rule_h6 = @rule 𝛷(coth(~x)) => one(~x) + coth(~x) + log(sinh(~x))
 
 d_rule_i1 = @rule 𝛷(asin(~x)) => one(~x) + asin(~x) + ~x*asin(~x) + sqrt(1 - ~x*~x)
@@ -71,7 +71,7 @@ d_rule_j4 = @rule 𝛷(acsch(~x)) => one(~x) + acsch(~x)
 d_rule_j5 = @rule 𝛷(asech(~x)) => one(~x) + asech(~x)
 d_rule_j6 = @rule 𝛷(acoth(~x)) => one(~x) + acoth(~x) + ~x*acot(~x) + log(~x + 1)
 
-d_rule_l1 = @rule 𝛷(log(~x)) => one(~x) + log(~x) + ~x + ~x * log(~x) + 𝛷(1/~x)
+d_rule_l1 = @rule 𝛷(log(~x)) => one(~x) + log(~x) + ~x + ~x * log(~x) + 𝛷(inverse(~x))
 d_rule_l2 = @rule 𝛷(sqrt(~x)) => sum(candidate_sqrt(~x,0.5); init=one(~x))
 d_rule_l3 = @rule 𝛷(^(sqrt(~x),-1)) => 𝛷(^(~x,-0.5))
 d_rule_l4 = @rule 𝛷(cbrt(~x)) => one(~x) + cbrt(~x) + ^(~x, 4/3)
@@ -83,8 +83,9 @@ d_rule_p3 = @rule 𝛷(^(~x, ~k::is_pos)) => one(~x) + ^(~x,~k+1) + 𝛷(~x)
 d_rule_e1 = @rule 𝛷(exp(~x)) => one(~x) + exp(~x)
 d_rule_e2 = @rule 𝛷(+(~~xs)) => sum(map(𝛷, ~~xs))
 d_rule_e3 = @rule 𝛷(*(~~xs)) => prod(map(𝛷, ~~xs))
-d_rule_e4 = @rule 𝛷(~x) => one(~x) + ~x
-d_rule_e5 = @rule 𝛷(-~x) => -𝛷(~x)
+d_rule_e4 = @rule 𝛷(~x / ~y) => 𝛷(~x * inverse(~y))
+d_rule_e5 = @rule 𝛷(~x) => one(~x) + ~x
+d_rule_e6 = @rule 𝛷(-~x) => -𝛷(~x)
 
 
 d_rules = [
@@ -123,6 +124,7 @@ d_rules = [
     d_rule_e3,
     d_rule_e4,
     d_rule_e5,
+    d_rule_e6,
 ]
 
 apply_d_rules(eq) = expand(Fixpoint(Prewalk(PassThrough(Chain(d_rules))))(𝛷(value(eq))))
@@ -183,16 +185,16 @@ coef(eq, x) = 1
 ########################## Transformation Rules ###############################
 
 int_rules = [
-    @rule tan(~x) => sin(~x) / cos(~x)
-    @rule sec(~x) => one(~x) / cos(~x)
-    @rule csc(~x) => one(~x) / sin(~x)
-    @rule cot(~x) => cos(~x) / sin(~x)
+    @rule tan(~x) => sin(~x) * cos(~x)^-1
+    @rule sec(~x) => one(~x) * cos(~x)^-1
+    @rule csc(~x) => one(~x) * sin(~x)^-1
+    @rule cot(~x) => cos(~x) * sin(~x)^-1
     @rule sin(~n::is_int_gt_one*~x) => sin((~n - 1)*~x)*cos(~x) + cos((~n - 1)*~x)*sin(~x)
     @rule cos(~n::is_int_gt_one*~x) => cos((~n - 1)*~x)*cos(~x) - sin((~n - 1)*~x)*sin(~x)
-    @rule tan(~n::is_int_gt_one*~x) => (tan((~n - 1)*~x) + tan(~x)) / (1 - tan((~n - 1)*~x)*tan(~x))
-    @rule csc(~n::is_int_gt_one*~x) => sec((~n - 1)*~x)*sec(~x)*csc((~n - 1)*~x)*csc(~x) / (sec((~n - 1)*~x)*csc(~x) + csc((~n - 1)*~x)*sec(~x))
-    @rule sec(~n::is_int_gt_one*~x) => sec((~n - 1)*~x)*sec(~x)*csc((~n - 1)*~x)*csc(~x) / (csc((~n - 1)*~x)*csc(~x) - sec((~n - 1)*~x)*sec(~x))
-    @rule cot(~n::is_int_gt_one*~x) => (cot((~n - 1)*~x)*cot(~x) - 1) / (cot((~n - 1)*~x) + cot(~x))
+    @rule tan(~n::is_int_gt_one*~x) => (tan((~n - 1)*~x) + tan(~x)) * (1 - tan((~n - 1)*~x)*tan(~x))^-1
+    @rule csc(~n::is_int_gt_one*~x) => sec((~n - 1)*~x)*sec(~x)*csc((~n - 1)*~x)*csc(~x) * (sec((~n - 1)*~x)*csc(~x) + csc((~n - 1)*~x)*sec(~x))^-1
+    @rule sec(~n::is_int_gt_one*~x) => sec((~n - 1)*~x)*sec(~x)*csc((~n - 1)*~x)*csc(~x) * (csc((~n - 1)*~x)*csc(~x) - sec((~n - 1)*~x)*sec(~x))^-1
+    @rule cot(~n::is_int_gt_one*~x) => (cot((~n - 1)*~x)*cot(~x) - 1) * (cot((~n - 1)*~x) + cot(~x))^-1
 
     @rule ^(sin(~x), ~k::is_neg) => ^(csc(~x), -~k)
     @rule ^(cos(~x), ~k::is_neg) => ^(sec(~x), -~k)
@@ -203,17 +205,17 @@ int_rules = [
 
     @rule sin(~x + ~y) => sin(~x)*cos(~y) + cos(~x)*sin(~y)
     @rule cos(~x + ~y) => cos(~x)*cos(~y) - sin(~x)*sin(~y)
-    @rule tan(~x + ~y) => (tan(~x) + tan(~y)) / (1 - tan(~x)*tan(~y))
-    @rule csc(~x + ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) / (sec(~x)*csc(~y) + csc(~x)*sec(~y))
-    @rule sec(~x + ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) / (csc(~x)*csc(~y) - sec(~x)*sec(~y))
-    @rule cot(~x + ~y) => (cot(~x)*cot(~y) - 1) / (cot(~x) + cot(~y))
+    @rule tan(~x + ~y) => (tan(~x) + tan(~y)) * (1 - tan(~x)*tan(~y))^-1
+    @rule csc(~x + ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) * (sec(~x)*csc(~y) + csc(~x)*sec(~y))^-1
+    @rule sec(~x + ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) * (csc(~x)*csc(~y) - sec(~x)*sec(~y))^-1
+    @rule cot(~x + ~y) => (cot(~x)*cot(~y) - 1) * (cot(~x) + cot(~y))^-1
 
     @rule sin(~x - ~y) => sin(~x)*cos(~y) - cos(~x)*sin(~y)
     @rule cos(~x - ~y) => cos(~x)*cos(~y) + sin(~x)*sin(~y)
-    @rule tan(~x - ~y) => (tan(~x) - tan(~y)) / (1 + tan(~x)*tan(~y))
-    @rule csc(~x - ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) / (sec(~x)*csc(~y) - csc(~x)*sec(~y))
-    @rule sec(~x - ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) / (csc(~x)*csc(~y) + sec(~x)*sec(~y))
-    @rule cot(~x - ~y) => (cot(~x)*cot(~y) + 1) / (cot(~x) - cot(~y))
+    @rule tan(~x - ~y) => (tan(~x) - tan(~y)) * (1 + tan(~x)*tan(~y))^-1
+    @rule csc(~x - ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) * (sec(~x)*csc(~y) - csc(~x)*sec(~y))^-1
+    @rule sec(~x - ~y) => sec(~x)*sec(~y)*csc(~x)*csc(~y) * (csc(~x)*csc(~y) + sec(~x)*sec(~y))^-1
+    @rule cot(~x - ~y) => (cot(~x)*cot(~y) + 1) * (cot(~x) - cot(~y))^-1
 
     # @rule sin(2*~x) => 2*sin(~x)*cos(~x)
     # @rule cos(2*~x) => 2*cos(~x)^2 - 1
@@ -229,10 +231,10 @@ int_rules = [
     # @rule sec(3*~x) => sec(~x)^3 / (4 - 3*sec(~x)^2)
     # @rule csc(3*~x) => csc(~x)^3 / (3*csc(~x)^2 - 4)
 
-    @rule tanh(~x) => sinh(~x) / cosh(~x)
-    @rule sech(~x) => one(~x) / cosh(~x)
-    @rule csch(~x) => one(~x) / sinh(~x)
-    @rule coth(~x) => cosh(~x) / sinh(~x)
+    @rule tanh(~x) => sinh(~x) * cosh(~x)^-1
+    @rule sech(~x) => one(~x) * cosh(~x)^-1
+    @rule csch(~x) => one(~x) * sinh(~x)^-1
+    @rule coth(~x) => cosh(~x) * sinh(~x)^-1
 
     @rule sqrt(~x) => ^(~x, 0.5)
     @acrule exp(~x) * exp(~y) => exp(~x + ~y)
@@ -253,22 +255,22 @@ function factor_poly(p)
            ]
 end
 
-function decompose_rational(eq, k=1)
-    if poly_deg(1/eq) == 1 return eq^k end
+function decompose_rational(eq)
+    if poly_deg(eq) == 1 return eq end
     x = var(eq)
-    r, s = find_roots(1/eq, x)
+    r, s = find_roots(eq, x)
     s = s[1:2:end]
     r = nice_parameter.(r)
     s = nice_parameter.(s)
 
-    F = [1/(x^2 - 2*real(u)*x + abs2(u)) for u in s] ∪
-        [x/(x^2 - 2*real(u)*x + abs2(u)) for u in s]
+    F = [(x^2 - 2*real(u)*x + abs2(u))^-1 for u in s] ∪
+        [x*(x^2 - 2*real(u)*x + abs2(u))^-1 for u in s]
     for i in eachindex(r)
         μ = sum(r[1:i] .== r[i])
-        push!(F, 1/(x-r[i])^μ)
+        push!(F, (x-r[i])^-μ)
     end
     F = unique(F)
-    
+
     n = length(F)
     A = zeros(Complex, (n,n))
     b = zeros(Complex, n)
@@ -285,13 +287,15 @@ function decompose_rational(eq, k=1)
     q₀ = A \ b
     q = nice_parameter.(q₀)
     p = sum(F[i]*q[i] for i=1:n if q[i] != 0; init=zero(x))
-    return expand(p^k)
+    return p
 end
 
 q_rules = [
     @rule Ω(+(~~xs)) => sum(map(Ω, ~~xs))
     @rule Ω(*(~~xs)) => prod(map(Ω, ~~xs))
-    @rule Ω(^(~x::is_poly, ~k::is_neg_int)) => decompose_rational(1/~x, -~k)
+    @rule Ω(^(~x::is_poly, ~k::is_neg_int)) => expand(^(decompose_rational(~x), -~k))
+    @rule Ω(~x / ^(~y::is_poly,~k::is_pos_int)) => ~x * expand(^(decompose_rational(~y), ~k))
+    @rule Ω(~x / ~y::is_poly) => ~x * expand(decompose_rational(~y))
     # @rule Ω(^(~x,~k)) => ^(~x, ~k)
     @rule Ω(sqrt(~x::is_poly)) => prod(sqrt(f) for f in factor_poly(~x))
     @rule Ω(log(~x::is_poly)) => sum(log(f) for f in factor_poly(~x))
@@ -299,3 +303,21 @@ q_rules = [
 ]
 
 apply_q_rules(eq) = Prewalk(PassThrough(Chain(q_rules)))(Ω(value(eq)))
+
+###############################################################################
+
+div_rule = @rule ~x / ~y => ~x * ^(~y, -1)
+
+apply_div_rule(eq) = Prewalk(PassThrough(div_rule))(value(eq))
+
+###############################################################################
+
+inv_rules = [
+    @rule Ω(1 / ~x) => ~x
+    @rule Ω(~x / ~y) => Ω(~x) * ~y
+    @rule Ω(^(~x, -1)) => ~x
+    @rule Ω(^(~x, ~k)) => ^(Ω(~x), -~k)
+    @rule Ω(~x) => ^(~x, -1)
+]
+
+inverse(eq) = Prewalk(PassThrough(Chain(inv_rules)))(Ω(value(eq)))
