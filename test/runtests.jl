@@ -187,7 +187,7 @@ basic_integrals = [
     1/log(x) - 1/log(x)^2,
 ]
 
-function test_integrals(; symbolic=false, verbose=true, bypart=true)
+function test_integrals(; symbolic=true, verbose=true, bypart=true)
     bypass = false
     misses = []
 

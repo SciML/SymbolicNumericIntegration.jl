@@ -3,22 +3,33 @@ using DataStructures
 # this is the main heurisctic used to find the test fragments
 function generate_basis(eq, x)
     eq = expand(eq)
-    # C = []
     S = Set{Any}()
     for t in terms(eq)
         q = t / coef(t, x)
         f = kernel(q)
-        C₁ = find_candidates(f, x)
+        C₁ = closure(f, x) # find_candidates(f, x)
         C₂ = find_candidates_nonsolvable(q * inverse(f), x)
         for c₁ in C₁
             for c₂ in C₂
                 enqueue_expr_ex!(S, expand(c₁*c₂), x)
             end
         end
-        #append!(C, [c₁*c₂ ])
     end
-    #return unique(C)
     return [one(x); [s for s in S]]
+end
+
+function closure(eq, x; max_terms=50)
+    if !isdependent(eq, x) return [one(x)] end
+    D = Differential(x)
+    S = Set{Any}()
+    q = Queue{Any}()
+    enqueue_expr!(S, q, eq, x)
+
+    while !isempty(q) && length(S) < max_terms
+        y = dequeue!(q)
+        enqueue_expr!(S, q, expand_derivatives(D(y)), x)
+    end
+    unique([one(x); [s for s in S]; [s*x for s in S]])
 end
 
 function find_candidates_nonsolvable(eq, x)
@@ -35,110 +46,6 @@ function find_candidates_nonsolvable(eq, x)
     end
 
     return unique([one(x); [s for s in S]])
-end
-
-"""
-    candidates returns a list of candidate expressions to form the integration
-    basis
-"""
-candidates(eq, x) = isdependent(eq,x) ? [eq] : []
-candidates(eq::Num, x) = candidates(value(eq), x)
-
-# the candidates of an Add is the union of the candidates of the terms
-# ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
-candidates(eq::SymbolicUtils.Add, x) = unique(∪([candidates(t,x) for t in arguments(eq)]...))
-
-# the candidates of a Mul is the outer product of the candidates of the terms
-# d(uv)/dx = u dv/dx + v + du/dx
-function candidates(eq::SymbolicUtils.Mul, x)
-    terms = [candidates(q,x) for q in arguments(eq)]
-    n = length(terms)
-
-    l = Any[one(x)]
-
-    for j = 1:n
-        m = length(l)
-        for t in terms[j]
-            for k = 1:m
-                push!(l, l[k]*t)
-            end
-        end
-    end
-
-    unique(l[2:end])    # removing the initial 1
-end
-
-function candidates_ex(eq::SymbolicUtils.Mul, x)
-    terms = [sum(candidates(q,x); init=1) for q in arguments(eq)]
-    # println(">> ", terms)
-    eq = expand(prod(terms; init=1))
-    # println(">>> ", eq)
-    D = Differential(x)
-    S = Set{Any}()
-    q = Queue{Any}()
-    enqueue_expr_ex!(S, q, eq, x)
-
-    for y in q
-        ∂y = expand_derivatives(D(y))
-        enqueue_expr_ex!(S, ∂y, x)
-    end
-
-    return [one(x); [s for s in S]]
-end
-
-function enqueue_expr_ex!(S, q, eq::SymbolicUtils.Add, x)
-    for t in arguments(eq)
-        enqueue_expr_ex!(S, q, t, x)
-    end
-end
-
-function enqueue_expr_ex!(S, q, eq, x)
-    y = eq / coef(eq, x)
-    if y ∉ S && isdependent(y, x)
-        enqueue!(q, y)
-        push!(S, y)
-    end
-end
-
-function enqueue_expr_ex!(S, eq::SymbolicUtils.Add, x)
-    for t in arguments(eq)
-        enqueue_expr_ex!(S, t, x)
-    end
-end
-
-function enqueue_expr_ex!(S, eq, x)
-    y = eq / coef(eq, x)
-    if y ∉ S && isdependent(y, x)
-        push!(S, y)
-    end
-end
-
-function candidates(eq)
-    x = var(eq)
-    # eq += expand_derivatives(Differential(x)(eq))
-    candidates(eq, x)
-end
-
-# the candidates of a Pow encode different integration rules
-function candidates(eq::SymbolicUtils.Pow, x)
-    if !isdependent(eq,x) return [one(x)] end
-
-    p = arguments(eq)[1]    # eq = p ^ k
-    k = arguments(eq)[2]
-
-    # if k < 0 && k ≈ round(k)
-    if k ≈ -1
-        return candidate_pow_minus(p, k)
-    elseif k ≈ 0.5 || k ≈ -0.5
-        Δ = expand_derivatives(Differential(x)(p))
-        return [p^k, p^(k+1), log(0.5*Δ + sqrt(p))]
-    elseif k < 0
-        return [log(p); [p^i for i=k:0 if i<0]]
-    end
-
-    # ∫ p^k dp = c * p^(k+1)
-    # return [p^k, p^(k+1)]
-    return [p^i for i=k+1:-1:0 if i>0]
 end
 
 function candidate_pow_minus(p, k; abstol=1e-8)
@@ -202,7 +109,6 @@ end
 
 ###############################################################################
 
-
 function enqueue_expr!(S, q, eq::SymbolicUtils.Add, x)
     for t in arguments(eq)
         enqueue_expr!(S, q, t, x)
@@ -217,34 +123,31 @@ function enqueue_expr!(S, q, eq, x)
     end
 end
 
-function closure(eq, x; max_terms=50)
-    if !isdependent(eq, x) return [one(x)] end
-    D = Differential(x)
-    S = Set{Any}()
-    q = Queue{Any}()
-    enqueue_expr!(S, q, eq, x)
-
-    while !isempty(q) && length(S) < max_terms
-        y = dequeue!(q)
-        enqueue_expr!(S, q, expand_derivatives(D(y)), x)
+function enqueue_expr_ex!(S, q, eq::SymbolicUtils.Add, x)
+    for t in arguments(eq)
+        enqueue_expr_ex!(S, q, t, x)
     end
-    unique([one(x); [s for s in S]; [s*x for s in S]])
 end
 
-function find_candidates(eq, x)
-    P, Q = split_frac(eq)
-    PP = closure(P, x)
-    if isequal(Q, 1) return PP end
-    QQ = generate_basis(Q^-1, x)
-
-    S = Set()
-
-    for p in PP
-        for q in QQ
-            push!(S, p*q)
-        end
+function enqueue_expr_ex!(S, q, eq, x)
+    y = eq / coef(eq, x)
+    if y ∉ S && isdependent(y, x)
+        enqueue!(q, y)
+        push!(S, y)
     end
-    [s for s in S]
+end
+
+function enqueue_expr_ex!(S, eq::SymbolicUtils.Add, x)
+    for t in arguments(eq)
+        enqueue_expr_ex!(S, t, x)
+    end
+end
+
+function enqueue_expr_ex!(S, eq, x)
+    y = eq / coef(eq, x)
+    if y ∉ S && isdependent(y, x)
+        push!(S, y)
+    end
 end
 
 ###############################################################################
@@ -253,56 +156,3 @@ extract_power(eq::SymbolicUtils.Pow) = [arguments(eq)[2]]
 extract_power(eq::SymbolicUtils.Term) = [1]
 extract_power(eq::SymbolicUtils.Mul) = union([extract_power(t) for t in arguments(eq)]...)
 extract_power(eq) = []
-
-function split_frac(eq::SymbolicUtils.Pow)
-    if arguments(eq)[2] >=0
-        return [eq,1]
-    else
-        return [1,1/eq]
-    end
-end
-
-split_frac(eq) = [eq,1]
-
-function split_frac(eq::SymbolicUtils.Mul)
-    P = 1
-    Q = 1
-    for t in arguments(eq)
-        p, q = split_frac(t)
-        P *= p
-        Q *= q
-    end
-    [P, Q]
-end
-
-extract_factors(eq::SymbolicUtils.Pow) = [arguments(eq)[1]]
-extract_factors(eq::SymbolicUtils.Mul) = unique(union([extract_factors(t) for t in arguments(eq)]...))
-extract_factors(eq) = [eq]
-
-# ###############################################################################
-#
-# kernel(eq::SymbolicUtils.Add, x) = sum(kernel(t,x) for t in arguments(eq); init=0)
-# kernel(eq::SymbolicUtils.Mul, x) = prod(kernel(t,x) for t in arguments(eq); init=1)
-#
-# function kernel(eq::SymbolicUtils.Pow, x)
-#     p = arguments(eq)[1]    # eq = p ^ k
-#     k = arguments(eq)[2]
-#     if isinteger(k) && k >= 0
-#         kernel(p, x)^k
-#     else
-#         return 1
-#     end
-# end
-#
-# function kernel(eq::SymbolicUtils.Term, x)
-#     op = operation(eq)
-#     p = arguments(eq)[1]
-#
-#     if poly_deg(p) == 1 && (op == sin || op == cos || op == exp || op == sinh || op == cosh)
-#         return eq
-#     else
-#         return 1
-#     end
-# end
-#
-# kernel(eq, x) = isequal(eq, x) ? x : 1
