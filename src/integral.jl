@@ -25,7 +25,7 @@ Base.signbit(z::Complex{T}) where T<:Number = signbit(real(z))
 function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius=1.0,
                    show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
                    symbolic=true, bypart=true, max_basis=110,
-                   verbose=false, complex_plane=true)
+                   verbose=false, complex_plane=true, prune_basis=false)
     eq = expand(eq)
     eq = apply_div_rule(eq)
 
@@ -36,6 +36,8 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius
             x = 𝑥
         end
     end
+
+    l = Logger(verbose)
 
     # eq is a constant
     if !isdependent(eq, x)
@@ -50,16 +52,17 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius
     #     eq = q
     # end
 
-    s₁, u₁, ϵ = integrate_sum(eq, x; bypass, abstol, num_trials, num_steps,
+    s₁, u₁, ϵ = integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
                               radius, show_basis, opt, symbolic,
-                              max_basis, verbose, complex_plane)
+                              max_basis, verbose, complex_plane, prune_basis)
 
     if isequal(u₁, 0) || !bypart
         return s₁, u₁, ϵ
     else
-        s₂, u₂, ϵ = try_integration_by_parts(u₁, x; abstol, num_trials, num_steps,
+        s₂, u₂, ϵ = try_integration_by_parts(u₁, x, l; abstol, num_trials, num_steps,
                                              radius, show_basis, opt, symbolic,
-                                             max_basis, verbose, complex_plane)
+                                             max_basis, verbose, complex_plane,
+                                             prune_basis)
         return s₁ + s₂, u₂, ϵ
     end
 end
@@ -67,16 +70,18 @@ end
 """
     ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
 """
-function integrate_sum(eq, x; bypass=false, kwargs...)
-    args = Dict(kwargs)
-    verbose = args[:verbose]
-
+function integrate_sum(eq, x, l; bypass=false, kwargs...)
     solved = 0
     unsolved = 0
     ϵ₀ = 0
+    ts = bypass ? [eq] : terms(eq)
 
-    for p in (bypass ? [eq] : terms(eq))
-        s, u, ϵ = integrate_term(p, x; kwargs...)
+    if length(ts) > 1
+        inform(l, "Integrating sum", ts)
+    end
+
+    for p in ts
+        s, u, ϵ = integrate_term(p, x, l; kwargs...)
         solved += s
         unsolved += u
         ϵ₀ = max(ϵ₀, ϵ)
@@ -84,12 +89,21 @@ function integrate_sum(eq, x; bypass=false, kwargs...)
 
     if !isequal(unsolved, 0)
         eq = apply_q_rules(apply_integration_rules(unsolved))
+
         if !isequal(eq, unsolved)
-            if verbose printstyled("transforming the expression\n"; color=:magenta) end
+            # eq = expand(eq)
             unsolved = 0
             ϵ₀ = 0
-            for p in (bypass ? [eq] : terms(eq))
-                s, u, ϵ = integrate_term(p, x; kwargs...)
+            ts = bypass ? [eq] : terms(eq)
+
+            if length(ts) > 1
+                inform(l, "Integrating transformed sum", ts)
+            else
+                inform(l, "Transforming the expression", ts[1])
+            end
+
+            for p in ts
+                s, u, ϵ = integrate_term(p, x, l; kwargs...)
                 solved += s
                 unsolved += u
                 ϵ₀ = max(ϵ₀, ϵ)
@@ -98,6 +112,19 @@ function integrate_sum(eq, x; bypass=false, kwargs...)
     end
 
     return solved, unsolved, ϵ₀
+end
+
+function integrate_sum_fast(eq, x, l; kwargs...)
+    solved = 0
+    ϵ₀ = 0
+
+    for p in terms(eq)
+        s, u, ϵ = integrate_term(p, x, l; kwargs...)
+        if !isequal(u, 0) return 0, eq, ϵ end
+        solved += s
+        ϵ₀ = max(ϵ₀, ϵ)
+    end
+    return solved, 0, ϵ₀
 end
 
 function test_point(complex_plane, radius)
@@ -119,20 +146,40 @@ function accept_solution(eq, x, sol, radius; abstol=1e-6)
     return false
 end
 
-function integrate_term(eq, x; kwargs...)
+function integrate_term(eq, x, l; kwargs...)
     args = Dict(kwargs)
-    abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis, radius =
-        args[:abstol], args[:num_steps], args[:num_trials], args[:show_basis],
-        args[:symbolic], args[:verbose], args[:max_basis], args[:radius]
+    abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
+        radius, prune_basis = args[:abstol], args[:num_steps], args[:num_trials],
+        args[:show_basis], args[:symbolic], args[:verbose], args[:max_basis],
+        args[:radius], args[:prune_basis]
+
+    attempt(l, "Integrating term", eq)
+
+    if is_number(eq)
+        y = eq * x
+        result(l, "Successful", y)
+        return y, 0, 0
+    end
 
     # note that the order of the operations is important!
     # first, collecing hints, then applying transformation rules, and finally finding the basis.
     basis = generate_basis(eq, x)
 
-    # basis = filter(u -> !(deg(u,x)>0), basis)
+    if show_basis
+        inform(l, "Generating basis (|β| = $(length(basis)))", basis)
+    end
 
-    if verbose printstyled("|β| = ", length(basis), '\n'; color=:yellow) end
-    if length(basis) > max_basis return 0, eq, Inf end
+    if prune_basis || length(basis) > max_basis
+        basis, ok = prune(basis, eq, x)
+        if ok && show_basis
+            inform(l, "Prunning the basis (|β| = $(length(basis)))", basis)
+        end
+    end
+
+    if length(basis) > max_basis
+        result(l, "|β| = $(length(basis)) is too large")
+        return 0, eq, Inf
+    end
 
     D = Differential(x)
     ϵ₀ = Inf
@@ -141,14 +188,17 @@ function integrate_term(eq, x; kwargs...)
     for i = 1:num_steps
         Δbasis = [expand_derivatives(D(f)) for f in basis]
 
-        if show_basis println(basis) end
+        # if show_basis println(basis) end
 
         if symbolic
             y, ϵ = try_symbolic(Float64, eq, x, basis, Δbasis; kwargs...)
 
             if !isequal(y, 0) && accept_solution(eq, x, y, radius; abstol)
-                if verbose printstyled("$i, symbolic\n"; color=:yellow) end
+                # if verbose printstyled("$i, symbolic\n"; color=:yellow) end
+                result(l, "Successful symbolic", y)
                 return y, 0, 0
+            else
+                inform(l, "Failed symbolic")
             end
         end
 
@@ -157,7 +207,8 @@ function integrate_term(eq, x; kwargs...)
             y, ϵ = try_integrate(Float64, eq, x, basis, Δbasis, r; kwargs...)
 
             if ϵ < abstol && accept_solution(eq, x, y, r; abstol)
-                if verbose printstyled("$i, $j\n"; color=:yellow) end
+                # if verbose printstyled("$i, $j\n"; color=:yellow) end
+                result(l, "Successful numeric (attempt $j out of $num_trials)", y)
                 return y, 0, ϵ
             else
                 ϵ₀ = min(ϵ, ϵ₀)
@@ -165,15 +216,22 @@ function integrate_term(eq, x; kwargs...)
             end
         end
 
+        inform(l, "Failed numeric")
+
         if i < num_steps
             basis = unique([basis; basis*x])
+            if show_basis
+                inform(l, "Expanding the basis (|β| = $(length(basis)))", basis)
+            end
         end
     end
 
     if accept_solution(eq, x, y₀, radius; abstol=abstol*10)
-        if verbose printstyled("rescue\n"; color=:yellow) end
+        # if verbose printstyled("rescue\n"; color=:yellow) end
+        result(l, "Accepting numeric (rescued)", y₀)
         return y₀, 0, ϵ₀
     else
+        result(l, "Unsucessful", eq)
         return 0, eq, ϵ₀
     end
 end
@@ -280,7 +338,7 @@ function try_integrate(T, eq, x, basis, Δbasis, radius; kwargs...)
     y₄, ϵ₄ = sparse_fit(T, A, x, basis, Δbasis, opt; abstol)
 
     if ϵ₄ < abstol || ϵ₄ < ϵ₁
-        if verbose printstyled("improvement after moving toward poles\n"; color=:blue) end
+        # if verbose printstyled("improvement after moving toward poles\n"; color=:blue) end
         return y₄, ϵ₄
     else
         return y₁, ϵ₁

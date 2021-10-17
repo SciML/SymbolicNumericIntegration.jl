@@ -2,6 +2,8 @@ using SymbolicNumericIntegration
 using SymbolicUtils
 using Test
 
+include("axiom.jl")
+
 ##############################################################################
 
 @syms x β
@@ -187,7 +189,7 @@ basic_integrals = [
     1/log(x) - 1/log(x)^2,
 ]
 
-function test_integrals(; symbolic=true, verbose=true, bypart=true)
+function test_integrals(; symbolic=true, verbose=true, bypart=true, prune_basis=false)
     bypass = false
     misses = []
 
@@ -197,8 +199,8 @@ function test_integrals(; symbolic=true, verbose=true, bypart=true)
             bypass = true
         else
             printstyled(eq, " =>\n"; color=:green)
-            solved, unsolved = integrate(eq; bypass, symbolic, verbose, bypart)
-            printstyled('\t', solved; color=:white)
+            solved, unsolved = integrate(eq; bypass, symbolic, verbose, bypart, prune_basis)
+            printstyled('\t', solved; color=:cyan)
             if isequal(unsolved, 0)
                 println()
             else
@@ -216,4 +218,4 @@ function test_integrals(; symbolic=true, verbose=true, bypart=true)
     return true
 end
 
-@testset "integral" begin test_integrals() end
+# @testset "integral" begin test_integrals() end

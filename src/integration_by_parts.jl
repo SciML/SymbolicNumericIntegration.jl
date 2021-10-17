@@ -1,24 +1,38 @@
-function try_integration_by_parts(eq, x; kwargs...)
+function try_integration_by_parts(eq, x, l; kwargs...)
+    args = Dict(kwargs)
+    verbose = args[:verbose]
+
     f = factors(eq, x)
     if length(f) <= 2 return zero(x), eq, Inf end
 
     D = Differential(x)
     ϵ₀ = Inf
 
+    kw = copy(kwargs)
+    kw[:bypart] = false
+
+    k = 1
+
     for u in f
-        v′ = eq / u
+        v′ = eq * inverse(u)
         if !is_number(u) && !is_number(v′)
-            v, r, ϵ = integrate_term(v′, x; kwargs...)
+            attempt(l, "Integrating by parts (trial $k). u is ", u)
+            inform(l, "v' is ", v′)
+
+            v, r, ϵ = integrate_term(v′, x, l; kwargs...)
             if isequal(r, 0)
-                uv = expand_derivatives(v*D(u))
-                s, r, ϵ = integrate_sum(uv, x; kwargs...)
+                inform(l, "v is ", v)
+                u′v = expand(v*expand_derivatives(D(u)))
+                inform(l, "u′*v is ", u′v)
+                s, r, ϵ = integrate_sum_fast(u′v, x, l; kw...)
                 if isequal(r, 0)
-                    return expand(u*v - s), 0, ϵ
-                else
-                    zero(x), eq, ϵ
-                    # ϵ₀ = min(ϵ, ϵ₀)
+                    y = expand(u*v - s)
+                    result(l, "Success", y)
+                    return y, 0, ϵ
                 end
             end
+            result(l, "Trial $k failed")
+            k += 1
         end
     end
 

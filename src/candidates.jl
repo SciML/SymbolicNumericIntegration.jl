@@ -23,11 +23,11 @@ function closure(eq, x; max_terms=50)
     D = Differential(x)
     S = Set{Any}()
     q = Queue{Any}()
-    enqueue_expr!(S, q, eq, x)
+    enqueue_expr_ex!(S, q, eq, x)
 
     while !isempty(q) && length(S) < max_terms
         y = dequeue!(q)
-        enqueue_expr!(S, q, expand_derivatives(D(y)), x)
+        enqueue_expr_ex!(S, q, expand_derivatives(D(y)), x)
     end
     unique([one(x); [s for s in S]; [s*x for s in S]])
 end
@@ -117,7 +117,7 @@ end
 
 function enqueue_expr!(S, q, eq, x)
     y = eq / coef(eq, x)
-    if y ∉ S && isdependent(y, x) && all(u->u>=0, extract_power(y))
+    if y ∉ S && isdependent(y, x) # && all(u->u>=0, extract_power(y))
         enqueue!(q, y)
         push!(S, y)
     end

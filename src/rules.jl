@@ -162,8 +162,8 @@ function factor_poly(p)
            ]
 end
 
-function decompose_rational(eq)
-    if poly_deg(eq) == 1 return eq end
+function decompose_rational(eq)    
+    if poly_deg(eq) == 1 return inverse(eq) end
     x = var(eq)
     r, s = find_roots(eq, x)
     s = s[1:2:end]
@@ -201,8 +201,8 @@ q_rules = [
     @rule Ω(+(~~xs)) => sum(map(Ω, ~~xs))
     @rule Ω(*(~~xs)) => prod(map(Ω, ~~xs))
     @rule Ω(^(~x::is_poly, ~k::is_neg_int)) => expand(^(decompose_rational(~x), -~k))
-    @rule Ω(~x / ^(~y::is_poly,~k::is_pos_int)) => ~x * expand(^(decompose_rational(~y), ~k))
-    @rule Ω(~x / ~y::is_poly) => ~x * expand(decompose_rational(~y))
+    @rule Ω(~x / ^(~y::is_poly,~k::is_pos_int)) => expand(~x * ^(decompose_rational(~y), ~k))
+    @rule Ω(~x / ~y::is_poly) => expand(~x * decompose_rational(~y))
     # @rule Ω(^(~x,~k)) => ^(~x, ~k)
     @rule Ω(sqrt(~x::is_poly)) => prod(sqrt(f) for f in factor_poly(~x))
     @rule Ω(log(~x::is_poly)) => sum(log(f) for f in factor_poly(~x))
