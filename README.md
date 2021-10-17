@@ -1,14 +1,14 @@
 # SymbolicNumericIntegration.jl
 
-**SymbolicNumericIntegration.jl** is a symbolic and semi-numerical integration package that works on the [Julia Symbolics](https://github.com/JuliaSymbolics/Symbolics.jl) expressions.
+**SymbolicNumericIntegration.jl** is a hybrid symbolic/numerical integration package that works on the [Julia Symbolics](https://github.com/JuliaSymbolics/Symbolics.jl) expressions.
 
-Function `integrate` returns the integral of an expression with *constant* coefficients. It uses a randomized algorithm based on a hybrid of the *method of undetermined coefficients* and *sparse regression* and is able to solve a large subset of basic standard integrals (polynomials, exponential/logarithmic, trigonometric and hyperbolic, inverse trigonometric and hyperbolic, rational and square root).
+Function `integrate` returns the integral of a univariate expression with *constant* coefficients. It uses a randomized algorithm based on a hybrid of the *method of undetermined coefficients* and *sparse regression* and is able to solve a large subset of basic standard integrals (polynomials, exponential/logarithmic, trigonometric and hyperbolic, inverse trigonometric and hyperbolic, rational and square root).
 
 `integrate` returns a tuple with three values. The first one is the solved integral, the second one is the sum of the unsolved terms, and the third value is the residual error. If `integrate` is successful, the unsolved portion is reported as 0.
 
 ```julia
 using SymbolicUtils
-using SymbolicIntegration
+using SymbolicNumericIntegration
 
 @syms x
 
@@ -58,19 +58,49 @@ julia> integrate(exp(x^2))
 (0, exp(x^2), Inf)    # as expected!
 ```
 
-`test/runtests.jl` contains a test suite of hundreds of expressions (function `test_integrals`).
-
 `integrate` has the form `integrate(y; kw...)` or `integrate(y, x; kw...)`, where `y` is the integrand and the optional `x` is the variable of integration. The keyword parameters are:
 
 * `abstol` (default `1e-6`): the error tolerance to accept a solution.
-* `symbolic` (default `true`): if true, symbolic integration is attempted first.
+* `symbolic` (default `true`): if true, pure symbolic integration is attempted first.
 * `bypass` (default `false`): if true, the whole expression is considered at once and not per term.
 * `bypart` (default `true`): if true, integration by parts is tried.
-* `num_steps` (default `2`): the number of different basis sets checked.
-* `num_trials` (default `10`): the number of attempts for each basis set.
-* `show_basis` (default `false`): print the basis set, useful for debugging.
-* `verbose` (default `false`): if true, prints extra debugging information.
+* `num_steps` (default `2`): one plus the number of expanded basis to check (if `num_steps` is 1, only the main basis is checked).
+* `num_trials` (default `5`): the number of attempts to solve the integration numerically for each basis set.
+* `show_basis` (default `false`): print the basis set, useful for debugging. Only works if `verbose` is also set.
+* `verbose` (default `false`): if true, prints extra (and voluminous!) debugging information.
 * `radius` (default `1.0`): the starting radius to generate random test points.
 * `opt` (default `STLSQ(exp.(-10:1:0))`): the optimizer passed to `sparse_regression!`.
-* `attempt_ratio` (default `5`): the maximum number of random points generated.
 * `max_basis` (default `110`): the maximum number of expression in the basis.
+* `complex_plane` (default `true`): random test points are generated on the complex plane (only over the real axis if `complex_plane` is `false`).
+* `prune_basis` (**experimental**; default `false`); prunes the candidate list to improve performance. The current implementation sometimes prunes too much and cannot be use for all cases.
+
+## Testing
+
+`test/runtests.jl` contains a test suite of 160 easy to moderate test integrals (can be run by calling `test_integrals`). Currently, **SymbolicNumericIntegration.jl** solves more than 90% of its test suite.
+
+Additionally, 12 test suites from the *Rule-based Integrator* ([Rubi](https://rulebasedintegration.org/)) are included in the `/test` directory. For example, we can test the first one as below ([Axiom](http://www.axiom-developer.org/) refers to the format of the test files)
+
+```julia
+  using SymbolicNumericIntegration
+  include("test/axiom.jl")  # note, you may need to use the correct path
+
+  L = convert_axiom(:Apostle)   # can also use L = convert_axiom(1)
+  test_axiom(L, false; bypart=true, bypass=false, verbose=true)
+```
+
+The test suites description based on the header of the files in the Rubi directory are
+
+| name        | id | comment                                  |
+|-------------|----|------------------------------------------|
+|:Apostle     | 1  | Tom M. Apostol - Calculus, Volume I, Second Edition (1967) |
+|:Bondarenko  | 2  | Vladimir Bondarenko Integration Problems |
+|:Bronstein   | 3  | Manuel Bronstein - Symbolic Integration Tutorial (1998) |
+|:Charlwood   | 4  | Kevin Charlwood - Integration on Computer Algebra Systems (2008) |
+|:Hearn       | 5  | Anthony Hearn - Reduce Integration Test Package |
+|:Hebisch     | 6  | Waldek Hebisch - email May 2013 |
+|:Jeffrey     | 7  | David Jeffrey - Rectifying Transformations for Trig Integration (1997) |
+|:Moses       | 8  | Joel Moses - Symbolic Integration Ph.D. Thesis (1967) |
+|:Stewart     | 9  | James Stewart - Calculus (1987) |
+|:Timofeev    | 10 | A. F. Timofeev - Integration of Functions (1948) |
+|:Welz        | 11 | Martin Welz - posts on Sci.Math.Symbolic |
+|:Webster     | 12 | Michael Wester |

@@ -9,18 +9,15 @@ using Symbolics
 using DataDrivenDiffEq.Optimize
 
 include("utils.jl")
-
-export deg, check_poly
-
 include("roots.jl")
 
-export solve_newton, find_roots, find_poles
+export find_roots
 
 include("rules.jl")
 include("candidates.jl")
 include("integral.jl")
 
-export integrate, generate_basis, test_integrals
+export integrate, generate_basis
 
 include("symbolic.jl")
 include("integration_by_parts.jl")

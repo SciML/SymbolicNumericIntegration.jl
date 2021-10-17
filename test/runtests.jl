@@ -192,12 +192,15 @@ basic_integrals = [
 function test_integrals(; symbolic=true, verbose=true, bypart=true, prune_basis=false)
     bypass = false
     misses = []
+    k = 1
 
     for eq in basic_integrals
         if isequal(eq, β)
             printstyled("**** bypass on ****\n"; color=:red)
             bypass = true
         else
+            printstyled(k, ": "; color=:blue)
+            k += 1
             printstyled(eq, " =>\n"; color=:green)
             solved, unsolved = integrate(eq; bypass, symbolic, verbose, bypart, prune_basis)
             printstyled('\t', solved; color=:cyan)
@@ -218,4 +221,4 @@ function test_integrals(; symbolic=true, verbose=true, bypart=true, prune_basis=
     return true
 end
 
-# @testset "integral" begin test_integrals() end
+@testset "integral" begin test_integrals() end
