@@ -1,4 +1,4 @@
-module SymbolicNumericIntegration
+# module SymbolicNumericIntegration
 
 using SymbolicUtils
 using SymbolicUtils: istree, operation, arguments
@@ -25,4 +25,4 @@ include("integration_by_parts.jl")
 include("logger.jl")
 include("prune.jl")
 
-end # module
+# end # module

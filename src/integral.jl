@@ -163,7 +163,8 @@ function integrate_term(eq, x, l; kwargs...)
 
     # note that the order of the operations is important!
     # first, collecing hints, then applying transformation rules, and finally finding the basis.
-    basis = generate_basis(eq, x)
+    # basis = generate_basis(eq, x)
+    basis = generate_by_parts(eq, x)
 
     if show_basis
         inform(l, "Generating basis (|β| = $(length(basis)))", basis)
