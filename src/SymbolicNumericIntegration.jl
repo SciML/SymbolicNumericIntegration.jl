@@ -1,4 +1,4 @@
-# module SymbolicNumericIntegration
+module SymbolicNumericIntegration
 
 using SymbolicUtils
 using SymbolicUtils: istree, operation, arguments
@@ -15,6 +15,8 @@ export find_roots
 
 include("rules.jl")
 include("candidates.jl")
+include("homotopy.jl")
+
 include("integral.jl")
 
 export integrate, generate_basis
@@ -25,4 +27,4 @@ include("integration_by_parts.jl")
 include("logger.jl")
 include("prune.jl")
 
-# end # module
+end # module

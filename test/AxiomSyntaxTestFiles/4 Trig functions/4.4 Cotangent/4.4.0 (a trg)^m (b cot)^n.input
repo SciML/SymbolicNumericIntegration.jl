@@ -1,0 +1,101 @@
+-- Axiom integration test file: "4 Trig functions\4.4 Cotangent\4.4.0 (a trg)^m (b cot)^n.input"
+
+lst: '[
+
+-- Integrands of the form (b Cot[c+d x])^n
+
+-- Integrands of the form (b Cot[c+d x])^n
+
+-- Integrands of the form Cot[c+d x]^n
+[cot(a+b*x),x,1,log(sin(a+b*x))/b],
+[cot(a+b*x)^2,x,2,-x-cot(a+b*x)/b],
+[cot(a+b*x)^3,x,2,-1/2*cot(a+b*x)^2/b-log(sin(a+b*x))/b],
+[cot(a+b*x)^4,x,3,x+cot(a+b*x)/b-1/3*cot(a+b*x)^3/b],
+[cot(a+b*x)^5,x,3,1/2*cot(a+b*x)^2/b-1/4*cot(a+b*x)^4/b+log(sin(a+b*x))/b],
+[cot(a+b*x)^6,x,4,-x-cot(a+b*x)/b+1/3*cot(a+b*x)^3/b-1/5*cot(a+b*x)^5/b],
+[cot(a+b*x)^7,x,4,-1/2*cot(a+b*x)^2/b+1/4*cot(a+b*x)^4/b-1/6*cot(a+b*x)^6/b-log(sin(a+b*x))/b],
+[cot(a+b*x)^8,x,5,x+cot(a+b*x)/b-1/3*cot(a+b*x)^3/b+1/5*cot(a+b*x)^5/b-1/7*cot(a+b*x)^7/b],
+
+-- Integrands of the form (b Cot[c+d x])^(n/2)
+[(c*cot(a+b*x))^(7/2),x,13,-2/5*c*(c*cot(a+b*x))^(5/2)/b+c^(7/2)*atan(1-sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*sqrt(2))-c^(7/2)*atan(1+sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*sqrt(2))+1/2*c^(7/2)*log(sqrt(c)+cot(a+b*x)*sqrt(c)-sqrt(2)*sqrt(c*cot(a+b*x)))/(b*sqrt(2))-1/2*c^(7/2)*log(sqrt(c)+cot(a+b*x)*sqrt(c)+sqrt(2)*sqrt(c*cot(a+b*x)))/(b*sqrt(2))+2*c^3*sqrt(c*cot(a+b*x))/b],
+[(c*cot(a+b*x))^(5/2),x,12,-2/3*c*(c*cot(a+b*x))^(3/2)/b-c^(5/2)*atan(1-sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*sqrt(2))+c^(5/2)*atan(1+sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*sqrt(2))+1/2*c^(5/2)*log(sqrt(c)+cot(a+b*x)*sqrt(c)-sqrt(2)*sqrt(c*cot(a+b*x)))/(b*sqrt(2))-1/2*c^(5/2)*log(sqrt(c)+cot(a+b*x)*sqrt(c)+sqrt(2)*sqrt(c*cot(a+b*x)))/(b*sqrt(2))],
+[(c*cot(a+b*x))^(3/2),x,12,-c^(3/2)*atan(1-sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*sqrt(2))+c^(3/2)*atan(1+sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*sqrt(2))-1/2*c^(3/2)*log(sqrt(c)+cot(a+b*x)*sqrt(c)-sqrt(2)*sqrt(c*cot(a+b*x)))/(b*sqrt(2))+1/2*c^(3/2)*log(sqrt(c)+cot(a+b*x)*sqrt(c)+sqrt(2)*sqrt(c*cot(a+b*x)))/(b*sqrt(2))-2*c*sqrt(c*cot(a+b*x))/b],
+[(c*cot(a+b*x))^(1/2),x,11,atan(1-sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))*sqrt(c)/(b*sqrt(2))-atan(1+sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))*sqrt(c)/(b*sqrt(2))-1/2*log(sqrt(c)+cot(a+b*x)*sqrt(c)-sqrt(2)*sqrt(c*cot(a+b*x)))*sqrt(c)/(b*sqrt(2))+1/2*log(sqrt(c)+cot(a+b*x)*sqrt(c)+sqrt(2)*sqrt(c*cot(a+b*x)))*sqrt(c)/(b*sqrt(2))],
+[1/(c*cot(a+b*x))^(1/2),x,11,atan(1-sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*sqrt(2)*sqrt(c))-atan(1+sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*sqrt(2)*sqrt(c))+1/2*log(sqrt(c)+cot(a+b*x)*sqrt(c)-sqrt(2)*sqrt(c*cot(a+b*x)))/(b*sqrt(2)*sqrt(c))-1/2*log(sqrt(c)+cot(a+b*x)*sqrt(c)+sqrt(2)*sqrt(c*cot(a+b*x)))/(b*sqrt(2)*sqrt(c))],
+[1/(c*cot(a+b*x))^(3/2),x,12,-atan(1-sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*c^(3/2)*sqrt(2))+atan(1+sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*c^(3/2)*sqrt(2))+1/2*log(sqrt(c)+cot(a+b*x)*sqrt(c)-sqrt(2)*sqrt(c*cot(a+b*x)))/(b*c^(3/2)*sqrt(2))-1/2*log(sqrt(c)+cot(a+b*x)*sqrt(c)+sqrt(2)*sqrt(c*cot(a+b*x)))/(b*c^(3/2)*sqrt(2))+2/(b*c*sqrt(c*cot(a+b*x)))],
+[1/(c*cot(a+b*x))^(5/2),x,12,2/3/(b*c*(c*cot(a+b*x))^(3/2))-atan(1-sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*c^(5/2)*sqrt(2))+atan(1+sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*c^(5/2)*sqrt(2))-1/2*log(sqrt(c)+cot(a+b*x)*sqrt(c)-sqrt(2)*sqrt(c*cot(a+b*x)))/(b*c^(5/2)*sqrt(2))+1/2*log(sqrt(c)+cot(a+b*x)*sqrt(c)+sqrt(2)*sqrt(c*cot(a+b*x)))/(b*c^(5/2)*sqrt(2))],
+[1/(c*cot(a+b*x))^(7/2),x,13,2/5/(b*c*(c*cot(a+b*x))^(5/2))+atan(1-sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*c^(7/2)*sqrt(2))-atan(1+sqrt(2)*sqrt(c*cot(a+b*x))/sqrt(c))/(b*c^(7/2)*sqrt(2))-1/2*log(sqrt(c)+cot(a+b*x)*sqrt(c)-sqrt(2)*sqrt(c*cot(a+b*x)))/(b*c^(7/2)*sqrt(2))+1/2*log(sqrt(c)+cot(a+b*x)*sqrt(c)+sqrt(2)*sqrt(c*cot(a+b*x)))/(b*c^(7/2)*sqrt(2))+(-2)/(b*c^3*sqrt(c*cot(a+b*x)))],
+
+-- Integrands of the form (b Cot[c+d x])^(n/3)
+[(c*cot(a+b*x))^(4/3),x,13,c^(4/3)*atan((c*cot(a+b*x))^(1/3)/c^(1/3))/b-1/2*c^(4/3)*atan(-2*(c*cot(a+b*x))^(1/3)/c^(1/3)+sqrt(3))/b+1/2*c^(4/3)*atan(2*(c*cot(a+b*x))^(1/3)/c^(1/3)+sqrt(3))/b-3*c*(c*cot(a+b*x))^(1/3)/b-1/4*c^(4/3)*log(c^(2/3)+(c*cot(a+b*x))^(2/3)-c^(1/3)*(c*cot(a+b*x))^(1/3)*sqrt(3))*sqrt(3)/b+1/4*c^(4/3)*log(c^(2/3)+(c*cot(a+b*x))^(2/3)+c^(1/3)*(c*cot(a+b*x))^(1/3)*sqrt(3))*sqrt(3)/b],
+[(c*cot(a+b*x))^(2/3),x,12,-c^(2/3)*atan((c*cot(a+b*x))^(1/3)/c^(1/3))/b+1/2*c^(2/3)*atan(-2*(c*cot(a+b*x))^(1/3)/c^(1/3)+sqrt(3))/b-1/2*c^(2/3)*atan(2*(c*cot(a+b*x))^(1/3)/c^(1/3)+sqrt(3))/b-1/4*c^(2/3)*log(c^(2/3)+(c*cot(a+b*x))^(2/3)-c^(1/3)*(c*cot(a+b*x))^(1/3)*sqrt(3))*sqrt(3)/b+1/4*c^(2/3)*log(c^(2/3)+(c*cot(a+b*x))^(2/3)+c^(1/3)*(c*cot(a+b*x))^(1/3)*sqrt(3))*sqrt(3)/b],
+[(c*cot(a+b*x))^(1/3),x,9,1/2*c^(1/3)*log(c^(2/3)+(c*cot(a+b*x))^(2/3))/b-1/4*c^(1/3)*log(c^(4/3)-c^(2/3)*(c*cot(a+b*x))^(2/3)+(c*cot(a+b*x))^(4/3))/b+1/2*c^(1/3)*atan((c^(2/3)-2*(c*cot(a+b*x))^(2/3))/(c^(2/3)*sqrt(3)))*sqrt(3)/b],
+[1/(c*cot(a+b*x))^(1/3),x,9,-1/2*log(c^(2/3)+(c*cot(a+b*x))^(2/3))/(b*c^(1/3))+1/4*log(c^(4/3)-c^(2/3)*(c*cot(a+b*x))^(2/3)+(c*cot(a+b*x))^(4/3))/(b*c^(1/3))+1/2*atan((c^(2/3)-2*(c*cot(a+b*x))^(2/3))/(c^(2/3)*sqrt(3)))*sqrt(3)/(b*c^(1/3))],
+[1/(c*cot(a+b*x))^(2/3),x,12,-atan((c*cot(a+b*x))^(1/3)/c^(1/3))/(b*c^(2/3))+1/2*atan(-2*(c*cot(a+b*x))^(1/3)/c^(1/3)+sqrt(3))/(b*c^(2/3))-1/2*atan(2*(c*cot(a+b*x))^(1/3)/c^(1/3)+sqrt(3))/(b*c^(2/3))+1/4*log(c^(2/3)+(c*cot(a+b*x))^(2/3)-c^(1/3)*(c*cot(a+b*x))^(1/3)*sqrt(3))*sqrt(3)/(b*c^(2/3))-1/4*log(c^(2/3)+(c*cot(a+b*x))^(2/3)+c^(1/3)*(c*cot(a+b*x))^(1/3)*sqrt(3))*sqrt(3)/(b*c^(2/3))],
+[1/(c*cot(a+b*x))^(4/3),x,13,atan((c*cot(a+b*x))^(1/3)/c^(1/3))/(b*c^(4/3))-1/2*atan(-2*(c*cot(a+b*x))^(1/3)/c^(1/3)+sqrt(3))/(b*c^(4/3))+1/2*atan(2*(c*cot(a+b*x))^(1/3)/c^(1/3)+sqrt(3))/(b*c^(4/3))+3/(b*c*(c*cot(a+b*x))^(1/3))+1/4*log(c^(2/3)+(c*cot(a+b*x))^(2/3)-c^(1/3)*(c*cot(a+b*x))^(1/3)*sqrt(3))*sqrt(3)/(b*c^(4/3))-1/4*log(c^(2/3)+(c*cot(a+b*x))^(2/3)+c^(1/3)*(c*cot(a+b*x))^(1/3)*sqrt(3))*sqrt(3)/(b*c^(4/3))],
+
+-- Integrands of the form (b Cot[c+d x])^n with n symbolic
+[cot(a+b*x)^n,x,2,-cot(a+b*x)^(1+n)*hypergeometric(1,1/2*(1+n),1/2*(3+n),-cot(a+b*x)^2)/(b*(1+n))],
+[(b*cot(c+d*x))^n,x,2,-(b*cot(c+d*x))^(1+n)*hypergeometric(1,1/2*(1+n),1/2*(3+n),-cot(c+d*x)^2)/(b*d*(1+n))],
+
+-- Integrands of the form (b Cot[c+d x]^p)^n
+
+-- Integrands of the form (b Cot[c+d x]^2)^(n/2)
+[(a*cot(x)^2)^(3/2),x,3,-1/2*a*cot(x)*sqrt(a*cot(x)^2)-a*log(sin(x))*sqrt(a*cot(x)^2)*tan(x)],
+[sqrt(a*cot(x)^2),x,2,log(sin(x))*sqrt(a*cot(x)^2)*tan(x)],
+[1/sqrt(a*cot(x)^2),x,2,-cot(x)*log(cos(x))/sqrt(a*cot(x)^2)],
+[1/(a*cot(x)^2)^(3/2),x,3,cot(x)*log(cos(x))/(a*sqrt(a*cot(x)^2))+1/2*tan(x)/(a*sqrt(a*cot(x)^2))],
+
+-- Integrands of the form (b Cot[c+d x]^3)^(n/2)
+[(a*cot(x)^3)^(3/2),x,14,2/3*a*sqrt(a*cot(x)^3)-2/7*a*cot(x)^2*sqrt(a*cot(x)^3)+a*atan(1-sqrt(2)*sqrt(cot(x)))*sqrt(a*cot(x)^3)/(cot(x)^(3/2)*sqrt(2))-a*atan(1+sqrt(2)*sqrt(cot(x)))*sqrt(a*cot(x)^3)/(cot(x)^(3/2)*sqrt(2))-1/2*a*log(1+cot(x)-sqrt(2)*sqrt(cot(x)))*sqrt(a*cot(x)^3)/(cot(x)^(3/2)*sqrt(2))+1/2*a*log(1+cot(x)+sqrt(2)*sqrt(cot(x)))*sqrt(a*cot(x)^3)/(cot(x)^(3/2)*sqrt(2))],
+[sqrt(a*cot(x)^3),x,13,-atan(1-sqrt(2)*sqrt(cot(x)))*sqrt(a*cot(x)^3)/(cot(x)^(3/2)*sqrt(2))+atan(1+sqrt(2)*sqrt(cot(x)))*sqrt(a*cot(x)^3)/(cot(x)^(3/2)*sqrt(2))-1/2*log(1+cot(x)-sqrt(2)*sqrt(cot(x)))*sqrt(a*cot(x)^3)/(cot(x)^(3/2)*sqrt(2))+1/2*log(1+cot(x)+sqrt(2)*sqrt(cot(x)))*sqrt(a*cot(x)^3)/(cot(x)^(3/2)*sqrt(2))-2*sqrt(a*cot(x)^3)*tan(x)],
+[1/sqrt(a*cot(x)^3),x,13,2*cot(x)/sqrt(a*cot(x)^3)-atan(1-sqrt(2)*sqrt(cot(x)))*cot(x)^(3/2)/(sqrt(2)*sqrt(a*cot(x)^3))+atan(1+sqrt(2)*sqrt(cot(x)))*cot(x)^(3/2)/(sqrt(2)*sqrt(a*cot(x)^3))+1/2*cot(x)^(3/2)*log(1+cot(x)-sqrt(2)*sqrt(cot(x)))/(sqrt(2)*sqrt(a*cot(x)^3))-1/2*cot(x)^(3/2)*log(1+cot(x)+sqrt(2)*sqrt(cot(x)))/(sqrt(2)*sqrt(a*cot(x)^3))],
+[1/(a*cot(x)^3)^(3/2),x,14,(-2/3)/(a*sqrt(a*cot(x)^3))+atan(1-sqrt(2)*sqrt(cot(x)))*cot(x)^(3/2)/(a*sqrt(2)*sqrt(a*cot(x)^3))-atan(1+sqrt(2)*sqrt(cot(x)))*cot(x)^(3/2)/(a*sqrt(2)*sqrt(a*cot(x)^3))+1/2*cot(x)^(3/2)*log(1+cot(x)-sqrt(2)*sqrt(cot(x)))/(a*sqrt(2)*sqrt(a*cot(x)^3))-1/2*cot(x)^(3/2)*log(1+cot(x)+sqrt(2)*sqrt(cot(x)))/(a*sqrt(2)*sqrt(a*cot(x)^3))+2/7*tan(x)^2/(a*sqrt(a*cot(x)^3))],
+
+-- Integrands of the form (b Cot[c+d x]^4)^(n/2)
+[(a*cot(x)^4)^(3/2),x,5,1/3*a*cot(x)*sqrt(a*cot(x)^4)-1/5*a*cot(x)^3*sqrt(a*cot(x)^4)-a*sqrt(a*cot(x)^4)*tan(x)-a*x*sqrt(a*cot(x)^4)*tan(x)^2],
+[sqrt(a*cot(x)^4),x,3,-sqrt(a*cot(x)^4)*tan(x)-x*sqrt(a*cot(x)^4)*tan(x)^2],
+[1/sqrt(a*cot(x)^4),x,3,cot(x)/sqrt(a*cot(x)^4)-x*cot(x)^2/sqrt(a*cot(x)^4)],
+[1/(a*cot(x)^4)^(3/2),x,5,cot(x)/(a*sqrt(a*cot(x)^4))-x*cot(x)^2/(a*sqrt(a*cot(x)^4))-1/3*tan(x)/(a*sqrt(a*cot(x)^4))+1/5*tan(x)^3/(a*sqrt(a*cot(x)^4))],
+
+-- Integrands of the form (b Cot[c+d x]^p)^n with n symbolic
+[(b*cot(c+d*x)^p)^n,x,3,-cot(c+d*x)*(b*cot(c+d*x)^p)^n*hypergeometric(1,1/2*(1+n*p),1/2*(3+n*p),-cot(c+d*x)^2)/(d*(1+n*p))],
+
+-- Integrands of the form (a (b Cot[c+d x])^p)^n
+
+-- Integrands of the form (a (b Cot[c+d x])^p)^n with n symbolic
+[(a*(b*cot(c+d*x))^p)^n,x,3,-cot(c+d*x)*(a*(b*cot(c+d*x))^p)^n*hypergeometric(1,1/2*(1+n*p),1/2*(3+n*p),-cot(c+d*x)^2)/(d*(1+n*p))],
+
+-- Integrands of the form (a Trg[e+f x])^m (b Cot[e+f x])^n
+
+-- Integrands of the form (a Sin[e+f x])^m (b Cot[e+f x])^n
+[(b*cot(e+f*x))^n*(a*sin(e+f*x))^m,x,2,-(b*cot(e+f*x))^(1+n)*hypergeometric(1/2*(1+n),1/2*(1-m+n),1/2*(3+n),cos(e+f*x)^2)*(a*sin(e+f*x))^m*(sin(e+f*x)^2)^(1/2*(1-m+n))/(b*f*(1+n))],
+
+-- Integrands of the form (a Cos[e+f x])^m (b Cot[e+f x])^n
+[(a*cos(e+f*x))^m*(b*cot(e+f*x))^n,x,2,-(a*cos(e+f*x))^m*(b*cot(e+f*x))^(1+n)*hypergeometric(1/2*(1+n),1/2*(1+m+n),1/2*(3+m+n),cos(e+f*x)^2)*(sin(e+f*x)^2)^(1/2*(1+n))/(b*f*(1+m+n))],
+
+-- Integrands of the form (a Cot[e+f x])^m (b Cot[e+f x])^n
+[(a*cot(e+f*x))^m*(b*cot(e+f*x))^n,x,3,-(a*cot(e+f*x))^(1+m)*(b*cot(e+f*x))^n*hypergeometric(1,1/2*(1+m+n),1/2*(3+m+n),-cot(e+f*x)^2)/(a*f*(1+m+n))],
+
+-- Integrands of the form (a Sec[e+f x])^m (b Cot[e+f x])^n
+[(b*cot(e+f*x))^n*(a*sec(e+f*x))^m,x,3,-(b*cot(e+f*x))^(1+n)*hypergeometric(1/2*(1+n),1/2*(1-m+n),1/2*(3-m+n),cos(e+f*x)^2)*(a*sec(e+f*x))^m*(sin(e+f*x)^2)^(1/2*(1+n))/(b*f*(1-m+n))],
+
+-- Integrands of the form (a Csc[e+f x])^m (b Cot[e+f x])^n
+
+-- Integrands of the form Csc[e+f x]^m (b Cot[e+f x])^(n/2)
+
+-- Integrands of the form (a Csc[e+f x])^(m/2) (b Cot[e+f x])^(n/2)
+
+-- Integrands of the form (a Csc[e+f x])^m (b Cot[e+f x])^n with n symbolic
+[(d*cot(e+f*x))^n*csc(e+f*x)^6,x,3,-(d*cot(e+f*x))^(1+n)/(d*f*(1+n))-2*(d*cot(e+f*x))^(3+n)/(d^3*f*(3+n))-(d*cot(e+f*x))^(5+n)/(d^5*f*(5+n))],
+[(d*cot(e+f*x))^n*csc(e+f*x)^4,x,3,-(d*cot(e+f*x))^(1+n)/(d*f*(1+n))-(d*cot(e+f*x))^(3+n)/(d^3*f*(3+n))],
+[(d*cot(e+f*x))^n*csc(e+f*x)^2,x,2,-(d*cot(e+f*x))^(1+n)/(d*f*(1+n))],
+[(d*cot(e+f*x))^n*sin(e+f*x)^2,x,2,-(d*cot(e+f*x))^(1+n)*hypergeometric(2,1/2*(1+n),1/2*(3+n),-cot(e+f*x)^2)/(d*f*(1+n))],
+[(d*cot(e+f*x))^n*sin(e+f*x)^4,x,2,-(d*cot(e+f*x))^(1+n)*hypergeometric(3,1/2*(1+n),1/2*(3+n),-cot(e+f*x)^2)/(d*f*(1+n))],
+[(d*cot(e+f*x))^n*csc(e+f*x)^3,x,1,-(d*cot(e+f*x))^(1+n)*csc(e+f*x)^3*hypergeometric(1/2*(1+n),1/2*(4+n),1/2*(3+n),cos(e+f*x)^2)*(sin(e+f*x)^2)^(1/2*(4+n))/(d*f*(1+n))],
+[(d*cot(e+f*x))^n*csc(e+f*x),x,1,-(d*cot(e+f*x))^(1+n)*csc(e+f*x)*hypergeometric(1/2*(1+n),1/2*(2+n),1/2*(3+n),cos(e+f*x)^2)*(sin(e+f*x)^2)^(1/2*(2+n))/(d*f*(1+n))],
+[(d*cot(e+f*x))^n*sin(e+f*x),x,1,-(d*cot(e+f*x))^(1+n)*hypergeometric(1/2*n,1/2*(1+n),1/2*(3+n),cos(e+f*x)^2)*sin(e+f*x)*(sin(e+f*x)^2)^(1/2*n)/(d*f*(1+n))],
+[(d*cot(e+f*x))^n*sin(e+f*x)^3,x,1,-(d*cot(e+f*x))^(1+n)*hypergeometric(1/2*(-2+n),1/2*(1+n),1/2*(3+n),cos(e+f*x)^2)*sin(e+f*x)^3*(sin(e+f*x)^2)^(1/2*(-2+n))/(d*f*(1+n))],
+
+-- Integrands of the form (a Csc[e+f x])^m (b Cot[e+f x])^n with m and n symbolic
+[(b*cot(e+f*x))^n*(a*csc(e+f*x))^m,x,1,-(b*cot(e+f*x))^(1+n)*(a*csc(e+f*x))^m*hypergeometric(1/2*(1+n),1/2*(1+m+n),1/2*(3+n),cos(e+f*x)^2)*(sin(e+f*x)^2)^(1/2*(1+m+n))/(b*f*(1+n))]]

@@ -1,0 +1,46 @@
+-- Axiom integration test file: "6 Hyperbolic functions\6.1 Hyperbolic sine\6.1.4 (d+e x)^m sinh(a+b x+c x^2)^n.input"
+
+lst: '[
+
+-- Integrands of the form (d+e x)^m Sinh[a+b x+c x^2]^n
+
+-- Integrands of the form (d+e x)^m Sinh[a+b x+c x^2]^n
+
+-- n>0
+[x^2*sinh(a+b*x+c*x^2),x,12,-1/4*b*cosh(a+b*x+c*x^2)/c^2+1/2*x*cosh(a+b*x+c*x^2)/c-1/16*%e^(-a+1/4*b^2/c)*b^2*erf(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/c^(5/2)-1/8*%e^(-a+1/4*b^2/c)*erf(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/c^(3/2)+1/16*%e^(a-1/4*b^2/c)*b^2*erfi(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/c^(5/2)-1/8*%e^(a-1/4*b^2/c)*erfi(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/c^(3/2)],
+[x*sinh(a+b*x+c*x^2),x,6,1/2*cosh(a+b*x+c*x^2)/c+1/8*%e^(-a+1/4*b^2/c)*b*erf(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/c^(3/2)-1/8*%e^(a-1/4*b^2/c)*b*erfi(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/c^(3/2)],
+[sinh(a+b*x+c*x^2),x,5,-1/4*%e^(-a+1/4*b^2/c)*erf(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/sqrt(c)+1/4*%e^(a-1/4*b^2/c)*erfi(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/sqrt(c)],
+[sinh(a+b*x+c*x^2)/x,x,0,Unintegrable(sinh(a+b*x+c*x^2)/x,x)],
+[-b*cosh(a+b*x+c*x^2)/x+sinh(a+b*x+c*x^2)/x^2,x,7,-sinh(a+b*x+c*x^2)/x+1/2*%e^(-a+1/4*b^2/c)*erf(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)*sqrt(c)+1/2*%e^(a-1/4*b^2/c)*erfi(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)*sqrt(c)],
+[x^2*sinh(a+b*x-c*x^2),x,12,-1/4*b*cosh(a+b*x-c*x^2)/c^2-1/2*x*cosh(a+b*x-c*x^2)/c-1/16*%e^(a+1/4*b^2/c)*b^2*erf(1/2*(b-2*c*x)/sqrt(c))*sqrt(%pi)/c^(5/2)-1/8*%e^(a+1/4*b^2/c)*erf(1/2*(b-2*c*x)/sqrt(c))*sqrt(%pi)/c^(3/2)+1/16*%e^(-a-1/4*b^2/c)*b^2*erfi(1/2*(b-2*c*x)/sqrt(c))*sqrt(%pi)/c^(5/2)-1/8*%e^(-a-1/4*b^2/c)*erfi(1/2*(b-2*c*x)/sqrt(c))*sqrt(%pi)/c^(3/2)],
+[x*sinh(a+b*x-c*x^2),x,6,-1/2*cosh(a+b*x-c*x^2)/c-1/8*%e^(a+1/4*b^2/c)*b*erf(1/2*(b-2*c*x)/sqrt(c))*sqrt(%pi)/c^(3/2)+1/8*%e^(-a-1/4*b^2/c)*b*erfi(1/2*(b-2*c*x)/sqrt(c))*sqrt(%pi)/c^(3/2)],
+[sinh(a+b*x-c*x^2),x,5,-1/4*%e^(a+1/4*b^2/c)*erf(1/2*(b-2*c*x)/sqrt(c))*sqrt(%pi)/sqrt(c)+1/4*%e^(-a-1/4*b^2/c)*erfi(1/2*(b-2*c*x)/sqrt(c))*sqrt(%pi)/sqrt(c)],
+[sinh(a+b*x-c*x^2)/x,x,0,Unintegrable(sinh(a+b*x-c*x^2)/x,x)],
+[-b*cosh(a+b*x-c*x^2)/x+sinh(a+b*x-c*x^2)/x^2,x,7,-sinh(a+b*x-c*x^2)/x+1/2*%e^(a+1/4*b^2/c)*erf(1/2*(b-2*c*x)/sqrt(c))*sqrt(%pi)*sqrt(c)+1/2*%e^(-a-1/4*b^2/c)*erfi(1/2*(b-2*c*x)/sqrt(c))*sqrt(%pi)*sqrt(c)],
+[x^2*sinh(1/4+x+x^2),x,12,-1/4*cosh(1/4+x+x^2)+1/2*x*cosh(1/4+x+x^2)+3/16*erf(1/2*(-1-2*x))*sqrt(%pi)-1/16*erfi(1/2*(1+2*x))*sqrt(%pi)],
+[x*sinh(1/4+x+x^2),x,6,1/2*cosh(1/4+x+x^2)-1/8*erf(1/2*(-1-2*x))*sqrt(%pi)-1/8*erfi(1/2*(1+2*x))*sqrt(%pi)],
+[sinh(1/4+x+x^2),x,5,1/4*erf(1/2*(-1-2*x))*sqrt(%pi)+1/4*erfi(1/2*(1+2*x))*sqrt(%pi)],
+[sinh(1/4+x+x^2)/x,x,0,Unintegrable(sinh(1/4+x+x^2)/x,x)],
+[sinh(1/4+x+x^2)/x^2,x,6,-sinh(1/4+x+x^2)/x-1/2*erf(1/2*(-1-2*x))*sqrt(%pi)+1/2*erfi(1/2*(1+2*x))*sqrt(%pi)+Unintegrable(cosh(1/4+x+x^2)/x,x)],
+[x^2*sinh(a+b*x+c*x^2)^2,x,14,-1/6*x^3-1/16*b*sinh(2*a+2*b*x+2*c*x^2)/c^2+1/8*x*sinh(2*a+2*b*x+2*c*x^2)/c+1/32*%e^(-2*a+1/2*b^2/c)*b^2*erf((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(5/2)+1/32*%e^(-2*a+1/2*b^2/c)*erf((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)+1/32*%e^(2*a-1/2*b^2/c)*b^2*erfi((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(5/2)-1/32*%e^(2*a-1/2*b^2/c)*erfi((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)],
+[x*sinh(a+b*x+c*x^2)^2,x,8,-1/4*x^2+1/8*sinh(2*a+2*b*x+2*c*x^2)/c-1/16*%e^(-2*a+1/2*b^2/c)*b*erf((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)-1/16*%e^(2*a-1/2*b^2/c)*b*erfi((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)],
+[sinh(a+b*x+c*x^2)^2,x,7,-1/2*x+1/8*%e^(-2*a+1/2*b^2/c)*erf((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/sqrt(c)+1/8*%e^(2*a-1/2*b^2/c)*erfi((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/sqrt(c)],
+[sinh(a+b*x+c*x^2)^2/x,x,2,-1/2*log(x)+1/2*Unintegrable(cosh(2*a+2*b*x+2*c*x^2)/x,x)],
+[x^2*sinh(a+b*x-c*x^2)^2,x,14,-1/6*x^3-1/16*b*sinh(2*a+2*b*x-2*c*x^2)/c^2-1/8*x*sinh(2*a+2*b*x-2*c*x^2)/c-1/32*%e^(2*a+1/2*b^2/c)*b^2*erf((b-2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(5/2)-1/32*%e^(2*a+1/2*b^2/c)*erf((b-2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)-1/32*%e^(-2*a-1/2*b^2/c)*b^2*erfi((b-2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(5/2)+1/32*%e^(-2*a-1/2*b^2/c)*erfi((b-2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)],
+[x*sinh(a+b*x-c*x^2)^2,x,8,-1/4*x^2-1/8*sinh(2*a+2*b*x-2*c*x^2)/c-1/16*%e^(2*a+1/2*b^2/c)*b*erf((b-2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)-1/16*%e^(-2*a-1/2*b^2/c)*b*erfi((b-2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)],
+[sinh(a+b*x-c*x^2)^2,x,7,-1/2*x-1/8*%e^(2*a+1/2*b^2/c)*erf((b-2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/sqrt(c)-1/8*%e^(-2*a-1/2*b^2/c)*erfi((b-2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/sqrt(c)],
+[sinh(a+b*x-c*x^2)^2/x,x,2,-1/2*log(x)+1/2*Unintegrable(cosh(2*a+2*b*x-2*c*x^2)/x,x)],
+[x^2*sinh(1/4+x+x^2)^2,x,14,-1/6*x^3-1/16*sinh(1/2+2*x+2*x^2)+1/8*x*sinh(1/2+2*x+2*x^2)+1/16*erf((1+2*x)/sqrt(2))*sqrt(1/2*%pi)],
+[x*sinh(1/4+x+x^2)^2,x,8,-1/4*x^2+1/8*sinh(1/2+2*x+2*x^2)-1/16*erf((1+2*x)/sqrt(2))*sqrt(1/2*%pi)-1/16*erfi((1+2*x)/sqrt(2))*sqrt(1/2*%pi)],
+[sinh(1/4+x+x^2)^2,x,7,-1/2*x+1/8*erf((1+2*x)/sqrt(2))*sqrt(1/2*%pi)+1/8*erfi((1+2*x)/sqrt(2))*sqrt(1/2*%pi)],
+[sinh(1/4+x+x^2)^2/x,x,2,-1/2*log(x)+1/2*Unintegrable(cosh(1/2+2*x+2*x^2)/x,x)],
+[(d+e*x)^2*sinh(a+b*x+c*x^2),x,12,1/4*e*(2*c*d-b*e)*cosh(a+b*x+c*x^2)/c^2+1/2*e*(d+e*x)*cosh(a+b*x+c*x^2)/c-1/8*%e^(-a+1/4*b^2/c)*e^2*erf(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/c^(3/2)-1/16*%e^(-a+1/4*b^2/c)*(2*c*d-b*e)^2*erf(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/c^(5/2)-1/8*%e^(a-1/4*b^2/c)*e^2*erfi(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/c^(3/2)+1/16*%e^(a-1/4*b^2/c)*(2*c*d-b*e)^2*erfi(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/c^(5/2)],
+[(d+e*x)*sinh(a+b*x+c*x^2),x,6,1/2*e*cosh(a+b*x+c*x^2)/c-1/8*%e^(-a+1/4*b^2/c)*(2*c*d-b*e)*erf(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/c^(3/2)+1/8*%e^(a-1/4*b^2/c)*(2*c*d-b*e)*erfi(1/2*(b+2*c*x)/sqrt(c))*sqrt(%pi)/c^(3/2)],
+[sinh(a+b*x+c*x^2)/(d+e*x),x,0,Unintegrable(sinh(a+b*x+c*x^2)/(d+e*x),x)],
+[(d+e*x)^2*sinh(a+b*x+c*x^2)^2,x,14,-1/6*(d+e*x)^3/e+1/16*e*(2*c*d-b*e)*sinh(2*a+2*b*x+2*c*x^2)/c^2+1/8*e*(d+e*x)*sinh(2*a+2*b*x+2*c*x^2)/c+1/32*%e^(-2*a+1/2*b^2/c)*e^2*erf((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)+1/32*%e^(-2*a+1/2*b^2/c)*(2*c*d-b*e)^2*erf((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(5/2)-1/32*%e^(2*a-1/2*b^2/c)*e^2*erfi((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)+1/32*%e^(2*a-1/2*b^2/c)*(2*c*d-b*e)^2*erfi((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(5/2)],
+[(d+e*x)*sinh(a+b*x+c*x^2)^2,x,8,-1/4*(d+e*x)^2/e+1/8*e*sinh(2*a+2*b*x+2*c*x^2)/c+1/16*%e^(-2*a+1/2*b^2/c)*(2*c*d-b*e)*erf((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)+1/16*%e^(2*a-1/2*b^2/c)*(2*c*d-b*e)*erfi((b+2*c*x)/(sqrt(2)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)],
+[sinh(a+b*x+c*x^2)^2/(d+e*x),x,2,-1/2*log(d+e*x)/e+1/2*Unintegrable(cosh(2*a+2*b*x+2*c*x^2)/(d+e*x),x)]]
+
+-- n<0
+
+-- Integrands of the form (d+e x)^m Sinh[a+b x+c x^2]^(n/2)

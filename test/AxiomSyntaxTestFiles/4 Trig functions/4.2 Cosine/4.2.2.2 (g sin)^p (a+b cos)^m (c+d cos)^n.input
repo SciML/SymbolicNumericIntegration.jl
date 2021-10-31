@@ -1,0 +1,17 @@
+-- Axiom integration test file: "4 Trig functions\4.2 Cosine\4.2.2.2 (g sin)^p (a+b cos)^m (c+d cos)^n.input"
+
+lst: '[
+
+-- Integrands of the form (g Sin[e+f x])^p (a+a Cos[e+f x])^m (c-c Cos[e+f x])^n
+
+-- Integrands of the form (g Sin[e+f x])^p (a+a Cos[e+f x])^m (c+d Cos[e+f x])^n
+
+-- Integrands of the form (g Sin[e+f x])^p (a+b Cos[e+f x])^m (c+d Cos[e+f x])^n
+
+-- Integrands of the form (g Sin[e+f x])^m (a+b Cos[e+f x])^n / (c+d Cos[e+f x])
+
+-- Integrands of the form (g Sin[e+f x])^(m/2) (d Cos[e+f x])^(n/2) / (a+b Cos[e+f x])
+[sqrt(d*cos(e+f*x))*sqrt(g*sin(e+f*x))/(a+b*cos(e+f*x)),x,16,-atan(1-sqrt(2)*sqrt(d)*sqrt(g*sin(e+f*x))/(sqrt(g)*sqrt(d*cos(e+f*x))))*sqrt(d)*sqrt(g)/(b*f*sqrt(2))+atan(1+sqrt(2)*sqrt(d)*sqrt(g*sin(e+f*x))/(sqrt(g)*sqrt(d*cos(e+f*x))))*sqrt(d)*sqrt(g)/(b*f*sqrt(2))+1/2*log(sqrt(g)-sqrt(2)*sqrt(d)*sqrt(g*sin(e+f*x))/sqrt(d*cos(e+f*x))+sqrt(g)*tan(e+f*x))*sqrt(d)*sqrt(g)/(b*f*sqrt(2))-1/2*log(sqrt(g)+sqrt(2)*sqrt(d)*sqrt(g*sin(e+f*x))/sqrt(d*cos(e+f*x))+sqrt(g)*tan(e+f*x))*sqrt(d)*sqrt(g)/(b*f*sqrt(2))+2*a*d*elliptic_pi(-sqrt(-a+b)/sqrt(a+b),asin(sqrt(g*sin(e+f*x))/(sqrt(g)*sqrt(1+cos(e+f*x)))),-1)*sqrt(2)*sqrt(g)*sqrt(cos(e+f*x))/(b*f*sqrt(-a+b)*sqrt(a+b)*sqrt(d*cos(e+f*x)))-2*a*d*elliptic_pi(sqrt(-a+b)/sqrt(a+b),asin(sqrt(g*sin(e+f*x))/(sqrt(g)*sqrt(1+cos(e+f*x)))),-1)*sqrt(2)*sqrt(g)*sqrt(cos(e+f*x))/(b*f*sqrt(-a+b)*sqrt(a+b)*sqrt(d*cos(e+f*x)))],
+[sqrt(d*cos(e+f*x))/((a+b*cos(e+f*x))*sqrt(g*sin(e+f*x))),x,4,2*elliptic_pi(-a/(b-sqrt(-a^2+b^2)),asin(sqrt(d*cos(e+f*x))/(sqrt(d)*sqrt(1+sin(e+f*x)))),-1)*sqrt(2)*sqrt(d)*sqrt(sin(e+f*x))/(f*sqrt(-a^2+b^2)*sqrt(g*sin(e+f*x)))-2*elliptic_pi(-a/(b+sqrt(-a^2+b^2)),asin(sqrt(d*cos(e+f*x))/(sqrt(d)*sqrt(1+sin(e+f*x)))),-1)*sqrt(2)*sqrt(d)*sqrt(sin(e+f*x))/(f*sqrt(-a^2+b^2)*sqrt(g*sin(e+f*x)))],
+[sqrt(g*sin(e+f*x))/((a+b*cos(e+f*x))*sqrt(d*cos(e+f*x))),x,5,-2*elliptic_pi(-sqrt(-a+b)/sqrt(a+b),asin(sqrt(g*sin(e+f*x))/(sqrt(g)*sqrt(1+cos(e+f*x)))),-1)*sqrt(2)*sqrt(g)*sqrt(cos(e+f*x))/(f*sqrt(-a+b)*sqrt(a+b)*sqrt(d*cos(e+f*x)))+2*elliptic_pi(sqrt(-a+b)/sqrt(a+b),asin(sqrt(g*sin(e+f*x))/(sqrt(g)*sqrt(1+cos(e+f*x)))),-1)*sqrt(2)*sqrt(g)*sqrt(cos(e+f*x))/(f*sqrt(-a+b)*sqrt(a+b)*sqrt(d*cos(e+f*x)))],
+[1/((a+b*cos(e+f*x))*sqrt(d*cos(e+f*x))*sqrt(g*sin(e+f*x))),x,7,-2*b*elliptic_pi(-a/(b-sqrt(-a^2+b^2)),asin(sqrt(d*cos(e+f*x))/(sqrt(d)*sqrt(1+sin(e+f*x)))),-1)*sqrt(2)*sqrt(sin(e+f*x))/(a*f*sqrt(-a^2+b^2)*sqrt(d)*sqrt(g*sin(e+f*x)))+2*b*elliptic_pi(-a/(b+sqrt(-a^2+b^2)),asin(sqrt(d*cos(e+f*x))/(sqrt(d)*sqrt(1+sin(e+f*x)))),-1)*sqrt(2)*sqrt(sin(e+f*x))/(a*f*sqrt(-a^2+b^2)*sqrt(d)*sqrt(g*sin(e+f*x)))+elliptic_f(-1/4*%pi+e+f*x,2)*sqrt(sin(2*e+2*f*x))/(a*f*sqrt(d*cos(e+f*x))*sqrt(g*sin(e+f*x)))]]

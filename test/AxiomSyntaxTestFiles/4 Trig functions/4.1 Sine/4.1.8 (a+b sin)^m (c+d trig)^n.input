@@ -1,0 +1,24 @@
+-- Axiom integration test file: "4 Trig functions\4.1 Sine\4.1.8 (a+b sin)^m (c+d trig)^n.input"
+
+lst: '[
+
+-- Integrands of the form (A+B Trig[c+d x]) (a+b Sin[a+b x])^n
+
+-- Integrands of the form (A+B Cos[c+d x]) (a+b Sin[c+d x])^n
+[(A+B*cos(x))/(a+b*sin(x)),x,7,B*log(a+b*sin(x))/b+2*A*atan((b+a*tan(1/2*x))/sqrt(a^2-b^2))/sqrt(a^2-b^2)],
+[(A+B*cos(x))/(1+sin(x)),x,5,B*log(1+sin(x))-A*cos(x)/(1+sin(x))],
+[(A+B*cos(x))/(1-sin(x)),x,5,-B*log(1-sin(x))+A*cos(x)/(1-sin(x))],
+[(b+c+cos(x))/(a+b*sin(x)),x,7,log(a+b*sin(x))/b+2*(b+c)*atan((b+a*tan(1/2*x))/sqrt(a^2-b^2))/sqrt(a^2-b^2)],
+[(b+c+cos(x))/(a-b*sin(x)),x,7,-log(a-b*sin(x))/b-2*(b+c)*atan((b-a*tan(1/2*x))/sqrt(a^2-b^2))/sqrt(a^2-b^2)],
+
+-- Integrands of the form (A+B Tan[c+d x]) (a+b Sin[c+d x])^n
+[(A+B*tan(x))/(a+b*sin(x)),x,8,-1/2*B*log(1-sin(x))/(a+b)-1/2*B*log(1+sin(x))/(a-b)+a*B*log(a+b*sin(x))/(a^2-b^2)+2*A*atan((b+a*tan(1/2*x))/sqrt(a^2-b^2))/sqrt(a^2-b^2)],
+
+-- Integrands of the form (A+B Cot[c+d x]) (a+b Sin[c+d x])^n
+[(A+B*cot(x))/(a+b*sin(x)),x,9,B*log(sin(x))/a-B*log(a+b*sin(x))/a+2*A*atan((b+a*tan(1/2*x))/sqrt(a^2-b^2))/sqrt(a^2-b^2)],
+
+-- Integrands of the form (A+B Sec[c+d x]) (a+b Sin[c+d x])^n
+[(A+B*sec(x))/(a+b*sin(x)),x,12,-1/2*B*log(1-sin(x))/(a+b)+1/2*B*log(1+sin(x))/(a-b)-b*B*log(a+b*sin(x))/(a^2-b^2)+2*A*atan((b+a*tan(1/2*x))/sqrt(a^2-b^2))/sqrt(a^2-b^2)],
+
+-- Integrands of the form (A+B Csc[c+d x]) (a+b Sin[c+d x])^n
+[(A+B*csc(x))/(a+b*sin(x)),x,6,-B*atanh(cos(x))/a+2*(a*A-b*B)*atan((b+a*tan(1/2*x))/sqrt(a^2-b^2))/(a*sqrt(a^2-b^2))]]

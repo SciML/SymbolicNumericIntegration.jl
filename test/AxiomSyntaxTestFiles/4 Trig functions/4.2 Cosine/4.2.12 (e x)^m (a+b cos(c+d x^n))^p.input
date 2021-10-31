@@ -1,0 +1,136 @@
+-- Axiom integration test file: "4 Trig functions\4.2 Cosine\4.2.12 (e x)^m (a+b cos(c+d x^n))^p.input"
+
+lst: '[
+
+-- Integrands of the form (e x)^m (a+b Cos[c+d x^n])^p
+
+-- Integrands of the form (e x)^m (a+b Cos[c+d x^2])^p
+
+-- Integrands of the form x^m Cos[a+b x^2]^p
+[x^3*cos(a+b*x^2),x,3,1/2*cos(a+b*x^2)/b^2+1/2*x^2*sin(a+b*x^2)/b],
+[x^2*cos(a+b*x^2),x,4,1/2*x*sin(a+b*x^2)/b-1/2*cos(a)*FresnelS(x*sqrt(2/%pi)*sqrt(b))*sqrt(1/2*%pi)/b^(3/2)-1/2*FresnelC(x*sqrt(2/%pi)*sqrt(b))*sin(a)*sqrt(1/2*%pi)/b^(3/2)],
+[x*cos(a+b*x^2),x,2,1/2*sin(a+b*x^2)/b],
+[cos(a+b*x^2),x,3,cos(a)*FresnelC(x*sqrt(2/%pi)*sqrt(b))*sqrt(1/2*%pi)/sqrt(b)-FresnelS(x*sqrt(2/%pi)*sqrt(b))*sin(a)*sqrt(1/2*%pi)/sqrt(b)],
+[cos(a+b*x^2)/x,x,3,1/2*Ci(b*x^2)*cos(a)-1/2*Si(b*x^2)*sin(a)],
+[cos(a+b*x^2)/x^2,x,4,-cos(a+b*x^2)/x-cos(a)*FresnelS(x*sqrt(2/%pi)*sqrt(b))*sqrt(2*%pi)*sqrt(b)-FresnelC(x*sqrt(2/%pi)*sqrt(b))*sin(a)*sqrt(2*%pi)*sqrt(b)],
+[cos(a+b*x^2)/x^3,x,5,-1/2*cos(a+b*x^2)/x^2-1/2*b*cos(a)*Si(b*x^2)-1/2*b*Ci(b*x^2)*sin(a)],
+[x^3*cos(a+b*x^2)^2,x,3,1/8*x^4+1/8*cos(a+b*x^2)^2/b^2+1/4*x^2*cos(a+b*x^2)*sin(a+b*x^2)/b],
+[x^2*cos(a+b*x^2)^2,x,6,1/6*x^3+1/8*x*sin(2*a+2*b*x^2)/b-1/16*cos(2*a)*FresnelS(2*x*sqrt(b)/sqrt(%pi))*sqrt(%pi)/b^(3/2)-1/16*FresnelC(2*x*sqrt(b)/sqrt(%pi))*sin(2*a)*sqrt(%pi)/b^(3/2)],
+[x*cos(a+b*x^2)^2,x,3,1/4*x^2+1/4*cos(a+b*x^2)*sin(a+b*x^2)/b],
+[cos(a+b*x^2)^2,x,5,1/2*x+1/4*cos(2*a)*FresnelC(2*x*sqrt(b)/sqrt(%pi))*sqrt(%pi)/sqrt(b)-1/4*FresnelS(2*x*sqrt(b)/sqrt(%pi))*sin(2*a)*sqrt(%pi)/sqrt(b)],
+[cos(a+b*x^2)^2/x,x,5,1/4*Ci(2*b*x^2)*cos(2*a)+1/2*log(x)-1/4*Si(2*b*x^2)*sin(2*a)],
+[cos(a+b*x^2)^2/x^2,x,6,-cos(a+b*x^2)^2/x-cos(2*a)*FresnelS(2*x*sqrt(b)/sqrt(%pi))*sqrt(%pi)*sqrt(b)-FresnelC(2*x*sqrt(b)/sqrt(%pi))*sin(2*a)*sqrt(%pi)*sqrt(b)],
+[cos(a+b*x^2)^2/x^3,x,7,(-1/4)/x^2-1/4*cos(2*(a+b*x^2))/x^2-1/2*b*cos(2*a)*Si(2*b*x^2)-1/2*b*Ci(2*b*x^2)*sin(2*a)],
+[x^3*cos(a+b*x^2)^3,x,4,1/3*cos(a+b*x^2)/b^2+1/18*cos(a+b*x^2)^3/b^2+1/3*x^2*sin(a+b*x^2)/b+1/6*x^2*cos(a+b*x^2)^2*sin(a+b*x^2)/b],
+[x^2*cos(a+b*x^2)^3,x,10,3/8*x*sin(a+b*x^2)/b+1/24*x*sin(3*a+3*b*x^2)/b-1/24*cos(3*a)*FresnelS(x*sqrt(6/%pi)*sqrt(b))*sqrt(1/6*%pi)/b^(3/2)-1/24*FresnelC(x*sqrt(6/%pi)*sqrt(b))*sin(3*a)*sqrt(1/6*%pi)/b^(3/2)-3/8*cos(a)*FresnelS(x*sqrt(2/%pi)*sqrt(b))*sqrt(1/2*%pi)/b^(3/2)-3/8*FresnelC(x*sqrt(2/%pi)*sqrt(b))*sin(a)*sqrt(1/2*%pi)/b^(3/2)],
+[x*cos(a+b*x^2)^3,x,3,1/2*sin(a+b*x^2)/b-1/6*sin(a+b*x^2)^3/b],
+[cos(a+b*x^2)^3,x,8,1/4*cos(3*a)*FresnelC(x*sqrt(6/%pi)*sqrt(b))*sqrt(1/6*%pi)/sqrt(b)-1/4*FresnelS(x*sqrt(6/%pi)*sqrt(b))*sin(3*a)*sqrt(1/6*%pi)/sqrt(b)+3/4*cos(a)*FresnelC(x*sqrt(2/%pi)*sqrt(b))*sqrt(1/2*%pi)/sqrt(b)-3/4*FresnelS(x*sqrt(2/%pi)*sqrt(b))*sin(a)*sqrt(1/2*%pi)/sqrt(b)],
+[cos(a+b*x^2)^3/x,x,8,3/8*Ci(b*x^2)*cos(a)+1/8*Ci(3*b*x^2)*cos(3*a)-3/8*Si(b*x^2)*sin(a)-1/8*Si(3*b*x^2)*sin(3*a)],
+[cos(a+b*x^2)^3/x^2,x,9,-cos(a+b*x^2)^3/x-3/2*cos(a)*FresnelS(x*sqrt(2/%pi)*sqrt(b))*sqrt(1/2*%pi)*sqrt(b)-3/2*FresnelC(x*sqrt(2/%pi)*sqrt(b))*sin(a)*sqrt(1/2*%pi)*sqrt(b)-1/2*cos(3*a)*FresnelS(x*sqrt(6/%pi)*sqrt(b))*sqrt(3/2*%pi)*sqrt(b)-1/2*FresnelC(x*sqrt(6/%pi)*sqrt(b))*sin(3*a)*sqrt(3/2*%pi)*sqrt(b)],
+[cos(a+b*x^2)^3/x^3,x,12,-3/8*cos(a+b*x^2)/x^2-1/8*cos(3*(a+b*x^2))/x^2-3/8*b*cos(a)*Si(b*x^2)-3/8*b*cos(3*a)*Si(3*b*x^2)-3/8*b*Ci(b*x^2)*sin(a)-3/8*b*Ci(3*b*x^2)*sin(3*a)],
+[x*cos(a+b*x^2)^7,x,3,1/2*sin(a+b*x^2)/b-1/2*sin(a+b*x^2)^3/b+3/10*sin(a+b*x^2)^5/b-1/14*sin(a+b*x^2)^7/b],
+
+-- Integrands of the form x^m Cos[a+b x^2]^(p/2)
+
+-- Integrands of the form x^(m/2) Cos[a+b x^2]^p
+[x^(5/2)*cos(a+b*x^2),x,4,-3/16*%i*%e^(%i*a)*x^(3/2)*GAMMA(3/4,-%i*b*x^2)/(b*(-%i*b*x^2)^(3/4))+3/16*%i*x^(3/2)*GAMMA(3/4,%i*b*x^2)/(%e^(%i*a)*b*(%i*b*x^2)^(3/4))+1/2*x^(3/2)*sin(a+b*x^2)/b],
+[x^(3/2)*cos(a+b*x^2),x,4,-1/16*%i*%e^(%i*a)*GAMMA(1/4,-%i*b*x^2)*sqrt(x)/(b*(-%i*b*x^2)^(1/4))+1/16*%i*GAMMA(1/4,%i*b*x^2)*sqrt(x)/(%e^(%i*a)*b*(%i*b*x^2)^(1/4))+1/2*sin(a+b*x^2)*sqrt(x)/b],
+[x^(1/2)*cos(a+b*x^2),x,3,-1/4*%e^(%i*a)*x^(3/2)*GAMMA(3/4,-%i*b*x^2)/(-%i*b*x^2)^(3/4)-1/4*x^(3/2)*GAMMA(3/4,%i*b*x^2)/(%e^(%i*a)*(%i*b*x^2)^(3/4))],
+[cos(a+b*x^2)/x^(1/2),x,3,-1/4*%e^(%i*a)*GAMMA(1/4,-%i*b*x^2)*sqrt(x)/(-%i*b*x^2)^(1/4)-1/4*GAMMA(1/4,%i*b*x^2)*sqrt(x)/(%e^(%i*a)*(%i*b*x^2)^(1/4))],
+[cos(a+b*x^2)/x^(3/2),x,4,-%i*%e^(%i*a)*b*x^(3/2)*GAMMA(3/4,-%i*b*x^2)/(-%i*b*x^2)^(3/4)+%i*b*x^(3/2)*GAMMA(3/4,%i*b*x^2)/(%e^(%i*a)*(%i*b*x^2)^(3/4))-2*cos(a+b*x^2)/sqrt(x)],
+[cos(a+b*x^2)/x^(5/2),x,4,-2/3*cos(a+b*x^2)/x^(3/2)-1/3*%i*%e^(%i*a)*b*GAMMA(1/4,-%i*b*x^2)*sqrt(x)/(-%i*b*x^2)^(1/4)+1/3*%i*b*GAMMA(1/4,%i*b*x^2)*sqrt(x)/(%e^(%i*a)*(%i*b*x^2)^(1/4))],
+[x^(5/2)*cos(a+b*x^2)^2,x,7,1/7*x^(7/2)-3/64*%i*%e^(2*%i*a)*x^(3/2)*GAMMA(3/4,-2*%i*b*x^2)/(2^(3/4)*b*(-%i*b*x^2)^(3/4))+3/64*%i*x^(3/2)*GAMMA(3/4,2*%i*b*x^2)/(2^(3/4)*%e^(2*%i*a)*b*(%i*b*x^2)^(3/4))+1/8*x^(3/2)*sin(2*(a+b*x^2))/b],
+[x^(3/2)*cos(a+b*x^2)^2,x,7,1/5*x^(5/2)-1/64*%i*%e^(2*%i*a)*GAMMA(1/4,-2*%i*b*x^2)*sqrt(x)/(2^(1/4)*b*(-%i*b*x^2)^(1/4))+1/64*%i*GAMMA(1/4,2*%i*b*x^2)*sqrt(x)/(2^(1/4)*%e^(2*%i*a)*b*(%i*b*x^2)^(1/4))+1/8*sin(2*(a+b*x^2))*sqrt(x)/b],
+[x^(1/2)*cos(a+b*x^2)^2,x,6,1/3*x^(3/2)-1/8*%e^(2*%i*a)*x^(3/2)*GAMMA(3/4,-2*%i*b*x^2)/(2^(3/4)*(-%i*b*x^2)^(3/4))-1/8*x^(3/2)*GAMMA(3/4,2*%i*b*x^2)/(2^(3/4)*%e^(2*%i*a)*(%i*b*x^2)^(3/4))],
+[cos(a+b*x^2)^2/x^(1/2),x,6,sqrt(x)-1/8*%e^(2*%i*a)*GAMMA(1/4,-2*%i*b*x^2)*sqrt(x)/(2^(1/4)*(-%i*b*x^2)^(1/4))-1/8*GAMMA(1/4,2*%i*b*x^2)*sqrt(x)/(2^(1/4)*%e^(2*%i*a)*(%i*b*x^2)^(1/4))],
+[cos(a+b*x^2)^2/x^(3/2),x,7,-%i*%e^(2*%i*a)*b*x^(3/2)*GAMMA(3/4,-2*%i*b*x^2)/(2^(3/4)*(-%i*b*x^2)^(3/4))+%i*b*x^(3/2)*GAMMA(3/4,2*%i*b*x^2)/(2^(3/4)*%e^(2*%i*a)*(%i*b*x^2)^(3/4))+(-1)/sqrt(x)-cos(2*(a+b*x^2))/sqrt(x)],
+[cos(a+b*x^2)^2/x^(5/2),x,7,-2/3*cos(a+b*x^2)^2/x^(3/2)-1/3*%i*%e^(2*%i*a)*b*GAMMA(1/4,-2*%i*b*x^2)*sqrt(x)/(2^(1/4)*(-%i*b*x^2)^(1/4))+1/3*%i*b*GAMMA(1/4,2*%i*b*x^2)*sqrt(x)/(2^(1/4)*%e^(2*%i*a)*(%i*b*x^2)^(1/4))],
+
+-- Integrands of the form x^(m/2) Cos[a+b x^2]^(p/2)
+
+-- Integrands of the form (e x)^m (a+b Cos[c+d / x^1])^p
+
+-- Integrands of the form x^m Cos[a+b / x]^p
+[cos(a+b/x),x,5,x*cos(a+b/x)+b*cos(a)*Si(b/x)+b*Ci(b/x)*sin(a)],
+[cos(a+b/x)/x,x,3,-Ci(b/x)*cos(a)+Si(b/x)*sin(a)],
+[cos(a+b/x)/x^2,x,2,-sin(a+b/x)/b],
+[cos(a+b/x)/x^3,x,3,-cos(a+b/x)/b^2-sin(a+b/x)/(b*x)],
+[cos(a+b/x)/x^4,x,4,-2*cos(a+b/x)/(b^2*x)+2*sin(a+b/x)/b^3-sin(a+b/x)/(b*x^2)],
+
+-- Integrands of the form (e x)^m (a+b Cos[c+d / x^2])^p
+
+-- Integrands of the form x^m Cos[a+b / x^2]^p
+[cos(a+b/x^2),x,5,x*cos(a+b/x^2)+cos(a)*FresnelS(sqrt(2/%pi)*sqrt(b)/x)*sqrt(2*%pi)*sqrt(b)+FresnelC(sqrt(2/%pi)*sqrt(b)/x)*sin(a)*sqrt(2*%pi)*sqrt(b)],
+[cos(a+b/x^2)/x,x,3,-1/2*Ci(b/x^2)*cos(a)+1/2*Si(b/x^2)*sin(a)],
+[cos(a+b/x^2)/x^2,x,4,-cos(a)*FresnelC(sqrt(2/%pi)*sqrt(b)/x)*sqrt(1/2*%pi)/sqrt(b)+FresnelS(sqrt(2/%pi)*sqrt(b)/x)*sin(a)*sqrt(1/2*%pi)/sqrt(b)],
+[cos(a+b/x^2)/x^3,x,2,-1/2*sin(a+b/x^2)/b],
+[cos(a+b/x^2)/x^4,x,5,-1/2*sin(a+b/x^2)/(b*x)+1/2*cos(a)*FresnelS(sqrt(2/%pi)*sqrt(b)/x)*sqrt(1/2*%pi)/b^(3/2)+1/2*FresnelC(sqrt(2/%pi)*sqrt(b)/x)*sin(a)*sqrt(1/2*%pi)/b^(3/2)],
+
+-- Integrands of the form (e x)^m (a+b Cos[c+d x^(1/2)])^p
+[cos(sqrt(x))^2/sqrt(x),x,3,cos(sqrt(x))*sin(sqrt(x))+sqrt(x)],
+[cos(sqrt(x))/sqrt(x),x,2,2*sin(sqrt(x))],
+[cos(sqrt(x)),x,3,2*cos(sqrt(x))+2*sin(sqrt(x))*sqrt(x)],
+[cos(sqrt(x))^2,x,3,1/2*x+1/2*cos(sqrt(x))^2+cos(sqrt(x))*sin(sqrt(x))*sqrt(x)],
+
+-- Integrands of the form (e x)^m (a+b Cos[c+d x^(1/3)])^p
+[x^(3/2)*cos(a+b*x^(1/3)),x,13,-3861/8*x^(7/6)*cos(a+b*x^(1/3))/b^4+39/2*x^(11/6)*cos(a+b*x^(1/3))/b^2-405405/64*x^(1/6)*sin(a+b*x^(1/3))/b^7+27027/16*x^(5/6)*sin(a+b*x^(1/3))/b^5-429/4*x^(3/2)*sin(a+b*x^(1/3))/b^3+3*x^(13/6)*sin(a+b*x^(1/3))/b+405405/64*cos(a)*FresnelS(x^(1/6)*sqrt(2/%pi)*sqrt(b))*sqrt(1/2*%pi)/b^(15/2)+405405/64*FresnelC(x^(1/6)*sqrt(2/%pi)*sqrt(b))*sin(a)*sqrt(1/2*%pi)/b^(15/2)+135135/32*cos(a+b*x^(1/3))*sqrt(x)/b^6],
+[x^(1/2)*cos(a+b*x^(1/3)),x,10,-315/8*x^(1/6)*cos(a+b*x^(1/3))/b^4+21/2*x^(5/6)*cos(a+b*x^(1/3))/b^2+3*x^(7/6)*sin(a+b*x^(1/3))/b+315/8*cos(a)*FresnelC(x^(1/6)*sqrt(2/%pi)*sqrt(b))*sqrt(1/2*%pi)/b^(9/2)-315/8*FresnelS(x^(1/6)*sqrt(2/%pi)*sqrt(b))*sin(a)*sqrt(1/2*%pi)/b^(9/2)-105/4*sin(a+b*x^(1/3))*sqrt(x)/b^3],
+[cos(a+b*x^(1/3))/x^(1/2),x,7,3*x^(1/6)*sin(a+b*x^(1/3))/b-3*cos(a)*FresnelS(x^(1/6)*sqrt(2/%pi)*sqrt(b))*sqrt(1/2*%pi)/b^(3/2)-3*FresnelC(x^(1/6)*sqrt(2/%pi)*sqrt(b))*sin(a)*sqrt(1/2*%pi)/b^(3/2)],
+[cos(a+b*x^(1/3))/x^(3/2),x,8,4*b*sin(a+b*x^(1/3))/x^(1/6)-4*b^(3/2)*cos(a)*FresnelC(x^(1/6)*sqrt(2/%pi)*sqrt(b))*sqrt(2*%pi)+4*b^(3/2)*FresnelS(x^(1/6)*sqrt(2/%pi)*sqrt(b))*sin(a)*sqrt(2*%pi)-2*cos(a+b*x^(1/3))/sqrt(x)],
+[cos(a+b*x^(1/3))/x^(5/2),x,11,-2/3*cos(a+b*x^(1/3))/x^(3/2)+8/105*b^2*cos(a+b*x^(1/3))/x^(5/6)-32/315*b^4*cos(a+b*x^(1/3))/x^(1/6)+4/21*b*sin(a+b*x^(1/3))/x^(7/6)-32/315*b^(9/2)*cos(a)*FresnelS(x^(1/6)*sqrt(2/%pi)*sqrt(b))*sqrt(2*%pi)-32/315*b^(9/2)*FresnelC(x^(1/6)*sqrt(2/%pi)*sqrt(b))*sin(a)*sqrt(2*%pi)-16/315*b^3*sin(a+b*x^(1/3))/sqrt(x)],
+[cos(a+b*x^(1/3))/x^(7/2),x,14,-2/5*cos(a+b*x^(1/3))/x^(5/2)+8/715*b^2*cos(a+b*x^(1/3))/x^(11/6)-32/45045*b^4*cos(a+b*x^(1/3))/x^(7/6)+4/65*b*sin(a+b*x^(1/3))/x^(13/6)-16/6435*b^3*sin(a+b*x^(1/3))/x^(3/2)+64/225225*b^5*sin(a+b*x^(1/3))/x^(5/6)-256/675675*b^7*sin(a+b*x^(1/3))/x^(1/6)+256/675675*b^(15/2)*cos(a)*FresnelC(x^(1/6)*sqrt(2/%pi)*sqrt(b))*sqrt(2*%pi)-256/675675*b^(15/2)*FresnelS(x^(1/6)*sqrt(2/%pi)*sqrt(b))*sin(a)*sqrt(2*%pi)+128/675675*b^6*cos(a+b*x^(1/3))/sqrt(x)],
+[x^(3/2)*cos(a+b*x^(1/3))^2,x,15,3861/256*x^(7/6)/b^4-39/16*x^(11/6)/b^2+1/5*x^(5/2)-3861/128*x^(7/6)*cos(a+b*x^(1/3))^2/b^4+39/8*x^(11/6)*cos(a+b*x^(1/3))^2/b^2+27027/512*x^(5/6)*cos(a+b*x^(1/3))*sin(a+b*x^(1/3))/b^5-429/32*x^(3/2)*cos(a+b*x^(1/3))*sin(a+b*x^(1/3))/b^3+3/2*x^(13/6)*cos(a+b*x^(1/3))*sin(a+b*x^(1/3))/b-405405/16384*x^(1/6)*sin(2*(a+b*x^(1/3)))/b^7+405405/32768*cos(2*a)*FresnelS(2*x^(1/6)*sqrt(b)/sqrt(%pi))*sqrt(%pi)/b^(15/2)+405405/32768*FresnelC(2*x^(1/6)*sqrt(b)/sqrt(%pi))*sin(2*a)*sqrt(%pi)/b^(15/2)-135135/4096*sqrt(x)/b^6+135135/2048*cos(a+b*x^(1/3))^2*sqrt(x)/b^6],
+[x^(1/2)*cos(a+b*x^(1/3))^2,x,12,315/256*x^(1/6)/b^4-21/16*x^(5/6)/b^2+1/3*x^(3/2)-315/128*x^(1/6)*cos(a+b*x^(1/3))^2/b^4+21/8*x^(5/6)*cos(a+b*x^(1/3))^2/b^2+3/2*x^(7/6)*cos(a+b*x^(1/3))*sin(a+b*x^(1/3))/b+315/512*cos(2*a)*FresnelC(2*x^(1/6)*sqrt(b)/sqrt(%pi))*sqrt(%pi)/b^(9/2)-315/512*FresnelS(2*x^(1/6)*sqrt(b)/sqrt(%pi))*sin(2*a)*sqrt(%pi)/b^(9/2)-105/32*cos(a+b*x^(1/3))*sin(a+b*x^(1/3))*sqrt(x)/b^3],
+[cos(a+b*x^(1/3))^2/x^(1/2),x,9,3/4*x^(1/6)*sin(2*(a+b*x^(1/3)))/b-3/8*cos(2*a)*FresnelS(2*x^(1/6)*sqrt(b)/sqrt(%pi))*sqrt(%pi)/b^(3/2)-3/8*FresnelC(2*x^(1/6)*sqrt(b)/sqrt(%pi))*sin(2*a)*sqrt(%pi)/b^(3/2)+sqrt(x)],
+[cos(a+b*x^(1/3))^2/x^(3/2),x,10,8*b*cos(a+b*x^(1/3))*sin(a+b*x^(1/3))/x^(1/6)-8*b^(3/2)*cos(2*a)*FresnelC(2*x^(1/6)*sqrt(b)/sqrt(%pi))*sqrt(%pi)+8*b^(3/2)*FresnelS(2*x^(1/6)*sqrt(b)/sqrt(%pi))*sin(2*a)*sqrt(%pi)-2*cos(a+b*x^(1/3))^2/sqrt(x)],
+[cos(a+b*x^(1/3))^2/x^(5/2),x,12,-16/105*b^2/x^(5/6)+256/315*b^4/x^(1/6)-2/3*cos(a+b*x^(1/3))^2/x^(3/2)+32/105*b^2*cos(a+b*x^(1/3))^2/x^(5/6)-512/315*b^4*cos(a+b*x^(1/3))^2/x^(1/6)+8/21*b*cos(a+b*x^(1/3))*sin(a+b*x^(1/3))/x^(7/6)-512/315*b^(9/2)*cos(2*a)*FresnelS(2*x^(1/6)*sqrt(b)/sqrt(%pi))*sqrt(%pi)-512/315*b^(9/2)*FresnelC(2*x^(1/6)*sqrt(b)/sqrt(%pi))*sin(2*a)*sqrt(%pi)-128/315*b^3*cos(a+b*x^(1/3))*sin(a+b*x^(1/3))/sqrt(x)],
+[cos(a+b*x^(1/3))^2/x^(7/2),x,16,-16/715*b^2/x^(11/6)+256/45045*b^4/x^(7/6)-2/5*cos(a+b*x^(1/3))^2/x^(5/2)+32/715*b^2*cos(a+b*x^(1/3))^2/x^(11/6)-512/45045*b^4*cos(a+b*x^(1/3))^2/x^(7/6)+8/65*b*cos(a+b*x^(1/3))*sin(a+b*x^(1/3))/x^(13/6)-128/6435*b^3*cos(a+b*x^(1/3))*sin(a+b*x^(1/3))/x^(3/2)+2048/225225*b^5*cos(a+b*x^(1/3))*sin(a+b*x^(1/3))/x^(5/6)-32768/675675*b^7*cos(a+b*x^(1/3))*sin(a+b*x^(1/3))/x^(1/6)+32768/675675*b^(15/2)*cos(2*a)*FresnelC(2*x^(1/6)*sqrt(b)/sqrt(%pi))*sqrt(%pi)-32768/675675*b^(15/2)*FresnelS(2*x^(1/6)*sqrt(b)/sqrt(%pi))*sin(2*a)*sqrt(%pi)-4096/675675*b^6/sqrt(x)+8192/675675*b^6*cos(a+b*x^(1/3))^2/sqrt(x)],
+[cos(x^(1/3))^3,x,7,4*x^(1/3)*cos(x^(1/3))+2/3*x^(1/3)*cos(x^(1/3))^3-14/3*sin(x^(1/3))+2*x^(2/3)*sin(x^(1/3))+x^(2/3)*cos(x^(1/3))^2*sin(x^(1/3))+2/9*sin(x^(1/3))^3],
+[cos(x^(1/6))/x^(5/6),x,2,6*sin(x^(1/6))],
+
+-- Integrands of the form (e x)^m (a+b Cos[c+d x^n])^p
+[(e*x)^m*(b*cos(c+d*x^n))^p,x,0,Unintegrable((e*x)^m*(b*cos(c+d*x^n))^p,x)],
+[(e*x)^m*(a+b*cos(c+d*x^n))^p,x,0,Unintegrable((e*x)^m*(a+b*cos(c+d*x^n))^p,x)],
+[(e*x)^(-1+n)*(b*cos(c+d*x^n))^p,x,3,-(e*x)^n*(b*cos(c+d*x^n))^(1+p)*hypergeometric(1/2,1/2*(1+p),1/2*(3+p),cos(c+d*x^n)^2)*sin(c+d*x^n)/(b*d*e*n*(1+p)*x^n*sqrt(sin(c+d*x^n)^2))],
+[(e*x)^(-1+2*n)*(b*cos(c+d*x^n))^p,x,1,(e*x)^(2*n)*Unintegrable(x^(-1+2*n)*(b*cos(c+d*x^n))^p,x)/(e*x^(2*n))],
+[(e*x)^(-1+n)*(a+b*cos(c+d*x^n))^p,x,5,(e*x)^n*AppellF1(1/2,1/2,-p,3/2,1/2*(1-cos(c+d*x^n)),b*(1-cos(c+d*x^n))/(a+b))*(a+b*cos(c+d*x^n))^p*sin(c+d*x^n)*sqrt(2)/(d*e*n*x^n*((a+b*cos(c+d*x^n))/(a+b))^p*sqrt(1+cos(c+d*x^n)))],
+[(e*x)^(-1+2*n)*(a+b*cos(c+d*x^n))^p,x,1,(e*x)^(2*n)*Unintegrable(x^(-1+2*n)*(a+b*cos(c+d*x^n))^p,x)/(e*x^(2*n))],
+[cos(a+b*x^n)/x,x,3,Ci(b*x^n)*cos(a)/n-Si(b*x^n)*sin(a)/n],
+[cos(a+b*x^n)^2/x,x,5,1/2*Ci(2*b*x^n)*cos(2*a)/n+1/2*log(x)-1/2*Si(2*b*x^n)*sin(2*a)/n],
+[cos(a+b*x^n)^3/x,x,8,3/4*Ci(b*x^n)*cos(a)/n+1/4*Ci(3*b*x^n)*cos(3*a)/n-3/4*Si(b*x^n)*sin(a)/n-1/4*Si(3*b*x^n)*sin(3*a)/n],
+[cos(a+b*x^n)^4/x,x,8,1/2*Ci(2*b*x^n)*cos(2*a)/n+1/8*Ci(4*b*x^n)*cos(4*a)/n+3/8*log(x)-1/2*Si(2*b*x^n)*sin(2*a)/n-1/8*Si(4*b*x^n)*sin(4*a)/n],
+[cos(a+b*x^n),x,3,-1/2*%e^(%i*a)*x*GAMMA(1/n,-%i*b*x^n)/(n*(-%i*b*x^n)^(1/n))-1/2*x*GAMMA(1/n,%i*b*x^n)/(%e^(%i*a)*n*(%i*b*x^n)^(1/n))],
+[cos(a+b*x^n)^2,x,5,1/2*x-2^(-2+(-1)/n)*%e^(2*%i*a)*x*GAMMA(1/n,-2*%i*b*x^n)/(n*(-%i*b*x^n)^(1/n))-2^(-2+(-1)/n)*x*GAMMA(1/n,2*%i*b*x^n)/(%e^(2*%i*a)*n*(%i*b*x^n)^(1/n))],
+[cos(a+b*x^n)^3,x,8,-3/8*%e^(%i*a)*x*GAMMA(1/n,-%i*b*x^n)/(n*(-%i*b*x^n)^(1/n))-3/8*x*GAMMA(1/n,%i*b*x^n)/(%e^(%i*a)*n*(%i*b*x^n)^(1/n))-1/8*%e^(3*%i*a)*x*GAMMA(1/n,-3*%i*b*x^n)/(3^(1/n)*n*(-%i*b*x^n)^(1/n))-1/8*x*GAMMA(1/n,3*%i*b*x^n)/(3^(1/n)*%e^(3*%i*a)*n*(%i*b*x^n)^(1/n))],
+[x^m*cos(a+b*x^n),x,3,-1/2*%e^(%i*a)*x^(1+m)*GAMMA((1+m)/n,-%i*b*x^n)/(n*(-%i*b*x^n)^((1+m)/n))-1/2*x^(1+m)*GAMMA((1+m)/n,%i*b*x^n)/(%e^(%i*a)*n*(%i*b*x^n)^((1+m)/n))],
+[x^m*cos(a+b*x^n)^2,x,5,1/2*x^(1+m)/(1+m)-%e^(2*%i*a)*x^(1+m)*GAMMA((1+m)/n,-2*%i*b*x^n)/(2^((1+m+2*n)/n)*n*(-%i*b*x^n)^((1+m)/n))-x^(1+m)*GAMMA((1+m)/n,2*%i*b*x^n)/(2^((1+m+2*n)/n)*%e^(2*%i*a)*n*(%i*b*x^n)^((1+m)/n))],
+[x^m*cos(a+b*x^n)^3,x,8,-3/8*%e^(%i*a)*x^(1+m)*GAMMA((1+m)/n,-%i*b*x^n)/(n*(-%i*b*x^n)^((1+m)/n))-3/8*x^(1+m)*GAMMA((1+m)/n,%i*b*x^n)/(%e^(%i*a)*n*(%i*b*x^n)^((1+m)/n))-1/8*%e^(3*%i*a)*x^(1+m)*GAMMA((1+m)/n,-3*%i*b*x^n)/(3^((1+m)/n)*n*(-%i*b*x^n)^((1+m)/n))-1/8*x^(1+m)*GAMMA((1+m)/n,3*%i*b*x^n)/(3^((1+m)/n)*%e^(3*%i*a)*n*(%i*b*x^n)^((1+m)/n))],
+[x^(-1-n)*cos(a+b*x^n),x,5,-cos(a+b*x^n)/(n*x^n)-b*cos(a)*Si(b*x^n)/n-b*Ci(b*x^n)*sin(a)/n],
+[x^(-1-n)*cos(a+b*x^n)^2,x,7,(-1/2)/(n*x^n)-1/2*cos(2*(a+b*x^n))/(n*x^n)-b*cos(2*a)*Si(2*b*x^n)/n-b*Ci(2*b*x^n)*sin(2*a)/n],
+[x^(-1-n)*cos(a+b*x^n)^3,x,12,-3/4*cos(a+b*x^n)/(n*x^n)-1/4*cos(3*(a+b*x^n))/(n*x^n)-3/4*b*cos(a)*Si(b*x^n)/n-3/4*b*cos(3*a)*Si(3*b*x^n)/n-3/4*b*Ci(b*x^n)*sin(a)/n-3/4*b*Ci(3*b*x^n)*sin(3*a)/n],
+[x^(-1-2*n)*cos(a+b*x^n),x,6,-1/2*b^2*Ci(b*x^n)*cos(a)/n-1/2*cos(a+b*x^n)/(n*x^(2*n))+1/2*b^2*Si(b*x^n)*sin(a)/n+1/2*b*sin(a+b*x^n)/(n*x^n)],
+[x^(-1-2*n)*cos(a+b*x^n)^2,x,8,(-1/4)/(n*x^(2*n))-b^2*Ci(2*b*x^n)*cos(2*a)/n-1/4*cos(2*(a+b*x^n))/(n*x^(2*n))+b^2*Si(2*b*x^n)*sin(2*a)/n+1/2*b*sin(2*(a+b*x^n))/(n*x^n)],
+[x^(-1-2*n)*cos(a+b*x^n)^3,x,14,-3/8*b^2*Ci(b*x^n)*cos(a)/n-9/8*b^2*Ci(3*b*x^n)*cos(3*a)/n-3/8*cos(a+b*x^n)/(n*x^(2*n))-1/8*cos(3*(a+b*x^n))/(n*x^(2*n))+3/8*b^2*Si(b*x^n)*sin(a)/n+9/8*b^2*Si(3*b*x^n)*sin(3*a)/n+3/8*b*sin(a+b*x^n)/(n*x^n)+3/8*b*sin(3*(a+b*x^n))/(n*x^n)],
+
+-- Integrands of the form (e x)^m Cos[a+b (c+d x)^n]
+
+-- Integrands of the form (e x)^m Cos[a+b (c+d x)^n]
+[x^2*cos((a+b*x)^2),x,7,-a*sin((a+b*x)^2)/b^3+1/2*(a+b*x)*sin((a+b*x)^2)/b^3+a^2*FresnelC((a+b*x)*sqrt(2/%pi))*sqrt(1/2*%pi)/b^3-1/2*FresnelS((a+b*x)*sqrt(2/%pi))*sqrt(1/2*%pi)/b^3],
+[x*cos((a+b*x)^2),x,5,1/2*sin((a+b*x)^2)/b^2-a*FresnelC((a+b*x)*sqrt(2/%pi))*sqrt(1/2*%pi)/b^2],
+[cos((a+b*x)^2),x,1,FresnelC((a+b*x)*sqrt(2/%pi))*sqrt(1/2*%pi)/b],
+[cos((a+b*x)^2)/x,x,0,Unintegrable(cos((a+b*x)^2)/x,x)],
+[cos((a+b*x)^2)/x^2,x,0,Unintegrable(cos((a+b*x)^2)/x^2,x)],
+
+-- Integrands of the form (e x)^m Cos[a+b (c+d x)^(n/2)]
+[x^2*cos(a+b*sqrt(c+d*x)),x,14,240*cos(a+b*sqrt(c+d*x))/(b^6*d^3)+24*c*cos(a+b*sqrt(c+d*x))/(b^4*d^3)+2*c^2*cos(a+b*sqrt(c+d*x))/(b^2*d^3)-120*(c+d*x)*cos(a+b*sqrt(c+d*x))/(b^4*d^3)-12*c*(c+d*x)*cos(a+b*sqrt(c+d*x))/(b^2*d^3)+10*(c+d*x)^2*cos(a+b*sqrt(c+d*x))/(b^2*d^3)-40*(c+d*x)^(3/2)*sin(a+b*sqrt(c+d*x))/(b^3*d^3)-4*c*(c+d*x)^(3/2)*sin(a+b*sqrt(c+d*x))/(b*d^3)+2*(c+d*x)^(5/2)*sin(a+b*sqrt(c+d*x))/(b*d^3)+240*sin(a+b*sqrt(c+d*x))*sqrt(c+d*x)/(b^5*d^3)+24*c*sin(a+b*sqrt(c+d*x))*sqrt(c+d*x)/(b^3*d^3)+2*c^2*sin(a+b*sqrt(c+d*x))*sqrt(c+d*x)/(b*d^3)],
+[x*cos(a+b*sqrt(c+d*x)),x,8,-12*cos(a+b*sqrt(c+d*x))/(b^4*d^2)-2*c*cos(a+b*sqrt(c+d*x))/(b^2*d^2)+6*(c+d*x)*cos(a+b*sqrt(c+d*x))/(b^2*d^2)+2*(c+d*x)^(3/2)*sin(a+b*sqrt(c+d*x))/(b*d^2)-12*sin(a+b*sqrt(c+d*x))*sqrt(c+d*x)/(b^3*d^2)-2*c*sin(a+b*sqrt(c+d*x))*sqrt(c+d*x)/(b*d^2)],
+[cos(a+b*sqrt(c+d*x)),x,3,2*cos(a+b*sqrt(c+d*x))/(b^2*d)+2*sin(a+b*sqrt(c+d*x))*sqrt(c+d*x)/(b*d)],
+[cos(a+b*sqrt(c+d*x))/x,x,8,Ci(b*(sqrt(c)+sqrt(c+d*x)))*cos(a-b*sqrt(c))+Ci(b*sqrt(c)-b*sqrt(c+d*x))*cos(a+b*sqrt(c))-Si(b*(sqrt(c)+sqrt(c+d*x)))*sin(a-b*sqrt(c))+Si(b*sqrt(c)-b*sqrt(c+d*x))*sin(a+b*sqrt(c))],
+[cos(a+b*sqrt(c+d*x))/x^2,x,10,-cos(a+b*sqrt(c+d*x))/x+1/2*b*d*cos(a-b*sqrt(c))*Si(b*(sqrt(c)+sqrt(c+d*x)))/sqrt(c)+1/2*b*d*cos(a+b*sqrt(c))*Si(b*sqrt(c)-b*sqrt(c+d*x))/sqrt(c)+1/2*b*d*Ci(b*(sqrt(c)+sqrt(c+d*x)))*sin(a-b*sqrt(c))/sqrt(c)-1/2*b*d*Ci(b*sqrt(c)-b*sqrt(c+d*x))*sin(a+b*sqrt(c))/sqrt(c)],
+
+-- Integrands of the form (e x)^m Cos[a+b (c+d x)^(n/3)]
+[x^2*cos(a+b*(c+d*x)^(1/3)),x,20,-720*c*cos(a+b*(c+d*x)^(1/3))/(b^6*d^3)-120960*(c+d*x)^(1/3)*cos(a+b*(c+d*x)^(1/3))/(b^8*d^3)+6*c^2*(c+d*x)^(1/3)*cos(a+b*(c+d*x)^(1/3))/(b^2*d^3)+360*c*(c+d*x)^(2/3)*cos(a+b*(c+d*x)^(1/3))/(b^4*d^3)+20160*(c+d*x)*cos(a+b*(c+d*x)^(1/3))/(b^6*d^3)-30*c*(c+d*x)^(4/3)*cos(a+b*(c+d*x)^(1/3))/(b^2*d^3)-1008*(c+d*x)^(5/3)*cos(a+b*(c+d*x)^(1/3))/(b^4*d^3)+24*(c+d*x)^(7/3)*cos(a+b*(c+d*x)^(1/3))/(b^2*d^3)+120960*sin(a+b*(c+d*x)^(1/3))/(b^9*d^3)-6*c^2*sin(a+b*(c+d*x)^(1/3))/(b^3*d^3)-720*c*(c+d*x)^(1/3)*sin(a+b*(c+d*x)^(1/3))/(b^5*d^3)-60480*(c+d*x)^(2/3)*sin(a+b*(c+d*x)^(1/3))/(b^7*d^3)+3*c^2*(c+d*x)^(2/3)*sin(a+b*(c+d*x)^(1/3))/(b*d^3)+120*c*(c+d*x)*sin(a+b*(c+d*x)^(1/3))/(b^3*d^3)+5040*(c+d*x)^(4/3)*sin(a+b*(c+d*x)^(1/3))/(b^5*d^3)-6*c*(c+d*x)^(5/3)*sin(a+b*(c+d*x)^(1/3))/(b*d^3)-168*(c+d*x)^2*sin(a+b*(c+d*x)^(1/3))/(b^3*d^3)+3*(c+d*x)^(8/3)*sin(a+b*(c+d*x)^(1/3))/(b*d^3)],
+[x*cos(a+b*(c+d*x)^(1/3)),x,11,360*cos(a+b*(c+d*x)^(1/3))/(b^6*d^2)-6*c*(c+d*x)^(1/3)*cos(a+b*(c+d*x)^(1/3))/(b^2*d^2)-180*(c+d*x)^(2/3)*cos(a+b*(c+d*x)^(1/3))/(b^4*d^2)+15*(c+d*x)^(4/3)*cos(a+b*(c+d*x)^(1/3))/(b^2*d^2)+6*c*sin(a+b*(c+d*x)^(1/3))/(b^3*d^2)+360*(c+d*x)^(1/3)*sin(a+b*(c+d*x)^(1/3))/(b^5*d^2)-3*c*(c+d*x)^(2/3)*sin(a+b*(c+d*x)^(1/3))/(b*d^2)-60*(c+d*x)*sin(a+b*(c+d*x)^(1/3))/(b^3*d^2)+3*(c+d*x)^(5/3)*sin(a+b*(c+d*x)^(1/3))/(b*d^2)],
+[cos(a+b*(c+d*x)^(1/3)),x,4,6*(c+d*x)^(1/3)*cos(a+b*(c+d*x)^(1/3))/(b^2*d)-6*sin(a+b*(c+d*x)^(1/3))/(b^3*d)+3*(c+d*x)^(2/3)*sin(a+b*(c+d*x)^(1/3))/(b*d)],
+[cos(a+b*(c+d*x)^(1/3))/x,x,11,Ci(b*c^(1/3)-b*(c+d*x)^(1/3))*cos(a+b*c^(1/3))+Ci((-1)^(1/3)*b*c^(1/3)+b*(c+d*x)^(1/3))*cos(a-(-1)^(1/3)*b*c^(1/3))+Ci((-1)^(2/3)*b*c^(1/3)-b*(c+d*x)^(1/3))*cos(a+(-1)^(2/3)*b*c^(1/3))+Si(b*c^(1/3)-b*(c+d*x)^(1/3))*sin(a+b*c^(1/3))-Si((-1)^(1/3)*b*c^(1/3)+b*(c+d*x)^(1/3))*sin(a-(-1)^(1/3)*b*c^(1/3))+Si((-1)^(2/3)*b*c^(1/3)-b*(c+d*x)^(1/3))*sin(a+(-1)^(2/3)*b*c^(1/3))],
+[cos(a+b*(c+d*x)^(1/3))/x^2,x,13,-cos(a+b*(c+d*x)^(1/3))/x+1/3*b*d*cos(a+b*c^(1/3))*Si(b*c^(1/3)-b*(c+d*x)^(1/3))/c^(2/3)+1/3*(-1)^(2/3)*b*d*cos(a+(-1)^(2/3)*b*c^(1/3))*Si((-1)^(2/3)*b*c^(1/3)-b*(c+d*x)^(1/3))/c^(2/3)+1/3*(-1)^(1/3)*b*d*cos(a-(-1)^(1/3)*b*c^(1/3))*Si((-1)^(1/3)*b*c^(1/3)+b*(c+d*x)^(1/3))/c^(2/3)-1/3*b*d*Ci(b*c^(1/3)-b*(c+d*x)^(1/3))*sin(a+b*c^(1/3))/c^(2/3)+1/3*(-1)^(1/3)*b*d*Ci((-1)^(1/3)*b*c^(1/3)+b*(c+d*x)^(1/3))*sin(a-(-1)^(1/3)*b*c^(1/3))/c^(2/3)-1/3*(-1)^(2/3)*b*d*Ci((-1)^(2/3)*b*c^(1/3)-b*(c+d*x)^(1/3))*sin(a+(-1)^(2/3)*b*c^(1/3))/c^(2/3)]]

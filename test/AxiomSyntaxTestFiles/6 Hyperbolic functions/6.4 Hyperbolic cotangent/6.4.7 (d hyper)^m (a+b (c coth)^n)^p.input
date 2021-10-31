@@ -1,0 +1,88 @@
+-- Axiom integration test file: "6 Hyperbolic functions\6.4 Hyperbolic cotangent\6.4.7 (d hyper)^m (a+b (c coth)^n)^p.input"
+
+lst: '[
+
+-- Integrands of the form Sinh[e+f x]^m (a+b Coth[e+f x]^n)^p
+
+-- Integrands of the form Cosh[e+f x]^m (a+b Coth[e+f x]^n)^p
+
+-- Integrands of the form Coth[e+f x]^m (a+b Coth[e+f x]^n)^p
+
+-- Integrands of the form Coth[e+f x]^m (a+b Coth[e+f x]^2)^p
+
+-- Integrands of the form Coth[e+f x]^m (a+b Coth[e+f x]^2)^p
+
+-- p>0
+[(a+b*coth(c+d*x)^2)^5,x,4,(a+b)^5*x-b*(5*a^4+10*a^3*b+10*a^2*b^2+5*a*b^3+b^4)*coth(c+d*x)/d-1/3*b^2*(10*a^3+10*a^2*b+5*a*b^2+b^3)*coth(c+d*x)^3/d-1/5*b^3*(10*a^2+5*a*b+b^2)*coth(c+d*x)^5/d-1/7*b^4*(5*a+b)*coth(c+d*x)^7/d-1/9*b^5*coth(c+d*x)^9/d],
+[(a+b*coth(c+d*x)^2)^4,x,4,(a+b)^4*x-b*(2*a+b)*(2*a^2+2*a*b+b^2)*coth(c+d*x)/d-1/3*b^2*(6*a^2+4*a*b+b^2)*coth(c+d*x)^3/d-1/5*b^3*(4*a+b)*coth(c+d*x)^5/d-1/7*b^4*coth(c+d*x)^7/d],
+[(a+b*coth(c+d*x)^2)^3,x,4,(a+b)^3*x-b*(3*a^2+3*a*b+b^2)*coth(c+d*x)/d-1/3*b^2*(3*a+b)*coth(c+d*x)^3/d-1/5*b^3*coth(c+d*x)^5/d],
+[(a+b*coth(c+d*x)^2)^2,x,4,(a+b)^2*x-b*(2*a+b)*coth(c+d*x)/d-1/3*b^2*coth(c+d*x)^3/d],
+
+-- p<0
+[1/(a+b*coth(c+d*x)^2),x,3,x/(a+b)-atan(sqrt(a)*tanh(c+d*x)/sqrt(b))*sqrt(b)/((a+b)*d*sqrt(a))],
+[1/(a+b*coth(c+d*x)^2)^2,x,5,x/(a+b)^2+1/2*b*coth(c+d*x)/(a*(a+b)*d*(a+b*coth(c+d*x)^2))-1/2*(3*a+b)*atan(sqrt(a)*tanh(c+d*x)/sqrt(b))*sqrt(b)/(a^(3/2)*(a+b)^2*d)],
+[1/(a+b*coth(c+d*x)^2)^3,x,6,x/(a+b)^3+1/4*b*coth(c+d*x)/(a*(a+b)*d*(a+b*coth(c+d*x)^2)^2)+1/8*b*(7*a+3*b)*coth(c+d*x)/(a^2*(a+b)^2*d*(a+b*coth(c+d*x)^2))-1/8*(15*a^2+10*a*b+3*b^2)*atan(sqrt(a)*tanh(c+d*x)/sqrt(b))*sqrt(b)/(a^(5/2)*(a+b)^3*d)],
+[1/(a+b*coth(c+d*x)^2)^4,x,7,x/(a+b)^4+1/6*b*coth(c+d*x)/(a*(a+b)*d*(a+b*coth(c+d*x)^2)^3)+1/24*b*(11*a+5*b)*coth(c+d*x)/(a^2*(a+b)^2*d*(a+b*coth(c+d*x)^2)^2)+1/16*b*(19*a^2+16*a*b+5*b^2)*coth(c+d*x)/(a^3*(a+b)^3*d*(a+b*coth(c+d*x)^2))-1/16*(35*a^3+35*a^2*b+21*a*b^2+5*b^3)*atan(sqrt(a)*tanh(c+d*x)/sqrt(b))*sqrt(b)/(a^(7/2)*(a+b)^4*d)],
+[1/(1-2*coth(x)^2),x,3,-x+atanh(tanh(x)/sqrt(2))*sqrt(2)],
+
+-- Integrands of the form Coth[e+f x]^m (a+b Coth[e+f x]^2)^(p/2) when a+b=0
+
+-- p>0
+[sqrt(1-coth(x)^2),x,3,asin(coth(x))],
+[sqrt(-1+coth(x)^2),x,4,-atanh(coth(x)/sqrt(csch(x)^2))],
+[(1-coth(x)^2)^(3/2),x,4,1/2*asin(coth(x))+1/2*coth(x)*sqrt(-csch(x)^2)],
+[(-1+coth(x)^2)^(3/2),x,5,1/2*atanh(coth(x)/sqrt(csch(x)^2))-1/2*coth(x)*sqrt(csch(x)^2)],
+
+-- p<0
+[1/sqrt(1-coth(x)^2),x,3,coth(x)/sqrt(-csch(x)^2)],
+[1/sqrt(-1+coth(x)^2),x,3,coth(x)/sqrt(csch(x)^2)],
+
+-- Integrands of the form Coth[e+f x]^m (a+b Coth[e+f x]^2)^(p/2)
+
+-- p>0
+[coth(x)^3*sqrt(a+b*coth(x)^2),x,6,-1/3*(a+b*coth(x)^2)^(3/2)/b+atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))*sqrt(a+b)-sqrt(a+b*coth(x)^2)],
+[coth(x)^2*sqrt(a+b*coth(x)^2),x,7,-1/2*(a+2*b)*atanh(coth(x)*sqrt(b)/sqrt(a+b*coth(x)^2))/sqrt(b)+atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))*sqrt(a+b)-1/2*coth(x)*sqrt(a+b*coth(x)^2)],
+[coth(x)*sqrt(a+b*coth(x)^2),x,5,atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))*sqrt(a+b)-sqrt(a+b*coth(x)^2)],
+[sqrt(a+b*coth(x)^2),x,6,-atanh(coth(x)*sqrt(b)/sqrt(a+b*coth(x)^2))*sqrt(b)+atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))*sqrt(a+b)],
+[sqrt(a+b*coth(x)^2)*tanh(x),x,7,-atanh(sqrt(a+b*coth(x)^2)/sqrt(a))*sqrt(a)+atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))*sqrt(a+b)],
+[sqrt(a+b*coth(x)^2)*tanh(x)^2,x,5,atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))*sqrt(a+b)-sqrt(a+b*coth(x)^2)*tanh(x)],
+[coth(x)^3*(a+b*coth(x)^2)^(3/2),x,7,(a+b)^(3/2)*atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))-1/3*(a+b*coth(x)^2)^(3/2)-1/5*(a+b*coth(x)^2)^(5/2)/b-(a+b)*sqrt(a+b*coth(x)^2)],
+[coth(x)^2*(a+b*coth(x)^2)^(3/2),x,8,(a+b)^(3/2)*atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))-1/8*(3*a^2+12*a*b+8*b^2)*atanh(coth(x)*sqrt(b)/sqrt(a+b*coth(x)^2))/sqrt(b)-1/8*(5*a+4*b)*coth(x)*sqrt(a+b*coth(x)^2)-1/4*b*coth(x)^3*sqrt(a+b*coth(x)^2)],
+[coth(x)*(a+b*coth(x)^2)^(3/2),x,6,(a+b)^(3/2)*atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))-1/3*(a+b*coth(x)^2)^(3/2)-(a+b)*sqrt(a+b*coth(x)^2)],
+[(a+b*coth(x)^2)^(3/2),x,7,(a+b)^(3/2)*atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))-1/2*(3*a+2*b)*atanh(coth(x)*sqrt(b)/sqrt(a+b*coth(x)^2))*sqrt(b)-1/2*b*coth(x)*sqrt(a+b*coth(x)^2)],
+[(a+b*coth(x)^2)^(3/2)*tanh(x),x,8,-a^(3/2)*atanh(sqrt(a+b*coth(x)^2)/sqrt(a))+(a+b)^(3/2)*atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))-b*sqrt(a+b*coth(x)^2)],
+[(a+b*coth(x)^2)^(3/2)*tanh(x)^2,x,7,-b^(3/2)*atanh(coth(x)*sqrt(b)/sqrt(a+b*coth(x)^2))+(a+b)^(3/2)*atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))-a*sqrt(a+b*coth(x)^2)*tanh(x)],
+[sqrt(1+coth(x)^2),x,5,-asinh(coth(x))+atanh(coth(x)*sqrt(2)/sqrt(1+coth(x)^2))*sqrt(2)],
+[sqrt(-1-coth(x)^2),x,6,atan(coth(x)/sqrt(-1-coth(x)^2))-atan(coth(x)*sqrt(2)/sqrt(-1-coth(x)^2))*sqrt(2)],
+[(1+coth(x)^2)^(3/2),x,6,-5/2*asinh(coth(x))+2*atanh(coth(x)*sqrt(2)/sqrt(1+coth(x)^2))*sqrt(2)-1/2*coth(x)*sqrt(1+coth(x)^2)],
+[(-1-coth(x)^2)^(3/2),x,7,-5/2*atan(coth(x)/sqrt(-1-coth(x)^2))+2*atan(coth(x)*sqrt(2)/sqrt(-1-coth(x)^2))*sqrt(2)+1/2*coth(x)*sqrt(-1-coth(x)^2)],
+
+-- p<0
+[coth(x)^3/sqrt(a+b*coth(x)^2),x,5,atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))/sqrt(a+b)-sqrt(a+b*coth(x)^2)/b],
+[coth(x)^2/sqrt(a+b*coth(x)^2),x,6,-atanh(coth(x)*sqrt(b)/sqrt(a+b*coth(x)^2))/sqrt(b)+atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))/sqrt(a+b)],
+[coth(x)/sqrt(a+b*coth(x)^2),x,4,atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))/sqrt(a+b)],
+[1/sqrt(a+b*coth(x)^2),x,3,atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))/sqrt(a+b)],
+[tanh(x)/sqrt(a+b*coth(x)^2),x,7,-atanh(sqrt(a+b*coth(x)^2)/sqrt(a))/sqrt(a)+atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))/sqrt(a+b)],
+[tanh(x)^2/sqrt(a+b*coth(x)^2),x,5,atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))/sqrt(a+b)-sqrt(a+b*coth(x)^2)*tanh(x)/a],
+[coth(x)^3/(a+b*coth(x)^2)^(3/2),x,5,atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))/(a+b)^(3/2)+a/(b*(a+b)*sqrt(a+b*coth(x)^2))],
+[coth(x)^2/(a+b*coth(x)^2)^(3/2),x,4,atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))/(a+b)^(3/2)-coth(x)/((a+b)*sqrt(a+b*coth(x)^2))],
+[coth(x)/(a+b*coth(x)^2)^(3/2),x,5,atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))/(a+b)^(3/2)+(-1)/((a+b)*sqrt(a+b*coth(x)^2))],
+[tanh(x)/(a+b*coth(x)^2)^(3/2),x,8,-atanh(sqrt(a+b*coth(x)^2)/sqrt(a))/a^(3/2)+atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))/(a+b)^(3/2)+b/(a*(a+b)*sqrt(a+b*coth(x)^2))],
+[tanh(x)^2/(a+b*coth(x)^2)^(3/2),x,6,atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))/(a+b)^(3/2)+b*tanh(x)/(a*(a+b)*sqrt(a+b*coth(x)^2))-(a+2*b)*sqrt(a+b*coth(x)^2)*tanh(x)/(a^2*(a+b))],
+[coth(x)^3/(a+b*coth(x)^2)^(5/2),x,6,atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))/(a+b)^(5/2)+1/3*a/(b*(a+b)*(a+b*coth(x)^2)^(3/2))+(-1)/((a+b)^2*sqrt(a+b*coth(x)^2))],
+[coth(x)^2/(a+b*coth(x)^2)^(5/2),x,6,atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))/(a+b)^(5/2)-1/3*coth(x)/((a+b)*(a+b*coth(x)^2)^(3/2))-1/3*(2*a-b)*coth(x)/(a*(a+b)^2*sqrt(a+b*coth(x)^2))],
+[coth(x)/(a+b*coth(x)^2)^(5/2),x,6,atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))/(a+b)^(5/2)+(-1/3)/((a+b)*(a+b*coth(x)^2)^(3/2))+(-1)/((a+b)^2*sqrt(a+b*coth(x)^2))],
+[tanh(x)/(a+b*coth(x)^2)^(5/2),x,9,-atanh(sqrt(a+b*coth(x)^2)/sqrt(a))/a^(5/2)+atanh(sqrt(a+b*coth(x)^2)/sqrt(a+b))/(a+b)^(5/2)+1/3*b/(a*(a+b)*(a+b*coth(x)^2)^(3/2))+b*(2*a+b)/(a^2*(a+b)^2*sqrt(a+b*coth(x)^2))],
+[tanh(x)^2/(a+b*coth(x)^2)^(5/2),x,7,atanh(coth(x)*sqrt(a+b)/sqrt(a+b*coth(x)^2))/(a+b)^(5/2)+1/3*b*tanh(x)/(a*(a+b)*(a+b*coth(x)^2)^(3/2))+1/3*b*(7*a+4*b)*tanh(x)/(a^2*(a+b)^2*sqrt(a+b*coth(x)^2))-1/3*(3*a+2*b)*(a+4*b)*sqrt(a+b*coth(x)^2)*tanh(x)/(a^3*(a+b)^2)],
+[1/sqrt(1+coth(x)^2),x,3,atanh(coth(x)*sqrt(2)/sqrt(1+coth(x)^2))/sqrt(2)],
+[1/sqrt(-1-coth(x)^2),x,3,atan(coth(x)*sqrt(2)/sqrt(-1-coth(x)^2))/sqrt(2)],
+
+-- Integrands of the form Coth[e+f x]^m (a+b Coth[e+f x]^3)^p
+[1/(1+coth(x)^3),x,6,1/2*x+(-1/6)/(1+coth(x))-2/3*atan((1-2*coth(x))/sqrt(3))/sqrt(3)],
+
+-- Integrands of the form Coth[e+f x]^m (a+b Coth[e+f x]^4)^p
+[coth(x)*(a+b*coth(x)^4)^(1/2),x,8,-1/2*atanh(coth(x)^2*sqrt(b)/sqrt(a+b*coth(x)^4))*sqrt(b)+1/2*atanh((a+b*coth(x)^2)/(sqrt(a+b)*sqrt(a+b*coth(x)^4)))*sqrt(a+b)-1/2*sqrt(a+b*coth(x)^4)],
+[coth(x)/(a+b*coth(x)^4)^(1/2),x,4,1/2*atanh((a+b*coth(x)^2)/(sqrt(a+b)*sqrt(a+b*coth(x)^4)))/sqrt(a+b)],
+[coth(x)/(a+b*coth(x)^4)^(3/2),x,6,1/2*atanh((a+b*coth(x)^2)/(sqrt(a+b)*sqrt(a+b*coth(x)^4)))/(a+b)^(3/2)+1/2*(-a+b*coth(x)^2)/(a*(a+b)*sqrt(a+b*coth(x)^4))]]
+
+-- Integrands of the form Coth[e+f x]^m (a+b Coth[e+f x]^n)^p

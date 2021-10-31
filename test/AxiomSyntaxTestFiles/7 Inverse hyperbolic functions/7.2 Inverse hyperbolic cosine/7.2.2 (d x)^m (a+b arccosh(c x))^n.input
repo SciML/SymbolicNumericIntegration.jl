@@ -1,0 +1,211 @@
+-- Axiom integration test file: "7 Inverse hyperbolic functions\7.2 Inverse hyperbolic cosine\7.2.2 (d x)^m (a+b arccosh(c x))^n.input"
+
+lst: '[
+
+-- Integrands of the form (d x)^m (a+b ArcCosh[c x])^n
+
+-- Integrands of the form (b x)^m ArcCosh[a x])^n
+
+-- Integrands of the form x^m ArcCosh[c x]^n
+
+-- n>0
+[x^4*acosh(a*x),x,6,1/5*x^5*acosh(a*x)-8/75*sqrt(-1+a*x)*sqrt(1+a*x)/a^5-4/75*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-1/25*x^4*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x^3*acosh(a*x),x,5,-3/32*acosh(a*x)/a^4+1/4*x^4*acosh(a*x)-3/32*x*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-1/16*x^3*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x^2*acosh(a*x),x,4,1/3*x^3*acosh(a*x)-2/9*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-1/9*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x*acosh(a*x),x,3,-1/4*acosh(a*x)/a^2+1/2*x^2*acosh(a*x)-1/4*x*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[acosh(a*x),x,2,x*acosh(a*x)-sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[acosh(a*x)/x,x,5,-1/2*acosh(a*x)^2+acosh(a*x)*log(1+%e^(2*acosh(a*x)))+1/2*polylog(2,-%e^(2*acosh(a*x)))],
+[acosh(a*x)/x^2,x,3,-acosh(a*x)/x+a*atan(sqrt(-1+a*x)*sqrt(1+a*x))],
+[acosh(a*x)/x^3,x,2,-1/2*acosh(a*x)/x^2+1/2*a*sqrt(-1+a*x)*sqrt(1+a*x)/x],
+[acosh(a*x)/x^4,x,5,-1/3*acosh(a*x)/x^3+1/6*a^3*atan(sqrt(-1+a*x)*sqrt(1+a*x))+1/6*a*sqrt(-1+a*x)*sqrt(1+a*x)/x^2],
+[acosh(a*x)/x^5,x,4,-1/4*acosh(a*x)/x^4+1/12*a*sqrt(-1+a*x)*sqrt(1+a*x)/x^3+1/6*a^3*sqrt(-1+a*x)*sqrt(1+a*x)/x],
+[acosh(a*x)/x^6,x,7,-1/5*acosh(a*x)/x^5+3/40*a^5*atan(sqrt(-1+a*x)*sqrt(1+a*x))+1/20*a*sqrt(-1+a*x)*sqrt(1+a*x)/x^4+3/40*a^3*sqrt(-1+a*x)*sqrt(1+a*x)/x^2],
+[x^4*acosh(a*x)^2,x,7,16/75*x/a^4+8/225*x^3/a^2+2/125*x^5+1/5*x^5*acosh(a*x)^2-16/75*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a^5-8/75*x^2*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-2/25*x^4*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x^3*acosh(a*x)^2,x,6,3/32*x^2/a^2+1/32*x^4-3/32*acosh(a*x)^2/a^4+1/4*x^4*acosh(a*x)^2-3/16*x*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-1/8*x^3*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x^2*acosh(a*x)^2,x,5,4/9*x/a^2+2/27*x^3+1/3*x^3*acosh(a*x)^2-4/9*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-2/9*x^2*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x*acosh(a*x)^2,x,4,1/4*x^2-1/4*acosh(a*x)^2/a^2+1/2*x^2*acosh(a*x)^2-1/2*x*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[acosh(a*x)^2,x,3,2*x+x*acosh(a*x)^2-2*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[acosh(a*x)^2/x,x,6,-1/3*acosh(a*x)^3+acosh(a*x)^2*log(1+%e^(2*acosh(a*x)))+acosh(a*x)*polylog(2,-%e^(2*acosh(a*x)))-1/2*polylog(3,-%e^(2*acosh(a*x)))],
+[acosh(a*x)^2/x^2,x,7,-acosh(a*x)^2/x+4*a*acosh(a*x)*atan(%e^acosh(a*x))-2*%i*a*polylog(2,-%i*%e^acosh(a*x))+2*%i*a*polylog(2,%i*%e^acosh(a*x))],
+[acosh(a*x)^2/x^3,x,3,-1/2*acosh(a*x)^2/x^2-a^2*log(x)+a*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/x],
+[acosh(a*x)^2/x^4,x,9,1/3*a^2/x-1/3*acosh(a*x)^2/x^3+2/3*a^3*acosh(a*x)*atan(%e^acosh(a*x))-1/3*%i*a^3*polylog(2,-%i*%e^acosh(a*x))+1/3*%i*a^3*polylog(2,%i*%e^acosh(a*x))+1/3*a*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/x^2],
+[acosh(a*x)^2/x^5,x,5,1/12*a^2/x^2-1/4*acosh(a*x)^2/x^4-1/3*a^4*log(x)+1/6*a*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/x^3+1/3*a^3*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/x],
+[x^4*acosh(a*x)^3,x,16,16/25*x*acosh(a*x)/a^4+8/75*x^3*acosh(a*x)/a^2+6/125*x^5*acosh(a*x)+1/5*x^5*acosh(a*x)^3-4144/5625*sqrt(-1+a*x)*sqrt(1+a*x)/a^5-272/5625*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-6/625*x^4*sqrt(-1+a*x)*sqrt(1+a*x)/a-8/25*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/a^5-4/25*x^2*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-3/25*x^4*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x^3*acosh(a*x)^3,x,12,-45/256*acosh(a*x)/a^4+9/32*x^2*acosh(a*x)/a^2+3/32*x^4*acosh(a*x)-3/32*acosh(a*x)^3/a^4+1/4*x^4*acosh(a*x)^3-45/256*x*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-3/128*x^3*sqrt(-1+a*x)*sqrt(1+a*x)/a-9/32*x*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-3/16*x^3*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x^2*acosh(a*x)^3,x,9,4/3*x*acosh(a*x)/a^2+2/9*x^3*acosh(a*x)+1/3*x^3*acosh(a*x)^3-40/27*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-2/27*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/a-2/3*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-1/3*x^2*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x*acosh(a*x)^3,x,6,-3/8*acosh(a*x)/a^2+3/4*x^2*acosh(a*x)-1/4*acosh(a*x)^3/a^2+1/2*x^2*acosh(a*x)^3-3/8*x*sqrt(-1+a*x)*sqrt(1+a*x)/a-3/4*x*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[acosh(a*x)^3,x,4,6*x*acosh(a*x)+x*acosh(a*x)^3-6*sqrt(-1+a*x)*sqrt(1+a*x)/a-3*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[acosh(a*x)^3/x,x,7,-1/4*acosh(a*x)^4+acosh(a*x)^3*log(1+%e^(2*acosh(a*x)))+3/2*acosh(a*x)^2*polylog(2,-%e^(2*acosh(a*x)))-3/2*acosh(a*x)*polylog(3,-%e^(2*acosh(a*x)))+3/4*polylog(4,-%e^(2*acosh(a*x)))],
+[acosh(a*x)^3/x^2,x,9,-acosh(a*x)^3/x+6*a*acosh(a*x)^2*atan(%e^acosh(a*x))-6*%i*a*acosh(a*x)*polylog(2,-%i*%e^acosh(a*x))+6*%i*a*acosh(a*x)*polylog(2,%i*%e^acosh(a*x))+6*%i*a*polylog(3,-%i*%e^acosh(a*x))-6*%i*a*polylog(3,%i*%e^acosh(a*x))],
+[acosh(a*x)^3/x^3,x,7,3/2*a^2*acosh(a*x)^2-1/2*acosh(a*x)^3/x^2-3*a^2*acosh(a*x)*log(1+%e^(2*acosh(a*x)))-3/2*a^2*polylog(2,-%e^(2*acosh(a*x)))+3/2*a*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/x],
+[acosh(a*x)^3/x^4,x,13,a^2*acosh(a*x)/x-1/3*acosh(a*x)^3/x^3+a^3*acosh(a*x)^2*atan(%e^acosh(a*x))-a^3*atan(sqrt(-1+a*x)*sqrt(1+a*x))-%i*a^3*acosh(a*x)*polylog(2,-%i*%e^acosh(a*x))+%i*a^3*acosh(a*x)*polylog(2,%i*%e^acosh(a*x))+%i*a^3*polylog(3,-%i*%e^acosh(a*x))-%i*a^3*polylog(3,%i*%e^acosh(a*x))+1/2*a*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/x^2],
+[acosh(a*x)^3/x^5,x,10,1/4*a^2*acosh(a*x)/x^2+1/2*a^4*acosh(a*x)^2-1/4*acosh(a*x)^3/x^4-a^4*acosh(a*x)*log(1+%e^(2*acosh(a*x)))-1/2*a^4*polylog(2,-%e^(2*acosh(a*x)))-1/4*a^3*sqrt(-1+a*x)*sqrt(1+a*x)/x+1/4*a*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/x^3+1/2*a^3*acosh(a*x)^2*sqrt(-1+a*x)*sqrt(1+a*x)/x],
+[x^5*acosh(a*x)^4,x,23,245/1152*x^2/a^4+65/3456*x^4/a^2+1/324*x^6-245/1152*acosh(a*x)^2/a^6+5/16*x^2*acosh(a*x)^2/a^4+5/48*x^4*acosh(a*x)^2/a^2+1/18*x^6*acosh(a*x)^2-5/96*acosh(a*x)^4/a^6+1/6*x^6*acosh(a*x)^4-245/576*x*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a^5-65/864*x^3*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-1/54*x^5*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a-5/24*x*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/a^5-5/36*x^3*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-1/9*x^5*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x^4*acosh(a*x)^4,x,19,16576/5625*x/a^4+1088/16875*x^3/a^2+24/3125*x^5+32/25*x*acosh(a*x)^2/a^4+16/75*x^3*acosh(a*x)^2/a^2+12/125*x^5*acosh(a*x)^2+1/5*x^5*acosh(a*x)^4-16576/5625*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a^5-1088/5625*x^2*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-24/625*x^4*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a-32/75*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/a^5-16/75*x^2*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-4/25*x^4*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x^3*acosh(a*x)^4,x,14,45/128*x^2/a^2+3/128*x^4-45/128*acosh(a*x)^2/a^4+9/16*x^2*acosh(a*x)^2/a^2+3/16*x^4*acosh(a*x)^2-3/32*acosh(a*x)^4/a^4+1/4*x^4*acosh(a*x)^4-45/64*x*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-3/32*x^3*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a-3/8*x*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-1/4*x^3*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x^2*acosh(a*x)^4,x,11,160/27*x/a^2+8/81*x^3+8/3*x*acosh(a*x)^2/a^2+4/9*x^3*acosh(a*x)^2+1/3*x^3*acosh(a*x)^4-160/27*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-8/27*x^2*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a-8/9*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-4/9*x^2*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[x*acosh(a*x)^4,x,7,3/4*x^2-3/4*acosh(a*x)^2/a^2+3/2*x^2*acosh(a*x)^2-1/4*acosh(a*x)^4/a^2+1/2*x^2*acosh(a*x)^4-3/2*x*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a-x*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[acosh(a*x)^4,x,5,24*x+12*x*acosh(a*x)^2+x*acosh(a*x)^4-24*acosh(a*x)*sqrt(-1+a*x)*sqrt(1+a*x)/a-4*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/a],
+[acosh(a*x)^4/x,x,8,-1/5*acosh(a*x)^5+acosh(a*x)^4*log(1+%e^(2*acosh(a*x)))+2*acosh(a*x)^3*polylog(2,-%e^(2*acosh(a*x)))-3*acosh(a*x)^2*polylog(3,-%e^(2*acosh(a*x)))+3*acosh(a*x)*polylog(4,-%e^(2*acosh(a*x)))-3/2*polylog(5,-%e^(2*acosh(a*x)))],
+[acosh(a*x)^4/x^2,x,11,-acosh(a*x)^4/x+8*a*acosh(a*x)^3*atan(%e^acosh(a*x))-12*%i*a*acosh(a*x)^2*polylog(2,-%i*%e^acosh(a*x))+12*%i*a*acosh(a*x)^2*polylog(2,%i*%e^acosh(a*x))+24*%i*a*acosh(a*x)*polylog(3,-%i*%e^acosh(a*x))-24*%i*a*acosh(a*x)*polylog(3,%i*%e^acosh(a*x))-24*%i*a*polylog(4,-%i*%e^acosh(a*x))+24*%i*a*polylog(4,%i*%e^acosh(a*x))],
+[acosh(a*x)^4/x^3,x,8,2*a^2*acosh(a*x)^3-1/2*acosh(a*x)^4/x^2-6*a^2*acosh(a*x)^2*log(1+%e^(2*acosh(a*x)))-6*a^2*acosh(a*x)*polylog(2,-%e^(2*acosh(a*x)))+3*a^2*polylog(3,-%e^(2*acosh(a*x)))+2*a*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/x],
+[acosh(a*x)^4/x^4,x,19,2*a^2*acosh(a*x)^2/x-1/3*acosh(a*x)^4/x^3-8*a^3*acosh(a*x)*atan(%e^acosh(a*x))+4/3*a^3*acosh(a*x)^3*atan(%e^acosh(a*x))+4*%i*a^3*polylog(2,-%i*%e^acosh(a*x))-2*%i*a^3*acosh(a*x)^2*polylog(2,-%i*%e^acosh(a*x))-4*%i*a^3*polylog(2,%i*%e^acosh(a*x))+2*%i*a^3*acosh(a*x)^2*polylog(2,%i*%e^acosh(a*x))+4*%i*a^3*acosh(a*x)*polylog(3,-%i*%e^acosh(a*x))-4*%i*a^3*acosh(a*x)*polylog(3,%i*%e^acosh(a*x))-4*%i*a^3*polylog(4,-%i*%e^acosh(a*x))+4*%i*a^3*polylog(4,%i*%e^acosh(a*x))+2/3*a*acosh(a*x)^3*sqrt(-1+a*x)*sqrt(1+a*x)/x^2],
+
+-- n<0
+[x^6/acosh(a*x),x,7,5/64*Shi(acosh(a*x))/a^7+9/64*Shi(3*acosh(a*x))/a^7+5/64*Shi(5*acosh(a*x))/a^7+1/64*Shi(7*acosh(a*x))/a^7],
+[x^5/acosh(a*x),x,6,5/32*Shi(2*acosh(a*x))/a^6+1/8*Shi(4*acosh(a*x))/a^6+1/32*Shi(6*acosh(a*x))/a^6],
+[x^4/acosh(a*x),x,6,1/8*Shi(acosh(a*x))/a^5+3/16*Shi(3*acosh(a*x))/a^5+1/16*Shi(5*acosh(a*x))/a^5],
+[x^3/acosh(a*x),x,5,1/4*Shi(2*acosh(a*x))/a^4+1/8*Shi(4*acosh(a*x))/a^4],
+[x^2/acosh(a*x),x,5,1/4*Shi(acosh(a*x))/a^3+1/4*Shi(3*acosh(a*x))/a^3],
+[x/acosh(a*x),x,4,1/2*Shi(2*acosh(a*x))/a^2],
+[1/acosh(a*x),x,2,Shi(acosh(a*x))/a],
+[1/(x*acosh(a*x)),x,0,Unintegrable(1/(x*acosh(a*x)),x)],
+[1/(x^2*acosh(a*x)),x,0,Unintegrable(1/(x^2*acosh(a*x)),x)],
+[x^4/acosh(a*x)^2,x,5,1/8*Chi(acosh(a*x))/a^5+9/16*Chi(3*acosh(a*x))/a^5+5/16*Chi(5*acosh(a*x))/a^5-x^4*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x))],
+[x^3/acosh(a*x)^2,x,4,1/2*Chi(2*acosh(a*x))/a^4+1/2*Chi(4*acosh(a*x))/a^4-x^3*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x))],
+[x^2/acosh(a*x)^2,x,4,1/4*Chi(acosh(a*x))/a^3+3/4*Chi(3*acosh(a*x))/a^3-x^2*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x))],
+[x/acosh(a*x)^2,x,2,Chi(2*acosh(a*x))/a^2-x*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x))],
+[1/acosh(a*x)^2,x,3,Chi(acosh(a*x))/a-sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x))],
+[1/(x*acosh(a*x)^2),x,0,Unintegrable(1/(x*acosh(a*x)^2),x)],
+[1/(x^2*acosh(a*x)^2),x,0,Unintegrable(1/(x^2*acosh(a*x)^2),x)],
+[x^4/acosh(a*x)^3,x,14,2*x^3/(a^2*acosh(a*x))-5/2*x^5/acosh(a*x)+1/16*Shi(acosh(a*x))/a^5+27/32*Shi(3*acosh(a*x))/a^5+25/32*Shi(5*acosh(a*x))/a^5-1/2*x^4*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^2)],
+[x^3/acosh(a*x)^3,x,12,3/2*x^2/(a^2*acosh(a*x))-2*x^4/acosh(a*x)+1/2*Shi(2*acosh(a*x))/a^4+Shi(4*acosh(a*x))/a^4-1/2*x^3*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^2)],
+[x^2/acosh(a*x)^3,x,10,x/(a^2*acosh(a*x))-3/2*x^3/acosh(a*x)+1/8*Shi(acosh(a*x))/a^3+9/8*Shi(3*acosh(a*x))/a^3-1/2*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^2)],
+[x/acosh(a*x)^3,x,7,1/2/(a^2*acosh(a*x))-x^2/acosh(a*x)+Shi(2*acosh(a*x))/a^2-1/2*x*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^2)],
+[1/acosh(a*x)^3,x,4,-1/2*x/acosh(a*x)+1/2*Shi(acosh(a*x))/a-1/2*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^2)],
+[1/(x*acosh(a*x)^3),x,0,Unintegrable(1/(x*acosh(a*x)^3),x)],
+[1/(x^2*acosh(a*x)^3),x,0,Unintegrable(1/(x^2*acosh(a*x)^3),x)],
+[x^4/acosh(a*x)^4,x,12,2/3*x^3/(a^2*acosh(a*x)^2)-5/6*x^5/acosh(a*x)^2+1/48*Chi(acosh(a*x))/a^5+27/32*Chi(3*acosh(a*x))/a^5+125/96*Chi(5*acosh(a*x))/a^5-1/3*x^4*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^3)+2*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/(a^3*acosh(a*x))-25/6*x^4*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x))],
+[x^3/acosh(a*x)^4,x,9,1/2*x^2/(a^2*acosh(a*x)^2)-2/3*x^4/acosh(a*x)^2+1/3*Chi(2*acosh(a*x))/a^4+4/3*Chi(4*acosh(a*x))/a^4-1/3*x^3*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^3)+x*sqrt(-1+a*x)*sqrt(1+a*x)/(a^3*acosh(a*x))-8/3*x^3*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x))],
+[x^2/acosh(a*x)^4,x,10,1/3*x/(a^2*acosh(a*x)^2)-1/2*x^3/acosh(a*x)^2+1/24*Chi(acosh(a*x))/a^3+9/8*Chi(3*acosh(a*x))/a^3-1/3*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^3)+1/3*sqrt(-1+a*x)*sqrt(1+a*x)/(a^3*acosh(a*x))-3/2*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x))],
+[x/acosh(a*x)^4,x,5,1/6/(a^2*acosh(a*x)^2)-1/3*x^2/acosh(a*x)^2+2/3*Chi(2*acosh(a*x))/a^2-1/3*x*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^3)-2/3*x*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x))],
+[1/acosh(a*x)^4,x,5,-1/6*x/acosh(a*x)^2+1/6*Chi(acosh(a*x))/a-1/3*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^3)-1/6*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x))],
+[1/(x*acosh(a*x)^4),x,0,Unintegrable(1/(x*acosh(a*x)^4),x)],
+[1/(x^2*acosh(a*x)^4),x,0,Unintegrable(1/(x^2*acosh(a*x)^4),x)],
+
+-- Integrands of the form x^m ArcCosh[c x]^(n/2)
+
+-- n>0
+[x^4*sqrt(acosh(a*x)),x,19,-1/320*erf(sqrt(5)*sqrt(acosh(a*x)))*sqrt(1/5*%pi)/a^5-1/320*erfi(sqrt(5)*sqrt(acosh(a*x)))*sqrt(1/5*%pi)/a^5-1/64*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^5-1/64*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^5-1/32*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^5-1/32*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^5+1/5*x^5*sqrt(acosh(a*x))],
+[x^3*sqrt(acosh(a*x)),x,14,-1/32*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^4-1/32*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^4-1/256*erf(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4-1/256*erfi(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4-3/32*sqrt(acosh(a*x))/a^4+1/4*x^4*sqrt(acosh(a*x))],
+[x^2*sqrt(acosh(a*x)),x,14,-1/48*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^3-1/48*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^3-1/16*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^3-1/16*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^3+1/3*x^3*sqrt(acosh(a*x))],
+[x*sqrt(acosh(a*x)),x,9,-1/16*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^2-1/16*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^2-1/4*sqrt(acosh(a*x))/a^2+1/2*x^2*sqrt(acosh(a*x))],
+[sqrt(acosh(a*x)),x,7,-1/4*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a-1/4*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a+x*sqrt(acosh(a*x))],
+[sqrt(acosh(a*x))/x,x,0,Unintegrable(sqrt(acosh(a*x))/x,x)],
+[x^4*acosh(a*x)^(3/2),x,41,1/5*x^5*acosh(a*x)^(3/2)-3/3200*erf(sqrt(5)*sqrt(acosh(a*x)))*sqrt(1/5*%pi)/a^5+3/3200*erfi(sqrt(5)*sqrt(acosh(a*x)))*sqrt(1/5*%pi)/a^5-1/200*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^5+1/200*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^5-3/64*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^5+3/64*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^5-3/3200*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^5+3/3200*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^5-4/25*sqrt(-1+a*x)*sqrt(1+a*x)*sqrt(acosh(a*x))/a^5-2/25*x^2*sqrt(-1+a*x)*sqrt(1+a*x)*sqrt(acosh(a*x))/a^3-3/50*x^4*sqrt(-1+a*x)*sqrt(1+a*x)*sqrt(acosh(a*x))/a],
+[x^3*acosh(a*x)^(3/2),x,25,-3/32*acosh(a*x)^(3/2)/a^4+1/4*x^4*acosh(a*x)^(3/2)-3/128*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^4+3/128*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^4-3/2048*erf(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4+3/2048*erfi(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4-9/64*x*sqrt(-1+a*x)*sqrt(1+a*x)*sqrt(acosh(a*x))/a^3-3/32*x^3*sqrt(-1+a*x)*sqrt(1+a*x)*sqrt(acosh(a*x))/a],
+[x^2*acosh(a*x)^(3/2),x,22,1/3*x^3*acosh(a*x)^(3/2)-1/96*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^3+1/96*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^3-3/32*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^3+3/32*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^3-1/3*sqrt(-1+a*x)*sqrt(1+a*x)*sqrt(acosh(a*x))/a^3-1/6*x^2*sqrt(-1+a*x)*sqrt(1+a*x)*sqrt(acosh(a*x))/a],
+[x*acosh(a*x)^(3/2),x,11,-1/4*acosh(a*x)^(3/2)/a^2+1/2*x^2*acosh(a*x)^(3/2)-3/64*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^2+3/64*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^2-3/8*x*sqrt(-1+a*x)*sqrt(1+a*x)*sqrt(acosh(a*x))/a],
+[acosh(a*x)^(3/2),x,8,x*acosh(a*x)^(3/2)-3/8*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a+3/8*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a-3/2*sqrt(-1+a*x)*sqrt(1+a*x)*sqrt(acosh(a*x))/a],
+[acosh(a*x)^(3/2)/x,x,0,Unintegrable(acosh(a*x)^(3/2)/x,x)],
+[x^4*acosh(a*x)^(5/2),x,44,1/5*x^5*acosh(a*x)^(5/2)-3/6400*erf(sqrt(5)*sqrt(acosh(a*x)))*sqrt(1/5*%pi)/a^5-3/6400*erfi(sqrt(5)*sqrt(acosh(a*x)))*sqrt(1/5*%pi)/a^5-1/240*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^5-1/240*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^5-15/128*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^5-15/128*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^5-1/1280*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^5-1/1280*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^5-4/15*acosh(a*x)^(3/2)*sqrt(-1+a*x)*sqrt(1+a*x)/a^5-2/15*x^2*acosh(a*x)^(3/2)*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-1/10*x^4*acosh(a*x)^(3/2)*sqrt(-1+a*x)*sqrt(1+a*x)/a+2/5*x*sqrt(acosh(a*x))/a^4+1/15*x^3*sqrt(acosh(a*x))/a^2+3/100*x^5*sqrt(acosh(a*x))],
+[x^3*acosh(a*x)^(5/2),x,27,-3/32*acosh(a*x)^(5/2)/a^4+1/4*x^4*acosh(a*x)^(5/2)-15/512*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^4-15/512*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^4-15/16384*erf(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4-15/16384*erfi(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4-15/64*x*acosh(a*x)^(3/2)*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-5/32*x^3*acosh(a*x)^(3/2)*sqrt(-1+a*x)*sqrt(1+a*x)/a-225/2048*sqrt(acosh(a*x))/a^4+45/256*x^2*sqrt(acosh(a*x))/a^2+15/256*x^4*sqrt(acosh(a*x))],
+[x^2*acosh(a*x)^(5/2),x,24,1/3*x^3*acosh(a*x)^(5/2)-5/576*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^3-5/576*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^3-15/64*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^3-15/64*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^3-5/9*acosh(a*x)^(3/2)*sqrt(-1+a*x)*sqrt(1+a*x)/a^3-5/18*x^2*acosh(a*x)^(3/2)*sqrt(-1+a*x)*sqrt(1+a*x)/a+5/6*x*sqrt(acosh(a*x))/a^2+5/36*x^3*sqrt(acosh(a*x))],
+[x*acosh(a*x)^(5/2),x,12,-1/4*acosh(a*x)^(5/2)/a^2+1/2*x^2*acosh(a*x)^(5/2)-15/256*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^2-15/256*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^2-5/8*x*acosh(a*x)^(3/2)*sqrt(-1+a*x)*sqrt(1+a*x)/a-15/64*sqrt(acosh(a*x))/a^2+15/32*x^2*sqrt(acosh(a*x))],
+[acosh(a*x)^(5/2),x,9,x*acosh(a*x)^(5/2)-15/16*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a-15/16*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a-5/2*acosh(a*x)^(3/2)*sqrt(-1+a*x)*sqrt(1+a*x)/a+15/4*x*sqrt(acosh(a*x))],
+[acosh(a*x)^(5/2)/x,x,0,Unintegrable(acosh(a*x)^(5/2)/x,x)],
+
+-- n<0
+[x^4/sqrt(acosh(a*x)),x,18,-1/32*erf(sqrt(5)*sqrt(acosh(a*x)))*sqrt(1/5*%pi)/a^5+1/32*erfi(sqrt(5)*sqrt(acosh(a*x)))*sqrt(1/5*%pi)/a^5-1/16*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^5+1/16*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^5-1/32*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^5+1/32*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^5],
+[x^3/sqrt(acosh(a*x)),x,13,-1/8*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^4+1/8*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^4-1/32*erf(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4+1/32*erfi(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4],
+[x^2/sqrt(acosh(a*x)),x,13,-1/8*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^3+1/8*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(1/3*%pi)/a^3-1/8*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^3+1/8*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^3],
+[x/sqrt(acosh(a*x)),x,8,-1/4*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^2+1/4*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^2],
+[1/sqrt(acosh(a*x)),x,6,-1/2*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a+1/2*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a],
+[1/(x*sqrt(acosh(a*x))),x,0,Unintegrable(1/(x*sqrt(acosh(a*x))),x)],
+[1/(x^2*sqrt(acosh(a*x))),x,0,Unintegrable(1/(x^2*sqrt(acosh(a*x))),x)],
+[x^4/acosh(a*x)^(3/2),x,17,1/8*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^5+1/8*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^5+3/16*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^5+3/16*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^5+1/16*erf(sqrt(5)*sqrt(acosh(a*x)))*sqrt(5*%pi)/a^5+1/16*erfi(sqrt(5)*sqrt(acosh(a*x)))*sqrt(5*%pi)/a^5-2*x^4*sqrt(-1+a*x)*sqrt(1+a*x)/(a*sqrt(acosh(a*x)))],
+[x^3/acosh(a*x)^(3/2),x,12,1/2*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^4+1/2*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^4+1/4*erf(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4+1/4*erfi(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4-2*x^3*sqrt(-1+a*x)*sqrt(1+a*x)/(a*sqrt(acosh(a*x)))],
+[x^2/acosh(a*x)^(3/2),x,12,1/4*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^3+1/4*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^3+1/4*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^3+1/4*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^3-2*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/(a*sqrt(acosh(a*x)))],
+[x/acosh(a*x)^(3/2),x,6,erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^2+erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(1/2*%pi)/a^2-2*x*sqrt(-1+a*x)*sqrt(1+a*x)/(a*sqrt(acosh(a*x)))],
+[1/acosh(a*x)^(3/2),x,7,erf(sqrt(acosh(a*x)))*sqrt(%pi)/a+erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a-2*sqrt(-1+a*x)*sqrt(1+a*x)/(a*sqrt(acosh(a*x)))],
+[1/(x*acosh(a*x)^(3/2)),x,0,Unintegrable(1/(x*acosh(a*x)^(3/2)),x)],
+[x^4/acosh(a*x)^(5/2),x,34,-1/12*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^5+1/12*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^5-3/8*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^5+3/8*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^5-5/24*erf(sqrt(5)*sqrt(acosh(a*x)))*sqrt(5*%pi)/a^5+5/24*erfi(sqrt(5)*sqrt(acosh(a*x)))*sqrt(5*%pi)/a^5-2/3*x^4*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^(3/2))+16/3*x^3/(a^2*sqrt(acosh(a*x)))-20/3*x^5/sqrt(acosh(a*x))],
+[x^3/acosh(a*x)^(5/2),x,24,-2/3*erf(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4+2/3*erfi(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4-1/3*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(2*%pi)/a^4+1/3*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(2*%pi)/a^4-2/3*x^3*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^(3/2))+4*x^2/(a^2*sqrt(acosh(a*x)))-16/3*x^4/sqrt(acosh(a*x))],
+[x^2/acosh(a*x)^(5/2),x,22,-1/6*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^3+1/6*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^3-1/2*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^3+1/2*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^3-2/3*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^(3/2))+8/3*x/(a^2*sqrt(acosh(a*x)))-4*x^3/sqrt(acosh(a*x))],
+[x/acosh(a*x)^(5/2),x,11,-2/3*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(2*%pi)/a^2+2/3*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(2*%pi)/a^2-2/3*x*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^(3/2))+4/3/(a^2*sqrt(acosh(a*x)))-8/3*x^2/sqrt(acosh(a*x))],
+[1/acosh(a*x)^(5/2),x,8,-2/3*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a+2/3*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a-2/3*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^(3/2))-4/3*x/sqrt(acosh(a*x))],
+[1/(x*acosh(a*x)^(5/2)),x,0,Unintegrable(1/(x*acosh(a*x)^(5/2)),x)],
+[x^4/acosh(a*x)^(7/2),x,32,16/15*x^3/(a^2*acosh(a*x)^(3/2))-4/3*x^5/acosh(a*x)^(3/2)+1/30*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^5+1/30*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^5+9/20*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^5+9/20*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^5+5/12*erf(sqrt(5)*sqrt(acosh(a*x)))*sqrt(5*%pi)/a^5+5/12*erfi(sqrt(5)*sqrt(acosh(a*x)))*sqrt(5*%pi)/a^5-2/5*x^4*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^(5/2))+32/5*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/(a^3*sqrt(acosh(a*x)))-40/3*x^4*sqrt(-1+a*x)*sqrt(1+a*x)/(a*sqrt(acosh(a*x)))],
+[x^3/acosh(a*x)^(7/2),x,21,4/5*x^2/(a^2*acosh(a*x)^(3/2))-16/15*x^4/acosh(a*x)^(3/2)+16/15*erf(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4+16/15*erfi(2*sqrt(acosh(a*x)))*sqrt(%pi)/a^4+4/15*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(2*%pi)/a^4+4/15*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(2*%pi)/a^4-2/5*x^3*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^(5/2))+16/5*x*sqrt(-1+a*x)*sqrt(1+a*x)/(a^3*sqrt(acosh(a*x)))-128/15*x^3*sqrt(-1+a*x)*sqrt(1+a*x)/(a*sqrt(acosh(a*x)))],
+[x^2/acosh(a*x)^(7/2),x,22,8/15*x/(a^2*acosh(a*x)^(3/2))-4/5*x^3/acosh(a*x)^(3/2)+1/15*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a^3+1/15*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a^3+3/5*erf(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^3+3/5*erfi(sqrt(3)*sqrt(acosh(a*x)))*sqrt(3*%pi)/a^3-2/5*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^(5/2))+16/15*sqrt(-1+a*x)*sqrt(1+a*x)/(a^3*sqrt(acosh(a*x)))-24/5*x^2*sqrt(-1+a*x)*sqrt(1+a*x)/(a*sqrt(acosh(a*x)))],
+[x/acosh(a*x)^(7/2),x,9,4/15/(a^2*acosh(a*x)^(3/2))-8/15*x^2/acosh(a*x)^(3/2)+8/15*erf(sqrt(2)*sqrt(acosh(a*x)))*sqrt(2*%pi)/a^2+8/15*erfi(sqrt(2)*sqrt(acosh(a*x)))*sqrt(2*%pi)/a^2-2/5*x*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^(5/2))-32/15*x*sqrt(-1+a*x)*sqrt(1+a*x)/(a*sqrt(acosh(a*x)))],
+[1/acosh(a*x)^(7/2),x,9,-4/15*x/acosh(a*x)^(3/2)+4/15*erf(sqrt(acosh(a*x)))*sqrt(%pi)/a+4/15*erfi(sqrt(acosh(a*x)))*sqrt(%pi)/a-2/5*sqrt(-1+a*x)*sqrt(1+a*x)/(a*acosh(a*x)^(5/2))-8/15*sqrt(-1+a*x)*sqrt(1+a*x)/(a*sqrt(acosh(a*x)))],
+[1/(x*acosh(a*x)^(7/2)),x,0,Unintegrable(1/(x*acosh(a*x)^(7/2)),x)],
+
+-- Integrands of the form (b x)^m ArcCosh[c x]^n with m symbolic
+[x^m*acosh(a*x)^4,x,1,x^(1+m)*acosh(a*x)^4/(1+m)-4*a*Unintegrable(x^(1+m)*acosh(a*x)^3/(sqrt(-1+a*x)*sqrt(1+a*x)),x)/(1+m)],
+[x^m*acosh(a*x)^3,x,1,x^(1+m)*acosh(a*x)^3/(1+m)-3*a*Unintegrable(x^(1+m)*acosh(a*x)^2/(sqrt(-1+a*x)*sqrt(1+a*x)),x)/(1+m)],
+[x^m*acosh(a*x)^2,x,2,x^(1+m)*acosh(a*x)^2/(1+m)-2*a^2*x^(3+m)*HypergeometricPFQ([1,3/2+1/2*m,3/2+1/2*m],[2+1/2*m,5/2+1/2*m],a^2*x^2)/(6+11*m+6*m^2+m^3)-2*a*x^(2+m)*acosh(a*x)*hypergeometric(1/2,1/2*(2+m),1/2*(4+m),a^2*x^2)*sqrt(1-a*x)/((2+3*m+m^2)*sqrt(-1+a*x))],
+[x^m*acosh(a*x),x,4,x^(1+m)*acosh(a*x)/(1+m)-a*x^(2+m)*hypergeometric(1/2,1/2*(2+m),1/2*(4+m),a^2*x^2)*sqrt(1-a^2*x^2)/((2+3*m+m^2)*sqrt(-1+a*x)*sqrt(1+a*x))],
+[x^m/acosh(a*x),x,0,Unintegrable(x^m/acosh(a*x),x)],
+[x^m/acosh(a*x)^2,x,0,Unintegrable(x^m/acosh(a*x)^2,x)],
+[x^m/acosh(a*x)^3,x,0,Unintegrable(x^m/acosh(a*x)^3,x)],
+[x^m*acosh(a*x)^(3/2),x,0,Unintegrable(x^m*acosh(a*x)^(3/2),x)],
+[x^m*sqrt(acosh(a*x)),x,0,Unintegrable(x^m*sqrt(acosh(a*x)),x)],
+[x^m/sqrt(acosh(a*x)),x,0,Unintegrable(x^m/sqrt(acosh(a*x)),x)],
+[x^m/acosh(a*x)^(3/2),x,0,Unintegrable(x^m/acosh(a*x)^(3/2),x)],
+
+-- Integrands of the form (b x)^m ArcCosh[c x]^n with n symbolic
+[(d*x)^m*acosh(a*x)^n,x,0,Unintegrable((d*x)^m*acosh(a*x)^n,x)],
+[x^4*acosh(a*x)^n,x,12,1/32*5^(-1-n)*acosh(a*x)^n*GAMMA(1+n,-5*acosh(a*x))/(a^5*(-acosh(a*x))^n)+1/32*acosh(a*x)^n*GAMMA(1+n,-3*acosh(a*x))/(3^n*a^5*(-acosh(a*x))^n)+1/16*acosh(a*x)^n*GAMMA(1+n,-acosh(a*x))/(a^5*(-acosh(a*x))^n)+1/16*GAMMA(1+n,acosh(a*x))/a^5+1/32*GAMMA(1+n,3*acosh(a*x))/(3^n*a^5)+1/32*5^(-1-n)*GAMMA(1+n,5*acosh(a*x))/a^5],
+[x^3*acosh(a*x)^n,x,9,acosh(a*x)^n*GAMMA(1+n,-4*acosh(a*x))/(2^(2*(3+n))*a^4*(-acosh(a*x))^n)+2^(-4-n)*acosh(a*x)^n*GAMMA(1+n,-2*acosh(a*x))/(a^4*(-acosh(a*x))^n)+2^(-4-n)*GAMMA(1+n,2*acosh(a*x))/a^4+GAMMA(1+n,4*acosh(a*x))/(2^(2*(3+n))*a^4)],
+[x^2*acosh(a*x)^n,x,9,1/8*3^(-1-n)*acosh(a*x)^n*GAMMA(1+n,-3*acosh(a*x))/(a^3*(-acosh(a*x))^n)+1/8*acosh(a*x)^n*GAMMA(1+n,-acosh(a*x))/(a^3*(-acosh(a*x))^n)+1/8*GAMMA(1+n,acosh(a*x))/a^3+1/8*3^(-1-n)*GAMMA(1+n,3*acosh(a*x))/a^3],
+[x*acosh(a*x)^n,x,6,2^(-3-n)*acosh(a*x)^n*GAMMA(1+n,-2*acosh(a*x))/(a^2*(-acosh(a*x))^n)+2^(-3-n)*GAMMA(1+n,2*acosh(a*x))/a^2],
+[acosh(a*x)^n,x,4,1/2*acosh(a*x)^n*GAMMA(1+n,-acosh(a*x))/(a*(-acosh(a*x))^n)+1/2*GAMMA(1+n,acosh(a*x))/a],
+[acosh(a*x)^n/x,x,0,Unintegrable(acosh(a*x)^n/x,x)],
+
+-- Integrands of the form (d x)^m (a+b ArcCosh[c x])^n
+
+-- Integrands of the form x^m (a+b ArcCosh[c x])^n
+
+-- n>0
+[x^3*(a+b*acosh(c*x)),x,5,-3/32*b*acosh(c*x)/c^4+1/4*x^4*(a+b*acosh(c*x))-3/32*b*x*sqrt(-1+c*x)*sqrt(1+c*x)/c^3-1/16*b*x^3*sqrt(-1+c*x)*sqrt(1+c*x)/c],
+[x^2*(a+b*acosh(c*x)),x,4,1/3*x^3*(a+b*acosh(c*x))-2/9*b*sqrt(-1+c*x)*sqrt(1+c*x)/c^3-1/9*b*x^2*sqrt(-1+c*x)*sqrt(1+c*x)/c],
+[x*(a+b*acosh(c*x)),x,3,-1/4*b*acosh(c*x)/c^2+1/2*x^2*(a+b*acosh(c*x))-1/4*b*x*sqrt(-1+c*x)*sqrt(1+c*x)/c],
+[a+b*acosh(c*x),x,3,a*x+b*x*acosh(c*x)-b*sqrt(-1+c*x)*sqrt(1+c*x)/c],
+[(a+b*acosh(c*x))/x,x,5,1/2*(a+b*acosh(c*x))^2/b+(a+b*acosh(c*x))*log(1+1/%e^(2*acosh(c*x)))-1/2*b*polylog(2,(-1)/%e^(2*acosh(c*x)))],
+[(a+b*acosh(c*x))/x^2,x,3,(-a-b*acosh(c*x))/x+b*c*atan(sqrt(-1+c*x)*sqrt(1+c*x))],
+[(a+b*acosh(c*x))/x^3,x,2,1/2*(-a-b*acosh(c*x))/x^2+1/2*b*c*sqrt(-1+c*x)*sqrt(1+c*x)/x],
+[(a+b*acosh(c*x))/x^4,x,5,1/3*(-a-b*acosh(c*x))/x^3+1/6*b*c^3*atan(sqrt(-1+c*x)*sqrt(1+c*x))+1/6*b*c*sqrt(-1+c*x)*sqrt(1+c*x)/x^2],
+[(a+b*acosh(c*x))/x^5,x,4,1/4*(-a-b*acosh(c*x))/x^4+1/12*b*c*sqrt(-1+c*x)*sqrt(1+c*x)/x^3+1/6*b*c^3*sqrt(-1+c*x)*sqrt(1+c*x)/x],
+
+-- n<0
+
+-- Integrands of the form x^m (a+b ArcCosh[c x])^(n/2)
+
+-- n>0
+[x^2*sqrt(a+b*acosh(c*x)),x,14,-1/48*%e^(3*a/b)*erf(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/3*%pi)*sqrt(b)/c^3-1/48*erfi(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/3*%pi)*sqrt(b)/(%e^(3*a/b)*c^3)-1/16*%e^(a/b)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)*sqrt(b)/c^3-1/16*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)*sqrt(b)/(%e^(a/b)*c^3)+1/3*x^3*sqrt(a+b*acosh(c*x))],
+[x*sqrt(a+b*acosh(c*x)),x,9,-1/16*%e^(2*a/b)*erf(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/2*%pi)*sqrt(b)/c^2-1/16*erfi(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/2*%pi)*sqrt(b)/(%e^(2*a/b)*c^2)-1/4*sqrt(a+b*acosh(c*x))/c^2+1/2*x^2*sqrt(a+b*acosh(c*x))],
+[sqrt(a+b*acosh(c*x)),x,7,-1/4*%e^(a/b)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)*sqrt(b)/c-1/4*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)*sqrt(b)/(%e^(a/b)*c)+x*sqrt(a+b*acosh(c*x))],
+[x^2*(a+b*acosh(c*x))^(3/2),x,22,1/3*x^3*(a+b*acosh(c*x))^(3/2)-1/96*%e^(3*a/b)*b^(3/2)*erf(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/3*%pi)/c^3+1/96*b^(3/2)*erfi(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/3*%pi)/(%e^(3*a/b)*c^3)-3/32*%e^(a/b)*b^(3/2)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/c^3+3/32*b^(3/2)*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(%e^(a/b)*c^3)-1/3*b*sqrt(-1+c*x)*sqrt(1+c*x)*sqrt(a+b*acosh(c*x))/c^3-1/6*b*x^2*sqrt(-1+c*x)*sqrt(1+c*x)*sqrt(a+b*acosh(c*x))/c],
+[x*(a+b*acosh(c*x))^(3/2),x,11,-1/4*(a+b*acosh(c*x))^(3/2)/c^2+1/2*x^2*(a+b*acosh(c*x))^(3/2)-3/64*%e^(2*a/b)*b^(3/2)*erf(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/2*%pi)/c^2+3/64*b^(3/2)*erfi(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/2*%pi)/(%e^(2*a/b)*c^2)-3/8*b*x*sqrt(-1+c*x)*sqrt(1+c*x)*sqrt(a+b*acosh(c*x))/c],
+[(a+b*acosh(c*x))^(3/2),x,8,x*(a+b*acosh(c*x))^(3/2)-3/8*%e^(a/b)*b^(3/2)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/c+3/8*b^(3/2)*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(%e^(a/b)*c)-3/2*b*sqrt(-1+c*x)*sqrt(1+c*x)*sqrt(a+b*acosh(c*x))/c],
+[x^2*(a+b*acosh(c*x))^(5/2),x,24,1/3*x^3*(a+b*acosh(c*x))^(5/2)-5/576*%e^(3*a/b)*b^(5/2)*erf(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/3*%pi)/c^3-5/576*b^(5/2)*erfi(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/3*%pi)/(%e^(3*a/b)*c^3)-15/64*%e^(a/b)*b^(5/2)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/c^3-15/64*b^(5/2)*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(%e^(a/b)*c^3)-5/9*b*(a+b*acosh(c*x))^(3/2)*sqrt(-1+c*x)*sqrt(1+c*x)/c^3-5/18*b*x^2*(a+b*acosh(c*x))^(3/2)*sqrt(-1+c*x)*sqrt(1+c*x)/c+5/6*b^2*x*sqrt(a+b*acosh(c*x))/c^2+5/36*b^2*x^3*sqrt(a+b*acosh(c*x))],
+[x*(a+b*acosh(c*x))^(5/2),x,12,-1/4*(a+b*acosh(c*x))^(5/2)/c^2+1/2*x^2*(a+b*acosh(c*x))^(5/2)-15/256*%e^(2*a/b)*b^(5/2)*erf(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/2*%pi)/c^2-15/256*b^(5/2)*erfi(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/2*%pi)/(%e^(2*a/b)*c^2)-5/8*b*x*(a+b*acosh(c*x))^(3/2)*sqrt(-1+c*x)*sqrt(1+c*x)/c-15/64*b^2*sqrt(a+b*acosh(c*x))/c^2+15/32*b^2*x^2*sqrt(a+b*acosh(c*x))],
+[(a+b*acosh(c*x))^(5/2),x,9,x*(a+b*acosh(c*x))^(5/2)-15/16*%e^(a/b)*b^(5/2)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/c-15/16*b^(5/2)*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(%e^(a/b)*c)-5/2*b*(a+b*acosh(c*x))^(3/2)*sqrt(-1+c*x)*sqrt(1+c*x)/c+15/4*b^2*x*sqrt(a+b*acosh(c*x))],
+
+-- n<0
+[x^2/sqrt(a+b*acosh(c*x)),x,13,-1/8*%e^(3*a/b)*erf(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/3*%pi)/(c^3*sqrt(b))+1/8*erfi(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/3*%pi)/(%e^(3*a/b)*c^3*sqrt(b))-1/8*%e^(a/b)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(c^3*sqrt(b))+1/8*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(%e^(a/b)*c^3*sqrt(b))],
+[x/sqrt(a+b*acosh(c*x)),x,8,-1/4*%e^(2*a/b)*erf(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/2*%pi)/(c^2*sqrt(b))+1/4*erfi(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/2*%pi)/(%e^(2*a/b)*c^2*sqrt(b))],
+[1/sqrt(a+b*acosh(c*x)),x,6,-1/2*%e^(a/b)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(c*sqrt(b))+1/2*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(%e^(a/b)*c*sqrt(b))],
+[x^2/(a+b*acosh(c*x))^(3/2),x,12,1/4*%e^(a/b)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(b^(3/2)*c^3)+1/4*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(%e^(a/b)*b^(3/2)*c^3)+1/4*%e^(3*a/b)*erf(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(3*%pi)/(b^(3/2)*c^3)+1/4*erfi(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(3*%pi)/(%e^(3*a/b)*b^(3/2)*c^3)-2*x^2*sqrt(-1+c*x)*sqrt(1+c*x)/(b*c*sqrt(a+b*acosh(c*x)))],
+[x/(a+b*acosh(c*x))^(3/2),x,6,%e^(2*a/b)*erf(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/2*%pi)/(b^(3/2)*c^2)+erfi(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(1/2*%pi)/(%e^(2*a/b)*b^(3/2)*c^2)-2*x*sqrt(-1+c*x)*sqrt(1+c*x)/(b*c*sqrt(a+b*acosh(c*x)))],
+[1/(a+b*acosh(c*x))^(3/2),x,7,%e^(a/b)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(b^(3/2)*c)+erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(%e^(a/b)*b^(3/2)*c)-2*sqrt(-1+c*x)*sqrt(1+c*x)/(b*c*sqrt(a+b*acosh(c*x)))],
+[x^2/(a+b*acosh(c*x))^(5/2),x,22,-1/6*%e^(a/b)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(b^(5/2)*c^3)+1/6*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(%e^(a/b)*b^(5/2)*c^3)-1/2*%e^(3*a/b)*erf(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(3*%pi)/(b^(5/2)*c^3)+1/2*erfi(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(3*%pi)/(%e^(3*a/b)*b^(5/2)*c^3)-2/3*x^2*sqrt(-1+c*x)*sqrt(1+c*x)/(b*c*(a+b*acosh(c*x))^(3/2))+8/3*x/(b^2*c^2*sqrt(a+b*acosh(c*x)))-4*x^3/(b^2*sqrt(a+b*acosh(c*x)))],
+[x/(a+b*acosh(c*x))^(5/2),x,11,-2/3*%e^(2*a/b)*erf(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(2*%pi)/(b^(5/2)*c^2)+2/3*erfi(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(2*%pi)/(%e^(2*a/b)*b^(5/2)*c^2)-2/3*x*sqrt(-1+c*x)*sqrt(1+c*x)/(b*c*(a+b*acosh(c*x))^(3/2))+4/3/(b^2*c^2*sqrt(a+b*acosh(c*x)))-8/3*x^2/(b^2*sqrt(a+b*acosh(c*x)))],
+[1/(a+b*acosh(c*x))^(5/2),x,8,-2/3*%e^(a/b)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(b^(5/2)*c)+2/3*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(%e^(a/b)*b^(5/2)*c)-2/3*sqrt(-1+c*x)*sqrt(1+c*x)/(b*c*(a+b*acosh(c*x))^(3/2))-4/3*x/(b^2*sqrt(a+b*acosh(c*x)))],
+[x^2/(a+b*acosh(c*x))^(7/2),x,22,8/15*x/(b^2*c^2*(a+b*acosh(c*x))^(3/2))-4/5*x^3/(b^2*(a+b*acosh(c*x))^(3/2))+1/15*%e^(a/b)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(b^(7/2)*c^3)+1/15*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(%e^(a/b)*b^(7/2)*c^3)+3/5*%e^(3*a/b)*erf(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(3*%pi)/(b^(7/2)*c^3)+3/5*erfi(sqrt(3)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(3*%pi)/(%e^(3*a/b)*b^(7/2)*c^3)-2/5*x^2*sqrt(-1+c*x)*sqrt(1+c*x)/(b*c*(a+b*acosh(c*x))^(5/2))+16/15*sqrt(-1+c*x)*sqrt(1+c*x)/(b^3*c^3*sqrt(a+b*acosh(c*x)))-24/5*x^2*sqrt(-1+c*x)*sqrt(1+c*x)/(b^3*c*sqrt(a+b*acosh(c*x)))],
+[x/(a+b*acosh(c*x))^(7/2),x,9,4/15/(b^2*c^2*(a+b*acosh(c*x))^(3/2))-8/15*x^2/(b^2*(a+b*acosh(c*x))^(3/2))+8/15*%e^(2*a/b)*erf(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(2*%pi)/(b^(7/2)*c^2)+8/15*erfi(sqrt(2)*sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(2*%pi)/(%e^(2*a/b)*b^(7/2)*c^2)-2/5*x*sqrt(-1+c*x)*sqrt(1+c*x)/(b*c*(a+b*acosh(c*x))^(5/2))-32/15*x*sqrt(-1+c*x)*sqrt(1+c*x)/(b^3*c*sqrt(a+b*acosh(c*x)))],
+[1/(a+b*acosh(c*x))^(7/2),x,9,-4/15*x/(b^2*(a+b*acosh(c*x))^(3/2))+4/15*%e^(a/b)*erf(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(b^(7/2)*c)+4/15*erfi(sqrt(a+b*acosh(c*x))/sqrt(b))*sqrt(%pi)/(%e^(a/b)*b^(7/2)*c)-2/5*sqrt(-1+c*x)*sqrt(1+c*x)/(b*c*(a+b*acosh(c*x))^(5/2))-8/15*sqrt(-1+c*x)*sqrt(1+c*x)/(b^3*c*sqrt(a+b*acosh(c*x)))],
+
+-- Integrands of the form (d x)^(m/2) (a+b ArcCosh[c x])^n
+
+-- n>0
+[(a+b*acosh(c*x))^2*sqrt(f*x),x,2,2/3*(f*x)^(3/2)*(a+b*acosh(c*x))^2/f-16/105*b^2*c^2*(f*x)^(7/2)*HypergeometricPFQ([1,7/4,7/4],[9/4,11/4],c^2*x^2)/f^3-8/15*b*c*(f*x)^(5/2)*(a+b*acosh(c*x))*hypergeometric(1/2,5/4,9/4,c^2*x^2)*sqrt(1-c*x)/(f^2*sqrt(-1+c*x))],
+
+-- n<0
+
+-- Integrands of the form (d x)^m (a+b ArcCosh[c x])^n with m symbolic
+[(d*x)^m*(a+b*acosh(c*x))^2,x,2,(d*x)^(1+m)*(a+b*acosh(c*x))^2/(d*(1+m))-2*b^2*c^2*(d*x)^(3+m)*HypergeometricPFQ([1,3/2+1/2*m,3/2+1/2*m],[2+1/2*m,5/2+1/2*m],c^2*x^2)/(d^3*(3+m)*(2+3*m+m^2))-2*b*c*(d*x)^(2+m)*(a+b*acosh(c*x))*hypergeometric(1/2,1/2*(2+m),1/2*(4+m),c^2*x^2)*sqrt(1-c*x)/(d^2*(1+m)*(2+m)*sqrt(-1+c*x))],
+[(d*x)^m*(a+b*acosh(c*x)),x,4,(d*x)^(1+m)*(a+b*acosh(c*x))/(d*(1+m))-b*c*(d*x)^(2+m)*hypergeometric(1/2,1/2*(2+m),1/2*(4+m),c^2*x^2)*sqrt(1-c^2*x^2)/(d^2*(1+m)*(2+m)*sqrt(-1+c*x)*sqrt(1+c*x))],
+[(d*x)^m/(a+b*acosh(c*x)),x,0,Unintegrable((d*x)^m/(a+b*acosh(c*x)),x)]]

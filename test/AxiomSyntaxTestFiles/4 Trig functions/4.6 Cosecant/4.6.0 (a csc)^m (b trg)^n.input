@@ -1,0 +1,99 @@
+-- Axiom integration test file: "4 Trig functions\4.6 Cosecant\4.6.0 (a csc)^m (b trg)^n.input"
+
+lst: '[
+
+-- Integrands of the form (b Csc[c+d x])^n
+
+-- Integrands of the form (b Csc[c+d x])^n
+
+-- Integrands of the form Csc[c+d x]^n
+[csc(a+b*x),x,1,-atanh(cos(a+b*x))/b],
+[csc(a+b*x)^2,x,2,-cot(a+b*x)/b],
+[csc(a+b*x)^3,x,2,-1/2*atanh(cos(a+b*x))/b-1/2*cot(a+b*x)*csc(a+b*x)/b],
+[csc(a+b*x)^4,x,2,-cot(a+b*x)/b-1/3*cot(a+b*x)^3/b],
+[csc(a+b*x)^5,x,3,-3/8*atanh(cos(a+b*x))/b-3/8*cot(a+b*x)*csc(a+b*x)/b-1/4*cot(a+b*x)*csc(a+b*x)^3/b],
+[csc(a+b*x)^6,x,2,-cot(a+b*x)/b-2/3*cot(a+b*x)^3/b-1/5*cot(a+b*x)^5/b],
+[csc(a+b*x)^7,x,4,-5/16*atanh(cos(a+b*x))/b-5/16*cot(a+b*x)*csc(a+b*x)/b-5/24*cot(a+b*x)*csc(a+b*x)^3/b-1/6*cot(a+b*x)*csc(a+b*x)^5/b],
+[csc(a+b*x)^8,x,2,-cot(a+b*x)/b-cot(a+b*x)^3/b-3/5*cot(a+b*x)^5/b-1/7*cot(a+b*x)^7/b],
+
+-- Integrands of the form (b Csc[c+d x])^(n/2)
+[csc(a+b*x)^(7/2),x,4,-2/5*cos(a+b*x)*csc(a+b*x)^(5/2)/b-6/5*cos(a+b*x)*sqrt(csc(a+b*x))/b-6/5*elliptic_e(1/2*(-1/2*%pi+a+b*x),2)*sqrt(csc(a+b*x))*sqrt(sin(a+b*x))/b],
+[csc(a+b*x)^(5/2),x,3,-2/3*cos(a+b*x)*csc(a+b*x)^(3/2)/b+2/3*elliptic_f(1/2*(-1/2*%pi+a+b*x),2)*sqrt(csc(a+b*x))*sqrt(sin(a+b*x))/b],
+[csc(a+b*x)^(3/2),x,3,-2*cos(a+b*x)*sqrt(csc(a+b*x))/b-2*elliptic_e(1/2*(-1/2*%pi+a+b*x),2)*sqrt(csc(a+b*x))*sqrt(sin(a+b*x))/b],
+[csc(a+b*x)^(1/2),x,2,2*elliptic_f(1/2*(-1/2*%pi+a+b*x),2)*sqrt(csc(a+b*x))*sqrt(sin(a+b*x))/b],
+[1/csc(a+b*x)^(1/2),x,2,2*elliptic_e(1/2*(-1/2*%pi+a+b*x),2)*sqrt(csc(a+b*x))*sqrt(sin(a+b*x))/b],
+[1/csc(a+b*x)^(3/2),x,3,-2/3*cos(a+b*x)/(b*sqrt(csc(a+b*x)))+2/3*elliptic_f(1/2*(-1/2*%pi+a+b*x),2)*sqrt(csc(a+b*x))*sqrt(sin(a+b*x))/b],
+[1/csc(a+b*x)^(5/2),x,3,-2/5*cos(a+b*x)/(b*csc(a+b*x)^(3/2))+6/5*elliptic_e(1/2*(-1/2*%pi+a+b*x),2)*sqrt(csc(a+b*x))*sqrt(sin(a+b*x))/b],
+[1/csc(a+b*x)^(7/2),x,4,-2/7*cos(a+b*x)/(b*csc(a+b*x)^(5/2))-10/21*cos(a+b*x)/(b*sqrt(csc(a+b*x)))+10/21*elliptic_f(1/2*(-1/2*%pi+a+b*x),2)*sqrt(csc(a+b*x))*sqrt(sin(a+b*x))/b],
+[(c*csc(a+b*x))^(7/2),x,4,-2/5*c*cos(a+b*x)*(c*csc(a+b*x))^(5/2)/b-6/5*c^3*cos(a+b*x)*sqrt(c*csc(a+b*x))/b-6/5*c^4*elliptic_e(1/2*(-1/2*%pi+a+b*x),2)/(b*sqrt(c*csc(a+b*x))*sqrt(sin(a+b*x)))],
+[(c*csc(a+b*x))^(5/2),x,3,-2/3*c*cos(a+b*x)*(c*csc(a+b*x))^(3/2)/b+2/3*c^2*elliptic_f(1/2*(-1/2*%pi+a+b*x),2)*sqrt(c*csc(a+b*x))*sqrt(sin(a+b*x))/b],
+[(c*csc(a+b*x))^(3/2),x,3,-2*c*cos(a+b*x)*sqrt(c*csc(a+b*x))/b-2*c^2*elliptic_e(1/2*(-1/2*%pi+a+b*x),2)/(b*sqrt(c*csc(a+b*x))*sqrt(sin(a+b*x)))],
+[(c*csc(a+b*x))^(1/2),x,2,2*elliptic_f(1/2*(-1/2*%pi+a+b*x),2)*sqrt(c*csc(a+b*x))*sqrt(sin(a+b*x))/b],
+[1/(c*csc(a+b*x))^(1/2),x,2,2*elliptic_e(1/2*(-1/2*%pi+a+b*x),2)/(b*sqrt(c*csc(a+b*x))*sqrt(sin(a+b*x)))],
+[1/(c*csc(a+b*x))^(3/2),x,3,-2/3*cos(a+b*x)/(b*c*sqrt(c*csc(a+b*x)))+2/3*elliptic_f(1/2*(-1/2*%pi+a+b*x),2)*sqrt(c*csc(a+b*x))*sqrt(sin(a+b*x))/(b*c^2)],
+[1/(c*csc(a+b*x))^(5/2),x,3,-2/5*cos(a+b*x)/(b*c*(c*csc(a+b*x))^(3/2))+6/5*elliptic_e(1/2*(-1/2*%pi+a+b*x),2)/(b*c^2*sqrt(c*csc(a+b*x))*sqrt(sin(a+b*x)))],
+[1/(c*csc(a+b*x))^(7/2),x,4,-2/7*cos(a+b*x)/(b*c*(c*csc(a+b*x))^(5/2))-10/21*cos(a+b*x)/(b*c^3*sqrt(c*csc(a+b*x)))+10/21*elliptic_f(1/2*(-1/2*%pi+a+b*x),2)*sqrt(c*csc(a+b*x))*sqrt(sin(a+b*x))/(b*c^4)],
+
+-- Integrands of the form (b Csc[c+d x])^(n/3)
+[csc(a+b*x)^(4/3),x,2,-3*cos(a+b*x)*csc(a+b*x)^(1/3)*hypergeometric(-1/6,1/2,5/6,sin(a+b*x)^2)/(b*sqrt(cos(a+b*x)^2))],
+[csc(a+b*x)^(2/3),x,2,3*cos(a+b*x)*hypergeometric(1/6,1/2,7/6,sin(a+b*x)^2)/(b*csc(a+b*x)^(1/3)*sqrt(cos(a+b*x)^2))],
+[csc(a+b*x)^(1/3),x,2,3/2*cos(a+b*x)*hypergeometric(1/3,1/2,4/3,sin(a+b*x)^2)/(b*csc(a+b*x)^(2/3)*sqrt(cos(a+b*x)^2))],
+[1/csc(a+b*x)^(1/3),x,2,3/4*cos(a+b*x)*hypergeometric(1/2,2/3,5/3,sin(a+b*x)^2)/(b*csc(a+b*x)^(4/3)*sqrt(cos(a+b*x)^2))],
+[1/csc(a+b*x)^(2/3),x,2,3/5*cos(a+b*x)*hypergeometric(1/2,5/6,11/6,sin(a+b*x)^2)/(b*csc(a+b*x)^(5/3)*sqrt(cos(a+b*x)^2))],
+[1/csc(a+b*x)^(4/3),x,2,3/7*cos(a+b*x)*hypergeometric(1/2,7/6,13/6,sin(a+b*x)^2)/(b*csc(a+b*x)^(7/3)*sqrt(cos(a+b*x)^2))],
+[(c*csc(a+b*x))^(4/3),x,2,-3*c*cos(a+b*x)*(c*csc(a+b*x))^(1/3)*hypergeometric(-1/6,1/2,5/6,sin(a+b*x)^2)/(b*sqrt(cos(a+b*x)^2))],
+[(c*csc(a+b*x))^(2/3),x,2,3*c*cos(a+b*x)*hypergeometric(1/6,1/2,7/6,sin(a+b*x)^2)/(b*(c*csc(a+b*x))^(1/3)*sqrt(cos(a+b*x)^2))],
+[(c*csc(a+b*x))^(1/3),x,2,3/2*c*cos(a+b*x)*hypergeometric(1/3,1/2,4/3,sin(a+b*x)^2)/(b*(c*csc(a+b*x))^(2/3)*sqrt(cos(a+b*x)^2))],
+[1/(c*csc(a+b*x))^(1/3),x,2,3/4*c*cos(a+b*x)*hypergeometric(1/2,2/3,5/3,sin(a+b*x)^2)/(b*(c*csc(a+b*x))^(4/3)*sqrt(cos(a+b*x)^2))],
+[1/(c*csc(a+b*x))^(2/3),x,2,3/5*c*cos(a+b*x)*hypergeometric(1/2,5/6,11/6,sin(a+b*x)^2)/(b*(c*csc(a+b*x))^(5/3)*sqrt(cos(a+b*x)^2))],
+[1/(c*csc(a+b*x))^(4/3),x,2,3/7*c*cos(a+b*x)*hypergeometric(1/2,7/6,13/6,sin(a+b*x)^2)/(b*(c*csc(a+b*x))^(7/3)*sqrt(cos(a+b*x)^2))],
+
+-- Integrands of the form (b Csc[c+d x])^n with n symbolic
+[csc(a+b*x)^n,x,2,cos(a+b*x)*csc(a+b*x)^(-1+n)*hypergeometric(1/2,1/2*(1-n),1/2*(3-n),sin(a+b*x)^2)/(b*(1-n)*sqrt(cos(a+b*x)^2))],
+[(c*csc(a+b*x))^n,x,2,c*cos(a+b*x)*(c*csc(a+b*x))^(-1+n)*hypergeometric(1/2,1/2*(1-n),1/2*(3-n),sin(a+b*x)^2)/(b*(1-n)*sqrt(cos(a+b*x)^2))],
+
+-- Integrands of the form (b Csc[c+d x]^p)^n
+
+-- Integrands of the form (b Csc[c+d x]^p)^(n/2) with p positive integer
+[(csc(x)^2)^(7/2),x,5,-5/16*asinh(cot(x))-5/24*cot(x)*(csc(x)^2)^(3/2)-1/6*cot(x)*(csc(x)^2)^(5/2)-5/16*cot(x)*sqrt(csc(x)^2)],
+[(csc(x)^2)^(5/2),x,4,-3/8*asinh(cot(x))-1/4*cot(x)*(csc(x)^2)^(3/2)-3/8*cot(x)*sqrt(csc(x)^2)],
+[(csc(x)^2)^(3/2),x,3,-1/2*asinh(cot(x))-1/2*cot(x)*sqrt(csc(x)^2)],
+[(csc(x)^2)^(1/2),x,2,-asinh(cot(x))],
+[1/(csc(x)^2)^(1/2),x,2,-cot(x)/sqrt(csc(x)^2)],
+[1/(csc(x)^2)^(3/2),x,3,-1/3*cot(x)/(csc(x)^2)^(3/2)-2/3*cot(x)/sqrt(csc(x)^2)],
+[1/(csc(x)^2)^(5/2),x,4,-1/5*cot(x)/(csc(x)^2)^(5/2)-4/15*cot(x)/(csc(x)^2)^(3/2)-8/15*cot(x)/sqrt(csc(x)^2)],
+[1/(csc(x)^2)^(7/2),x,5,-1/7*cot(x)/(csc(x)^2)^(7/2)-6/35*cot(x)/(csc(x)^2)^(5/2)-8/35*cot(x)/(csc(x)^2)^(3/2)-16/35*cot(x)/sqrt(csc(x)^2)],
+[(a*csc(x)^2)^(7/2),x,6,-5/16*a^(7/2)*atanh(cot(x)*sqrt(a)/sqrt(a*csc(x)^2))-5/24*a^2*cot(x)*(a*csc(x)^2)^(3/2)-1/6*a*cot(x)*(a*csc(x)^2)^(5/2)-5/16*a^3*cot(x)*sqrt(a*csc(x)^2)],
+[(a*csc(x)^2)^(5/2),x,5,-3/8*a^(5/2)*atanh(cot(x)*sqrt(a)/sqrt(a*csc(x)^2))-1/4*a*cot(x)*(a*csc(x)^2)^(3/2)-3/8*a^2*cot(x)*sqrt(a*csc(x)^2)],
+[(a*csc(x)^2)^(3/2),x,4,-1/2*a^(3/2)*atanh(cot(x)*sqrt(a)/sqrt(a*csc(x)^2))-1/2*a*cot(x)*sqrt(a*csc(x)^2)],
+[(a*csc(x)^2)^(1/2),x,3,-atanh(cot(x)*sqrt(a)/sqrt(a*csc(x)^2))*sqrt(a)],
+[1/(a*csc(x)^2)^(1/2),x,2,-cot(x)/sqrt(a*csc(x)^2)],
+[1/(a*csc(x)^2)^(3/2),x,3,-1/3*cot(x)/(a*csc(x)^2)^(3/2)-2/3*cot(x)/(a*sqrt(a*csc(x)^2))],
+[1/(a*csc(x)^2)^(5/2),x,4,-1/5*cot(x)/(a*csc(x)^2)^(5/2)-4/15*cot(x)/(a*(a*csc(x)^2)^(3/2))-8/15*cot(x)/(a^2*sqrt(a*csc(x)^2))],
+[1/(a*csc(x)^2)^(7/2),x,5,-1/7*cot(x)/(a*csc(x)^2)^(7/2)-6/35*cot(x)/(a*(a*csc(x)^2)^(5/2))-8/35*cot(x)/(a^2*(a*csc(x)^2)^(3/2))-16/35*cot(x)/(a^3*sqrt(a*csc(x)^2))],
+[(a*csc(x)^3)^(5/2),x,7,-154/585*a^2*cot(x)*sqrt(a*csc(x)^3)-22/117*a^2*cot(x)*csc(x)^2*sqrt(a*csc(x)^3)-2/13*a^2*cot(x)*csc(x)^4*sqrt(a*csc(x)^3)-154/195*a^2*cos(x)*sin(x)*sqrt(a*csc(x)^3)+154/195*a^2*elliptic_e(1/4*%pi-1/2*x,2)*sin(x)^(3/2)*sqrt(a*csc(x)^3)],
+[(a*csc(x)^3)^(3/2),x,5,-10/21*a*cos(x)*sqrt(a*csc(x)^3)-2/7*a*cot(x)*csc(x)*sqrt(a*csc(x)^3)-10/21*a*elliptic_f(1/4*%pi-1/2*x,2)*sin(x)^(3/2)*sqrt(a*csc(x)^3)],
+[(a*csc(x)^3)^(1/2),x,4,-2*cos(x)*sin(x)*sqrt(a*csc(x)^3)+2*elliptic_e(1/4*%pi-1/2*x,2)*sin(x)^(3/2)*sqrt(a*csc(x)^3)],
+[1/(a*csc(x)^3)^(1/2),x,4,-2/3*cot(x)/sqrt(a*csc(x)^3)-2/3*elliptic_f(1/4*%pi-1/2*x,2)/(sin(x)^(3/2)*sqrt(a*csc(x)^3))],
+[1/(a*csc(x)^3)^(3/2),x,5,-14/45*cos(x)/(a*sqrt(a*csc(x)^3))-14/15*elliptic_e(1/4*%pi-1/2*x,2)/(a*sin(x)^(3/2)*sqrt(a*csc(x)^3))-2/9*cos(x)*sin(x)^2/(a*sqrt(a*csc(x)^3))],
+[1/(a*csc(x)^3)^(5/2),x,7,-26/77*cot(x)/(a^2*sqrt(a*csc(x)^3))-26/77*elliptic_f(1/4*%pi-1/2*x,2)/(a^2*sin(x)^(3/2)*sqrt(a*csc(x)^3))-78/385*cos(x)*sin(x)/(a^2*sqrt(a*csc(x)^3))-26/165*cos(x)*sin(x)^3/(a^2*sqrt(a*csc(x)^3))-2/15*cos(x)*sin(x)^5/(a^2*sqrt(a*csc(x)^3))],
+[(a*csc(x)^4)^(7/2),x,3,-2*a^3*cos(x)^2*cot(x)*sqrt(a*csc(x)^4)-3*a^3*cos(x)^2*cot(x)^3*sqrt(a*csc(x)^4)-20/7*a^3*cos(x)^2*cot(x)^5*sqrt(a*csc(x)^4)-5/3*a^3*cos(x)^2*cot(x)^7*sqrt(a*csc(x)^4)-6/11*a^3*cos(x)^2*cot(x)^9*sqrt(a*csc(x)^4)-1/13*a^3*cos(x)^2*cot(x)^11*sqrt(a*csc(x)^4)-a^3*cos(x)*sin(x)*sqrt(a*csc(x)^4)],
+[(a*csc(x)^4)^(5/2),x,3,-4/3*a^2*cos(x)^2*cot(x)*sqrt(a*csc(x)^4)-6/5*a^2*cos(x)^2*cot(x)^3*sqrt(a*csc(x)^4)-4/7*a^2*cos(x)^2*cot(x)^5*sqrt(a*csc(x)^4)-1/9*a^2*cos(x)^2*cot(x)^7*sqrt(a*csc(x)^4)-a^2*cos(x)*sin(x)*sqrt(a*csc(x)^4)],
+[(a*csc(x)^4)^(3/2),x,3,-2/3*a*cos(x)^2*cot(x)*sqrt(a*csc(x)^4)-1/5*a*cos(x)^2*cot(x)^3*sqrt(a*csc(x)^4)-a*cos(x)*sin(x)*sqrt(a*csc(x)^4)],
+[(a*csc(x)^4)^(1/2),x,3,-cos(x)*sin(x)*sqrt(a*csc(x)^4)],
+[1/(a*csc(x)^4)^(1/2),x,3,-1/2*cot(x)/sqrt(a*csc(x)^4)+1/2*x*csc(x)^2/sqrt(a*csc(x)^4)],
+[1/(a*csc(x)^4)^(3/2),x,5,-5/16*cot(x)/(a*sqrt(a*csc(x)^4))+5/16*x*csc(x)^2/(a*sqrt(a*csc(x)^4))-5/24*cos(x)*sin(x)/(a*sqrt(a*csc(x)^4))-1/6*cos(x)*sin(x)^3/(a*sqrt(a*csc(x)^4))],
+[1/(a*csc(x)^4)^(5/2),x,7,-63/256*cot(x)/(a^2*sqrt(a*csc(x)^4))+63/256*x*csc(x)^2/(a^2*sqrt(a*csc(x)^4))-21/128*cos(x)*sin(x)/(a^2*sqrt(a*csc(x)^4))-21/160*cos(x)*sin(x)^3/(a^2*sqrt(a*csc(x)^4))-9/80*cos(x)*sin(x)^5/(a^2*sqrt(a*csc(x)^4))-1/10*cos(x)*sin(x)^7/(a^2*sqrt(a*csc(x)^4))],
+
+-- Integrands of the form ((b Csc[c+d x])^p)^n with n symbolic
+[((b*csc(c+d*x))^p)^n,x,3,cos(c+d*x)*((b*csc(c+d*x))^p)^n*hypergeometric(1/2,1/2*(1-n*p),1/2*(3-n*p),sin(c+d*x)^2)*sin(c+d*x)/(d*(1-n*p)*sqrt(cos(c+d*x)^2))],
+
+-- Integrands of the form (a (b Csc[c+d x])^p)^n
+
+-- Integrands of the form (a (b Csc[c+d x])^p)^n with n symbolic
+[(a*(b*csc(c+d*x))^p)^n,x,3,cos(c+d*x)*(a*(b*csc(c+d*x))^p)^n*hypergeometric(1/2,1/2*(1-n*p),1/2*(3-n*p),sin(c+d*x)^2)*sin(c+d*x)/(d*(1-n*p)*sqrt(cos(c+d*x)^2))],
+
+-- Integrands of the form (a Csc[e+f x])^m (b Trg[e+f x])^n
+
+-- Integrands of the form (a Csc[e+f x])^m (b Csc[e+f x])^n
+[(a*csc(e+f*x))^m*(b*csc(e+f*x))^n,x,3,a*cos(e+f*x)*(a*csc(e+f*x))^(-1+m)*(b*csc(e+f*x))^n*hypergeometric(1/2,1/2*(1-m-n),1/2*(3-m-n),sin(e+f*x)^2)/(f*(1-m-n)*sqrt(cos(e+f*x)^2))]]

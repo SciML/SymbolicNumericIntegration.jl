@@ -1,0 +1,600 @@
+-- Axiom integration test file: "1 Algebraic functions\1.1 Binomial products\1.1.4 Improper\1.1.4.2 (c x)^m (a x^j+b x^n)^p.input"
+
+lst: '[
+
+-- Integration problems of the form (c x)^m (a x+b x^n)^p
+
+-- Integrands of the form (c x)^m (a x+b x^3)^p
+
+-- Integrands of the form x^m (a x+b x^3)^p
+
+-- p>0
+[x^2*(a*x+b*x^3),x,2,1/4*a*x^4+1/6*b*x^6],
+[x*(a*x+b*x^3),x,2,1/3*a*x^3+1/5*b*x^5],
+[a*x+b*x^3,x,1,1/2*a*x^2+1/4*b*x^4],
+[(a*x+b*x^3)/x,x,2,a*x+1/3*b*x^3],
+[(a*x+b*x^3)/x^2,x,2,1/2*b*x^2+a*log(x)],
+[x^2*(a*x+b*x^3)^2,x,3,1/5*a^2*x^5+2/7*a*b*x^7+1/9*b^2*x^9],
+[x*(a*x+b*x^3)^2,x,4,1/4*a^2*x^4+1/3*a*b*x^6+1/8*b^2*x^8],
+[(a*x+b*x^3)^2,x,3,1/3*a^2*x^3+2/5*a*b*x^5+1/7*b^2*x^7],
+[(a*x+b*x^3)^2/x,x,2,1/6*(a+b*x^2)^3/b],
+[(a*x+b*x^3)^2/x^2,x,3,a^2*x+2/3*a*b*x^3+1/5*b^2*x^5],
+[(-4*x+3*x^3)^6,x,3,4096/7*x^7-2048*x^9+34560/11*x^11-34560/13*x^13+1296*x^15-5832/17*x^17+729/19*x^19],
+
+-- p<0
+[x^4/(a*x+b*x^3),x,4,1/2*x^2/b-1/2*a*log(a+b*x^2)/b^2],
+[x^3/(a*x+b*x^3),x,3,x/b-atan(x*sqrt(b)/sqrt(a))*sqrt(a)/b^(3/2)],
+[x^2/(a*x+b*x^3),x,2,1/2*log(a+b*x^2)/b],
+[x/(a*x+b*x^3),x,2,atan(x*sqrt(b)/sqrt(a))/(sqrt(a)*sqrt(b))],
+[1/(a*x+b*x^3),x,5,log(x)/a-1/2*log(a+b*x^2)/a],
+[1/(x*(a*x+b*x^3)),x,3,(-1)/(a*x)-atan(x*sqrt(b)/sqrt(a))*sqrt(b)/a^(3/2)],
+[1/(x^2*(a*x+b*x^3)),x,4,(-1/2)/(a*x^2)-b*log(x)/a^2+1/2*b*log(a+b*x^2)/a^2],
+[1/(x^3*(a*x+b*x^3)),x,4,(-1/3)/(a*x^3)+b/(a^2*x)+b^(3/2)*atan(x*sqrt(b)/sqrt(a))/a^(5/2)],
+[1/(x^4*(a*x+b*x^3)),x,4,(-1/4)/(a*x^4)+1/2*b/(a^2*x^2)+b^2*log(x)/a^3-1/2*b^2*log(a+b*x^2)/a^3],
+[x^2/(a*x+b*x^3)^2,x,3,1/2*x/(a*(a+b*x^2))+1/2*atan(x*sqrt(b)/sqrt(a))/(a^(3/2)*sqrt(b))],
+[x/(a*x+b*x^3)^2,x,4,1/2/(a*(a+b*x^2))+log(x)/a^2-1/2*log(a+b*x^2)/a^2],
+[1/(a*x+b*x^3)^2,x,4,(-3/2)/(a^2*x)+1/2/(a*x*(a+b*x^2))-3/2*atan(x*sqrt(b)/sqrt(a))*sqrt(b)/a^(5/2)],
+[1/(x*(a*x+b*x^3)^2),x,4,(-1/2)/(a^2*x^2)-1/2*b/(a^2*(a+b*x^2))-2*b*log(x)/a^3+b*log(a+b*x^2)/a^3],
+[1/(x^2*(a*x+b*x^3)^2),x,5,(-5/6)/(a^2*x^3)+5/2*b/(a^3*x)+1/2/(a*x^3*(a+b*x^2))+5/2*b^(3/2)*atan(x*sqrt(b)/sqrt(a))/a^(7/2)],
+--  In some of the following examples gcd cancellation should occur without also partial fraction
+
+-- 	expansion, since that will result in unnecessary expansion. 
+[x^5/(x-x^3),x,4,-x-1/3*x^3+atanh(x)],
+[x^4/(x-x^3),x,4,-1/2*x^2-1/2*log(1-x^2)],
+[x^3/(x-x^3),x,3,-x+atanh(x)],
+[x^2/(x-x^3),x,2,-1/2*log(1-x^2)],
+[x/(x-x^3),x,2,atanh(x)],
+[1/(x-x^3),x,5,log(x)-1/2*log(1-x^2)],
+[1/(x*(x-x^3)),x,3,(-1)/x+atanh(x)],
+[1/(x^2*(x-x^3)),x,4,(-1/2)/x^2+log(x)-1/2*log(1-x^2)],
+[1/(x^3*(x-x^3)),x,4,(-1/3)/x^3+(-1)/x+atanh(x)],
+[1/(x^4*(x-x^3)),x,4,(-1/4)/x^4+(-1/2)/x^2+log(x)-1/2*log(1-x^2)],
+[1/(x+b*x^3),x,5,log(x)-1/2*log(1+b*x^2)],
+[1/(-x+b*x^3),x,5,-log(x)+1/2*log(1-b*x^2)],
+
+-- Integrands of the form x^m (a x+b x^3)^(p/2)
+
+-- p>0
+[x^3*sqrt(a*x+b*x^3),x,6,-20/231*a^2*sqrt(a*x+b*x^3)/b^2+4/77*a*x^2*sqrt(a*x+b*x^3)/b+2/11*x^4*sqrt(a*x+b*x^3)+10/231*a^(11/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(9/4)*sqrt(a*x+b*x^3))],
+[x^2*sqrt(a*x+b*x^3),x,7,-4/15*a^2*x*(a+b*x^2)/(b^(3/2)*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))+4/45*a*x*sqrt(a*x+b*x^3)/b+2/9*x^3*sqrt(a*x+b*x^3)+4/15*a^(9/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(7/4)*sqrt(a*x+b*x^3))-2/15*a^(9/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(7/4)*sqrt(a*x+b*x^3))],
+[x*sqrt(a*x+b*x^3),x,5,4/21*a*sqrt(a*x+b*x^3)/b+2/7*x^2*sqrt(a*x+b*x^3)-2/21*a^(7/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(5/4)*sqrt(a*x+b*x^3))],
+[sqrt(a*x+b*x^3),x,6,4/5*a*x*(a+b*x^2)/(sqrt(b)*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))+2/5*x*sqrt(a*x+b*x^3)-4/5*a^(5/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(3/4)*sqrt(a*x+b*x^3))+2/5*a^(5/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(3/4)*sqrt(a*x+b*x^3))],
+[sqrt(a*x+b*x^3)/x,x,4,2/3*sqrt(a*x+b*x^3)+2/3*a^(3/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(1/4)*sqrt(a*x+b*x^3))],
+[sqrt(a*x+b*x^3)/x^2,x,6,4*x*(a+b*x^2)*sqrt(b)/((sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))-2*sqrt(a*x+b*x^3)/x-4*a^(1/4)*b^(1/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/sqrt(a*x+b*x^3)+2*a^(1/4)*b^(1/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/sqrt(a*x+b*x^3)],
+[sqrt(a*x+b*x^3)/x^3,x,4,-2/3*sqrt(a*x+b*x^3)/x^2+2/3*b^(3/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(1/4)*sqrt(a*x+b*x^3))],
+[sqrt(a*x+b*x^3)/x^4,x,7,4/5*b^(3/2)*x*(a+b*x^2)/(a*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))-2/5*sqrt(a*x+b*x^3)/x^3-4/5*b*sqrt(a*x+b*x^3)/(a*x)-4/5*b^(5/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(3/4)*sqrt(a*x+b*x^3))+2/5*b^(5/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(3/4)*sqrt(a*x+b*x^3))],
+[x^2*(a*x+b*x^3)^(3/2),x,7,2/15*x^3*(a*x+b*x^3)^(3/2)-8/231*a^3*sqrt(a*x+b*x^3)/b^2+8/385*a^2*x^2*sqrt(a*x+b*x^3)/b+4/55*a*x^4*sqrt(a*x+b*x^3)+4/231*a^(15/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(9/4)*sqrt(a*x+b*x^3))],
+[x*(a*x+b*x^3)^(3/2),x,8,2/13*x^2*(a*x+b*x^3)^(3/2)-8/65*a^3*x*(a+b*x^2)/(b^(3/2)*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))+8/195*a^2*x*sqrt(a*x+b*x^3)/b+4/39*a*x^3*sqrt(a*x+b*x^3)+8/65*a^(13/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(7/4)*sqrt(a*x+b*x^3))-4/65*a^(13/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(7/4)*sqrt(a*x+b*x^3))],
+[(a*x+b*x^3)^(3/2),x,6,2/11*x*(a*x+b*x^3)^(3/2)+8/77*a^2*sqrt(a*x+b*x^3)/b+12/77*a*x^2*sqrt(a*x+b*x^3)-4/77*a^(11/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(5/4)*sqrt(a*x+b*x^3))],
+[(a*x+b*x^3)^(3/2)/x,x,7,2/9*(a*x+b*x^3)^(3/2)+8/15*a^2*x*(a+b*x^2)/(sqrt(b)*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))+4/15*a*x*sqrt(a*x+b*x^3)-8/15*a^(9/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(3/4)*sqrt(a*x+b*x^3))+4/15*a^(9/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(3/4)*sqrt(a*x+b*x^3))],
+[(a*x+b*x^3)^(3/2)/x^2,x,5,2/7*(a*x+b*x^3)^(3/2)/x+4/7*a*sqrt(a*x+b*x^3)+4/7*a^(7/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(1/4)*sqrt(a*x+b*x^3))],
+[(a*x+b*x^3)^(3/2)/x^3,x,7,-2*(a*x+b*x^3)^(3/2)/x^2+24/5*a*x*(a+b*x^2)*sqrt(b)/((sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))+12/5*b*x*sqrt(a*x+b*x^3)-24/5*a^(5/4)*b^(1/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/sqrt(a*x+b*x^3)+12/5*a^(5/4)*b^(1/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/sqrt(a*x+b*x^3)],
+[(a*x+b*x^3)^(3/2)/x^4,x,5,-2/3*(a*x+b*x^3)^(3/2)/x^3+4/3*b*sqrt(a*x+b*x^3)+4/3*a^(3/4)*b^(3/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/sqrt(a*x+b*x^3)],
+[(a*x+b*x^3)^(3/2)/x^5,x,7,-2/5*(a*x+b*x^3)^(3/2)/x^4+24/5*b^(3/2)*x*(a+b*x^2)/((sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))-12/5*b*sqrt(a*x+b*x^3)/x-24/5*a^(1/4)*b^(5/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/sqrt(a*x+b*x^3)+12/5*a^(1/4)*b^(5/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/sqrt(a*x+b*x^3)],
+[(a*x+b*x^3)^(3/2)/x^6,x,5,-2/7*(a*x+b*x^3)^(3/2)/x^5-4/7*b*sqrt(a*x+b*x^3)/x^2+4/7*b^(7/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(1/4)*sqrt(a*x+b*x^3))],
+[(a*x+b*x^3)^(3/2)/x^7,x,8,-2/9*(a*x+b*x^3)^(3/2)/x^6+8/15*b^(5/2)*x*(a+b*x^2)/(a*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))-4/15*b*sqrt(a*x+b*x^3)/x^3-8/15*b^2*sqrt(a*x+b*x^3)/(a*x)-8/15*b^(9/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(3/4)*sqrt(a*x+b*x^3))+4/15*b^(9/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(3/4)*sqrt(a*x+b*x^3))],
+[(a*x+b*x^3)^(3/2)/x^8,x,6,-2/11*(a*x+b*x^3)^(3/2)/x^7-12/77*b*sqrt(a*x+b*x^3)/x^4-8/77*b^2*sqrt(a*x+b*x^3)/(a*x^2)-4/77*b^(11/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(5/4)*sqrt(a*x+b*x^3))],
+
+-- p<0
+[x^4/sqrt(a*x+b*x^3),x,5,-10/21*a*sqrt(a*x+b*x^3)/b^2+2/7*x^2*sqrt(a*x+b*x^3)/b+5/21*a^(7/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(9/4)*sqrt(a*x+b*x^3))],
+[x^3/sqrt(a*x+b*x^3),x,6,-6/5*a*x*(a+b*x^2)/(b^(3/2)*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))+2/5*x*sqrt(a*x+b*x^3)/b+6/5*a^(5/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(7/4)*sqrt(a*x+b*x^3))-3/5*a^(5/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(7/4)*sqrt(a*x+b*x^3))],
+[x^2/sqrt(a*x+b*x^3),x,4,2/3*sqrt(a*x+b*x^3)/b-1/3*a^(3/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(5/4)*sqrt(a*x+b*x^3))],
+[x/sqrt(a*x+b*x^3),x,5,2*x*(a+b*x^2)/(sqrt(b)*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))-2*a^(1/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(3/4)*sqrt(a*x+b*x^3))+a^(1/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(3/4)*sqrt(a*x+b*x^3))],
+[1/sqrt(a*x+b*x^3),x,3,elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(1/4)*b^(1/4)*sqrt(a*x+b*x^3))],
+[1/(x*sqrt(a*x+b*x^3)),x,6,2*x*(a+b*x^2)*sqrt(b)/(a*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))-2*sqrt(a*x+b*x^3)/(a*x)-2*b^(1/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(3/4)*sqrt(a*x+b*x^3))+b^(1/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(3/4)*sqrt(a*x+b*x^3))],
+[1/(x^2*sqrt(a*x+b*x^3)),x,4,-2/3*sqrt(a*x+b*x^3)/(a*x^2)-1/3*b^(3/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(5/4)*sqrt(a*x+b*x^3))],
+[1/(x^3*sqrt(a*x+b*x^3)),x,7,-6/5*b^(3/2)*x*(a+b*x^2)/(a^2*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))-2/5*sqrt(a*x+b*x^3)/(a*x^3)+6/5*b*sqrt(a*x+b*x^3)/(a^2*x)+6/5*b^(5/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(7/4)*sqrt(a*x+b*x^3))-3/5*b^(5/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(7/4)*sqrt(a*x+b*x^3))],
+[x^7/(a*x+b*x^3)^(3/2),x,6,-x^5/(b*sqrt(a*x+b*x^3))-15/7*a*sqrt(a*x+b*x^3)/b^3+9/7*x^2*sqrt(a*x+b*x^3)/b^2+15/14*a^(7/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(13/4)*sqrt(a*x+b*x^3))],
+[x^6/(a*x+b*x^3)^(3/2),x,7,-x^4/(b*sqrt(a*x+b*x^3))-21/5*a*x*(a+b*x^2)/(b^(5/2)*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))+7/5*x*sqrt(a*x+b*x^3)/b^2+21/5*a^(5/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(11/4)*sqrt(a*x+b*x^3))-21/10*a^(5/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(11/4)*sqrt(a*x+b*x^3))],
+[x^5/(a*x+b*x^3)^(3/2),x,5,-x^3/(b*sqrt(a*x+b*x^3))+5/3*sqrt(a*x+b*x^3)/b^2-5/6*a^(3/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(9/4)*sqrt(a*x+b*x^3))],
+[x^4/(a*x+b*x^3)^(3/2),x,6,-x^2/(b*sqrt(a*x+b*x^3))+3*x*(a+b*x^2)/(b^(3/2)*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))-3*a^(1/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(7/4)*sqrt(a*x+b*x^3))+3/2*a^(1/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(b^(7/4)*sqrt(a*x+b*x^3))],
+[x^3/(a*x+b*x^3)^(3/2),x,4,-x/(b*sqrt(a*x+b*x^3))+1/2*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(1/4)*b^(5/4)*sqrt(a*x+b*x^3))],
+[x^2/(a*x+b*x^3)^(3/2),x,6,x^2/(a*sqrt(a*x+b*x^3))-x*(a+b*x^2)/(a*sqrt(b)*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))+elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(3/4)*b^(3/4)*sqrt(a*x+b*x^3))-1/2*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(3/4)*b^(3/4)*sqrt(a*x+b*x^3))],
+[x/(a*x+b*x^3)^(3/2),x,4,x/(a*sqrt(a*x+b*x^3))+1/2*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(5/4)*b^(1/4)*sqrt(a*x+b*x^3))],
+[1/(a*x+b*x^3)^(3/2),x,7,1/(a*sqrt(a*x+b*x^3))+3*x*(a+b*x^2)*sqrt(b)/(a^2*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))-3*sqrt(a*x+b*x^3)/(a^2*x)-3*b^(1/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(7/4)*sqrt(a*x+b*x^3))+3/2*b^(1/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(7/4)*sqrt(a*x+b*x^3))],
+[1/(x*(a*x+b*x^3)^(3/2)),x,5,1/(a*x*sqrt(a*x+b*x^3))-5/3*sqrt(a*x+b*x^3)/(a^2*x^2)-5/6*b^(3/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(9/4)*sqrt(a*x+b*x^3))],
+[1/(x^2*(a*x+b*x^3)^(3/2)),x,8,1/(a*x^2*sqrt(a*x+b*x^3))-21/5*b^(3/2)*x*(a+b*x^2)/(a^3*(sqrt(a)+x*sqrt(b))*sqrt(a*x+b*x^3))-7/5*sqrt(a*x+b*x^3)/(a^2*x^3)+21/5*b*sqrt(a*x+b*x^3)/(a^3*x)+21/5*b^(5/4)*elliptic_e(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(11/4)*sqrt(a*x+b*x^3))-21/10*b^(5/4)*elliptic_f(2*atan(b^(1/4)*sqrt(x)/a^(1/4)),1/2)*(sqrt(a)+x*sqrt(b))*sqrt(x)*sqrt((a+b*x^2)/(sqrt(a)+x*sqrt(b))^2)/(a^(11/4)*sqrt(a*x+b*x^3))],
+
+-- Integrands of the form x^(m/2) (a x+b x^3)^(p/2)
+
+-- p>0
+
+-- p<0
+[x^(29/2)/(a*x+b*x^3)^(9/2),x,7,-1/7*x^(25/2)/(b*(a*x+b*x^3)^(7/2))-9/35*x^(19/2)/(b^2*(a*x+b*x^3)^(5/2))-3/5*x^(13/2)/(b^3*(a*x+b*x^3)^(3/2))-9/2*a*atanh(x^(3/2)*sqrt(b)/sqrt(a*x+b*x^3))/b^(11/2)-3*x^(7/2)/(b^4*sqrt(a*x+b*x^3))+9/2*sqrt(x)*sqrt(a*x+b*x^3)/b^5],
+[x^(27/2)/(a*x+b*x^3)^(9/2),x,5,-1/7*x^(23/2)/(b*(a*x+b*x^3)^(7/2))-8/35*x^(17/2)/(b^2*(a*x+b*x^3)^(5/2))-16/35*x^(11/2)/(b^3*(a*x+b*x^3)^(3/2))-64/35*x^(5/2)/(b^4*sqrt(a*x+b*x^3))+128/35*sqrt(a*x+b*x^3)/(b^5*sqrt(x))],
+[x^(25/2)/(a*x+b*x^3)^(9/2),x,6,-1/7*x^(21/2)/(b*(a*x+b*x^3)^(7/2))-1/5*x^(15/2)/(b^2*(a*x+b*x^3)^(5/2))-1/3*x^(9/2)/(b^3*(a*x+b*x^3)^(3/2))+atanh(x^(3/2)*sqrt(b)/sqrt(a*x+b*x^3))/b^(9/2)-x^(3/2)/(b^4*sqrt(a*x+b*x^3))],
+[x^(23/2)/(a*x+b*x^3)^(9/2),x,4,-1/7*x^(19/2)/(b*(a*x+b*x^3)^(7/2))-6/35*x^(13/2)/(b^2*(a*x+b*x^3)^(5/2))-8/35*x^(7/2)/(b^3*(a*x+b*x^3)^(3/2))-16/35*sqrt(x)/(b^4*sqrt(a*x+b*x^3))],
+[x^(21/2)/(a*x+b*x^3)^(9/2),x,1,1/7*x^(21/2)/(a*(a*x+b*x^3)^(7/2))],
+[x^(19/2)/(a*x+b*x^3)^(9/2),x,3,-1/7*x^(15/2)/(b*(a*x+b*x^3)^(7/2))-4/35*x^(9/2)/(b^2*(a*x+b*x^3)^(5/2))-8/105*x^(3/2)/(b^3*(a*x+b*x^3)^(3/2))],
+[x^(17/2)/(a*x+b*x^3)^(9/2),x,2,1/7*x^(17/2)/(a*(a*x+b*x^3)^(7/2))+2/35*x^(15/2)/(a^2*(a*x+b*x^3)^(5/2))],
+[x^(15/2)/(a*x+b*x^3)^(9/2),x,2,-1/7*x^(11/2)/(b*(a*x+b*x^3)^(7/2))-2/35*x^(5/2)/(b^2*(a*x+b*x^3)^(5/2))],
+[x^(13/2)/(a*x+b*x^3)^(9/2),x,3,1/7*x^(13/2)/(a*(a*x+b*x^3)^(7/2))+4/35*x^(11/2)/(a^2*(a*x+b*x^3)^(5/2))+8/105*x^(9/2)/(a^3*(a*x+b*x^3)^(3/2))],
+[x^(11/2)/(a*x+b*x^3)^(9/2),x,1,-1/7*x^(7/2)/(b*(a*x+b*x^3)^(7/2))],
+[x^(9/2)/(a*x+b*x^3)^(9/2),x,4,1/7*x^(9/2)/(a*(a*x+b*x^3)^(7/2))+6/35*x^(7/2)/(a^2*(a*x+b*x^3)^(5/2))+8/35*x^(5/2)/(a^3*(a*x+b*x^3)^(3/2))+16/35*x^(3/2)/(a^4*sqrt(a*x+b*x^3))],
+[x^(7/2)/(a*x+b*x^3)^(9/2),x,6,1/7*x^(7/2)/(a*(a*x+b*x^3)^(7/2))+1/5*x^(5/2)/(a^2*(a*x+b*x^3)^(5/2))+1/3*x^(3/2)/(a^3*(a*x+b*x^3)^(3/2))-atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*x^3))/a^(9/2)+sqrt(x)/(a^4*sqrt(a*x+b*x^3))],
+[x^(5/2)/(a*x+b*x^3)^(9/2),x,5,1/7*x^(5/2)/(a*(a*x+b*x^3)^(7/2))+8/35*x^(3/2)/(a^2*(a*x+b*x^3)^(5/2))+16/35*sqrt(x)/(a^3*(a*x+b*x^3)^(3/2))+64/35/(a^4*sqrt(x)*sqrt(a*x+b*x^3))-128/35*sqrt(a*x+b*x^3)/(a^5*x^(3/2))],
+[x^(3/2)/(a*x+b*x^3)^(9/2),x,7,1/7*x^(3/2)/(a*(a*x+b*x^3)^(7/2))+9/2*b*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*x^3))/a^(11/2)+3/5/(a^3*(a*x+b*x^3)^(3/2)*sqrt(x))+9/35*sqrt(x)/(a^2*(a*x+b*x^3)^(5/2))+3/(a^4*x^(3/2)*sqrt(a*x+b*x^3))-9/2*sqrt(a*x+b*x^3)/(a^5*x^(5/2))],
+[x^(1/2)/(a*x+b*x^3)^(9/2),x,6,16/21/(a^3*x^(3/2)*(a*x+b*x^3)^(3/2))+2/7/(a^2*(a*x+b*x^3)^(5/2)*sqrt(x))+1/7*sqrt(x)/(a*(a*x+b*x^3)^(7/2))+32/7/(a^4*x^(5/2)*sqrt(a*x+b*x^3))-128/21*sqrt(a*x+b*x^3)/(a^5*x^(7/2))+256/21*b*sqrt(a*x+b*x^3)/(a^6*x^(3/2))],
+[1/(x^(1/2)*(a*x+b*x^3)^(9/2)),x,8,11/35/(a^2*x^(3/2)*(a*x+b*x^3)^(5/2))+33/35/(a^3*x^(5/2)*(a*x+b*x^3)^(3/2))-99/8*b^2*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*x^3))/a^(13/2)+1/7/(a*(a*x+b*x^3)^(7/2)*sqrt(x))+33/5/(a^4*x^(7/2)*sqrt(a*x+b*x^3))-33/4*sqrt(a*x+b*x^3)/(a^5*x^(9/2))+99/8*b*sqrt(a*x+b*x^3)/(a^6*x^(5/2))],
+[1/(x^(3/2)*(a*x+b*x^3)^(9/2)),x,7,1/7/(a*x^(3/2)*(a*x+b*x^3)^(7/2))+12/35/(a^2*x^(5/2)*(a*x+b*x^3)^(5/2))+8/7/(a^3*x^(7/2)*(a*x+b*x^3)^(3/2))+64/7/(a^4*x^(9/2)*sqrt(a*x+b*x^3))-384/35*sqrt(a*x+b*x^3)/(a^5*x^(11/2))+512/35*b*sqrt(a*x+b*x^3)/(a^6*x^(7/2))-1024/35*b^2*sqrt(a*x+b*x^3)/(a^7*x^(3/2))],
+
+-- Integrands of the form (c x)^m (a x+b x^4)^p
+
+-- Integrands of the form x^m (a x+b x^4)^(p/2)
+[x^4/sqrt(a*x+b*x^4),x,3,-1/3*a*atanh(x^2*sqrt(b)/sqrt(a*x+b*x^4))/b^(3/2)+1/3*x*sqrt(a*x+b*x^4)/b],
+[x/sqrt(a*x+b*x^4),x,2,2/3*atanh(x^2*sqrt(b)/sqrt(a*x+b*x^4))/sqrt(b)],
+[1/(x^2*sqrt(a*x+b*x^4)),x,1,-2/3*sqrt(a*x+b*x^4)/(a*x^2)],
+[1/(x^5*sqrt(a*x+b*x^4)),x,2,-2/9*sqrt(a*x+b*x^4)/(a*x^5)+4/9*b*sqrt(a*x+b*x^4)/(a^2*x^2)],
+[1/(x^8*sqrt(a*x+b*x^4)),x,3,-2/15*sqrt(a*x+b*x^4)/(a*x^8)+8/45*b*sqrt(a*x+b*x^4)/(a^2*x^5)-16/45*b^2*sqrt(a*x+b*x^4)/(a^3*x^2)],
+[x^3/sqrt(a*x+b*x^4),x,4,1/2*sqrt(a*x+b*x^4)/b-1/4*a^(2/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*b*sqrt(a*x+b*x^4)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[1/sqrt(a*x+b*x^4),x,3,x*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*a^(1/3)*sqrt(a*x+b*x^4)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[1/(x^3*sqrt(a*x+b*x^4)),x,4,-2/5*sqrt(a*x+b*x^4)/(a*x^3)-2/5*b*x*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*a^(4/3)*sqrt(a*x+b*x^4)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[x^5/sqrt(a*x+b*x^4),x,6,-5/8*a*x*(a+b*x^3)*(1+sqrt(3))/(b^(5/3)*(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))*sqrt(a*x+b*x^4))+1/4*x^2*sqrt(a*x+b*x^4)/b+5/8*3^(1/4)*a^(4/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_e(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(b^(5/3)*sqrt(a*x+b*x^4)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))+5/16*a^(4/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*(1-sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*b^(5/3)*sqrt(a*x+b*x^4)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[x^2/sqrt(a*x+b*x^4),x,5,x*(a+b*x^3)*(1+sqrt(3))/(b^(2/3)*(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))*sqrt(a*x+b*x^4))-3^(1/4)*a^(1/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_e(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(b^(2/3)*sqrt(a*x+b*x^4)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))-1/2*a^(1/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*(1-sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*b^(2/3)*sqrt(a*x+b*x^4)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[1/(x*sqrt(a*x+b*x^4)),x,6,2*b^(1/3)*x*(a+b*x^3)*(1+sqrt(3))/(a*(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))*sqrt(a*x+b*x^4))-2*sqrt(a*x+b*x^4)/(a*x)-2*3^(1/4)*b^(1/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_e(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(a^(2/3)*sqrt(a*x+b*x^4)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))-b^(1/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*(1-sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*a^(2/3)*sqrt(a*x+b*x^4)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+
+-- Integrands of the form x^(m/2) (a x+b x^4)^(p/2)
+
+-- Integrands of the form x^m (a x+b x^5)^p
+
+-- Integrands of the form x^m (a x+b x^5)^(p/2)
+
+-- Integrands of the form x^(m/2) (a x+b x^5)^(p/2)
+
+-- Integrands of the form (c x)^m (a x+b x^(n/2))^p
+
+-- Integrands of the form x^m (a x+b x^(1/2))^(p/2)
+
+-- p>0
+
+-- p<0
+[x^2/(b*x^(1/2)+a*x)^(1/2),x,8,-63/64*b^5*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/a^(11/2)+63/64*b^4*sqrt(a*x+b*sqrt(x))/a^5+21/40*b^2*x*sqrt(a*x+b*sqrt(x))/a^3-9/20*b*x^(3/2)*sqrt(a*x+b*sqrt(x))/a^2+2/5*x^2*sqrt(a*x+b*sqrt(x))/a-21/32*b^3*sqrt(x)*sqrt(a*x+b*sqrt(x))/a^4],
+[x/(b*x^(1/2)+a*x)^(1/2),x,6,-5/4*b^3*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/a^(7/2)+5/4*b^2*sqrt(a*x+b*sqrt(x))/a^3+2/3*x*sqrt(a*x+b*sqrt(x))/a-5/6*b*sqrt(x)*sqrt(a*x+b*sqrt(x))/a^2],
+[1/(b*x^(1/2)+a*x)^(1/2),x,4,-2*b*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/a^(3/2)+2*sqrt(a*x+b*sqrt(x))/a],
+[1/(x*(b*x^(1/2)+a*x)^(1/2)),x,1,-4*sqrt(a*x+b*sqrt(x))/(b*sqrt(x))],
+[1/(x^2*(b*x^(1/2)+a*x)^(1/2)),x,3,-4/5*sqrt(a*x+b*sqrt(x))/(b*x^(3/2))+16/15*a*sqrt(a*x+b*sqrt(x))/(b^2*x)-32/15*a^2*sqrt(a*x+b*sqrt(x))/(b^3*sqrt(x))],
+[1/(x^3*(b*x^(1/2)+a*x)^(1/2)),x,5,-4/9*sqrt(a*x+b*sqrt(x))/(b*x^(5/2))+32/63*a*sqrt(a*x+b*sqrt(x))/(b^2*x^2)-64/105*a^2*sqrt(a*x+b*sqrt(x))/(b^3*x^(3/2))+256/315*a^3*sqrt(a*x+b*sqrt(x))/(b^4*x)-512/315*a^4*sqrt(a*x+b*sqrt(x))/(b^5*sqrt(x))],
+[1/(x^4*(b*x^(1/2)+a*x)^(1/2)),x,7,-4/13*sqrt(a*x+b*sqrt(x))/(b*x^(7/2))+48/143*a*sqrt(a*x+b*sqrt(x))/(b^2*x^3)-160/429*a^2*sqrt(a*x+b*sqrt(x))/(b^3*x^(5/2))+1280/3003*a^3*sqrt(a*x+b*sqrt(x))/(b^4*x^2)-512/1001*a^4*sqrt(a*x+b*sqrt(x))/(b^5*x^(3/2))+2048/3003*a^5*sqrt(a*x+b*sqrt(x))/(b^6*x)-4096/3003*a^6*sqrt(a*x+b*sqrt(x))/(b^7*sqrt(x))],
+[x^3/(b*x^(1/2)+a*x)^(3/2),x,9,-693/64*b^5*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/a^(13/2)-4*x^3/(a*sqrt(a*x+b*sqrt(x)))+693/64*b^4*sqrt(a*x+b*sqrt(x))/a^6+231/40*b^2*x*sqrt(a*x+b*sqrt(x))/a^4-99/20*b*x^(3/2)*sqrt(a*x+b*sqrt(x))/a^3+22/5*x^2*sqrt(a*x+b*sqrt(x))/a^2-231/32*b^3*sqrt(x)*sqrt(a*x+b*sqrt(x))/a^5],
+[x^2/(b*x^(1/2)+a*x)^(3/2),x,7,-35/4*b^3*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/a^(9/2)-4*x^2/(a*sqrt(a*x+b*sqrt(x)))+35/4*b^2*sqrt(a*x+b*sqrt(x))/a^4+14/3*x*sqrt(a*x+b*sqrt(x))/a^2-35/6*b*sqrt(x)*sqrt(a*x+b*sqrt(x))/a^3],
+[x/(b*x^(1/2)+a*x)^(3/2),x,5,-6*b*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/a^(5/2)-4*x/(a*sqrt(a*x+b*sqrt(x)))+6*sqrt(a*x+b*sqrt(x))/a^2],
+[1/(b*x^(1/2)+a*x)^(3/2),x,1,4*sqrt(x)/(b*sqrt(a*x+b*sqrt(x)))],
+[1/(x*(b*x^(1/2)+a*x)^(3/2)),x,3,4/(b*sqrt(x)*sqrt(a*x+b*sqrt(x)))-16/3*sqrt(a*x+b*sqrt(x))/(b^2*x)+32/3*a*sqrt(a*x+b*sqrt(x))/(b^3*sqrt(x))],
+[1/(x^2*(b*x^(1/2)+a*x)^(3/2)),x,5,4/(b*x^(3/2)*sqrt(a*x+b*sqrt(x)))-32/7*sqrt(a*x+b*sqrt(x))/(b^2*x^2)+192/35*a*sqrt(a*x+b*sqrt(x))/(b^3*x^(3/2))-256/35*a^2*sqrt(a*x+b*sqrt(x))/(b^4*x)+512/35*a^3*sqrt(a*x+b*sqrt(x))/(b^5*sqrt(x))],
+[1/(x^3*(b*x^(1/2)+a*x)^(3/2)),x,7,4/(b*x^(5/2)*sqrt(a*x+b*sqrt(x)))-48/11*sqrt(a*x+b*sqrt(x))/(b^2*x^3)+160/33*a*sqrt(a*x+b*sqrt(x))/(b^3*x^(5/2))-1280/231*a^2*sqrt(a*x+b*sqrt(x))/(b^4*x^2)+512/77*a^3*sqrt(a*x+b*sqrt(x))/(b^5*x^(3/2))-2048/231*a^4*sqrt(a*x+b*sqrt(x))/(b^6*x)+4096/231*a^5*sqrt(a*x+b*sqrt(x))/(b^7*sqrt(x))],
+
+-- Integrands of the form x^(m/2) (a x+b x^(1/2))^(p/2)
+
+-- p>0
+
+-- p<0
+[x^(5/2)/(b*x^(1/2)+a*x)^(1/2),x,9,231/256*b^6*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/a^(13/2)-231/256*b^5*sqrt(a*x+b*sqrt(x))/a^6-77/160*b^3*x*sqrt(a*x+b*sqrt(x))/a^4+33/80*b^2*x^(3/2)*sqrt(a*x+b*sqrt(x))/a^3-11/30*b*x^2*sqrt(a*x+b*sqrt(x))/a^2+1/3*x^(5/2)*sqrt(a*x+b*sqrt(x))/a+77/128*b^4*sqrt(x)*sqrt(a*x+b*sqrt(x))/a^5],
+[x^(3/2)/(b*x^(1/2)+a*x)^(1/2),x,7,35/32*b^4*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/a^(9/2)-35/32*b^3*sqrt(a*x+b*sqrt(x))/a^4-7/12*b*x*sqrt(a*x+b*sqrt(x))/a^2+1/2*x^(3/2)*sqrt(a*x+b*sqrt(x))/a+35/48*b^2*sqrt(x)*sqrt(a*x+b*sqrt(x))/a^3],
+[x^(1/2)/(b*x^(1/2)+a*x)^(1/2),x,5,3/2*b^2*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/a^(5/2)-3/2*b*sqrt(a*x+b*sqrt(x))/a^2+sqrt(x)*sqrt(a*x+b*sqrt(x))/a],
+[1/(x^(1/2)*(b*x^(1/2)+a*x)^(1/2)),x,3,4*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/sqrt(a)],
+[1/(x^(3/2)*(b*x^(1/2)+a*x)^(1/2)),x,2,-4/3*sqrt(a*x+b*sqrt(x))/(b*x)+8/3*a*sqrt(a*x+b*sqrt(x))/(b^2*sqrt(x))],
+[1/(x^(5/2)*(b*x^(1/2)+a*x)^(1/2)),x,4,-4/7*sqrt(a*x+b*sqrt(x))/(b*x^2)+24/35*a*sqrt(a*x+b*sqrt(x))/(b^2*x^(3/2))-32/35*a^2*sqrt(a*x+b*sqrt(x))/(b^3*x)+64/35*a^3*sqrt(a*x+b*sqrt(x))/(b^4*sqrt(x))],
+[1/(x^(7/2)*(b*x^(1/2)+a*x)^(1/2)),x,6,-4/11*sqrt(a*x+b*sqrt(x))/(b*x^3)+40/99*a*sqrt(a*x+b*sqrt(x))/(b^2*x^(5/2))-320/693*a^2*sqrt(a*x+b*sqrt(x))/(b^3*x^2)+128/231*a^3*sqrt(a*x+b*sqrt(x))/(b^4*x^(3/2))-512/693*a^4*sqrt(a*x+b*sqrt(x))/(b^5*x)+1024/693*a^5*sqrt(a*x+b*sqrt(x))/(b^6*sqrt(x))],
+[x^(5/2)/(b*x^(1/2)+a*x)^(3/2),x,8,315/32*b^4*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/a^(11/2)-4*x^(5/2)/(a*sqrt(a*x+b*sqrt(x)))-315/32*b^3*sqrt(a*x+b*sqrt(x))/a^5-21/4*b*x*sqrt(a*x+b*sqrt(x))/a^3+9/2*x^(3/2)*sqrt(a*x+b*sqrt(x))/a^2+105/16*b^2*sqrt(x)*sqrt(a*x+b*sqrt(x))/a^4],
+[x^(3/2)/(b*x^(1/2)+a*x)^(3/2),x,6,15/2*b^2*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/a^(7/2)-4*x^(3/2)/(a*sqrt(a*x+b*sqrt(x)))-15/2*b*sqrt(a*x+b*sqrt(x))/a^3+5*sqrt(x)*sqrt(a*x+b*sqrt(x))/a^2],
+[x^(1/2)/(b*x^(1/2)+a*x)^(3/2),x,4,4*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*sqrt(x)))/a^(3/2)-4*sqrt(x)/(a*sqrt(a*x+b*sqrt(x)))],
+[1/(x^(1/2)*(b*x^(1/2)+a*x)^(3/2)),x,2,-4*(b+2*a*sqrt(x))/(b^2*sqrt(a*x+b*sqrt(x)))],
+[1/(x^(3/2)*(b*x^(1/2)+a*x)^(3/2)),x,4,4/(b*x*sqrt(a*x+b*sqrt(x)))-24/5*sqrt(a*x+b*sqrt(x))/(b^2*x^(3/2))+32/5*a*sqrt(a*x+b*sqrt(x))/(b^3*x)-64/5*a^2*sqrt(a*x+b*sqrt(x))/(b^4*sqrt(x))],
+[1/(x^(5/2)*(b*x^(1/2)+a*x)^(3/2)),x,6,4/(b*x^2*sqrt(a*x+b*sqrt(x)))-40/9*sqrt(a*x+b*sqrt(x))/(b^2*x^(5/2))+320/63*a*sqrt(a*x+b*sqrt(x))/(b^3*x^2)-128/21*a^2*sqrt(a*x+b*sqrt(x))/(b^4*x^(3/2))+512/63*a^3*sqrt(a*x+b*sqrt(x))/(b^5*x)-1024/63*a^4*sqrt(a*x+b*sqrt(x))/(b^6*sqrt(x))],
+[1/(x^(7/2)*(b*x^(1/2)+a*x)^(3/2)),x,8,4/(b*x^3*sqrt(a*x+b*sqrt(x)))-56/13*sqrt(a*x+b*sqrt(x))/(b^2*x^(7/2))+672/143*a*sqrt(a*x+b*sqrt(x))/(b^3*x^3)-2240/429*a^2*sqrt(a*x+b*sqrt(x))/(b^4*x^(5/2))+2560/429*a^3*sqrt(a*x+b*sqrt(x))/(b^5*x^2)-1024/143*a^4*sqrt(a*x+b*sqrt(x))/(b^6*x^(3/2))+4096/429*a^5*sqrt(a*x+b*sqrt(x))/(b^7*x)-8192/429*a^6*sqrt(a*x+b*sqrt(x))/(b^8*sqrt(x))],
+
+-- Integrands of the form (c x)^m (a x+b x^(n/3))^p
+
+-- Integrands of the form x^m (a x+b x^(1/3))^(p/2)
+
+-- p>0
+[x^3*sqrt(b*x^(1/3)+a*x),x,11,-884/14421*b^6*sqrt(b*x^(1/3)+a*x)/a^6+884/24035*b^5*x^(2/3)*sqrt(b*x^(1/3)+a*x)/a^5-6188/216315*b^4*x^(4/3)*sqrt(b*x^(1/3)+a*x)/a^4+476/19665*b^3*x^2*sqrt(b*x^(1/3)+a*x)/a^3-28/1311*b^2*x^(8/3)*sqrt(b*x^(1/3)+a*x)/a^2+4/207*b*x^(10/3)*sqrt(b*x^(1/3)+a*x)/a+2/9*x^4*sqrt(b*x^(1/3)+a*x)+442/14421*b^(27/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(25/4)*sqrt(b*x^(1/3)+a*x))],
+[x^2*sqrt(b*x^(1/3)+a*x),x,11,44/221*b^5*(b+a*x^(2/3))*x^(1/3)/(a^(9/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))-44/663*b^4*x^(1/3)*sqrt(b*x^(1/3)+a*x)/a^4+220/4641*b^3*x*sqrt(b*x^(1/3)+a*x)/a^3-60/1547*b^2*x^(5/3)*sqrt(b*x^(1/3)+a*x)/a^2+4/119*b*x^(7/3)*sqrt(b*x^(1/3)+a*x)/a+2/7*x^3*sqrt(b*x^(1/3)+a*x)-44/221*b^(21/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(19/4)*sqrt(b*x^(1/3)+a*x))+22/221*b^(21/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(19/4)*sqrt(b*x^(1/3)+a*x))],
+[x*sqrt(b*x^(1/3)+a*x),x,8,12/77*b^3*sqrt(b*x^(1/3)+a*x)/a^3-36/385*b^2*x^(2/3)*sqrt(b*x^(1/3)+a*x)/a^2+4/55*b*x^(4/3)*sqrt(b*x^(1/3)+a*x)/a+2/5*x^2*sqrt(b*x^(1/3)+a*x)-6/77*b^(15/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(13/4)*sqrt(b*x^(1/3)+a*x))],
+[sqrt(b*x^(1/3)+a*x),x,8,-4/5*b^2*(b+a*x^(2/3))*x^(1/3)/(a^(3/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))+4/15*b*x^(1/3)*sqrt(b*x^(1/3)+a*x)/a+2/3*x*sqrt(b*x^(1/3)+a*x)+4/5*b^(9/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(7/4)*sqrt(b*x^(1/3)+a*x))-2/5*b^(9/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(7/4)*sqrt(b*x^(1/3)+a*x))],
+[sqrt(b*x^(1/3)+a*x)/x,x,5,2*sqrt(b*x^(1/3)+a*x)+2*b^(3/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(1/4)*sqrt(b*x^(1/3)+a*x))],
+[sqrt(b*x^(1/3)+a*x)/x^2,x,8,12/5*a^(3/2)*(b+a*x^(2/3))*x^(1/3)/(b*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))-6/5*sqrt(b*x^(1/3)+a*x)/x-12/5*a*sqrt(b*x^(1/3)+a*x)/(b*x^(1/3))-12/5*a^(5/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(3/4)*sqrt(b*x^(1/3)+a*x))+6/5*a^(5/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(3/4)*sqrt(b*x^(1/3)+a*x))],
+[sqrt(b*x^(1/3)+a*x)/x^3,x,7,-6/11*sqrt(b*x^(1/3)+a*x)/x^2-12/77*a*sqrt(b*x^(1/3)+a*x)/(b*x^(4/3))+20/77*a^2*sqrt(b*x^(1/3)+a*x)/(b^2*x^(2/3))+10/77*a^(11/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(9/4)*sqrt(b*x^(1/3)+a*x))],
+[sqrt(b*x^(1/3)+a*x)/x^4,x,11,-308/1105*a^(9/2)*(b+a*x^(2/3))*x^(1/3)/(b^4*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))-6/17*sqrt(b*x^(1/3)+a*x)/x^3-12/221*a*sqrt(b*x^(1/3)+a*x)/(b*x^(7/3))+44/663*a^2*sqrt(b*x^(1/3)+a*x)/(b^2*x^(5/3))-308/3315*a^3*sqrt(b*x^(1/3)+a*x)/(b^3*x)+308/1105*a^4*sqrt(b*x^(1/3)+a*x)/(b^4*x^(1/3))+308/1105*a^(17/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(15/4)*sqrt(b*x^(1/3)+a*x))-154/1105*a^(17/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(15/4)*sqrt(b*x^(1/3)+a*x))],
+[sqrt(b*x^(1/3)+a*x)/x^5,x,10,-6/23*sqrt(b*x^(1/3)+a*x)/x^4-12/437*a*sqrt(b*x^(1/3)+a*x)/(b*x^(10/3))+68/2185*a^2*sqrt(b*x^(1/3)+a*x)/(b^2*x^(8/3))-884/24035*a^3*sqrt(b*x^(1/3)+a*x)/(b^3*x^2)+7956/168245*a^4*sqrt(b*x^(1/3)+a*x)/(b^4*x^(4/3))-2652/33649*a^5*sqrt(b*x^(1/3)+a*x)/(b^5*x^(2/3))-1326/33649*a^(23/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(21/4)*sqrt(b*x^(1/3)+a*x))],
+[x^2*(b*x^(1/3)+a*x)^(3/2),x,11,2/9*x^3*(b*x^(1/3)+a*x)^(3/2)+1768/100947*b^6*sqrt(b*x^(1/3)+a*x)/a^5-1768/168245*b^5*x^(2/3)*sqrt(b*x^(1/3)+a*x)/a^4+1768/216315*b^4*x^(4/3)*sqrt(b*x^(1/3)+a*x)/a^3-136/19665*b^3*x^2*sqrt(b*x^(1/3)+a*x)/a^2+8/1311*b^2*x^(8/3)*sqrt(b*x^(1/3)+a*x)/a+4/69*b*x^(10/3)*sqrt(b*x^(1/3)+a*x)-884/100947*b^(27/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(21/4)*sqrt(b*x^(1/3)+a*x))],
+[x*(b*x^(1/3)+a*x)^(3/2),x,11,2/7*x^2*(b*x^(1/3)+a*x)^(3/2)-88/1105*b^5*(b+a*x^(2/3))*x^(1/3)/(a^(7/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))+88/3315*b^4*x^(1/3)*sqrt(b*x^(1/3)+a*x)/a^3-88/4641*b^3*x*sqrt(b*x^(1/3)+a*x)/a^2+24/1547*b^2*x^(5/3)*sqrt(b*x^(1/3)+a*x)/a+12/119*b*x^(7/3)*sqrt(b*x^(1/3)+a*x)+88/1105*b^(21/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(15/4)*sqrt(b*x^(1/3)+a*x))-44/1105*b^(21/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(15/4)*sqrt(b*x^(1/3)+a*x))],
+[(b*x^(1/3)+a*x)^(3/2),x,8,2/5*x*(b*x^(1/3)+a*x)^(3/2)-8/77*b^3*sqrt(b*x^(1/3)+a*x)/a^2+24/385*b^2*x^(2/3)*sqrt(b*x^(1/3)+a*x)/a+12/55*b*x^(4/3)*sqrt(b*x^(1/3)+a*x)+4/77*b^(15/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(9/4)*sqrt(b*x^(1/3)+a*x))],
+[(b*x^(1/3)+a*x)^(3/2)/x,x,8,2/3*(b*x^(1/3)+a*x)^(3/2)+8/5*b^2*(b+a*x^(2/3))*x^(1/3)/(sqrt(a)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))+4/5*b*x^(1/3)*sqrt(b*x^(1/3)+a*x)-8/5*b^(9/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(3/4)*sqrt(b*x^(1/3)+a*x))+4/5*b^(9/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(3/4)*sqrt(b*x^(1/3)+a*x))],
+[(b*x^(1/3)+a*x)^(3/2)/x^2,x,6,-2*(b*x^(1/3)+a*x)^(3/2)/x+4*a*sqrt(b*x^(1/3)+a*x)+4*a^(3/4)*b^(3/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/sqrt(b*x^(1/3)+a*x)],
+[(b*x^(1/3)+a*x)^(3/2)/x^3,x,9,-2/3*(b*x^(1/3)+a*x)^(3/2)/x^2+8/5*a^(5/2)*(b+a*x^(2/3))*x^(1/3)/(b*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))-4/5*a*sqrt(b*x^(1/3)+a*x)/x-8/5*a^2*sqrt(b*x^(1/3)+a*x)/(b*x^(1/3))-8/5*a^(9/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(3/4)*sqrt(b*x^(1/3)+a*x))+4/5*a^(9/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(3/4)*sqrt(b*x^(1/3)+a*x))],
+[(b*x^(1/3)+a*x)^(3/2)/x^4,x,8,-2/5*(b*x^(1/3)+a*x)^(3/2)/x^3-12/55*a*sqrt(b*x^(1/3)+a*x)/x^2-24/385*a^2*sqrt(b*x^(1/3)+a*x)/(b*x^(4/3))+8/77*a^3*sqrt(b*x^(1/3)+a*x)/(b^2*x^(2/3))+4/77*a^(15/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(9/4)*sqrt(b*x^(1/3)+a*x))],
+[(b*x^(1/3)+a*x)^(3/2)/x^5,x,12,-2/7*(b*x^(1/3)+a*x)^(3/2)/x^4-88/1105*a^(11/2)*(b+a*x^(2/3))*x^(1/3)/(b^4*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))-12/119*a*sqrt(b*x^(1/3)+a*x)/x^3-24/1547*a^2*sqrt(b*x^(1/3)+a*x)/(b*x^(7/3))+88/4641*a^3*sqrt(b*x^(1/3)+a*x)/(b^2*x^(5/3))-88/3315*a^4*sqrt(b*x^(1/3)+a*x)/(b^3*x)+88/1105*a^5*sqrt(b*x^(1/3)+a*x)/(b^4*x^(1/3))+88/1105*a^(21/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(15/4)*sqrt(b*x^(1/3)+a*x))-44/1105*a^(21/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(15/4)*sqrt(b*x^(1/3)+a*x))],
+[(b*x^(1/3)+a*x)^(3/2)/x^6,x,11,-2/9*(b*x^(1/3)+a*x)^(3/2)/x^5-4/69*a*sqrt(b*x^(1/3)+a*x)/x^4-8/1311*a^2*sqrt(b*x^(1/3)+a*x)/(b*x^(10/3))+136/19665*a^3*sqrt(b*x^(1/3)+a*x)/(b^2*x^(8/3))-1768/216315*a^4*sqrt(b*x^(1/3)+a*x)/(b^3*x^2)+1768/168245*a^5*sqrt(b*x^(1/3)+a*x)/(b^4*x^(4/3))-1768/100947*a^6*sqrt(b*x^(1/3)+a*x)/(b^5*x^(2/3))-884/100947*a^(27/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(21/4)*sqrt(b*x^(1/3)+a*x))],
+
+-- p<0
+[x^4/sqrt(b*x^(1/3)+a*x),x,11,11050/14421*b^6*sqrt(b*x^(1/3)+a*x)/a^7-2210/4807*b^5*x^(2/3)*sqrt(b*x^(1/3)+a*x)/a^6+15470/43263*b^4*x^(4/3)*sqrt(b*x^(1/3)+a*x)/a^5-1190/3933*b^3*x^2*sqrt(b*x^(1/3)+a*x)/a^4+350/1311*b^2*x^(8/3)*sqrt(b*x^(1/3)+a*x)/a^3-50/207*b*x^(10/3)*sqrt(b*x^(1/3)+a*x)/a^2+2/9*x^4*sqrt(b*x^(1/3)+a*x)/a-5525/14421*b^(27/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(29/4)*sqrt(b*x^(1/3)+a*x))],
+[x^3/sqrt(b*x^(1/3)+a*x),x,11,-418/221*b^5*(b+a*x^(2/3))*x^(1/3)/(a^(11/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))+418/663*b^4*x^(1/3)*sqrt(b*x^(1/3)+a*x)/a^5-2090/4641*b^3*x*sqrt(b*x^(1/3)+a*x)/a^4+570/1547*b^2*x^(5/3)*sqrt(b*x^(1/3)+a*x)/a^3-38/119*b*x^(7/3)*sqrt(b*x^(1/3)+a*x)/a^2+2/7*x^3*sqrt(b*x^(1/3)+a*x)/a+418/221*b^(21/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(23/4)*sqrt(b*x^(1/3)+a*x))-209/221*b^(21/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(23/4)*sqrt(b*x^(1/3)+a*x))],
+[x^2/sqrt(b*x^(1/3)+a*x),x,8,-78/77*b^3*sqrt(b*x^(1/3)+a*x)/a^4+234/385*b^2*x^(2/3)*sqrt(b*x^(1/3)+a*x)/a^3-26/55*b*x^(4/3)*sqrt(b*x^(1/3)+a*x)/a^2+2/5*x^2*sqrt(b*x^(1/3)+a*x)/a+39/77*b^(15/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(17/4)*sqrt(b*x^(1/3)+a*x))],
+[x/sqrt(b*x^(1/3)+a*x),x,8,14/5*b^2*(b+a*x^(2/3))*x^(1/3)/(a^(5/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))-14/15*b*x^(1/3)*sqrt(b*x^(1/3)+a*x)/a^2+2/3*x*sqrt(b*x^(1/3)+a*x)/a-14/5*b^(9/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(11/4)*sqrt(b*x^(1/3)+a*x))+7/5*b^(9/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(11/4)*sqrt(b*x^(1/3)+a*x))],
+[1/sqrt(b*x^(1/3)+a*x),x,5,2*sqrt(b*x^(1/3)+a*x)/a-b^(3/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(5/4)*sqrt(b*x^(1/3)+a*x))],
+[1/(x*sqrt(b*x^(1/3)+a*x)),x,7,6*(b+a*x^(2/3))*x^(1/3)*sqrt(a)/(b*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))-6*sqrt(b*x^(1/3)+a*x)/(b*x^(1/3))-6*a^(1/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(3/4)*sqrt(b*x^(1/3)+a*x))+3*a^(1/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(3/4)*sqrt(b*x^(1/3)+a*x))],
+[1/(x^2*sqrt(b*x^(1/3)+a*x)),x,6,-6/7*sqrt(b*x^(1/3)+a*x)/(b*x^(4/3))+10/7*a*sqrt(b*x^(1/3)+a*x)/(b^2*x^(2/3))+5/7*a^(7/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(9/4)*sqrt(b*x^(1/3)+a*x))],
+[1/(x^3*sqrt(b*x^(1/3)+a*x)),x,10,-154/65*a^(7/2)*(b+a*x^(2/3))*x^(1/3)/(b^4*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))-6/13*sqrt(b*x^(1/3)+a*x)/(b*x^(7/3))+22/39*a*sqrt(b*x^(1/3)+a*x)/(b^2*x^(5/3))-154/195*a^2*sqrt(b*x^(1/3)+a*x)/(b^3*x)+154/65*a^3*sqrt(b*x^(1/3)+a*x)/(b^4*x^(1/3))+154/65*a^(13/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(15/4)*sqrt(b*x^(1/3)+a*x))-77/65*a^(13/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(15/4)*sqrt(b*x^(1/3)+a*x))],
+[1/(x^4*sqrt(b*x^(1/3)+a*x)),x,9,-6/19*sqrt(b*x^(1/3)+a*x)/(b*x^(10/3))+34/95*a*sqrt(b*x^(1/3)+a*x)/(b^2*x^(8/3))-442/1045*a^2*sqrt(b*x^(1/3)+a*x)/(b^3*x^2)+3978/7315*a^3*sqrt(b*x^(1/3)+a*x)/(b^4*x^(4/3))-1326/1463*a^4*sqrt(b*x^(1/3)+a*x)/(b^5*x^(2/3))-663/1463*a^(19/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(21/4)*sqrt(b*x^(1/3)+a*x))],
+[x^4/(b*x^(1/3)+a*x)^(3/2),x,12,-3*x^4/(a*sqrt(b*x^(1/3)+a*x))-4807/221*b^5*(b+a*x^(2/3))*x^(1/3)/(a^(13/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))+4807/663*b^4*x^(1/3)*sqrt(b*x^(1/3)+a*x)/a^6-24035/4641*b^3*x*sqrt(b*x^(1/3)+a*x)/a^5+6555/1547*b^2*x^(5/3)*sqrt(b*x^(1/3)+a*x)/a^4-437/119*b*x^(7/3)*sqrt(b*x^(1/3)+a*x)/a^3+23/7*x^3*sqrt(b*x^(1/3)+a*x)/a^2+4807/221*b^(21/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(27/4)*sqrt(b*x^(1/3)+a*x))-4807/442*b^(21/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(27/4)*sqrt(b*x^(1/3)+a*x))],
+[x^3/(b*x^(1/3)+a*x)^(3/2),x,9,-3*x^3/(a*sqrt(b*x^(1/3)+a*x))-663/77*b^3*sqrt(b*x^(1/3)+a*x)/a^5+1989/385*b^2*x^(2/3)*sqrt(b*x^(1/3)+a*x)/a^4-221/55*b*x^(4/3)*sqrt(b*x^(1/3)+a*x)/a^3+17/5*x^2*sqrt(b*x^(1/3)+a*x)/a^2+663/154*b^(15/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(21/4)*sqrt(b*x^(1/3)+a*x))],
+[x^2/(b*x^(1/3)+a*x)^(3/2),x,9,-3*x^2/(a*sqrt(b*x^(1/3)+a*x))+77/5*b^2*(b+a*x^(2/3))*x^(1/3)/(a^(7/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))-77/15*b*x^(1/3)*sqrt(b*x^(1/3)+a*x)/a^3+11/3*x*sqrt(b*x^(1/3)+a*x)/a^2-77/5*b^(9/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(15/4)*sqrt(b*x^(1/3)+a*x))+77/10*b^(9/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(15/4)*sqrt(b*x^(1/3)+a*x))],
+[x/(b*x^(1/3)+a*x)^(3/2),x,6,-3*x/(a*sqrt(b*x^(1/3)+a*x))+5*sqrt(b*x^(1/3)+a*x)/a^2-5/2*b^(3/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(9/4)*sqrt(b*x^(1/3)+a*x))],
+[1/(b*x^(1/3)+a*x)^(3/2),x,7,3*x^(2/3)/(b*sqrt(b*x^(1/3)+a*x))-3*(b+a*x^(2/3))*x^(1/3)/(b*sqrt(a)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))+3*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(3/4)*b^(3/4)*sqrt(b*x^(1/3)+a*x))-3/2*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(a^(3/4)*b^(3/4)*sqrt(b*x^(1/3)+a*x))],
+[1/(x*(b*x^(1/3)+a*x)^(3/2)),x,6,3/(b*x^(1/3)*sqrt(b*x^(1/3)+a*x))-5*sqrt(b*x^(1/3)+a*x)/(b^2*x^(2/3))-5/2*a^(3/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(9/4)*sqrt(b*x^(1/3)+a*x))],
+[1/(x^2*(b*x^(1/3)+a*x)^(3/2)),x,10,3/(b*x^(4/3)*sqrt(b*x^(1/3)+a*x))+77/5*a^(5/2)*(b+a*x^(2/3))*x^(1/3)/(b^4*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))-11/3*sqrt(b*x^(1/3)+a*x)/(b^2*x^(5/3))+77/15*a*sqrt(b*x^(1/3)+a*x)/(b^3*x)-77/5*a^2*sqrt(b*x^(1/3)+a*x)/(b^4*x^(1/3))-77/5*a^(9/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(15/4)*sqrt(b*x^(1/3)+a*x))+77/10*a^(9/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(15/4)*sqrt(b*x^(1/3)+a*x))],
+[1/(x^3*(b*x^(1/3)+a*x)^(3/2)),x,9,3/(b*x^(7/3)*sqrt(b*x^(1/3)+a*x))-17/5*sqrt(b*x^(1/3)+a*x)/(b^2*x^(8/3))+221/55*a*sqrt(b*x^(1/3)+a*x)/(b^3*x^2)-1989/385*a^2*sqrt(b*x^(1/3)+a*x)/(b^4*x^(4/3))+663/77*a^3*sqrt(b*x^(1/3)+a*x)/(b^5*x^(2/3))+663/154*a^(15/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(21/4)*sqrt(b*x^(1/3)+a*x))],
+[1/(x^4*(b*x^(1/3)+a*x)^(3/2)),x,13,3/(b*x^(10/3)*sqrt(b*x^(1/3)+a*x))-4807/221*a^(11/2)*(b+a*x^(2/3))*x^(1/3)/(b^7*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt(b*x^(1/3)+a*x))-23/7*sqrt(b*x^(1/3)+a*x)/(b^2*x^(11/3))+437/119*a*sqrt(b*x^(1/3)+a*x)/(b^3*x^3)-6555/1547*a^2*sqrt(b*x^(1/3)+a*x)/(b^4*x^(7/3))+24035/4641*a^3*sqrt(b*x^(1/3)+a*x)/(b^5*x^(5/3))-4807/663*a^4*sqrt(b*x^(1/3)+a*x)/(b^6*x)+4807/221*a^5*sqrt(b*x^(1/3)+a*x)/(b^7*x^(1/3))+4807/221*a^(21/4)*x^(1/6)*elliptic_e(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(27/4)*sqrt(b*x^(1/3)+a*x))-4807/442*a^(21/4)*x^(1/6)*elliptic_f(2*atan(a^(1/4)*x^(1/6)/b^(1/4)),1/2)*(x^(1/3)*sqrt(a)+sqrt(b))*sqrt((b+a*x^(2/3))/(x^(1/3)*sqrt(a)+sqrt(b))^2)/(b^(27/4)*sqrt(b*x^(1/3)+a*x))],
+
+-- Integrands of the form x^m (a x+b x^(2/3))^(p/2)
+
+-- p>0
+[x^3*sqrt(b*x^(2/3)+a*x),x,13,-524288/4345965*b^9*(b*x^(2/3)+a*x)^(3/2)/a^10+8388608/152108775*b^12*(b*x^(2/3)+a*x)^(3/2)/(a^13*x)-4194304/50702925*b^11*(b*x^(2/3)+a*x)^(3/2)/(a^12*x^(2/3))+1048576/10140585*b^10*(b*x^(2/3)+a*x)^(3/2)/(a^11*x^(1/3))+65536/482885*b^8*x^(1/3)*(b*x^(2/3)+a*x)^(3/2)/a^9-360448/2414425*b^7*x^(2/3)*(b*x^(2/3)+a*x)^(3/2)/a^8+90112/557175*b^6*x*(b*x^(2/3)+a*x)^(3/2)/a^7-45056/260015*b^5*x^(4/3)*(b*x^(2/3)+a*x)^(3/2)/a^6+2816/15295*b^4*x^(5/3)*(b*x^(2/3)+a*x)^(3/2)/a^5-1408/7245*b^3*x^2*(b*x^(2/3)+a*x)^(3/2)/a^4+352/1725*b^2*x^(7/3)*(b*x^(2/3)+a*x)^(3/2)/a^3-16/75*b*x^(8/3)*(b*x^(2/3)+a*x)^(3/2)/a^2+2/9*x^3*(b*x^(2/3)+a*x)^(3/2)/a],
+[x^2*sqrt(b*x^(2/3)+a*x),x,10,8192/46189*b^6*(b*x^(2/3)+a*x)^(3/2)/a^7-131072/1616615*b^9*(b*x^(2/3)+a*x)^(3/2)/(a^10*x)+196608/1616615*b^8*(b*x^(2/3)+a*x)^(3/2)/(a^9*x^(2/3))-49152/323323*b^7*(b*x^(2/3)+a*x)^(3/2)/(a^8*x^(1/3))-9216/46189*b^5*x^(1/3)*(b*x^(2/3)+a*x)^(3/2)/a^6+4608/20995*b^4*x^(2/3)*(b*x^(2/3)+a*x)^(3/2)/a^5-384/1615*b^3*x*(b*x^(2/3)+a*x)^(3/2)/a^4+576/2261*b^2*x^(4/3)*(b*x^(2/3)+a*x)^(3/2)/a^3-36/133*b*x^(5/3)*(b*x^(2/3)+a*x)^(3/2)/a^2+2/7*x^2*(b*x^(2/3)+a*x)^(3/2)/a],
+[x*sqrt(b*x^(2/3)+a*x),x,7,-128/429*b^3*(b*x^(2/3)+a*x)^(3/2)/a^4+2048/15015*b^6*(b*x^(2/3)+a*x)^(3/2)/(a^7*x)-1024/5005*b^5*(b*x^(2/3)+a*x)^(3/2)/(a^6*x^(2/3))+256/1001*b^4*(b*x^(2/3)+a*x)^(3/2)/(a^5*x^(1/3))+48/143*b^2*x^(1/3)*(b*x^(2/3)+a*x)^(3/2)/a^3-24/65*b*x^(2/3)*(b*x^(2/3)+a*x)^(3/2)/a^2+2/5*x*(b*x^(2/3)+a*x)^(3/2)/a],
+[sqrt(b*x^(2/3)+a*x),x,4,2/3*(b*x^(2/3)+a*x)^(3/2)/a-32/105*b^3*(b*x^(2/3)+a*x)^(3/2)/(a^4*x)+16/35*b^2*(b*x^(2/3)+a*x)^(3/2)/(a^3*x^(2/3))-4/7*b*(b*x^(2/3)+a*x)^(3/2)/(a^2*x^(1/3))],
+[sqrt(b*x^(2/3)+a*x)/x,x,1,2*(b*x^(2/3)+a*x)^(3/2)/(a*x)],
+[sqrt(b*x^(2/3)+a*x)/x^2,x,4,3/4*a^2*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(3/2)-3/2*sqrt(b*x^(2/3)+a*x)/x-3/4*a*sqrt(b*x^(2/3)+a*x)/(b*x^(2/3))],
+[sqrt(b*x^(2/3)+a*x)/x^3,x,7,-21/128*a^5*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(9/2)-3/5*sqrt(b*x^(2/3)+a*x)/x^2-3/40*a*sqrt(b*x^(2/3)+a*x)/(b*x^(5/3))+7/80*a^2*sqrt(b*x^(2/3)+a*x)/(b^2*x^(4/3))-7/64*a^3*sqrt(b*x^(2/3)+a*x)/(b^3*x)+21/128*a^4*sqrt(b*x^(2/3)+a*x)/(b^4*x^(2/3))],
+[sqrt(b*x^(2/3)+a*x)/x^4,x,10,1287/16384*a^8*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(15/2)-3/8*sqrt(b*x^(2/3)+a*x)/x^3-3/112*a*sqrt(b*x^(2/3)+a*x)/(b*x^(8/3))+13/448*a^2*sqrt(b*x^(2/3)+a*x)/(b^2*x^(7/3))-143/4480*a^3*sqrt(b*x^(2/3)+a*x)/(b^3*x^2)+1287/35840*a^4*sqrt(b*x^(2/3)+a*x)/(b^4*x^(5/3))-429/10240*a^5*sqrt(b*x^(2/3)+a*x)/(b^5*x^(4/3))+429/8192*a^6*sqrt(b*x^(2/3)+a*x)/(b^6*x)-1287/16384*a^7*sqrt(b*x^(2/3)+a*x)/(b^7*x^(2/3))],
+[sqrt(b*x^(2/3)+a*x)/x^5,x,13,-12597/262144*a^11*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(21/2)-3/11*sqrt(b*x^(2/3)+a*x)/x^4-3/220*a*sqrt(b*x^(2/3)+a*x)/(b*x^(11/3))+19/1320*a^2*sqrt(b*x^(2/3)+a*x)/(b^2*x^(10/3))-323/21120*a^3*sqrt(b*x^(2/3)+a*x)/(b^3*x^3)+323/19712*a^4*sqrt(b*x^(2/3)+a*x)/(b^4*x^(8/3))-4199/236544*a^5*sqrt(b*x^(2/3)+a*x)/(b^5*x^(7/3))+4199/215040*a^6*sqrt(b*x^(2/3)+a*x)/(b^6*x^2)-12597/573440*a^7*sqrt(b*x^(2/3)+a*x)/(b^7*x^(5/3))+4199/163840*a^8*sqrt(b*x^(2/3)+a*x)/(b^8*x^(4/3))-4199/131072*a^9*sqrt(b*x^(2/3)+a*x)/(b^9*x)+12597/262144*a^10*sqrt(b*x^(2/3)+a*x)/(b^10*x^(2/3))],
+[x^2*(b*x^(2/3)+a*x)^(3/2),x,12,45056/557175*b^6*(b*x^(2/3)+a*x)^(5/2)/a^7-1048576/152108775*b^11*(b*x^(2/3)+a*x)^(5/2)/(a^12*x^(5/3))+524288/30421755*b^10*(b*x^(2/3)+a*x)^(5/2)/(a^11*x^(4/3))-131072/4345965*b^9*(b*x^(2/3)+a*x)^(5/2)/(a^10*x)+65536/1448655*b^8*(b*x^(2/3)+a*x)^(5/2)/(a^9*x^(2/3))-90112/1448655*b^7*(b*x^(2/3)+a*x)^(5/2)/(a^8*x^(1/3))-11264/111435*b^5*x^(1/3)*(b*x^(2/3)+a*x)^(5/2)/a^6+5632/45885*b^4*x^(2/3)*(b*x^(2/3)+a*x)^(5/2)/a^5-352/2415*b^3*x*(b*x^(2/3)+a*x)^(5/2)/a^4+176/1035*b^2*x^(4/3)*(b*x^(2/3)+a*x)^(5/2)/a^3-44/225*b*x^(5/3)*(b*x^(2/3)+a*x)^(5/2)/a^2+2/9*x^2*(b*x^(2/3)+a*x)^(5/2)/a],
+[x*(b*x^(2/3)+a*x)^(3/2),x,9,-256/1615*b^3*(b*x^(2/3)+a*x)^(5/2)/a^4+65536/4849845*b^8*(b*x^(2/3)+a*x)^(5/2)/(a^9*x^(5/3))-32768/969969*b^7*(b*x^(2/3)+a*x)^(5/2)/(a^8*x^(4/3))+8192/138567*b^6*(b*x^(2/3)+a*x)^(5/2)/(a^7*x)-4096/46189*b^5*(b*x^(2/3)+a*x)^(5/2)/(a^6*x^(2/3))+512/4199*b^4*(b*x^(2/3)+a*x)^(5/2)/(a^5*x^(1/3))+64/323*b^2*x^(1/3)*(b*x^(2/3)+a*x)^(5/2)/a^3-32/133*b*x^(2/3)*(b*x^(2/3)+a*x)^(5/2)/a^2+2/7*x*(b*x^(2/3)+a*x)^(5/2)/a],
+[(b*x^(2/3)+a*x)^(3/2),x,6,2/5*(b*x^(2/3)+a*x)^(5/2)/a-512/15015*b^5*(b*x^(2/3)+a*x)^(5/2)/(a^6*x^(5/3))+256/3003*b^4*(b*x^(2/3)+a*x)^(5/2)/(a^5*x^(4/3))-64/429*b^3*(b*x^(2/3)+a*x)^(5/2)/(a^4*x)+32/143*b^2*(b*x^(2/3)+a*x)^(5/2)/(a^3*x^(2/3))-4/13*b*(b*x^(2/3)+a*x)^(5/2)/(a^2*x^(1/3))],
+[(b*x^(2/3)+a*x)^(3/2)/x,x,3,16/105*b^2*(b*x^(2/3)+a*x)^(5/2)/(a^3*x^(5/3))-8/21*b*(b*x^(2/3)+a*x)^(5/2)/(a^2*x^(4/3))+2/3*(b*x^(2/3)+a*x)^(5/2)/(a*x)],
+[(b*x^(2/3)+a*x)^(3/2)/x^2,x,4,2*(b*x^(2/3)+a*x)^(3/2)/x-6*b^(3/2)*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))+6*b*sqrt(b*x^(2/3)+a*x)/x^(1/3)],
+[(b*x^(2/3)+a*x)^(3/2)/x^3,x,5,-(b*x^(2/3)+a*x)^(3/2)/x^2+3/8*a^3*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(3/2)-3/4*a*sqrt(b*x^(2/3)+a*x)/x-3/8*a^2*sqrt(b*x^(2/3)+a*x)/(b*x^(2/3))],
+[(b*x^(2/3)+a*x)^(3/2)/x^4,x,8,-1/2*(b*x^(2/3)+a*x)^(3/2)/x^3-21/512*a^6*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(9/2)-3/20*a*sqrt(b*x^(2/3)+a*x)/x^2-3/160*a^2*sqrt(b*x^(2/3)+a*x)/(b*x^(5/3))+7/320*a^3*sqrt(b*x^(2/3)+a*x)/(b^2*x^(4/3))-7/256*a^4*sqrt(b*x^(2/3)+a*x)/(b^3*x)+21/512*a^5*sqrt(b*x^(2/3)+a*x)/(b^4*x^(2/3))],
+[(b*x^(2/3)+a*x)^(3/2)/x^5,x,11,-1/3*(b*x^(2/3)+a*x)^(3/2)/x^4+429/32768*a^9*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(15/2)-1/16*a*sqrt(b*x^(2/3)+a*x)/x^3-1/224*a^2*sqrt(b*x^(2/3)+a*x)/(b*x^(8/3))+13/2688*a^3*sqrt(b*x^(2/3)+a*x)/(b^2*x^(7/3))-143/26880*a^4*sqrt(b*x^(2/3)+a*x)/(b^3*x^2)+429/71680*a^5*sqrt(b*x^(2/3)+a*x)/(b^4*x^(5/3))-143/20480*a^6*sqrt(b*x^(2/3)+a*x)/(b^5*x^(4/3))+143/16384*a^7*sqrt(b*x^(2/3)+a*x)/(b^6*x)-429/32768*a^8*sqrt(b*x^(2/3)+a*x)/(b^7*x^(2/3))],
+[(b*x^(2/3)+a*x)^(3/2)/x^6,x,14,-1/4*(b*x^(2/3)+a*x)^(3/2)/x^5-12597/2097152*a^12*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(21/2)-3/88*a*sqrt(b*x^(2/3)+a*x)/x^4-3/1760*a^2*sqrt(b*x^(2/3)+a*x)/(b*x^(11/3))+19/10560*a^3*sqrt(b*x^(2/3)+a*x)/(b^2*x^(10/3))-323/168960*a^4*sqrt(b*x^(2/3)+a*x)/(b^3*x^3)+323/157696*a^5*sqrt(b*x^(2/3)+a*x)/(b^4*x^(8/3))-4199/1892352*a^6*sqrt(b*x^(2/3)+a*x)/(b^5*x^(7/3))+4199/1720320*a^7*sqrt(b*x^(2/3)+a*x)/(b^6*x^2)-12597/4587520*a^8*sqrt(b*x^(2/3)+a*x)/(b^7*x^(5/3))+4199/1310720*a^9*sqrt(b*x^(2/3)+a*x)/(b^8*x^(4/3))-4199/1048576*a^10*sqrt(b*x^(2/3)+a*x)/(b^9*x)+12597/2097152*a^11*sqrt(b*x^(2/3)+a*x)/(b^10*x^(2/3))],
+
+-- p<0
+[x^4/sqrt(b*x^(2/3)+a*x),x,14,8388608/11700675*b^12*sqrt(b*x^(2/3)+a*x)/a^13-16777216/11700675*b^13*sqrt(b*x^(2/3)+a*x)/(a^14*x^(1/3))-2097152/3900225*b^11*x^(1/3)*sqrt(b*x^(2/3)+a*x)/a^12+1048576/2340135*b^10*x^(2/3)*sqrt(b*x^(2/3)+a*x)/a^11-131072/334305*b^9*x*sqrt(b*x^(2/3)+a*x)/a^10+65536/185725*b^8*x^(4/3)*sqrt(b*x^(2/3)+a*x)/a^9-180224/557175*b^7*x^(5/3)*sqrt(b*x^(2/3)+a*x)/a^8+1171456/3900225*b^6*x^2*sqrt(b*x^(2/3)+a*x)/a^7-73216/260015*b^5*x^(7/3)*sqrt(b*x^(2/3)+a*x)/a^6+36608/137655*b^4*x^(8/3)*sqrt(b*x^(2/3)+a*x)/a^5-9152/36225*b^3*x^3*sqrt(b*x^(2/3)+a*x)/a^4+416/1725*b^2*x^(10/3)*sqrt(b*x^(2/3)+a*x)/a^3-52/225*b*x^(11/3)*sqrt(b*x^(2/3)+a*x)/a^2+2/9*x^4*sqrt(b*x^(2/3)+a*x)/a],
+[x^3/sqrt(b*x^(2/3)+a*x),x,11,-262144/323323*b^9*sqrt(b*x^(2/3)+a*x)/a^10+524288/323323*b^10*sqrt(b*x^(2/3)+a*x)/(a^11*x^(1/3))+196608/323323*b^8*x^(1/3)*sqrt(b*x^(2/3)+a*x)/a^9-163840/323323*b^7*x^(2/3)*sqrt(b*x^(2/3)+a*x)/a^8+20480/46189*b^6*x*sqrt(b*x^(2/3)+a*x)/a^7-18432/46189*b^5*x^(4/3)*sqrt(b*x^(2/3)+a*x)/a^6+1536/4199*b^4*x^(5/3)*sqrt(b*x^(2/3)+a*x)/a^5-768/2261*b^3*x^2*sqrt(b*x^(2/3)+a*x)/a^4+720/2261*b^2*x^(7/3)*sqrt(b*x^(2/3)+a*x)/a^3-40/133*b*x^(8/3)*sqrt(b*x^(2/3)+a*x)/a^2+2/7*x^3*sqrt(b*x^(2/3)+a*x)/a],
+[x^2/sqrt(b*x^(2/3)+a*x),x,8,2048/2145*b^6*sqrt(b*x^(2/3)+a*x)/a^7-4096/2145*b^7*sqrt(b*x^(2/3)+a*x)/(a^8*x^(1/3))-512/715*b^5*x^(1/3)*sqrt(b*x^(2/3)+a*x)/a^6+256/429*b^4*x^(2/3)*sqrt(b*x^(2/3)+a*x)/a^5-224/429*b^3*x*sqrt(b*x^(2/3)+a*x)/a^4+336/715*b^2*x^(4/3)*sqrt(b*x^(2/3)+a*x)/a^3-28/65*b*x^(5/3)*sqrt(b*x^(2/3)+a*x)/a^2+2/5*x^2*sqrt(b*x^(2/3)+a*x)/a],
+[x/sqrt(b*x^(2/3)+a*x),x,5,-128/105*b^3*sqrt(b*x^(2/3)+a*x)/a^4+256/105*b^4*sqrt(b*x^(2/3)+a*x)/(a^5*x^(1/3))+32/35*b^2*x^(1/3)*sqrt(b*x^(2/3)+a*x)/a^3-16/21*b*x^(2/3)*sqrt(b*x^(2/3)+a*x)/a^2+2/3*x*sqrt(b*x^(2/3)+a*x)/a],
+[1/sqrt(b*x^(2/3)+a*x),x,2,2*sqrt(b*x^(2/3)+a*x)/a-4*b*sqrt(b*x^(2/3)+a*x)/(a^2*x^(1/3))],
+[1/(x*sqrt(b*x^(2/3)+a*x)),x,3,3*a*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(3/2)-3*sqrt(b*x^(2/3)+a*x)/(b*x^(2/3))],
+[1/(x^2*sqrt(b*x^(2/3)+a*x)),x,6,-105/64*a^4*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(9/2)-3/4*sqrt(b*x^(2/3)+a*x)/(b*x^(5/3))+7/8*a*sqrt(b*x^(2/3)+a*x)/(b^2*x^(4/3))-35/32*a^2*sqrt(b*x^(2/3)+a*x)/(b^3*x)+105/64*a^3*sqrt(b*x^(2/3)+a*x)/(b^4*x^(2/3))],
+[1/(x^3*sqrt(b*x^(2/3)+a*x)),x,9,1287/1024*a^7*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(15/2)-3/7*sqrt(b*x^(2/3)+a*x)/(b*x^(8/3))+13/28*a*sqrt(b*x^(2/3)+a*x)/(b^2*x^(7/3))-143/280*a^2*sqrt(b*x^(2/3)+a*x)/(b^3*x^2)+1287/2240*a^3*sqrt(b*x^(2/3)+a*x)/(b^4*x^(5/3))-429/640*a^4*sqrt(b*x^(2/3)+a*x)/(b^5*x^(4/3))+429/512*a^5*sqrt(b*x^(2/3)+a*x)/(b^6*x)-1287/1024*a^6*sqrt(b*x^(2/3)+a*x)/(b^7*x^(2/3))],
+[1/(x^4*sqrt(b*x^(2/3)+a*x)),x,12,-138567/131072*a^10*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(21/2)-3/10*sqrt(b*x^(2/3)+a*x)/(b*x^(11/3))+19/60*a*sqrt(b*x^(2/3)+a*x)/(b^2*x^(10/3))-323/960*a^2*sqrt(b*x^(2/3)+a*x)/(b^3*x^3)+323/896*a^3*sqrt(b*x^(2/3)+a*x)/(b^4*x^(8/3))-4199/10752*a^4*sqrt(b*x^(2/3)+a*x)/(b^5*x^(7/3))+46189/107520*a^5*sqrt(b*x^(2/3)+a*x)/(b^6*x^2)-138567/286720*a^6*sqrt(b*x^(2/3)+a*x)/(b^7*x^(5/3))+46189/81920*a^7*sqrt(b*x^(2/3)+a*x)/(b^8*x^(4/3))-46189/65536*a^8*sqrt(b*x^(2/3)+a*x)/(b^9*x)+138567/131072*a^9*sqrt(b*x^(2/3)+a*x)/(b^10*x^(2/3))],
+[x^4/(b*x^(2/3)+a*x)^(3/2),x,12,-6*x^4/(a*sqrt(b*x^(2/3)+a*x))-524288/29393*b^9*sqrt(b*x^(2/3)+a*x)/a^11+1048576/29393*b^10*sqrt(b*x^(2/3)+a*x)/(a^12*x^(1/3))+393216/29393*b^8*x^(1/3)*sqrt(b*x^(2/3)+a*x)/a^10-327680/29393*b^7*x^(2/3)*sqrt(b*x^(2/3)+a*x)/a^9+40960/4199*b^6*x*sqrt(b*x^(2/3)+a*x)/a^8-36864/4199*b^5*x^(4/3)*sqrt(b*x^(2/3)+a*x)/a^7+33792/4199*b^4*x^(5/3)*sqrt(b*x^(2/3)+a*x)/a^6-16896/2261*b^3*x^2*sqrt(b*x^(2/3)+a*x)/a^5+15840/2261*b^2*x^(7/3)*sqrt(b*x^(2/3)+a*x)/a^4-880/133*b*x^(8/3)*sqrt(b*x^(2/3)+a*x)/a^3+44/7*x^3*sqrt(b*x^(2/3)+a*x)/a^2],
+[x^3/(b*x^(2/3)+a*x)^(3/2),x,9,-6*x^3/(a*sqrt(b*x^(2/3)+a*x))+32768/2145*b^6*sqrt(b*x^(2/3)+a*x)/a^8-65536/2145*b^7*sqrt(b*x^(2/3)+a*x)/(a^9*x^(1/3))-8192/715*b^5*x^(1/3)*sqrt(b*x^(2/3)+a*x)/a^7+4096/429*b^4*x^(2/3)*sqrt(b*x^(2/3)+a*x)/a^6-3584/429*b^3*x*sqrt(b*x^(2/3)+a*x)/a^5+5376/715*b^2*x^(4/3)*sqrt(b*x^(2/3)+a*x)/a^4-448/65*b*x^(5/3)*sqrt(b*x^(2/3)+a*x)/a^3+32/5*x^2*sqrt(b*x^(2/3)+a*x)/a^2],
+[x^2/(b*x^(2/3)+a*x)^(3/2),x,6,-6*x^2/(a*sqrt(b*x^(2/3)+a*x))-256/21*b^3*sqrt(b*x^(2/3)+a*x)/a^5+512/21*b^4*sqrt(b*x^(2/3)+a*x)/(a^6*x^(1/3))+64/7*b^2*x^(1/3)*sqrt(b*x^(2/3)+a*x)/a^4-160/21*b*x^(2/3)*sqrt(b*x^(2/3)+a*x)/a^3+20/3*x*sqrt(b*x^(2/3)+a*x)/a^2],
+[x/(b*x^(2/3)+a*x)^(3/2),x,3,-6*x/(a*sqrt(b*x^(2/3)+a*x))+8*sqrt(b*x^(2/3)+a*x)/a^2-16*b*sqrt(b*x^(2/3)+a*x)/(a^3*x^(1/3))],
+[1/(b*x^(2/3)+a*x)^(3/2),x,3,-6*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(3/2)+6*x^(1/3)/(b*sqrt(b*x^(2/3)+a*x))],
+[1/(x*(b*x^(2/3)+a*x)^(3/2)),x,6,105/8*a^3*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(9/2)+6/(b*x^(2/3)*sqrt(b*x^(2/3)+a*x))-7*sqrt(b*x^(2/3)+a*x)/(b^2*x^(4/3))+35/4*a*sqrt(b*x^(2/3)+a*x)/(b^3*x)-105/8*a^2*sqrt(b*x^(2/3)+a*x)/(b^4*x^(2/3))],
+[1/(x^2*(b*x^(2/3)+a*x)^(3/2)),x,9,-9009/512*a^6*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(15/2)+6/(b*x^(5/3)*sqrt(b*x^(2/3)+a*x))-13/2*sqrt(b*x^(2/3)+a*x)/(b^2*x^(7/3))+143/20*a*sqrt(b*x^(2/3)+a*x)/(b^3*x^2)-1287/160*a^2*sqrt(b*x^(2/3)+a*x)/(b^4*x^(5/3))+3003/320*a^3*sqrt(b*x^(2/3)+a*x)/(b^5*x^(4/3))-3003/256*a^4*sqrt(b*x^(2/3)+a*x)/(b^6*x)+9009/512*a^5*sqrt(b*x^(2/3)+a*x)/(b^7*x^(2/3))],
+[1/(x^3*(b*x^(2/3)+a*x)^(3/2)),x,12,692835/32768*a^9*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(21/2)+6/(b*x^(8/3)*sqrt(b*x^(2/3)+a*x))-19/3*sqrt(b*x^(2/3)+a*x)/(b^2*x^(10/3))+323/48*a*sqrt(b*x^(2/3)+a*x)/(b^3*x^3)-1615/224*a^2*sqrt(b*x^(2/3)+a*x)/(b^4*x^(8/3))+20995/2688*a^3*sqrt(b*x^(2/3)+a*x)/(b^5*x^(7/3))-46189/5376*a^4*sqrt(b*x^(2/3)+a*x)/(b^6*x^2)+138567/14336*a^5*sqrt(b*x^(2/3)+a*x)/(b^7*x^(5/3))-46189/4096*a^6*sqrt(b*x^(2/3)+a*x)/(b^8*x^(4/3))+230945/16384*a^7*sqrt(b*x^(2/3)+a*x)/(b^9*x)-692835/32768*a^8*sqrt(b*x^(2/3)+a*x)/(b^10*x^(2/3))],
+[1/(x^4*(b*x^(2/3)+a*x)^(3/2)),x,15,-50702925/2097152*a^12*atanh(x^(1/3)*sqrt(b)/sqrt(b*x^(2/3)+a*x))/b^(27/2)+6/(b*x^(11/3)*sqrt(b*x^(2/3)+a*x))-25/4*sqrt(b*x^(2/3)+a*x)/(b^2*x^(13/3))+575/88*a*sqrt(b*x^(2/3)+a*x)/(b^3*x^4)-2415/352*a^2*sqrt(b*x^(2/3)+a*x)/(b^4*x^(11/3))+15295/2112*a^3*sqrt(b*x^(2/3)+a*x)/(b^5*x^(10/3))-260015/33792*a^4*sqrt(b*x^(2/3)+a*x)/(b^6*x^3)+185725/22528*a^5*sqrt(b*x^(2/3)+a*x)/(b^7*x^(8/3))-2414425/270336*a^6*sqrt(b*x^(2/3)+a*x)/(b^8*x^(7/3))+482885/49152*a^7*sqrt(b*x^(2/3)+a*x)/(b^9*x^2)-1448655/131072*a^8*sqrt(b*x^(2/3)+a*x)/(b^10*x^(5/3))+3380195/262144*a^9*sqrt(b*x^(2/3)+a*x)/(b^11*x^(4/3))-16900975/1048576*a^10*sqrt(b*x^(2/3)+a*x)/(b^12*x)+50702925/2097152*a^11*sqrt(b*x^(2/3)+a*x)/(b^13*x^(2/3))],
+
+-- Integration problems of the form (c x)^m (a x^2+b x^n)^p
+
+-- Integrands of the form (c x)^m (a x^2+b x^3)^p
+
+-- Integrands of the form x^m (a x^2+b x^3)^p
+
+-- p>0
+[x^2*(a*x^2+b*x^3),x,2,1/5*a*x^5+1/6*b*x^6],
+[x*(a*x^2+b*x^3),x,2,1/4*a*x^4+1/5*b*x^5],
+[a*x^2+b*x^3,x,1,1/3*a*x^3+1/4*b*x^4],
+[(a*x^2+b*x^3)/x,x,2,1/2*a*x^2+1/3*b*x^3],
+[(a*x^2+b*x^3)/x^2,x,2,a*x+1/2*b*x^2],
+[x^2*(a*x^2+b*x^3)^2,x,3,1/7*a^2*x^7+1/4*a*b*x^8+1/9*b^2*x^9],
+[x*(a*x^2+b*x^3)^2,x,3,1/6*a^2*x^6+2/7*a*b*x^7+1/8*b^2*x^8],
+[(a*x^2+b*x^3)^2,x,3,1/5*a^2*x^5+1/3*a*b*x^6+1/7*b^2*x^7],
+[(a*x^2+b*x^3)^2/x,x,3,1/4*a^2*x^4+2/5*a*b*x^5+1/6*b^2*x^6],
+[(a*x^2+b*x^3)^2/x^2,x,3,1/3*a^2*x^3+1/2*a*b*x^4+1/5*b^2*x^5],
+
+-- p<0
+[x^6/(a*x^2+b*x^3),x,3,-a^3*x/b^4+1/2*a^2*x^2/b^3-1/3*a*x^3/b^2+1/4*x^4/b+a^4*log(a+b*x)/b^5],
+[x^5/(a*x^2+b*x^3),x,3,a^2*x/b^3-1/2*a*x^2/b^2+1/3*x^3/b-a^3*log(a+b*x)/b^4],
+[x^4/(a*x^2+b*x^3),x,3,-a*x/b^2+1/2*x^2/b+a^2*log(a+b*x)/b^3],
+[x^3/(a*x^2+b*x^3),x,3,x/b-a*log(a+b*x)/b^2],
+[x^2/(a*x^2+b*x^3),x,2,log(a+b*x)/b],
+[x/(a*x^2+b*x^3),x,4,log(x)/a-log(a+b*x)/a],
+[1/(a*x^2+b*x^3),x,3,(-1)/(a*x)-b*log(x)/a^2+b*log(a+b*x)/a^2],
+[1/(x*(a*x^2+b*x^3)),x,3,(-1/2)/(a*x^2)+b/(a^2*x)+b^2*log(x)/a^3-b^2*log(a+b*x)/a^3],
+[1/(x^2*(a*x^2+b*x^3)),x,3,(-1/3)/(a*x^3)+1/2*b/(a^2*x^2)-b^2/(a^3*x)-b^3*log(x)/a^4+b^3*log(a+b*x)/a^4],
+[x^8/(a*x^2+b*x^3)^2,x,3,3*a^2*x/b^4-a*x^2/b^3+1/3*x^3/b^2-a^4/(b^5*(a+b*x))-4*a^3*log(a+b*x)/b^5],
+[x^7/(a*x^2+b*x^3)^2,x,3,-2*a*x/b^3+1/2*x^2/b^2+a^3/(b^4*(a+b*x))+3*a^2*log(a+b*x)/b^4],
+[x^6/(a*x^2+b*x^3)^2,x,3,x/b^2-a^2/(b^3*(a+b*x))-2*a*log(a+b*x)/b^3],
+[x^5/(a*x^2+b*x^3)^2,x,3,a/(b^2*(a+b*x))+log(a+b*x)/b^2],
+[x^4/(a*x^2+b*x^3)^2,x,2,(-1)/(b*(a+b*x))],
+[x^3/(a*x^2+b*x^3)^2,x,3,1/(a*(a+b*x))+log(x)/a^2-log(a+b*x)/a^2],
+[x^2/(a*x^2+b*x^3)^2,x,3,(-1)/(a^2*x)-b/(a^2*(a+b*x))-2*b*log(x)/a^3+2*b*log(a+b*x)/a^3],
+[x/(a*x^2+b*x^3)^2,x,3,(-1/2)/(a^2*x^2)+2*b/(a^3*x)+b^2/(a^3*(a+b*x))+3*b^2*log(x)/a^4-3*b^2*log(a+b*x)/a^4],
+[1/(a*x^2+b*x^3)^2,x,3,(-1/3)/(a^2*x^3)+b/(a^3*x^2)-3*b^2/(a^4*x)-b^3/(a^4*(a+b*x))-4*b^3*log(x)/a^5+4*b^3*log(a+b*x)/a^5],
+[1/(x*(a*x^2+b*x^3)^2),x,3,(-1/4)/(a^2*x^4)+2/3*b/(a^3*x^3)-3/2*b^2/(a^4*x^2)+4*b^3/(a^5*x)+b^4/(a^5*(a+b*x))+5*b^4*log(x)/a^6-5*b^4*log(a+b*x)/a^6],
+
+-- Integrands of the form x^m (a x^2+b x^3)^(p/2)
+
+-- p>0
+[x^2*sqrt(a*x^2+b*x^3),x,4,2/9*(a*x^2+b*x^3)^(3/2)/b-32/315*a^3*(a*x^2+b*x^3)^(3/2)/(b^4*x^3)+16/105*a^2*(a*x^2+b*x^3)^(3/2)/(b^3*x^2)-4/21*a*(a*x^2+b*x^3)^(3/2)/(b^2*x)],
+[x*sqrt(a*x^2+b*x^3),x,3,16/105*a^2*(a*x^2+b*x^3)^(3/2)/(b^3*x^3)-8/35*a*(a*x^2+b*x^3)^(3/2)/(b^2*x^2)+2/7*(a*x^2+b*x^3)^(3/2)/(b*x)],
+[sqrt(a*x^2+b*x^3),x,2,-4/15*a*(a*x^2+b*x^3)^(3/2)/(b^2*x^3)+2/5*(a*x^2+b*x^3)^(3/2)/(b*x^2)],
+[sqrt(a*x^2+b*x^3)/x,x,1,2/3*(a*x^2+b*x^3)^(3/2)/(b*x^3)],
+[sqrt(a*x^2+b*x^3)/x^2,x,3,-2*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))*sqrt(a)+2*sqrt(a*x^2+b*x^3)/x],
+[sqrt(a*x^2+b*x^3)/x^3,x,3,-b*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/sqrt(a)-sqrt(a*x^2+b*x^3)/x^2],
+[sqrt(a*x^2+b*x^3)/x^4,x,4,1/4*b^2*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(3/2)-1/2*sqrt(a*x^2+b*x^3)/x^3-1/4*b*sqrt(a*x^2+b*x^3)/(a*x^2)],
+[sqrt(a*x^2+b*x^3)/x^5,x,5,-1/8*b^3*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(5/2)-1/3*sqrt(a*x^2+b*x^3)/x^4-1/12*b*sqrt(a*x^2+b*x^3)/(a*x^3)+1/8*b^2*sqrt(a*x^2+b*x^3)/(a^2*x^2)],
+[x^2*(a*x^2+b*x^3)^(3/2),x,6,2/15*(a*x^2+b*x^3)^(5/2)/b-512/45045*a^5*(a*x^2+b*x^3)^(5/2)/(b^6*x^5)+256/9009*a^4*(a*x^2+b*x^3)^(5/2)/(b^5*x^4)-64/1287*a^3*(a*x^2+b*x^3)^(5/2)/(b^4*x^3)+32/429*a^2*(a*x^2+b*x^3)^(5/2)/(b^3*x^2)-4/39*a*(a*x^2+b*x^3)^(5/2)/(b^2*x)],
+[x*(a*x^2+b*x^3)^(3/2),x,5,256/15015*a^4*(a*x^2+b*x^3)^(5/2)/(b^5*x^5)-128/3003*a^3*(a*x^2+b*x^3)^(5/2)/(b^4*x^4)+32/429*a^2*(a*x^2+b*x^3)^(5/2)/(b^3*x^3)-16/143*a*(a*x^2+b*x^3)^(5/2)/(b^2*x^2)+2/13*(a*x^2+b*x^3)^(5/2)/(b*x)],
+[(a*x^2+b*x^3)^(3/2),x,4,-32/1155*a^3*(a*x^2+b*x^3)^(5/2)/(b^4*x^5)+16/231*a^2*(a*x^2+b*x^3)^(5/2)/(b^3*x^4)-4/33*a*(a*x^2+b*x^3)^(5/2)/(b^2*x^3)+2/11*(a*x^2+b*x^3)^(5/2)/(b*x^2)],
+[(a*x^2+b*x^3)^(3/2)/x,x,3,16/315*a^2*(a*x^2+b*x^3)^(5/2)/(b^3*x^5)-8/63*a*(a*x^2+b*x^3)^(5/2)/(b^2*x^4)+2/9*(a*x^2+b*x^3)^(5/2)/(b*x^3)],
+[(a*x^2+b*x^3)^(3/2)/x^2,x,2,-4/35*a*(a*x^2+b*x^3)^(5/2)/(b^2*x^5)+2/7*(a*x^2+b*x^3)^(5/2)/(b*x^4)],
+[(a*x^2+b*x^3)^(3/2)/x^3,x,1,2/5*(a*x^2+b*x^3)^(5/2)/(b*x^5)],
+[(a*x^2+b*x^3)^(3/2)/x^4,x,4,2/3*(a*x^2+b*x^3)^(3/2)/x^3-2*a^(3/2)*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))+2*a*sqrt(a*x^2+b*x^3)/x],
+[(a*x^2+b*x^3)^(3/2)/x^5,x,4,-(a*x^2+b*x^3)^(3/2)/x^4-3*b*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))*sqrt(a)+3*b*sqrt(a*x^2+b*x^3)/x],
+[(a*x^2+b*x^3)^(3/2)/x^6,x,4,-1/2*(a*x^2+b*x^3)^(3/2)/x^5-3/4*b^2*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/sqrt(a)-3/4*b*sqrt(a*x^2+b*x^3)/x^2],
+[(a*x^2+b*x^3)^(3/2)/x^7,x,5,-1/3*(a*x^2+b*x^3)^(3/2)/x^6+1/8*b^3*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(3/2)-1/4*b*sqrt(a*x^2+b*x^3)/x^3-1/8*b^2*sqrt(a*x^2+b*x^3)/(a*x^2)],
+[(a*x^2+b*x^3)^(3/2)/x^8,x,6,-1/4*(a*x^2+b*x^3)^(3/2)/x^7-3/64*b^4*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(5/2)-1/8*b*sqrt(a*x^2+b*x^3)/x^4-1/32*b^2*sqrt(a*x^2+b*x^3)/(a*x^3)+3/64*b^3*sqrt(a*x^2+b*x^3)/(a^2*x^2)],
+[(a*x^2+b*x^3)^(3/2)/x^9,x,7,-1/5*(a*x^2+b*x^3)^(3/2)/x^8+3/128*b^5*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(7/2)-3/40*b*sqrt(a*x^2+b*x^3)/x^5-1/80*b^2*sqrt(a*x^2+b*x^3)/(a*x^4)+1/64*b^3*sqrt(a*x^2+b*x^3)/(a^2*x^3)-3/128*b^4*sqrt(a*x^2+b*x^3)/(a^3*x^2)],
+
+-- p<0
+[x^4/sqrt(a*x^2+b*x^3),x,4,16/35*a^2*sqrt(a*x^2+b*x^3)/b^3-32/35*a^3*sqrt(a*x^2+b*x^3)/(b^4*x)-12/35*a*x*sqrt(a*x^2+b*x^3)/b^2+2/7*x^2*sqrt(a*x^2+b*x^3)/b],
+[x^3/sqrt(a*x^2+b*x^3),x,3,-8/15*a*sqrt(a*x^2+b*x^3)/b^2+16/15*a^2*sqrt(a*x^2+b*x^3)/(b^3*x)+2/5*x*sqrt(a*x^2+b*x^3)/b],
+[x^2/sqrt(a*x^2+b*x^3),x,2,2/3*sqrt(a*x^2+b*x^3)/b-4/3*a*sqrt(a*x^2+b*x^3)/(b^2*x)],
+[x/sqrt(a*x^2+b*x^3),x,1,2*sqrt(a*x^2+b*x^3)/(b*x)],
+[1/sqrt(a*x^2+b*x^3),x,2,-2*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/sqrt(a)],
+[1/(x*sqrt(a*x^2+b*x^3)),x,3,b*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(3/2)-sqrt(a*x^2+b*x^3)/(a*x^2)],
+[1/(x^2*sqrt(a*x^2+b*x^3)),x,4,-3/4*b^2*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(5/2)-1/2*sqrt(a*x^2+b*x^3)/(a*x^3)+3/4*b*sqrt(a*x^2+b*x^3)/(a^2*x^2)],
+[1/(x^3*sqrt(a*x^2+b*x^3)),x,5,5/8*b^3*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(7/2)-1/3*sqrt(a*x^2+b*x^3)/(a*x^4)+5/12*b*sqrt(a*x^2+b*x^3)/(a^2*x^3)-5/8*b^2*sqrt(a*x^2+b*x^3)/(a^3*x^2)],
+[x^6/(a*x^2+b*x^3)^(3/2),x,4,-2*x^4/(b*sqrt(a*x^2+b*x^3))-16/5*a*sqrt(a*x^2+b*x^3)/b^3+32/5*a^2*sqrt(a*x^2+b*x^3)/(b^4*x)+12/5*x*sqrt(a*x^2+b*x^3)/b^2],
+[x^5/(a*x^2+b*x^3)^(3/2),x,3,-2*x^3/(b*sqrt(a*x^2+b*x^3))+8/3*sqrt(a*x^2+b*x^3)/b^2-16/3*a*sqrt(a*x^2+b*x^3)/(b^3*x)],
+[x^4/(a*x^2+b*x^3)^(3/2),x,2,-2*x^2/(b*sqrt(a*x^2+b*x^3))+4*sqrt(a*x^2+b*x^3)/(b^2*x)],
+[x^3/(a*x^2+b*x^3)^(3/2),x,1,-2*x/(b*sqrt(a*x^2+b*x^3))],
+[x^2/(a*x^2+b*x^3)^(3/2),x,3,-2*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(3/2)+2*x/(a*sqrt(a*x^2+b*x^3))],
+[x/(a*x^2+b*x^3)^(3/2),x,4,3*b*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(5/2)+2/(a*sqrt(a*x^2+b*x^3))-3*sqrt(a*x^2+b*x^3)/(a^2*x^2)],
+[1/(a*x^2+b*x^3)^(3/2),x,5,-15/4*b^2*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(7/2)+2/(a*x*sqrt(a*x^2+b*x^3))-5/2*sqrt(a*x^2+b*x^3)/(a^2*x^3)+15/4*b*sqrt(a*x^2+b*x^3)/(a^3*x^2)],
+[1/(x*(a*x^2+b*x^3)^(3/2)),x,6,35/8*b^3*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(9/2)+2/(a*x^2*sqrt(a*x^2+b*x^3))-7/3*sqrt(a*x^2+b*x^3)/(a^2*x^4)+35/12*b*sqrt(a*x^2+b*x^3)/(a^3*x^3)-35/8*b^2*sqrt(a*x^2+b*x^3)/(a^4*x^2)],
+[1/(x^2*(a*x^2+b*x^3)^(3/2)),x,7,-315/64*b^4*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^3))/a^(11/2)+2/(a*x^3*sqrt(a*x^2+b*x^3))-9/4*sqrt(a*x^2+b*x^3)/(a^2*x^5)+21/8*b*sqrt(a*x^2+b*x^3)/(a^3*x^4)-105/32*b^2*sqrt(a*x^2+b*x^3)/(a^4*x^3)+315/64*b^3*sqrt(a*x^2+b*x^3)/(a^5*x^2)],
+
+-- Integrands of the form x^(m/2) (a x^2+b x^3)^p
+
+-- Integrands of the form x^(m/2) (a x^2+b x^3)^(p/2)
+
+-- p>0
+
+-- p<0
+[x^(7/2)/sqrt(a*x^2+b*x^3),x,5,-5/8*a^3*atanh(x^(3/2)*sqrt(b)/sqrt(a*x^2+b*x^3))/b^(7/2)+1/3*x^(3/2)*sqrt(a*x^2+b*x^3)/b+5/8*a^2*sqrt(a*x^2+b*x^3)/(b^3*sqrt(x))-5/12*a*sqrt(x)*sqrt(a*x^2+b*x^3)/b^2],
+[x^(5/2)/sqrt(a*x^2+b*x^3),x,4,3/4*a^2*atanh(x^(3/2)*sqrt(b)/sqrt(a*x^2+b*x^3))/b^(5/2)-3/4*a*sqrt(a*x^2+b*x^3)/(b^2*sqrt(x))+1/2*sqrt(x)*sqrt(a*x^2+b*x^3)/b],
+[x^(3/2)/sqrt(a*x^2+b*x^3),x,3,-a*atanh(x^(3/2)*sqrt(b)/sqrt(a*x^2+b*x^3))/b^(3/2)+sqrt(a*x^2+b*x^3)/(b*sqrt(x))],
+[x^(1/2)/sqrt(a*x^2+b*x^3),x,2,2*atanh(x^(3/2)*sqrt(b)/sqrt(a*x^2+b*x^3))/sqrt(b)],
+[1/(x^(1/2)*sqrt(a*x^2+b*x^3)),x,1,-2*sqrt(a*x^2+b*x^3)/(a*x^(3/2))],
+[1/(x^(3/2)*sqrt(a*x^2+b*x^3)),x,2,-2/3*sqrt(a*x^2+b*x^3)/(a*x^(5/2))+4/3*b*sqrt(a*x^2+b*x^3)/(a^2*x^(3/2))],
+[1/(x^(5/2)*sqrt(a*x^2+b*x^3)),x,3,-2/5*sqrt(a*x^2+b*x^3)/(a*x^(7/2))+8/15*b*sqrt(a*x^2+b*x^3)/(a^2*x^(5/2))-16/15*b^2*sqrt(a*x^2+b*x^3)/(a^3*x^(3/2))],
+[1/(x^(7/2)*sqrt(a*x^2+b*x^3)),x,4,-2/7*sqrt(a*x^2+b*x^3)/(a*x^(9/2))+12/35*b*sqrt(a*x^2+b*x^3)/(a^2*x^(7/2))-16/35*b^2*sqrt(a*x^2+b*x^3)/(a^3*x^(5/2))+32/35*b^3*sqrt(a*x^2+b*x^3)/(a^4*x^(3/2))],
+
+-- Integrands of the form x^m (a x^2+b x^3)^p when p is symbolic
+[x^(1-3*n)*(a*x^2+b*x^3)^n,x,3,x^(2-3*n)*(a*x^2+b*x^3)^n*hypergeometric(2-n,-n,3-n,-b*x/a)/((2-n)*(1+b*x/a)^n)],
+[(a*x^2+b*x^3)^n/x^(3*n),x,3,x^(-1-3*n)*(a*x^2+b*x^3)^(1+n)*hypergeometric(1,2,2-n,-b*x/a)/(a*(1-n)),x^(1-3*n)*(a*x^2+b*x^3)^n*hypergeometric(1-n,-n,2-n,-b*x/a)/((1-n)*(1+b*x/a)^n)],
+[x^(-1-3*n)*(a*x^2+b*x^3)^n,x,3,-(a*x^2+b*x^3)^n*hypergeometric(-n,-n,1-n,-b*x/a)/(n*x^(3*n)*(1+b*x/a)^n)],
+[x^(-2-3*n)*(a*x^2+b*x^3)^n,x,1,-(a*x^2+b*x^3)^(1+n)/(a*(1+n)*x^(3*(1+n)))],
+[x^(-3-3*n)*(a*x^2+b*x^3)^n,x,2,-x^(-4-3*n)*(a*x^2+b*x^3)^(1+n)/(a*(2+n))+b*(a*x^2+b*x^3)^(1+n)/(a^2*(1+n)*(2+n)*x^(3*(1+n)))],
+[x^(-4-3*n)*(a*x^2+b*x^3)^n,x,3,-x^(-5-3*n)*(a*x^2+b*x^3)^(1+n)/(a*(3+n))+2*b*x^(-4-3*n)*(a*x^2+b*x^3)^(1+n)/(a^2*(2+n)*(3+n))-2*b^2*(a*x^2+b*x^3)^(1+n)/(a^3*(2+n)*(3+4*n+n^2)*x^(3*(1+n)))],
+
+-- Integrands of the form (c x)^m (a x^2+b x^5)^p
+
+-- Integrands of the form x^m (a x^2+b x^5)^p
+[x^11/(a*x^2+b*x^5)^3,x,2,1/6*x^6/(a*(a+b*x^3)^2)],
+
+-- Integrands of the form x^m (a x^2+b x^5)^(p/2)
+
+-- p>0
+
+-- p<0
+[x^9/sqrt(a*x^2+b*x^5),x,3,16/45*a^2*sqrt(a*x^2+b*x^5)/(b^3*x)-8/45*a*x^2*sqrt(a*x^2+b*x^5)/b^2+2/15*x^5*sqrt(a*x^2+b*x^5)/b],
+[x^6/sqrt(a*x^2+b*x^5),x,2,-4/9*a*sqrt(a*x^2+b*x^5)/(b^2*x)+2/9*x^2*sqrt(a*x^2+b*x^5)/b],
+[x^3/sqrt(a*x^2+b*x^5),x,1,2/3*sqrt(a*x^2+b*x^5)/(b*x)],
+[1/sqrt(a*x^2+b*x^5),x,2,-2/3*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^5))/sqrt(a)],
+[1/(x^3*sqrt(a*x^2+b*x^5)),x,3,1/3*b*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^5))/a^(3/2)-1/3*sqrt(a*x^2+b*x^5)/(a*x^4)],
+[x^4/sqrt(a*x^2+b*x^5),x,3,2/5*sqrt(a*x^2+b*x^5)/b-4/5*a*x*(a^(1/3)+b^(1/3)*x)*elliptic_f(asin((b^(1/3)*x+a^(1/3)*(1-sqrt(3)))/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))),-7-4*sqrt(3))*sqrt(2+sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2)/(3^(1/4)*b^(4/3)*sqrt(a*x^2+b*x^5)*sqrt(a^(1/3)*(a^(1/3)+b^(1/3)*x)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2))],
+[x/sqrt(a*x^2+b*x^5),x,2,2*x*(a^(1/3)+b^(1/3)*x)*elliptic_f(asin((b^(1/3)*x+a^(1/3)*(1-sqrt(3)))/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))),-7-4*sqrt(3))*sqrt(2+sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2)/(3^(1/4)*b^(1/3)*sqrt(a*x^2+b*x^5)*sqrt(a^(1/3)*(a^(1/3)+b^(1/3)*x)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2))],
+[1/(x^2*sqrt(a*x^2+b*x^5)),x,3,-1/2*sqrt(a*x^2+b*x^5)/(a*x^3)-1/2*b^(2/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_f(asin((b^(1/3)*x+a^(1/3)*(1-sqrt(3)))/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))),-7-4*sqrt(3))*sqrt(2+sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2)/(3^(1/4)*a*sqrt(a*x^2+b*x^5)*sqrt(a^(1/3)*(a^(1/3)+b^(1/3)*x)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2))],
+[x^5/sqrt(a*x^2+b*x^5),x,5,-8/7*a*x*(a+b*x^3)/(b^(5/3)*(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))*sqrt(a*x^2+b*x^5))+2/7*x*sqrt(a*x^2+b*x^5)/b-8/7*a^(4/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_f(asin((b^(1/3)*x+a^(1/3)*(1-sqrt(3)))/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))),-7-4*sqrt(3))*sqrt(2)*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2)/(3^(1/4)*b^(5/3)*sqrt(a*x^2+b*x^5)*sqrt(a^(1/3)*(a^(1/3)+b^(1/3)*x)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2))+4/7*3^(1/4)*a^(4/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_e(asin((b^(1/3)*x+a^(1/3)*(1-sqrt(3)))/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))),-7-4*sqrt(3))*sqrt(2-sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2)/(b^(5/3)*sqrt(a*x^2+b*x^5)*sqrt(a^(1/3)*(a^(1/3)+b^(1/3)*x)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2))],
+[x^2/sqrt(a*x^2+b*x^5),x,4,2*x*(a+b*x^3)/(b^(2/3)*(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))*sqrt(a*x^2+b*x^5))+2*a^(1/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_f(asin((b^(1/3)*x+a^(1/3)*(1-sqrt(3)))/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))),-7-4*sqrt(3))*sqrt(2)*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2)/(3^(1/4)*b^(2/3)*sqrt(a*x^2+b*x^5)*sqrt(a^(1/3)*(a^(1/3)+b^(1/3)*x)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2))-3^(1/4)*a^(1/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_e(asin((b^(1/3)*x+a^(1/3)*(1-sqrt(3)))/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))),-7-4*sqrt(3))*sqrt(2-sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2)/(b^(2/3)*sqrt(a*x^2+b*x^5)*sqrt(a^(1/3)*(a^(1/3)+b^(1/3)*x)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2))],
+[1/(x*sqrt(a*x^2+b*x^5)),x,5,b^(1/3)*x*(a+b*x^3)/(a*(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))*sqrt(a*x^2+b*x^5))-sqrt(a*x^2+b*x^5)/(a*x^2)+b^(1/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_f(asin((b^(1/3)*x+a^(1/3)*(1-sqrt(3)))/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))),-7-4*sqrt(3))*sqrt(2)*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2)/(3^(1/4)*a^(2/3)*sqrt(a*x^2+b*x^5)*sqrt(a^(1/3)*(a^(1/3)+b^(1/3)*x)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2))-1/2*3^(1/4)*b^(1/3)*x*(a^(1/3)+b^(1/3)*x)*elliptic_e(asin((b^(1/3)*x+a^(1/3)*(1-sqrt(3)))/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))),-7-4*sqrt(3))*sqrt(2-sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2)/(a^(2/3)*sqrt(a*x^2+b*x^5)*sqrt(a^(1/3)*(a^(1/3)+b^(1/3)*x)/(b^(1/3)*x+a^(1/3)*(1+sqrt(3)))^2))],
+
+-- Integrands of the form x^(m/2) (a x^2+b x^5)^(p/2)
+
+-- p>0
+
+-- p<0
+[x^(13/2)/(a*x^2+b*x^5)^(1/2),x,5,1/5*x^(5/2)*sqrt(a*x^2+b*x^5)/b-7/20*a*sqrt(a*x^2+b*x^5)/(b^2*sqrt(x))+7/40*a^(5/3)*x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*b^2*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[x^(11/2)/(a*x^2+b*x^5)^(1/2),x,6,-5/8*a*x^(3/2)*(a+b*x^3)*(1+sqrt(3))/(b^(5/3)*(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))*sqrt(a*x^2+b*x^5))+1/4*x^(3/2)*sqrt(a*x^2+b*x^5)/b+5/8*3^(1/4)*a^(4/3)*x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_e(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(b^(5/3)*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))+5/16*a^(4/3)*x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*(1-sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*b^(5/3)*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[x^(9/2)/(a*x^2+b*x^5)^(1/2),x,3,-1/3*a*atanh(x^(5/2)*sqrt(b)/sqrt(a*x^2+b*x^5))/b^(3/2)+1/3*sqrt(x)*sqrt(a*x^2+b*x^5)/b],
+[x^(7/2)/(a*x^2+b*x^5)^(1/2),x,4,1/2*sqrt(a*x^2+b*x^5)/(b*sqrt(x))-1/4*a^(2/3)*x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*b*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[x^(5/2)/(a*x^2+b*x^5)^(1/2),x,5,x^(3/2)*(a+b*x^3)*(1+sqrt(3))/(b^(2/3)*(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))*sqrt(a*x^2+b*x^5))-3^(1/4)*a^(1/3)*x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_e(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(b^(2/3)*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))-1/2*a^(1/3)*x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*(1-sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*b^(2/3)*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[x^(3/2)/(a*x^2+b*x^5)^(1/2),x,2,2/3*atanh(x^(5/2)*sqrt(b)/sqrt(a*x^2+b*x^5))/sqrt(b)],
+[x^(1/2)/(a*x^2+b*x^5)^(1/2),x,3,x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*a^(1/3)*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[1/(x^(1/2)*(a*x^2+b*x^5)^(1/2)),x,6,2*b^(1/3)*x^(3/2)*(a+b*x^3)*(1+sqrt(3))/(a*(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))*sqrt(a*x^2+b*x^5))-2*sqrt(a*x^2+b*x^5)/(a*x^(3/2))-2*3^(1/4)*b^(1/3)*x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_e(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(a^(2/3)*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))-b^(1/3)*x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*(1-sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*a^(2/3)*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[1/(x^(3/2)*(a*x^2+b*x^5)^(1/2)),x,1,-2/3*sqrt(a*x^2+b*x^5)/(a*x^(5/2))],
+[1/(x^(5/2)*(a*x^2+b*x^5)^(1/2)),x,4,-2/5*sqrt(a*x^2+b*x^5)/(a*x^(7/2))-2/5*b*x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*a^(4/3)*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[1/(x^(7/2)*(a*x^2+b*x^5)^(1/2)),x,7,-8/7*b^(4/3)*x^(3/2)*(a+b*x^3)*(1+sqrt(3))/(a^2*(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))*sqrt(a*x^2+b*x^5))-2/7*sqrt(a*x^2+b*x^5)/(a*x^(9/2))+8/7*b*sqrt(a*x^2+b*x^5)/(a^2*x^(3/2))+8/7*3^(1/4)*b^(4/3)*x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_e(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(a^(5/3)*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))+4/7*b^(4/3)*x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*(1-sqrt(3))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*a^(5/3)*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+[1/(x^(9/2)*(a*x^2+b*x^5)^(1/2)),x,2,-2/9*sqrt(a*x^2+b*x^5)/(a*x^(11/2))+4/9*b*sqrt(a*x^2+b*x^5)/(a^2*x^(5/2))],
+[1/(x^(11/2)*(a*x^2+b*x^5)^(1/2)),x,5,-2/11*sqrt(a*x^2+b*x^5)/(a*x^(13/2))+16/55*b*sqrt(a*x^2+b*x^5)/(a^2*x^(7/2))+16/55*b^2*x^(3/2)*(a^(1/3)+b^(1/3)*x)*elliptic_f(acos((a^(1/3)+b^(1/3)*x*(1-sqrt(3)))/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))),1/4*(2+sqrt(3)))*sqrt((a^(2/3)-a^(1/3)*b^(1/3)*x+b^(2/3)*x^2)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2)/(3^(1/4)*a^(7/3)*sqrt(a*x^2+b*x^5)*sqrt(b^(1/3)*x*(a^(1/3)+b^(1/3)*x)/(a^(1/3)+b^(1/3)*x*(1+sqrt(3)))^2))],
+
+-- Integration problems of the form (c x)^m (a x^3+b x^n)^p
+
+-- Integrands of the form (c x)^m (a x^3+b x^4)^p
+
+-- Integrands of the form x^m (a x^3+b x^4)^n
+[x/(a*x^3+b*x^4),x,3,(-1)/(a*x)-b*log(x)/a^2+b*log(a+b*x)/a^2],
+[1/(a*x^3+b*x^4),x,3,(-1/2)/(a*x^2)+b/(a^2*x)+b^2*log(x)/a^3-b^2*log(a+b*x)/a^3],
+
+-- Integrands of the form x^m (a x^3+b x^4)^(p/2)
+[x^4/sqrt(a*x^3+b*x^4),x,5,-5/8*a^3*atanh(x^2*sqrt(b)/sqrt(a*x^3+b*x^4))/b^(7/2)-5/12*a*sqrt(a*x^3+b*x^4)/b^2+5/8*a^2*sqrt(a*x^3+b*x^4)/(b^3*x)+1/3*x*sqrt(a*x^3+b*x^4)/b],
+[x^3/sqrt(a*x^3+b*x^4),x,4,3/4*a^2*atanh(x^2*sqrt(b)/sqrt(a*x^3+b*x^4))/b^(5/2)+1/2*sqrt(a*x^3+b*x^4)/b-3/4*a*sqrt(a*x^3+b*x^4)/(b^2*x)],
+[x^2/sqrt(a*x^3+b*x^4),x,3,-a*atanh(x^2*sqrt(b)/sqrt(a*x^3+b*x^4))/b^(3/2)+sqrt(a*x^3+b*x^4)/(b*x)],
+[x/sqrt(a*x^3+b*x^4),x,2,2*atanh(x^2*sqrt(b)/sqrt(a*x^3+b*x^4))/sqrt(b)],
+[1/sqrt(a*x^3+b*x^4),x,1,-2*sqrt(a*x^3+b*x^4)/(a*x^2)],
+[1/(x*sqrt(a*x^3+b*x^4)),x,2,-2/3*sqrt(a*x^3+b*x^4)/(a*x^3)+4/3*b*sqrt(a*x^3+b*x^4)/(a^2*x^2)],
+[1/(x^2*sqrt(a*x^3+b*x^4)),x,3,-2/5*sqrt(a*x^3+b*x^4)/(a*x^4)+8/15*b*sqrt(a*x^3+b*x^4)/(a^2*x^3)-16/15*b^2*sqrt(a*x^3+b*x^4)/(a^3*x^2)],
+[1/(x^3*sqrt(a*x^3+b*x^4)),x,4,-2/7*sqrt(a*x^3+b*x^4)/(a*x^5)+12/35*b*sqrt(a*x^3+b*x^4)/(a^2*x^4)-16/35*b^2*sqrt(a*x^3+b*x^4)/(a^3*x^3)+32/35*b^3*sqrt(a*x^3+b*x^4)/(a^4*x^2)],
+[1/(x^4*sqrt(a*x^3+b*x^4)),x,5,-2/9*sqrt(a*x^3+b*x^4)/(a*x^6)+16/63*b*sqrt(a*x^3+b*x^4)/(a^2*x^5)-32/105*b^2*sqrt(a*x^3+b*x^4)/(a^3*x^4)+128/315*b^3*sqrt(a*x^3+b*x^4)/(a^4*x^3)-256/315*b^4*sqrt(a*x^3+b*x^4)/(a^5*x^2)],
+
+-- Integrands of the form (c x)^m (a x^3+b x^5)^p
+
+-- Integrands of the form x^m (a x^3+b x^5)^n
+[1/(x^3+b*x^5),x,4,(-1/2)/x^2-b*log(x)+1/2*b*log(1+b*x^2)],
+[1/(-x^3+b*x^5),x,4,1/2/x^2-b*log(x)+1/2*b*log(1-b*x^2)],
+
+-- Integrands of the form x^m (a x^3+b x^5)^(p/2)
+
+-- Integration problems of the form (c x)^m (a x^j+b x^n)^p
+
+-- Integrands of the form (c x)^m (a x^j+b x^n)^p
+[1/(a*x+b*x),x,3,log(x)/(a+b)],
+[1/(a*x+b*x)^2,x,3,(-1)/((a+b)^2*x)],
+[1/(a*x+b*x)^3,x,3,(-1/2)/((a+b)^3*x^2)],
+[1/(a*x^2+b*x^2),x,3,(-1)/((a+b)*x)],
+[1/(a*x^n+b*x^n),x,3,x^(1-n)/((a+b)*(1-n))],
+[1/(a*x^n+b*x^n)^2,x,3,x^(1-2*n)/((a+b)^2*(1-2*n))],
+[1/(a*x^n+b*x^n)^3,x,3,x^(1-3*n)/((a+b)^3*(1-3*n))],
+
+--  Integrands of the form x^(12*(m-1))*(a*x + b*x^(12*m+2))^12 
+[(a*x+b*x^14)^12,x,2,1/169*(a+b*x^13)^13/b],
+[x^12*(a*x+b*x^26)^12,x,2,1/325*(a+b*x^25)^13/b],
+[x^24*(a*x+b*x^38)^12,x,2,1/481*(a+b*x^37)^13/b],
+[x^(12*(-1+m))*(a*x+b*x^(2+12*m))^12,x,2,1/13*(a+b*x^(1+12*m))^13/(b*(1+12*m))],
+
+--  Integrands of the form (a*x^m + b*x^(12*m+m+1))^12 
+[(a*x+b*x^14)^12,x,2,1/169*(a+b*x^13)^13/b],
+[(a*x^2+b*x^27)^12,x,2,1/325*(a+b*x^25)^13/b],
+[(a*x^3+b*x^40)^12,x,2,1/481*(a+b*x^37)^13/b],
+[(a*x^m+b*x^(1+13*m))^12,x,2,1/13*(a+b*x^(1+12*m))^13/(b*(1+12*m))],
+[(a*x^m+b*x^(1+6*m))^5,x,2,1/6*(a+b*x^(1+5*m))^6/(b*(1+5*m))],
+[1/(b*x^(1-2*m)+a*x^m)^3,x,2,(-1/2)/(b*(1-3*m)*(a+b*x^(1-3*m))^2)],
+[1/(b/x+a*x),x,2,1/2*log(b+a*x^2)/a],
+[1/(b/x^2+a*x),x,2,1/3*log(b+a*x^3)/a],
+[1/(b/x^3+a*x),x,2,1/4*log(b+a*x^4)/a],
+[1/(b/x+a*x)^3,x,2,1/4*x^4/(b*(b+a*x^2)^2)],
+[1/(b/x^3+a*x^2)^3,x,2,1/10*x^10/(b*(b+a*x^5)^2)],
+[1/(b/x^5+a*x^3)^3,x,2,1/16*x^16/(b*(b+a*x^8)^2)],
+[(a/x+b*x)^2,x,3,-a^2/x+2*a*b*x+1/3*b^2*x^3],
+[(a/x+b*x)^3,x,4,-1/2*a^3/x^2+3/2*a*b^2*x^2+1/4*b^3*x^4+3*a^2*b*log(x)],
+[(a/x+b*x)^4,x,3,-1/3*a^4/x^3-4*a^3*b/x+6*a^2*b^2*x+4/3*a*b^3*x^3+1/5*b^4*x^5],
+[1/(1/x^2+x^3),x,7,1/5*log(1+x)-1/20*log(1+x^2-1/2*x*(1+sqrt(5)))*(1-sqrt(5))-1/20*log(1+x^2-1/2*x*(1-sqrt(5)))*(1+sqrt(5))-1/5*atan(sqrt(1/5*(5-2*sqrt(5)))+2*x*sqrt(2/(5+sqrt(5))))*sqrt(1/2*(5-sqrt(5)))-1/5*atan(-x*sqrt(2/5*(5+sqrt(5)))+sqrt(1/5*(5+2*sqrt(5))))*sqrt(1/2*(5+sqrt(5)))],
+
+--  Integrands of the form x^p*(a*x^n+b*x^(m*n+n+p+1))^m 
+[x^p*(a*x^n+b*x^(1+13*n+p))^12,x,2,1/13*(a+b*x^(1+12*n+p))^13/(b*(1+12*n+p))],
+[x^12*(a+b*x^13)^12,x,1,1/169*(a+b*x^13)^13/b],
+[x^12*(a*x+b*x^26)^12,x,2,1/325*(a+b*x^25)^13/b],
+[x^12*(a*x^2+b*x^39)^12,x,2,1/481*(a+b*x^37)^13/b],
+[x^24*(a+b*x^25)^12,x,1,1/325*(a+b*x^25)^13/b],
+[x^24*(a*x+b*x^38)^12,x,2,1/481*(a+b*x^37)^13/b],
+[x^36*(a+b*x^37)^12,x,1,1/481*(a+b*x^37)^13/b],
+[1/(a*x+b*x^n),x,2,log(b+a*x^(1-n))/(a*(1-n))],
+[1/(a*x+b*x^(1+n)),x,5,log(x)/a-log(a+b*x^n)/(a*n)],
+[1/(a*x+b*x^(1-n)),x,2,log(b+a*x^n)/(a*n)],
+[1/(2*x+3*x^(1+n)),x,5,1/2*log(x)-1/2*log(2+3*x^n)/n],
+[1/(2*x+3*x^(1-n)),x,2,1/2*log(3+2*x^n)/n],
+[1/(x-sqrt(x)),x,2,2*log(1-sqrt(x))],
+[1/(-x^(3/5)+x),x,2,5/2*log(1-x^(2/5))],
+[1/(1/x^(1/3)+x),x,2,3/4*log(1+x^(4/3))],
+[1/(x+x^sqrt(2)),x,5,log(x)-log(1+x^(-1+sqrt(2)))*(1+sqrt(2))],
+
+-- Integrands of the form (c x)^m (a x^j+b x^n)^(p/2) with m+j p+1=0
+
+-- p>0
+[x^(-1-1/2*j)*sqrt(a*x^j+b*x^n),x,3,2*atanh(x^(1/2*j)*sqrt(a)/sqrt(a*x^j+b*x^n))*sqrt(a)/(j-n)-2*sqrt(a*x^j+b*x^n)/((j-n)*x^(1/2*j))],
+[(c*x)^(-1-1/2*j)*sqrt(a*x^j+b*x^n),x,4,2*x^(1/2*j)*atanh(x^(1/2*j)*sqrt(a)/sqrt(a*x^j+b*x^n))*sqrt(a)/(c*(j-n)*(c*x)^(1/2*j))-2*sqrt(a*x^j+b*x^n)/(c*(j-n)*(c*x)^(1/2*j))],
+[sqrt(a*x^3+b*x^n)/(c*x)^(5/2),x,4,2*atanh(x^(3/2)*sqrt(a)/sqrt(a*x^3+b*x^n))*sqrt(a)*sqrt(c*x)/(c^3*(3-n)*sqrt(x))-2*sqrt(a*x^3+b*x^n)/(c*(3-n)*(c*x)^(3/2))],
+[sqrt(a*x^2+b*x^n)/(c^2*x^2),x,4,2*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^n))*sqrt(a)/(c^2*(2-n))-2*sqrt(a*x^2+b*x^n)/(c^2*(2-n)*x)],
+[sqrt(a*x+b*x^n)/(c*x)^(3/2),x,4,2*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*x^n))*sqrt(a)*sqrt(x)/(c*(1-n)*sqrt(c*x))-2*sqrt(a*x+b*x^n)/(c*(1-n)*sqrt(c*x))],
+[sqrt(a+b*x^n)/(c*x),x,5,-2*atanh(sqrt(a+b*x^n)/sqrt(a))*sqrt(a)/(c*n)+2*sqrt(a+b*x^n)/(c*n)],
+[sqrt(a/x+b*x^n)/(c*x)^(1/2),x,4,-2*atanh(sqrt(a)/(sqrt(x)*sqrt(a/x+b*x^n)))*sqrt(a)*sqrt(x)/((1+n)*sqrt(c*x))+2*sqrt(c*x)*sqrt(a/x+b*x^n)/(c*(1+n))],
+[sqrt(a/x^2+b*x^n),x,3,-2*atanh(sqrt(a)/(x*sqrt(a/x^2+b*x^n)))*sqrt(a)/(2+n)+2*x*sqrt(a/x^2+b*x^n)/(2+n)],
+[(c*x)^(1/2)*sqrt(a/x^3+b*x^n),x,4,-2*c*atanh(sqrt(a)/(x^(3/2)*sqrt(a/x^3+b*x^n)))*sqrt(a)*sqrt(x)/((3+n)*sqrt(c*x))+2*(c*x)^(3/2)*sqrt(a/x^3+b*x^n)/(c*(3+n))],
+[(c*x)^(-1-3/2*j)*(a*x^j+b*x^n)^(3/2),x,5,-2/3*(a*x^j+b*x^n)^(3/2)/(c*(j-n)*(c*x)^(3/2*j))+2*a^(3/2)*x^(3/2*j)*atanh(x^(1/2*j)*sqrt(a)/sqrt(a*x^j+b*x^n))/(c*(j-n)*(c*x)^(3/2*j))-2*a*x^j*sqrt(a*x^j+b*x^n)/(c*(j-n)*(c*x)^(3/2*j))],
+[(a*x^3+b*x^n)^(3/2)/(c*x)^(11/2),x,5,-2/3*(a*x^3+b*x^n)^(3/2)/(c*(3-n)*(c*x)^(9/2))+2*a^(3/2)*atanh(x^(3/2)*sqrt(a)/sqrt(a*x^3+b*x^n))*sqrt(c*x)/(c^6*(3-n)*sqrt(x))-2*a*sqrt(a*x^3+b*x^n)/(c^4*(3-n)*(c*x)^(3/2))],
+[(a*x^2+b*x^n)^(3/2)/(c^4*x^4),x,5,-2/3*(a*x^2+b*x^n)^(3/2)/(c^4*(2-n)*x^3)+2*a^(3/2)*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^n))/(c^4*(2-n))-2*a*sqrt(a*x^2+b*x^n)/(c^4*(2-n)*x)],
+[(a*x+b*x^n)^(3/2)/(c*x)^(5/2),x,5,-2/3*(a*x+b*x^n)^(3/2)/(c*(1-n)*(c*x)^(3/2))+2*a^(3/2)*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*x^n))*sqrt(x)/(c^2*(1-n)*sqrt(c*x))-2*a*sqrt(a*x+b*x^n)/(c^2*(1-n)*sqrt(c*x))],
+[(a+b*x^n)^(3/2)/(c*x),x,6,2/3*(a+b*x^n)^(3/2)/(c*n)-2*a^(3/2)*atanh(sqrt(a+b*x^n)/sqrt(a))/(c*n)+2*a*sqrt(a+b*x^n)/(c*n)],
+[(c*x)^(1/2)*(a/x+b*x^n)^(3/2),x,5,2/3*(c*x)^(3/2)*(a/x+b*x^n)^(3/2)/(c*(1+n))-2*a^(3/2)*c*atanh(sqrt(a)/(sqrt(x)*sqrt(a/x+b*x^n)))*sqrt(x)/((1+n)*sqrt(c*x))+2*a*sqrt(c*x)*sqrt(a/x+b*x^n)/(1+n)],
+[c^2*x^2*(a/x^2+b*x^n)^(3/2),x,5,2/3*c^2*x^3*(a/x^2+b*x^n)^(3/2)/(2+n)-2*a^(3/2)*c^2*atanh(sqrt(a)/(x*sqrt(a/x^2+b*x^n)))/(2+n)+2*a*c^2*x*sqrt(a/x^2+b*x^n)/(2+n)],
+[(c*x)^(7/2)*(a/x^3+b*x^n)^(3/2),x,5,2/3*(c*x)^(9/2)*(a/x^3+b*x^n)^(3/2)/(c*(3+n))-2*a^(3/2)*c^4*atanh(sqrt(a)/(x^(3/2)*sqrt(a/x^3+b*x^n)))*sqrt(x)/((3+n)*sqrt(c*x))+2*a*c^2*(c*x)^(3/2)*sqrt(a/x^3+b*x^n)/(3+n)],
+[c^5*x^5*(a/x^4+b*x^n)^(3/2),x,5,2/3*c^5*x^6*(a/x^4+b*x^n)^(3/2)/(4+n)-2*a^(3/2)*c^5*atanh(sqrt(a)/(x^2*sqrt(a/x^4+b*x^n)))/(4+n)+2*a*c^5*x^2*sqrt(a/x^4+b*x^n)/(4+n)],
+[sqrt((a+b*x)/x^2),x,5,-2*atanh(sqrt(a)/(x*sqrt(a/x^2+b/x)))*sqrt(a)+2*x*sqrt(a/x^2+b/x)],
+[sqrt((a+b*x^2)/x^2),x,5,-atanh(sqrt(a)/(x*sqrt(b+a/x^2)))*sqrt(a)+x*sqrt(b+a/x^2)],
+[sqrt((a+b*x^3)/x^2),x,4,-2/3*atanh(sqrt(a)/(x*sqrt(a/x^2+b*x)))*sqrt(a)+2/3*x*sqrt(a/x^2+b*x)],
+[sqrt((a+b*x^n)/x^2),x,4,-2*atanh(sqrt(a)/(x*sqrt(a/x^2+b*x^(-2+n))))*sqrt(a)/n+2*x*sqrt(a/x^2+b*x^(-2+n))/n],
+[sqrt((-a+b*x)/x^2),x,5,2*atan(sqrt(a)/(x*sqrt(-a/x^2+b/x)))*sqrt(a)+2*x*sqrt(-a/x^2+b/x)],
+[sqrt((-a+b*x^2)/x^2),x,5,atan(sqrt(a)/(x*sqrt(b-a/x^2)))*sqrt(a)+x*sqrt(b-a/x^2)],
+[sqrt((-a+b*x^3)/x^2),x,4,2/3*atan(sqrt(a)/(x*sqrt(-a/x^2+b*x)))*sqrt(a)+2/3*x*sqrt(-a/x^2+b*x)],
+[sqrt((-a+b*x^n)/x^2),x,4,2*atan(sqrt(a)/(x*sqrt(-a/x^2+b*x^(-2+n))))*sqrt(a)/n+2*x*sqrt(-a/x^2+b*x^(-2+n))/n],
+
+-- p<0
+[(c*x)^(-1+1/2*j)/sqrt(a*x^j+b*x^n),x,3,2*(c*x)^(1/2*j)*atanh(x^(1/2*j)*sqrt(a)/sqrt(a*x^j+b*x^n))/(c*(j-n)*x^(1/2*j)*sqrt(a))],
+[(c*x)^(1/2)/sqrt(a*x^3+b*x^n),x,3,2*atanh(x^(3/2)*sqrt(a)/sqrt(a*x^3+b*x^n))*sqrt(c*x)/((3-n)*sqrt(a)*sqrt(x))],
+[1/sqrt(a*x^2+b*x^n),x,2,2*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^n))/((2-n)*sqrt(a))],
+[1/((c*x)^(1/2)*sqrt(a*x+b*x^n)),x,3,2*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*x^n))*sqrt(x)/((1-n)*sqrt(a)*sqrt(c*x))],
+[1/(c*x*sqrt(a+b*x^n)),x,4,-2*atanh(sqrt(a+b*x^n)/sqrt(a))/(c*n*sqrt(a))],
+[1/((c*x)^(3/2)*sqrt(a/x+b*x^n)),x,3,-2*atanh(sqrt(a)/(sqrt(x)*sqrt(a/x+b*x^n)))*sqrt(x)/(c*(1+n)*sqrt(a)*sqrt(c*x))],
+[1/(c^2*x^2*sqrt(a/x^2+b*x^n)),x,3,-2*atanh(sqrt(a)/(x*sqrt(a/x^2+b*x^n)))/(c^2*(2+n)*sqrt(a))],
+[1/((c*x)^(5/2)*sqrt(a/x^3+b*x^n)),x,3,-2*atanh(sqrt(a)/(x^(3/2)*sqrt(a/x^3+b*x^n)))*sqrt(x)/(c^2*(3+n)*sqrt(a)*sqrt(c*x))],
+[(c*x)^(-1+3/2*j)/(a*x^j+b*x^n)^(3/2),x,4,2*(c*x)^(3/2*j)*atanh(x^(1/2*j)*sqrt(a)/sqrt(a*x^j+b*x^n))/(a^(3/2)*c*(j-n)*x^(3/2*j))-2*(c*x)^(3/2*j)/(a*c*(j-n)*x^j*sqrt(a*x^j+b*x^n))],
+[(c*x)^(7/2)/(a*x^3+b*x^n)^(3/2),x,4,2*c^3*atanh(x^(3/2)*sqrt(a)/sqrt(a*x^3+b*x^n))*sqrt(c*x)/(a^(3/2)*(3-n)*sqrt(x))-2*c^2*(c*x)^(3/2)/(a*(3-n)*sqrt(a*x^3+b*x^n))],
+[c^2*x^2/(a*x^2+b*x^n)^(3/2),x,4,2*c^2*atanh(x*sqrt(a)/sqrt(a*x^2+b*x^n))/(a^(3/2)*(2-n))-2*c^2*x/(a*(2-n)*sqrt(a*x^2+b*x^n))],
+[(c*x)^(1/2)/(a*x+b*x^n)^(3/2),x,4,2*c*atanh(sqrt(a)*sqrt(x)/sqrt(a*x+b*x^n))*sqrt(x)/(a^(3/2)*(1-n)*sqrt(c*x))-2*sqrt(c*x)/(a*(1-n)*sqrt(a*x+b*x^n))],
+[1/(c*x*(a+b*x^n)^(3/2)),x,5,-2*atanh(sqrt(a+b*x^n)/sqrt(a))/(a^(3/2)*c*n)+2/(a*c*n*sqrt(a+b*x^n))],
+[1/((c*x)^(5/2)*(a/x+b*x^n)^(3/2)),x,4,-2*atanh(sqrt(a)/(sqrt(x)*sqrt(a/x+b*x^n)))*sqrt(x)/(a^(3/2)*c^2*(1+n)*sqrt(c*x))+2/(a*c^2*(1+n)*sqrt(c*x)*sqrt(a/x+b*x^n))],
+[1/(c^4*x^4*(a/x^2+b*x^n)^(3/2)),x,4,-2*atanh(sqrt(a)/(x*sqrt(a/x^2+b*x^n)))/(a^(3/2)*c^4*(2+n))+2/(a*c^4*(2+n)*x*sqrt(a/x^2+b*x^n))],
+[1/((c*x)^(11/2)*(a/x^3+b*x^n)^(3/2)),x,4,-2*atanh(sqrt(a)/(x^(3/2)*sqrt(a/x^3+b*x^n)))*sqrt(x)/(a^(3/2)*c^5*(3+n)*sqrt(c*x))+2/(a*c^4*(3+n)*(c*x)^(3/2)*sqrt(a/x^3+b*x^n))],
+[1/(c^7*x^7*(a/x^4+b*x^n)^(3/2)),x,4,-2*atanh(sqrt(a)/(x^2*sqrt(a/x^4+b*x^n)))/(a^(3/2)*c^7*(4+n))+2/(a*c^7*(4+n)*x^2*sqrt(a/x^4+b*x^n))],
+[1/sqrt((a+b*x^3)/x),x,3,2/3*atanh(x*sqrt(b)/sqrt(a/x+b*x^2))/sqrt(b)],
+[1/sqrt((a+b*x^4)/x^2),x,3,1/2*atanh(x*sqrt(b)/sqrt(a/x^2+b*x^2))/sqrt(b)],
+[1/sqrt((a+b*x^5)/x^3),x,3,2/5*atanh(x*sqrt(b)/sqrt(a/x^3+b*x^2))/sqrt(b)],
+[1/sqrt(x^(2-n)*(a+b*x^n)),x,3,2*atanh(x*sqrt(b)/sqrt(b*x^2+a*x^(2-n)))/(n*sqrt(b))],
+[1/sqrt((a-b*x^3)/x),x,3,2/3*atan(x*sqrt(b)/sqrt(a/x-b*x^2))/sqrt(b)],
+[1/sqrt((a-b*x^4)/x^2),x,3,1/2*atan(x*sqrt(b)/sqrt(a/x^2-b*x^2))/sqrt(b)],
+[1/sqrt((a-b*x^5)/x^3),x,3,2/5*atan(x*sqrt(b)/sqrt(a/x^3-b*x^2))/sqrt(b)],
+[1/sqrt(x^(2-n)*(a-b*x^n)),x,3,2*atan(x*sqrt(b)/sqrt(-b*x^2+a*x^(2-n)))/(n*sqrt(b))],
+[1/sqrt(x^n*(a+b*x^(2-n))),x,3,2*atanh(x*sqrt(b)/sqrt(b*x^2+a*x^n))/((2-n)*sqrt(b))],
+[1/sqrt(x^2*(b+a*x^(-2+n))),x,3,2*atanh(x*sqrt(b)/sqrt(b*x^2+a*x^n))/((2-n)*sqrt(b))],
+[1/sqrt(x*(b*x+a*x^(-1+n))),x,3,2*atanh(x*sqrt(b)/sqrt(b*x^2+a*x^n))/((2-n)*sqrt(b))],
+[1/sqrt(x^n*(a-b*x^(2-n))),x,3,2*atan(x*sqrt(b)/sqrt(-b*x^2+a*x^n))/((2-n)*sqrt(b))],
+[1/sqrt(x^2*(-b+a*x^(-2+n))),x,3,2*atan(x*sqrt(b)/sqrt(-b*x^2+a*x^n))/((2-n)*sqrt(b))],
+[1/sqrt(x*(-b*x+a*x^(-1+n))),x,3,2*atan(x*sqrt(b)/sqrt(-b*x^2+a*x^n))/((2-n)*sqrt(b))],
+
+-- Integrands of the form (c x)^m (a x^j+b x^n)^(p/2)
+[(c*x)^m*(a*x^j+b*x^n)^(3/2),x,3,2*b*x^(1+n)*(c*x)^m*hypergeometric(-3/2,(1+m+3/2*n)/(j-n),1+(1+m+3/2*n)/(j-n),-a*x^(j-n)/b)*sqrt(a*x^j+b*x^n)/((2+2*m+3*n)*sqrt(1+a*x^(j-n)/b))],
+[(c*x)^m*(a*x^j+b*x^n)^(1/2),x,3,2*x*(c*x)^m*hypergeometric(-1/2,(1+m+1/2*n)/(j-n),1+(2+2*m+n)/(2*j-2*n),-a*x^(j-n)/b)*sqrt(a*x^j+b*x^n)/((2+2*m+n)*sqrt(1+a*x^(j-n)/b))],
+[(c*x)^m/(a*x^j+b*x^n)^(1/2),x,3,2*x*(c*x)^m*hypergeometric(1/2,(1+m-1/2*n)/(j-n),1+(1+m-1/2*n)/(j-n),-a*x^(j-n)/b)*sqrt(1+a*x^(j-n)/b)/((2+2*m-n)*sqrt(a*x^j+b*x^n))],
+[(c*x)^m/(a*x^j+b*x^n)^(3/2),x,3,2*x^(1-n)*(c*x)^m*hypergeometric(3/2,(1+m-3/2*n)/(j-n),1+(1+m-3/2*n)/(j-n),-a*x^(j-n)/b)*sqrt(1+a*x^(j-n)/b)/(b*(2+2*m-3*n)*sqrt(a*x^j+b*x^n))],
+[(c*x)^m/(a*x^j+b*x^n)^(5/2),x,3,2*x^(1-2*n)*(c*x)^m*hypergeometric(5/2,(1+m-5/2*n)/(j-n),1+(1+m-5/2*n)/(j-n),-a*x^(j-n)/b)*sqrt(1+a*x^(j-n)/b)/(b^2*(2+2*m-5*n)*sqrt(a*x^j+b*x^n))],
+[(a*x^j+b*x^n)^(3/2),x,3,2*b*x^(1+n)*hypergeometric(-3/2,(1+3/2*n)/(j-n),1/2*(2+2*j+n)/(j-n),-a*x^(j-n)/b)*sqrt(a*x^j+b*x^n)/((2+3*n)*sqrt(1+a*x^(j-n)/b))],
+[(a*x^j+b*x^n)^(1/2),x,3,2*x*hypergeometric(-1/2,1/2*(2+n)/(j-n),1+(2+n)/(2*j-2*n),-a*x^(j-n)/b)*sqrt(a*x^j+b*x^n)/((2+n)*sqrt(1+a*x^(j-n)/b))],
+[1/(a*x^j+b*x^n)^(1/2),x,3,2*x*hypergeometric(1/2,1/2*(2-n)/(j-n),1/2*(2+(2-n)/(j-n)),-a*x^(j-n)/b)*sqrt(1+a*x^(j-n)/b)/((2-n)*sqrt(a*x^j+b*x^n))],
+[1/(a*x^j+b*x^n)^(3/2),x,3,2*x^(1-n)*hypergeometric(3/2,(1-3/2*n)/(j-n),1+(2-3*n)/(2*j-2*n),-a*x^(j-n)/b)*sqrt(1+a*x^(j-n)/b)/(b*(2-3*n)*sqrt(a*x^j+b*x^n))],
+[1/(a*x^j+b*x^n)^(5/2),x,3,2*x^(1-2*n)*hypergeometric(5/2,(1-5/2*n)/(j-n),1+(2-5*n)/(2*j-2*n),-a*x^(j-n)/b)*sqrt(1+a*x^(j-n)/b)/(b^2*(2-5*n)*sqrt(a*x^j+b*x^n))],
+[sqrt((1+x)/x^5),x,2,-2/3*(1/x^5+1/x^4)^(3/2)*x^6],
+[sqrt(x+x^(5/2)),x,1,4/9*(x+x^(5/2))^(3/2)/x^(3/2)],
+[1/(x^(3/2)+sqrt(x)),x,3,2*atan(sqrt(x))],
+[x*sqrt(x^2*(a+b*x^3)),x,1,2/9*(x^2*(a+b*x^3))^(3/2)/(b*x^3)],
+[x*sqrt(a*x^2+b*x^5),x,1,2/9*(a*x^2+b*x^5)^(3/2)/(b*x^3)],
+[sqrt(x^4*(a+b*x^3)),x,2,2/9*(a*x^4+b*x^7)^(3/2)/(b*x^6)],
+
+-- Integrands of the form (c x)^m (a x^j+b x^n)^(p/3)
+[1/(a*x^(1/3)+b*x^(2/3))^(1/3),x,11,-45/28*a*(a+b*x^(1/3))*x^(1/3)/(b^2*(a*x^(1/3)+b*x^(2/3))^(1/3))+9/7*(a+b*x^(1/3))*x^(2/3)/(b*(a*x^(1/3)+b*x^(2/3))^(1/3))-45/14*a^2*(a+2*b*x^(1/3))*(-b*(a*x^(1/3)+b*x^(2/3))/a^2)^(1/3)/(2^(1/3)*b^3*(a*x^(1/3)+b*x^(2/3))^(1/3)*(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)-sqrt(3)))+15/7*3^(3/4)*a^4*(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3))*(-b*(a*x^(1/3)+b*x^(2/3))/a^2)^(1/3)*elliptic_f(asin((1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)+sqrt(3))/(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)-sqrt(3))),-7+4*sqrt(3))*sqrt((1+2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)+2*2^(1/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(2/3))/(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)-sqrt(3))^2)/(2^(5/6)*b^3*(a+2*b*x^(1/3))*(a*x^(1/3)+b*x^(2/3))^(1/3)*sqrt((-1+2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3))/(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)-sqrt(3))^2))-45/28*3^(1/4)*a^4*(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3))*(-b*(a*x^(1/3)+b*x^(2/3))/a^2)^(1/3)*elliptic_e(asin((1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)+sqrt(3))/(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)-sqrt(3))),-7+4*sqrt(3))*sqrt((1+2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)+2*2^(1/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(2/3))/(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)-sqrt(3))^2)*sqrt(2+sqrt(3))/(2^(1/3)*b^3*(a+2*b*x^(1/3))*(a*x^(1/3)+b*x^(2/3))^(1/3)*sqrt((-1+2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3))/(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)-sqrt(3))^2))],
+[1/(a*x^(1/3)+b*x^(2/3))^(2/3),x,9,-18/5*a*(a+b*x^(1/3))*x^(1/3)/(b^2*(a*x^(1/3)+b*x^(2/3))^(2/3))+9/5*(a+b*x^(1/3))*x^(2/3)/(b*(a*x^(1/3)+b*x^(2/3))^(2/3))+6/5*2^(1/3)*3^(3/4)*a^4*(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3))*(-b*(a*x^(1/3)+b*x^(2/3))/a^2)^(2/3)*elliptic_f(asin((1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)+sqrt(3))/(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)-sqrt(3))),-7+4*sqrt(3))*sqrt(2-sqrt(3))*sqrt((1+2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)+2*2^(1/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(2/3))/(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)-sqrt(3))^2)/(b^3*(a+2*b*x^(1/3))*(a*x^(1/3)+b*x^(2/3))^(2/3)*sqrt((-1+2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3))/(1-2^(2/3)*(-b*(a+b*x^(1/3))*x^(1/3)/a^2)^(1/3)-sqrt(3))^2))],
+
+-- Integrands of the form (c x)^m (a x^j+b x^n)^p with p symbolic
+[x^m*(a*x^j+b*x^n)^p,x,3,x^(1+m)*(a*x^j+b*x^n)^p*(a+b*x^(-j+n))*hypergeometric(1,1+p+(1+m+j*p)/(-j+n),1+(1+m+j*p)/(-j+n),-b*x^(-j+n)/a)/(a*(1+m+j*p)),x^(1+m)*(a*x^j+b*x^n)^p*hypergeometric(-p,(1+m+n*p)/(j-n),1+(1+m+n*p)/(j-n),-a*x^(j-n)/b)/((1+m+n*p)*(1+a*x^(j-n)/b)^p)],
+[x^(-1-p*q)*(b*x^n+a*x^q)^p,x,3,-(a+b*x^(n-q))*(b*x^n+a*x^q)^p*hypergeometric(1,1+p,2+p,1+b*x^(n-q)/a)/(a*(1+p)*(n-q)*x^(p*q))],
+[x^(-1-n*p)*(b*x^n+a*x^q)^p,x,3,-(a+b*x^(n-q))*(b*x^n+a*x^q)^p*hypergeometric(1,1,1-p,-b*x^(n-q)/a)/(a*p*(n-q)*x^(n*p)),-(b*x^n+a*x^q)^p*hypergeometric(-p,-p,1-p,-b*x^(n-q)/a)/(p*(n-q)*x^(n*p)*(1+b*x^(n-q)/a)^p)],
+[x^(-1-n-(-1+p)*q)*(b*x^n+a*x^q)^p,x,3,b*(a+b*x^(n-q))*(b*x^n+a*x^q)^p*hypergeometric(2,1+p,2+p,1+b*x^(n-q)/a)/(a^2*(1+p)*(n-q)*x^(p*q))],
+[x^(-1-n*(-1+p)-q)*(b*x^n+a*x^q)^p,x,3,x^(n-n*p-q)*(b*x^n+a*x^q)^p*hypergeometric(1-p,-p,2-p,-b*x^(n-q)/a)/((1-p)*(n-q)*(1+b*x^(n-q)/a)^p)],
+[(a*x^m+b*x^(1+m+m*p))^p,x,1,(a*x^m+b*x^(1+m+m*p))^(1+p)/(b*(1+p)*(1+m*p)*x^(m*(1+p)))],
+[(x^m*(a+b*x^(1+m*p)))^p,x,2,(a*x^m+b*x^(1+m+m*p))^(1+p)/(b*(1+p)*(1+m*p)*x^(m*(1+p)))],
+[x^n*(x^m*(a+b*x^(1+n+m*p)))^p,x,2,(a*x^m+b*x^(1+m+n+m*p))^(1+p)/(b*(1+p)*(1+n+m*p)*x^(m*(1+p)))],
+[x^n*(a*x^m+b*x^(1+m+n+m*p))^p,x,1,(a*x^m+b*x^(1+m+n+m*p))^(1+p)/(b*(1+p)*(1+n+m*p)*x^(m*(1+p)))],
+[(x^(2*(-1+n))*(a+b*x^n))^(1/2),x,2,2/3*x^(3*(1-n))*(a/x^(2*(1-n))+b*x^(-2+3*n))^(3/2)/(b*n)],
+[(x^(3*(-1+n))*(a+b*x^n))^(1/3),x,2,3/4*x^(4*(1-n))*(a/x^(3*(1-n))+b*x^(-3+4*n))^(4/3)/(b*n)],
+[(x^(4*(-1+n))*(a+b*x^n))^(1/4),x,2,4/5*x^(5*(1-n))*(a/x^(4*(1-n))+b*x^(-4+5*n))^(5/4)/(b*n)],
+[(x^((-1+n)*p)*(a+b*x^n))^(1/p),x,2,p*x^((1-n)*(1+p))*(a/x^((1-n)*p)+b*x^(n-(1-n)*p))^(1+1/p)/(b*n*(1+p))],
+[(x^((-1+n)/p)*(a+b*x^n))^p,x,2,x^((1-n)*(1+p)/p)*(b*x^(n+(-1+n)/p)+a/x^((1-n)/p))^(1+p)/(b*n*(1+p))],
+[x^(-1+n-p*(1+q))*(a*x^n+b*x^p)^q,x,1,(a*x^n+b*x^p)^(1+q)/(a*(n-p)*(1+q)*x^(p*(1+q)))],
+[x^(-1-n*q-p*(1+q))*(x^n*(a+b*x^p))^q,x,2,-(a*x^n+b*x^(n+p))^(1+q)/(a*p*(1+q)*x^((n+p)*(1+q)))]]

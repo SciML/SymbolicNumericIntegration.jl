@@ -25,7 +25,7 @@ Base.signbit(z::Complex{T}) where T<:Number = signbit(real(z))
 function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius=1.0,
                    show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
                    symbolic=true, bypart=true, max_basis=110,
-                   verbose=false, complex_plane=true, prune_basis=false)
+                   verbose=false, complex_plane=true, prune_basis=false, homotopy=false)
     eq = expand(eq)
     eq = apply_div_rule(eq)
 
@@ -54,7 +54,7 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius
 
     s₁, u₁, ϵ = integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
                               radius, show_basis, opt, symbolic,
-                              max_basis, verbose, complex_plane, prune_basis)
+                              max_basis, verbose, complex_plane, prune_basis, homotopy)
 
     if isequal(u₁, 0) || !bypart
         return s₁, u₁, ϵ
@@ -62,7 +62,7 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius
         s₂, u₂, ϵ = try_integration_by_parts(u₁, x, l; abstol, num_trials, num_steps,
                                              radius, show_basis, opt, symbolic,
                                              max_basis, verbose, complex_plane,
-                                             prune_basis)
+                                             prune_basis, homotopy)
         return s₁ + s₂, u₂, ϵ
     end
 end
@@ -149,9 +149,9 @@ end
 function integrate_term(eq, x, l; kwargs...)
     args = Dict(kwargs)
     abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
-        radius, prune_basis = args[:abstol], args[:num_steps], args[:num_trials],
-        args[:show_basis], args[:symbolic], args[:verbose], args[:max_basis],
-        args[:radius], args[:prune_basis]
+        radius, prune_basis, homotopy = args[:abstol], args[:num_steps],
+        args[:num_trials], args[:show_basis], args[:symbolic], args[:verbose],
+        args[:max_basis], args[:radius], args[:prune_basis], args[:homotopy]
 
     attempt(l, "Integrating term", eq)
 
@@ -164,9 +164,12 @@ function integrate_term(eq, x, l; kwargs...)
     # note that the order of the operations is important!
     # first, collecing hints, then applying transformation rules, and finally finding the basis.
 
-    # basis = generate_basis(eq, x)
-    # basis = generate_by_parts(eq, x)
-    basis = generate_homotopy(eq, x)
+    if homotopy
+        basis = generate_homotopy(eq, x)
+    else
+        basis = generate_basis(eq, x)
+    end
+    # basis = generate_by_parts(eq, x)    
 
     if show_basis
         inform(l, "Generating basis (|β| = $(length(basis)))", basis)

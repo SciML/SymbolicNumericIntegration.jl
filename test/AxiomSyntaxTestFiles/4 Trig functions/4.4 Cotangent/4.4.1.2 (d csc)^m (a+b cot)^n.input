@@ -1,0 +1,56 @@
+-- Axiom integration test file: "4 Trig functions\4.4 Cotangent\4.4.1.2 (d csc)^m (a+b cot)^n.input"
+
+lst: '[
+
+-- Integrands of the form (d Csc[e+f x])^m (a+b Cot[e+f x])^n
+
+-- Integrands of the form (d Csc[e+f x])^m (a+b Cot[e+f x])^n with a^2+b^2=0
+
+-- Integrands of the form Csc[e+f x]^m (a+a I Cot[e+f x])^n
+
+-- n>0
+
+-- n<0
+[sin(x)^4/(%i+cot(x)),x,4,-5/16*%i*x+1/32/(%i-cot(x))^2+(-1/8*%i)/(%i-cot(x))+(-1/24*%i)/(%i+cot(x))^3+(-3/32)/(%i+cot(x))^2+3/16*%i/(%i+cot(x))],
+[sin(x)^3/(%i+cot(x)),x,3,4/5*%i*cos(x)-4/15*%i*cos(x)^3+1/5*%i*sin(x)^3/(%i+cot(x))],
+[sin(x)^2/(%i+cot(x)),x,4,-3/8*%i*x+(-1/8*%i)/(%i-cot(x))+(-1/8)/(%i+cot(x))^2+1/4*%i/(%i+cot(x))],
+[sin(x)/(%i+cot(x)),x,2,2/3*%i*cos(x)+1/3*%i*sin(x)/(%i+cot(x))],
+[csc(x)/(%i+cot(x)),x,1,%i*csc(x)/(%i+cot(x))],
+[csc(x)^2/(%i+cot(x)),x,2,-%i*x+log(sin(x))],
+[csc(x)^3/(%i+cot(x)),x,2,%i*atanh(cos(x))-csc(x)],
+[csc(x)^4/(%i+cot(x)),x,2,%i*cot(x)-1/2*cot(x)^2],
+[csc(x)^5/(%i+cot(x)),x,3,1/2*%i*atanh(cos(x))+1/2*%i*cot(x)*csc(x)-1/3*csc(x)^3],
+[csc(x)^6/(%i+cot(x)),x,3,%i*cot(x)-1/2*cot(x)^2+1/3*%i*cot(x)^3-1/4*cot(x)^4],
+[csc(x)^7/(%i+cot(x)),x,4,3/8*%i*atanh(cos(x))+3/8*%i*cot(x)*csc(x)+1/4*%i*cot(x)*csc(x)^3-1/5*csc(x)^5],
+
+-- Integrands of the form (d Csc[e+f x])^m (a+b Cot[e+f x])^n
+
+-- Integrands of the form Csc[e+f x]^m (a+b Cot[e+f x])^n
+
+-- n>0
+
+-- n<0
+[csc(x)^6/(a+b*cot(x)),x,3,a*(a^2+2*b^2)*cot(x)/b^4-1/2*(a^2+2*b^2)*cot(x)^2/b^3+1/3*a*cot(x)^3/b^2-1/4*cot(x)^4/b-(a^2+b^2)^2*log(a+b*cot(x))/b^5],
+[csc(x)^4/(a+b*cot(x)),x,3,a*cot(x)/b^2-1/2*cot(x)^2/b-(a^2+b^2)*log(a+b*cot(x))/b^3],
+[csc(x)^2/(a+b*cot(x)),x,2,-log(a+b*cot(x))/b],
+[sin(x)^2/(a+b*cot(x)),x,7,1/2*a*(a^2+3*b^2)*x/(a^2+b^2)^2-b^3*log(b*cos(x)+a*sin(x))/(a^2+b^2)^2-1/2*(b+a*cot(x))*sin(x)^2/(a^2+b^2)],
+[sin(x)^4/(a+b*cot(x)),x,8,1/8*a*(3*a^4+10*a^2*b^2+15*b^4)*x/(a^2+b^2)^3-b^5*log(b*cos(x)+a*sin(x))/(a^2+b^2)^3-1/8*(4*b^3+a*(3*a^2+7*b^2)*cot(x))*sin(x)^2/(a^2+b^2)^2-1/4*(b+a*cot(x))*sin(x)^4/(a^2+b^2)],
+[csc(x)^5/(a+b*cot(x)),x,9,1/2*a*atanh(cos(x))/b^2+a*(a^2+b^2)*atanh(cos(x))/b^4+(a^2+b^2)^(3/2)*atanh((b-a*cot(x))*sin(x)/sqrt(a^2+b^2))/b^4-(a^2+b^2)*csc(x)/b^3+1/2*a*cot(x)*csc(x)/b^2-1/3*csc(x)^3/b],
+[csc(x)^3/(a+b*cot(x)),x,5,a*atanh(cos(x))/b^2-csc(x)/b+atanh((b-a*cot(x))*sin(x)/sqrt(a^2+b^2))*sqrt(a^2+b^2)/b^2],
+[csc(x)/(a+b*cot(x)),x,2,-atanh((-b+a*cot(x))*sin(x)/sqrt(a^2+b^2))/sqrt(a^2+b^2)],
+[sin(x)/(a+b*cot(x)),x,5,b^2*atanh((b-a*cot(x))*sin(x)/sqrt(a^2+b^2))/(a^2+b^2)^(3/2)-a*cos(x)/(a^2+b^2)-b*sin(x)/(a^2+b^2)],
+[sin(x)^3/(a+b*cot(x)),x,9,b^4*atanh((b-a*cot(x))*sin(x)/sqrt(a^2+b^2))/(a^2+b^2)^(5/2)-a*b^2*cos(x)/(a^2+b^2)^2-a*cos(x)/(a^2+b^2)+1/3*a*cos(x)^3/(a^2+b^2)-b^3*sin(x)/(a^2+b^2)^2-1/3*b*sin(x)^3/(a^2+b^2)],
+[csc(x)^2/(a+b*cot(x))^2,x,2,1/(b*(a+b*cot(x)))],
+
+-- Integrands of the form Csc[e+f x]^m (a+b Cot[e+f x])^(n/2)
+
+-- Integrands of the form Csc[e+f x]^(m/2) (a+b Cot[e+f x])^n
+
+-- Integrands of the form Csc[e+f x]^(m/2) (a+b Cot[e+f x])^(n/2)
+
+-- Integrands of the form (d Csc[e+f x])^m (a+b Cot[e+f x])^n with n symbolic
+[(a+b*cot(x))^n*csc(x)^2,x,2,-(a+b*cot(x))^(1+n)/(b*(1+n))]]
+
+-- Integrands of the form Sin[e+f x]^(m/2) (a+b Cot[e+f x])^n
+
+-- Integrands of the form Sin[e+f x]^(m/2) (a+b Cot[e+f x])^(n/2)

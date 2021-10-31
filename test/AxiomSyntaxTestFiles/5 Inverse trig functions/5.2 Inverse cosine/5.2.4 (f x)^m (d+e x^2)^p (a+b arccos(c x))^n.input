@@ -1,0 +1,56 @@
+-- Axiom integration test file: "5 Inverse trig functions\5.2 Inverse cosine\5.2.4 (f x)^m (d+e x^2)^p (a+b arccos(c x))^n.input"
+
+lst: '[
+
+-- Integrands of the form (f x)^m (d+e x^2)^p (a+b ArcCos[c x])^n
+
+-- Integrands of the form x^m (d-c^2 d x^2)^p (a+b ArcCos[c x])^1
+
+-- p>0
+
+-- p<0
+[x^3*(a+b*acos(c*x))/(d-c^2*d*x^2),x,8,-1/2*x^2*(a+b*acos(c*x))/(c^2*d)+1/2*%i*(a+b*acos(c*x))^2/(b*c^4*d)-1/4*b*asin(c*x)/(c^4*d)-(a+b*acos(c*x))*log(1-%e^(2*%i*acos(c*x)))/(c^4*d)+1/2*%i*b*polylog(2,%e^(2*%i*acos(c*x)))/(c^4*d)+1/4*b*x*sqrt(1-c^2*x^2)/(c^3*d)],
+[x^2*(a+b*acos(c*x))/(d-c^2*d*x^2),x,8,-x*(a+b*acos(c*x))/(c^2*d)+2*(a+b*acos(c*x))*atanh(%e^(%i*acos(c*x)))/(c^3*d)-%i*b*polylog(2,-%e^(%i*acos(c*x)))/(c^3*d)+%i*b*polylog(2,%e^(%i*acos(c*x)))/(c^3*d)+b*sqrt(1-c^2*x^2)/(c^3*d)],
+[x*(a+b*acos(c*x))/(d-c^2*d*x^2),x,5,1/2*%i*(a+b*acos(c*x))^2/(b*c^2*d)-(a+b*acos(c*x))*log(1-%e^(2*%i*acos(c*x)))/(c^2*d)+1/2*%i*b*polylog(2,%e^(2*%i*acos(c*x)))/(c^2*d)],
+[(a+b*acos(c*x))/(d-c^2*d*x^2),x,6,2*(a+b*acos(c*x))*atanh(%e^(%i*acos(c*x)))/(c*d)-%i*b*polylog(2,-%e^(%i*acos(c*x)))/(c*d)+%i*b*polylog(2,%e^(%i*acos(c*x)))/(c*d)],
+[(a+b*acos(c*x))/(x*(d-c^2*d*x^2)),x,7,2*(a+b*acos(c*x))*atanh(%e^(2*%i*acos(c*x)))/d-1/2*%i*b*polylog(2,-%e^(2*%i*acos(c*x)))/d+1/2*%i*b*polylog(2,%e^(2*%i*acos(c*x)))/d],
+[(a+b*acos(c*x))/(x^2*(d-c^2*d*x^2)),x,10,(-a-b*acos(c*x))/(d*x)+2*c*(a+b*acos(c*x))*atanh(%e^(%i*acos(c*x)))/d+b*c*atanh(sqrt(1-c^2*x^2))/d-%i*b*c*polylog(2,-%e^(%i*acos(c*x)))/d+%i*b*c*polylog(2,%e^(%i*acos(c*x)))/d],
+[(a+b*acos(c*x))/(x^3*(d-c^2*d*x^2)),x,9,1/2*(-a-b*acos(c*x))/(d*x^2)+2*c^2*(a+b*acos(c*x))*atanh(%e^(2*%i*acos(c*x)))/d-1/2*%i*b*c^2*polylog(2,-%e^(2*%i*acos(c*x)))/d+1/2*%i*b*c^2*polylog(2,%e^(2*%i*acos(c*x)))/d+1/2*b*c*sqrt(1-c^2*x^2)/(d*x)],
+[x^4*(a+b*acos(c*x))/(d-c^2*d*x^2)^2,x,12,3/2*x*(a+b*acos(c*x))/(c^4*d^2)+1/2*x^3*(a+b*acos(c*x))/(c^2*d^2*(1-c^2*x^2))-3*(a+b*acos(c*x))*atanh(%e^(%i*acos(c*x)))/(c^5*d^2)+3/2*%i*b*polylog(2,-%e^(%i*acos(c*x)))/(c^5*d^2)-3/2*%i*b*polylog(2,%e^(%i*acos(c*x)))/(c^5*d^2)+1/2*b/(c^5*d^2*sqrt(1-c^2*x^2))-b*sqrt(1-c^2*x^2)/(c^5*d^2)],
+[x^3*(a+b*acos(c*x))/(d-c^2*d*x^2)^2,x,8,1/2*x^2*(a+b*acos(c*x))/(c^2*d^2*(1-c^2*x^2))-1/2*%i*(a+b*acos(c*x))^2/(b*c^4*d^2)-1/2*b*asin(c*x)/(c^4*d^2)+(a+b*acos(c*x))*log(1-%e^(2*%i*acos(c*x)))/(c^4*d^2)-1/2*%i*b*polylog(2,%e^(2*%i*acos(c*x)))/(c^4*d^2)+1/2*b*x/(c^3*d^2*sqrt(1-c^2*x^2))],
+[x^2*(a+b*acos(c*x))/(d-c^2*d*x^2)^2,x,8,1/2*x*(a+b*acos(c*x))/(c^2*d^2*(1-c^2*x^2))-(a+b*acos(c*x))*atanh(%e^(%i*acos(c*x)))/(c^3*d^2)+1/2*%i*b*polylog(2,-%e^(%i*acos(c*x)))/(c^3*d^2)-1/2*%i*b*polylog(2,%e^(%i*acos(c*x)))/(c^3*d^2)+1/2*b/(c^3*d^2*sqrt(1-c^2*x^2))],
+[x*(a+b*acos(c*x))/(d-c^2*d*x^2)^2,x,2,1/2*(a+b*acos(c*x))/(c^2*d^2*(1-c^2*x^2))+1/2*b*x/(c*d^2*sqrt(1-c^2*x^2))],
+[(a+b*acos(c*x))/(d-c^2*d*x^2)^2,x,8,1/2*x*(a+b*acos(c*x))/(d^2*(1-c^2*x^2))+(a+b*acos(c*x))*atanh(%e^(%i*acos(c*x)))/(c*d^2)-1/2*%i*b*polylog(2,-%e^(%i*acos(c*x)))/(c*d^2)+1/2*%i*b*polylog(2,%e^(%i*acos(c*x)))/(c*d^2)+1/2*b/(c*d^2*sqrt(1-c^2*x^2))],
+[(a+b*acos(c*x))/(x*(d-c^2*d*x^2)^2),x,9,1/2*(a+b*acos(c*x))/(d^2*(1-c^2*x^2))+2*(a+b*acos(c*x))*atanh(%e^(2*%i*acos(c*x)))/d^2-1/2*%i*b*polylog(2,-%e^(2*%i*acos(c*x)))/d^2+1/2*%i*b*polylog(2,%e^(2*%i*acos(c*x)))/d^2+1/2*b*c*x/(d^2*sqrt(1-c^2*x^2))],
+[(a+b*acos(c*x))/(x^2*(d-c^2*d*x^2)^2),x,13,(-a-b*acos(c*x))/(d^2*x*(1-c^2*x^2))+3/2*c^2*x*(a+b*acos(c*x))/(d^2*(1-c^2*x^2))+3*c*(a+b*acos(c*x))*atanh(%e^(%i*acos(c*x)))/d^2+b*c*atanh(sqrt(1-c^2*x^2))/d^2-3/2*%i*b*c*polylog(2,-%e^(%i*acos(c*x)))/d^2+3/2*%i*b*c*polylog(2,%e^(%i*acos(c*x)))/d^2+1/2*b*c/(d^2*sqrt(1-c^2*x^2))],
+[(a+b*acos(c*x))/(x^3*(d-c^2*d*x^2)^2),x,12,c^2*(a+b*acos(c*x))/(d^2*(1-c^2*x^2))+1/2*(-a-b*acos(c*x))/(d^2*x^2*(1-c^2*x^2))+4*c^2*(a+b*acos(c*x))*atanh(%e^(2*%i*acos(c*x)))/d^2-%i*b*c^2*polylog(2,-%e^(2*%i*acos(c*x)))/d^2+%i*b*c^2*polylog(2,%e^(2*%i*acos(c*x)))/d^2+1/2*b*c/(d^2*x*sqrt(1-c^2*x^2))],
+
+-- Integrands of the form x^m (d+e x^2)^p (a+b ArcCos[c x])^1
+
+-- p>0
+[x^3*(d+e*x^2)*(a+b*acos(c*x)),x,6,1/4*d*x^4*(a+b*acos(c*x))+1/6*e*x^6*(a+b*acos(c*x))+1/96*b*(9*c^2*d+5*e)*asin(c*x)/c^6-1/96*b*(9*c^2*d+5*e)*x*sqrt(1-c^2*x^2)/c^5-1/144*b*(9*c^2*d+5*e)*x^3*sqrt(1-c^2*x^2)/c^3-1/36*b*e*x^5*sqrt(1-c^2*x^2)/c],
+[x^2*(d+e*x^2)*(a+b*acos(c*x)),x,5,1/45*b*(5*c^2*d+6*e)*(1-c^2*x^2)^(3/2)/c^5-1/25*b*e*(1-c^2*x^2)^(5/2)/c^5+1/3*d*x^3*(a+b*acos(c*x))+1/5*e*x^5*(a+b*acos(c*x))-1/15*b*(5*c^2*d+3*e)*sqrt(1-c^2*x^2)/c^5],
+[x*(d+e*x^2)*(a+b*acos(c*x)),x,4,1/4*(d+e*x^2)^2*(a+b*acos(c*x))/e+1/32*b*(8*c^4*d^2+8*c^2*d*e+3*e^2)*asin(c*x)/(c^4*e)-3/32*b*(2*c^2*d+e)*x*sqrt(1-c^2*x^2)/c^3-1/16*b*x*(d+e*x^2)*sqrt(1-c^2*x^2)/c],
+[(d+e*x^2)*(a+b*acos(c*x)),x,4,1/9*b*e*(1-c^2*x^2)^(3/2)/c^3+d*x*(a+b*acos(c*x))+1/3*e*x^3*(a+b*acos(c*x))-1/3*b*(3*c^2*d+e)*sqrt(1-c^2*x^2)/c^3],
+[(d+e*x^2)*(a+b*acos(c*x))/x,x,12,1/2*e*x^2*(a+b*acos(c*x))+1/4*b*e*asin(c*x)/c^2+1/2*%i*b*d*asin(c*x)^2-b*d*asin(c*x)*log(1-%e^(2*%i*asin(c*x)))+d*(a+b*acos(c*x))*log(x)+b*d*asin(c*x)*log(x)+1/2*%i*b*d*polylog(2,%e^(2*%i*asin(c*x)))-1/4*b*e*x*sqrt(1-c^2*x^2)/c],
+[(d+e*x^2)*(a+b*acos(c*x))/x^2,x,5,-d*(a+b*acos(c*x))/x+e*x*(a+b*acos(c*x))+b*c*d*atanh(sqrt(1-c^2*x^2))-b*e*sqrt(1-c^2*x^2)/c],
+[(d+e*x^2)*(a+b*acos(c*x))/x^3,x,10,-1/2*d*(a+b*acos(c*x))/x^2+1/2*%i*b*e*asin(c*x)^2-b*e*asin(c*x)*log(1-%e^(2*%i*asin(c*x)))+e*(a+b*acos(c*x))*log(x)+b*e*asin(c*x)*log(x)+1/2*%i*b*e*polylog(2,%e^(2*%i*asin(c*x)))+1/2*b*c*d*sqrt(1-c^2*x^2)/x],
+[(d+e*x^2)*(a+b*acos(c*x))/x^4,x,6,-1/3*d*(a+b*acos(c*x))/x^3-e*(a+b*acos(c*x))/x+1/6*b*c*(c^2*d+6*e)*atanh(sqrt(1-c^2*x^2))+1/6*b*c*d*sqrt(1-c^2*x^2)/x^2],
+[(c+d*x^2)^2*acos(a*x),x,5,2/45*d*(5*a^2*c+3*d)*(1-a^2*x^2)^(3/2)/a^5-1/25*d^2*(1-a^2*x^2)^(5/2)/a^5+c^2*x*acos(a*x)+2/3*c*d*x^3*acos(a*x)+1/5*d^2*x^5*acos(a*x)-1/15*(15*a^4*c^2+10*a^2*c*d+3*d^2)*sqrt(1-a^2*x^2)/a^5],
+[(c+d*x^2)^3*acos(a*x),x,5,1/105*d*(35*a^4*c^2+42*a^2*c*d+15*d^2)*(1-a^2*x^2)^(3/2)/a^7-3/175*d^2*(7*a^2*c+5*d)*(1-a^2*x^2)^(5/2)/a^7+1/49*d^3*(1-a^2*x^2)^(7/2)/a^7+c^3*x*acos(a*x)+c^2*d*x^3*acos(a*x)+3/5*c*d^2*x^5*acos(a*x)+1/7*d^3*x^7*acos(a*x)-1/35*(35*a^6*c^3+35*a^4*c^2*d+21*a^2*c*d^2+5*d^3)*sqrt(1-a^2*x^2)/a^7],
+[(c+d*x^2)^4*acos(a*x),x,5,4/945*d*(105*a^6*c^3+189*a^4*c^2*d+135*a^2*c*d^2+35*d^3)*(1-a^2*x^2)^(3/2)/a^9-2/525*d^2*(63*a^4*c^2+90*a^2*c*d+35*d^2)*(1-a^2*x^2)^(5/2)/a^9+4/441*d^3*(9*a^2*c+7*d)*(1-a^2*x^2)^(7/2)/a^9-1/81*d^4*(1-a^2*x^2)^(9/2)/a^9+c^4*x*acos(a*x)+4/3*c^3*d*x^3*acos(a*x)+6/5*c^2*d^2*x^5*acos(a*x)+4/7*c*d^3*x^7*acos(a*x)+1/9*d^4*x^9*acos(a*x)-1/315*(315*a^8*c^4+420*a^6*c^3*d+378*a^4*c^2*d^2+180*a^2*c*d^3+35*d^4)*sqrt(1-a^2*x^2)/a^9],
+
+-- p<0
+[acos(a*x)/(c+d*x^2),x,18,1/2*acos(a*x)*log(1-%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)-%i*sqrt(a^2*c+d)))/(sqrt(-c)*sqrt(d))-1/2*acos(a*x)*log(1+%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)-%i*sqrt(a^2*c+d)))/(sqrt(-c)*sqrt(d))+1/2*acos(a*x)*log(1-%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)+%i*sqrt(a^2*c+d)))/(sqrt(-c)*sqrt(d))-1/2*acos(a*x)*log(1+%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)+%i*sqrt(a^2*c+d)))/(sqrt(-c)*sqrt(d))+1/2*%i*polylog(2,-%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)-%i*sqrt(a^2*c+d)))/(sqrt(-c)*sqrt(d))-1/2*%i*polylog(2,%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)-%i*sqrt(a^2*c+d)))/(sqrt(-c)*sqrt(d))+1/2*%i*polylog(2,-%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)+%i*sqrt(a^2*c+d)))/(sqrt(-c)*sqrt(d))-1/2*%i*polylog(2,%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)+%i*sqrt(a^2*c+d)))/(sqrt(-c)*sqrt(d))],
+[acos(a*x)/(c+d*x^2)^2,x,26,-1/4*acos(a*x)*log(1-%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)-%i*sqrt(a^2*c+d)))/((-c)^(3/2)*sqrt(d))+1/4*acos(a*x)*log(1+%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)-%i*sqrt(a^2*c+d)))/((-c)^(3/2)*sqrt(d))-1/4*acos(a*x)*log(1-%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)+%i*sqrt(a^2*c+d)))/((-c)^(3/2)*sqrt(d))+1/4*acos(a*x)*log(1+%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)+%i*sqrt(a^2*c+d)))/((-c)^(3/2)*sqrt(d))-1/4*%i*polylog(2,-%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)-%i*sqrt(a^2*c+d)))/((-c)^(3/2)*sqrt(d))+1/4*%i*polylog(2,%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)-%i*sqrt(a^2*c+d)))/((-c)^(3/2)*sqrt(d))-1/4*%i*polylog(2,-%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)+%i*sqrt(a^2*c+d)))/((-c)^(3/2)*sqrt(d))+1/4*%i*polylog(2,%e^(%i*acos(a*x))*sqrt(d)/(a*sqrt(-c)+%i*sqrt(a^2*c+d)))/((-c)^(3/2)*sqrt(d))-1/4*acos(a*x)/(c*sqrt(d)*(sqrt(-c)-x*sqrt(d)))+1/4*acos(a*x)/(c*sqrt(d)*(sqrt(-c)+x*sqrt(d)))-1/4*a*atanh((-a^2*x*sqrt(-c)+sqrt(d))/(sqrt(a^2*c+d)*sqrt(1-a^2*x^2)))/(c*sqrt(d)*sqrt(a^2*c+d))-1/4*a*atanh((a^2*x*sqrt(-c)+sqrt(d))/(sqrt(a^2*c+d)*sqrt(1-a^2*x^2)))/(c*sqrt(d)*sqrt(a^2*c+d))],
+
+-- Integrands of the form (d+e x^2)^(p/2) (a+b ArcCos[c x])^1
+
+-- p>0
+[(c+d*x^2)^(1/2)*acos(a*x),x,0,Unintegrable(acos(a*x)*sqrt(c+d*x^2),x)],
+
+-- p<0
+[acos(a*x)/(c+d*x^2)^(1/2),x,0,Unintegrable(acos(a*x)/sqrt(c+d*x^2),x)],
+[acos(a*x)/(c+d*x^2)^(3/2),x,6,-atan(sqrt(d)*sqrt(1-a^2*x^2)/(a*sqrt(c+d*x^2)))/(c*sqrt(d))+x*acos(a*x)/(c*sqrt(c+d*x^2))],
+[acos(a*x)/(c+d*x^2)^(5/2),x,7,1/3*x*acos(a*x)/(c*(c+d*x^2)^(3/2))-2/3*atan(sqrt(d)*sqrt(1-a^2*x^2)/(a*sqrt(c+d*x^2)))/(c^2*sqrt(d))+2/3*x*acos(a*x)/(c^2*sqrt(c+d*x^2))-1/3*a*sqrt(1-a^2*x^2)/(c*(a^2*c+d)*sqrt(c+d*x^2))],
+[acos(a*x)/(c+d*x^2)^(7/2),x,8,1/5*x*acos(a*x)/(c*(c+d*x^2)^(5/2))+4/15*x*acos(a*x)/(c^2*(c+d*x^2)^(3/2))-8/15*atan(sqrt(d)*sqrt(1-a^2*x^2)/(a*sqrt(c+d*x^2)))/(c^3*sqrt(d))-1/15*a*sqrt(1-a^2*x^2)/(c*(a^2*c+d)*(c+d*x^2)^(3/2))+8/15*x*acos(a*x)/(c^3*sqrt(c+d*x^2))-2/15*a*(3*a^2*c+2*d)*sqrt(1-a^2*x^2)/(c^2*(a^2*c+d)^2*sqrt(c+d*x^2))]]

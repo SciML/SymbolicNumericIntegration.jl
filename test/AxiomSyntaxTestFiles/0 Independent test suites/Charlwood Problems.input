@@ -1,0 +1,155 @@
+-- Axiom integration test file: "0 Independent test suites\Charlwood Problems.input"
+
+lst: '[
+
+-- Kevin Charlwood - Integration on Computer Algebra Systems (2008)
+
+-- Problem #1
+[asin(x)*log(x),x,8,atanh(sqrt(1-x^2))-x*asin(x)*(1-log(x))-2*sqrt(1-x^2)+log(x)*sqrt(1-x^2),-x*asin(x)+atanh(sqrt(1-x^2))+x*asin(x)*log(x)-2*sqrt(1-x^2)+log(x)*sqrt(1-x^2)],
+
+-- Problem #2
+[x*asin(x)/sqrt(1-x^2),x,2,x-asin(x)*sqrt(1-x^2)],
+
+-- Problem #3
+[asin(-sqrt(x)+sqrt(1+x)),x,-3,-(3/8+x)*asin(sqrt(x)-sqrt(1+x))+1/4*(sqrt(x)+3*sqrt(1+x))*sqrt(-x+sqrt(x)*sqrt(1+x))/sqrt(2)],
+
+-- Problem #4
+[log(1+x*sqrt(1+x^2)),x,-32,-2*x+x*log(1+x*sqrt(1+x^2))-atanh((x+sqrt(1+x^2))*sqrt(2+sqrt(5)))*sqrt(2*(-1+sqrt(5)))+atan((x+sqrt(1+x^2))*sqrt(-2+sqrt(5)))*sqrt(2*(1+sqrt(5)))],
+
+-- Problem #5
+[cos(x)^2/sqrt(1+cos(x)^2+cos(x)^4),x,-5,1/3*x+1/3*atan(cos(x)*(1+cos(x)^2)*sin(x)/(1+cos(x)^2*sqrt(1+cos(x)^2+cos(x)^4)))],
+
+-- Problem #6
+[sqrt(1+tan(x)^4)*tan(x),x,7,-1/2*asinh(tan(x)^2)-atanh((1-tan(x)^2)/(sqrt(2)*sqrt(1+tan(x)^4)))/sqrt(2)+1/2*sqrt(1+tan(x)^4)],
+
+-- Problem #7
+[tan(x)/sqrt(1+sec(x)^3),x,4,-2/3*atanh(sqrt(1+sec(x)^3))],
+
+-- Problem #8
+[sqrt(2+2*tan(x)+tan(x)^2),x,9,asinh(1+tan(x))-atanh((2*sqrt(5)+(5-sqrt(5))*tan(x))/(sqrt(10*(-1+sqrt(5)))*sqrt(2+2*tan(x)+tan(x)^2)))*sqrt(1/2*(-1+sqrt(5)))-atan((2*sqrt(5)-(5+sqrt(5))*tan(x))/(sqrt(10*(1+sqrt(5)))*sqrt(2+2*tan(x)+tan(x)^2)))*sqrt(1/2*(1+sqrt(5)))],
+
+-- Problem #9
+[atan(sqrt(-1+sec(x)))*sin(x),x,7,1/2*atan(sqrt(-1+sec(x)))-atan(sqrt(-1+sec(x)))*cos(x)+1/2*cos(x)*sqrt(-1+sec(x))],
+
+-- Problem #10
+[%e^asin(x)*x^3/sqrt(1-x^2),x,5,1/10*%e^asin(x)*(3*x+x^3-3*sqrt(1-x^2)-3*x^2*sqrt(1-x^2)),3/10*%e^asin(x)*x+1/10*%e^asin(x)*x^3-3/10*%e^asin(x)*sqrt(1-x^2)-3/10*%e^asin(x)*x^2*sqrt(1-x^2)],
+
+-- Problem #11
+[x*log(1+x^2)*log(x+sqrt(1+x^2))/sqrt(1+x^2),x,7,4*x-2*atan(x)-x*log(1+x^2)-2*log(x+sqrt(1+x^2))*sqrt(1+x^2)+log(1+x^2)*log(x+sqrt(1+x^2))*sqrt(1+x^2)],
+
+-- Problem #12
+[atan(x+sqrt(1-x^2)),x,-40,-1/2*asin(x)+x*atan(x+sqrt(1-x^2))-1/4*atanh(x*sqrt(1-x^2))-1/8*log(1-x^2+x^4)-1/4*atan((-1+2*x^2)/sqrt(3))*sqrt(3)+1/4*atan((-1+x*sqrt(3))/sqrt(1-x^2))*sqrt(3)+1/4*atan((1+x*sqrt(3))/sqrt(1-x^2))*sqrt(3)],
+
+-- Problem #13
+[x*atan(x+sqrt(1-x^2))/sqrt(1-x^2),x,-32,-1/2*asin(x)+1/4*atanh(x*sqrt(1-x^2))+1/8*log(1-x^2+x^4)-1/4*atan((-1+2*x^2)/sqrt(3))*sqrt(3)+1/4*atan((-1+x*sqrt(3))/sqrt(1-x^2))*sqrt(3)+1/4*atan((1+x*sqrt(3))/sqrt(1-x^2))*sqrt(3)-atan(x+sqrt(1-x^2))*sqrt(1-x^2)],
+
+-- Problem #14
+[asin(x)/(1+sqrt(1-x^2)),x,9,1/2*asin(x)^2-log(1+sqrt(1-x^2))-x*asin(x)/(1+sqrt(1-x^2)),-asin(x)/x+1/2*asin(x)^2-atanh(sqrt(1-x^2))-log(x)+asin(x)*sqrt(1-x^2)/x],
+
+-- Problem #15
+[log(x+sqrt(1+x^2))/(1-x^2)^(3/2),x,3,-1/2*asin(x^2)+x*log(x+sqrt(1+x^2))/sqrt(1-x^2)],
+
+-- Problem #16
+[asin(x)/(1+x^2)^(3/2),x,3,-1/2*asin(x^2)+x*asin(x)/sqrt(1+x^2)],
+
+-- Problem #17
+[log(x+sqrt(-1+x^2))/(1+x^2)^(3/2),x,3,-1/2*acosh(x^2)+x*log(x+sqrt(-1+x^2))/sqrt(1+x^2)],
+
+-- Problem #18
+[log(x)/(x^2*sqrt(-1+x^2)),x,4,-atanh(x/sqrt(-1+x^2))+sqrt(-1+x^2)/x+log(x)*sqrt(-1+x^2)/x],
+
+-- Problem #19
+[sqrt(1+x^3)/x,x,4,-2/3*atanh(sqrt(1+x^3))+2/3*sqrt(1+x^3)],
+
+-- Problem #20
+[x*log(x+sqrt(-1+x^2))/sqrt(-1+x^2),x,2,-x+log(x+sqrt(-1+x^2))*sqrt(-1+x^2)],
+
+-- Problem #21
+[x^3*asin(x)/sqrt(1-x^4),x,5,1/4*asinh(x)+1/4*x*sqrt(1+x^2)-1/2*asin(x)*sqrt(1-x^4)],
+
+-- Problem #22
+[x^3*asec(x)/sqrt(-1+x^4),x,7,1/2*atanh(x*sqrt(1+(-1)/x^2)/sqrt(-1+x^4))+1/2*asec(x)*sqrt(-1+x^4)-1/2*sqrt(-1+x^4)/(x*sqrt(1+(-1)/x^2)),1/2*atan(sqrt(-1+x^4)/sqrt(1-x^2))*sqrt(1-x^2)/(x*sqrt(1+(-1)/x^2))+1/2*asec(x)*sqrt(-1+x^4)-1/2*sqrt(-1+x^4)/(x*sqrt(1+(-1)/x^2))],
+
+-- Problem #23
+[x*atan(x)*log(x+sqrt(1+x^2))/sqrt(1+x^2),x,4,-x*atan(x)+1/2*log(1+x^2)-1/2*log(x+sqrt(1+x^2))^2+atan(x)*log(x+sqrt(1+x^2))*sqrt(1+x^2)],
+
+-- Problem #24
+[x*log(1+sqrt(1-x^2))/sqrt(1-x^2),x,5,-log(1+sqrt(1-x^2))+sqrt(1-x^2)-log(1+sqrt(1-x^2))*sqrt(1-x^2)],
+
+-- Problem #25
+[x*log(x+sqrt(1+x^2))/sqrt(1+x^2),x,2,-x+log(x+sqrt(1+x^2))*sqrt(1+x^2)],
+
+-- Problem #26
+[x*log(x+sqrt(1-x^2))/sqrt(1-x^2),x,18,atanh(x*sqrt(2))/sqrt(2)-atanh(sqrt(2)*sqrt(1-x^2))/sqrt(2)+sqrt(1-x^2)-log(x+sqrt(1-x^2))*sqrt(1-x^2)],
+
+-- Problem #27
+[log(x)/(x^2*sqrt(1-x^2)),x,3,-asin(x)-sqrt(1-x^2)/x-log(x)*sqrt(1-x^2)/x],
+
+-- Problem #28
+[x*atan(x)/sqrt(1+x^2),x,2,-asinh(x)+atan(x)*sqrt(1+x^2)],
+
+-- Problem #29
+[atan(x)/(x^2*sqrt(1-x^2)),x,7,-atanh(sqrt(1-x^2))+atanh(sqrt(1-x^2)/sqrt(2))*sqrt(2)-atan(x)*sqrt(1-x^2)/x],
+
+-- Problem #30
+[x*atan(x)/sqrt(1-x^2),x,5,-asin(x)+atan(x*sqrt(2)/sqrt(1-x^2))*sqrt(2)-atan(x)*sqrt(1-x^2)],
+
+-- Problem #31
+[atan(x)/(x^2*sqrt(1+x^2)),x,4,-atanh(sqrt(1+x^2))-atan(x)*sqrt(1+x^2)/x],
+
+-- Problem #32
+[asin(x)/(x^2*sqrt(1-x^2)),x,2,log(x)-asin(x)*sqrt(1-x^2)/x],
+
+-- Problem #33
+[x*log(x)/sqrt(-1+x^2),x,5,atan(sqrt(-1+x^2))-sqrt(-1+x^2)+log(x)*sqrt(-1+x^2)],
+
+-- Problem #34
+[log(x)/(x^2*sqrt(1+x^2)),x,3,asinh(x)-sqrt(1+x^2)/x-log(x)*sqrt(1+x^2)/x],
+
+-- Problem #35
+[x*asec(x)/sqrt(-1+x^2),x,2,-x*log(x)/sqrt(x^2)+asec(x)*sqrt(-1+x^2)],
+
+-- Problem #36
+[x*log(x)/sqrt(1+x^2),x,5,atanh(sqrt(1+x^2))-sqrt(1+x^2)+log(x)*sqrt(1+x^2)],
+
+-- Problem #37
+[sin(x)/(1+sin(x)^2),x,2,-atanh(cos(x)/sqrt(2))/sqrt(2)],
+
+-- Problem #38
+[(1+x^2)/((1-x^2)*sqrt(1+x^4)),x,2,atanh(x*sqrt(2)/sqrt(1+x^4))/sqrt(2)],
+
+-- Problem #39
+[(1-x^2)/((1+x^2)*sqrt(1+x^4)),x,2,atan(x*sqrt(2)/sqrt(1+x^4))/sqrt(2)],
+
+-- Problem #40
+[log(sin(x))/(1+sin(x)),x,4,-x-atanh(cos(x))-cos(x)*log(sin(x))/(1+sin(x))],
+
+-- Problem #41
+[log(sin(x))*sqrt(1+sin(x)),x,6,-4*atanh(cos(x)/sqrt(1+sin(x)))+4*cos(x)/sqrt(1+sin(x))-2*cos(x)*log(sin(x))/sqrt(1+sin(x))],
+
+-- Problem #42
+[sec(x)/sqrt(-1+sec(x)^4),x,-5,-atanh(cos(x)*cot(x)*sqrt(-1+sec(x)^4)/sqrt(2))/sqrt(2)],
+
+-- Problem #43
+[tan(x)/sqrt(1+tan(x)^4),x,4,-1/2*atanh((1-tan(x)^2)/(sqrt(2)*sqrt(1+tan(x)^4)))/sqrt(2)],
+
+-- Problem #44
+[sin(x)/sqrt(1-sin(x)^6),x,4,1/2*atanh(1/2*cos(x)*(1+sin(x)^2)*sqrt(3)/sqrt(1-sin(x)^6))/sqrt(3),1/2*atanh(1/2*cos(x)*(6-3*cos(x)^2)/(sqrt(3)*sqrt(3*cos(x)^2-3*cos(x)^4+cos(x)^6)))/sqrt(3)],
+
+-- Problem #45
+[sqrt(-sqrt(-1+sec(x))+sqrt(1+sec(x))),x,-1,cot(x)*sqrt(2)*sqrt(-1+sec(x))*sqrt(1+sec(x))*(atan(1/2*(-sqrt(2)-sqrt(-1+sec(x))+sqrt(1+sec(x)))*sqrt(-2+2*sqrt(2))/sqrt(-sqrt(-1+sec(x))+sqrt(1+sec(x))))*sqrt(-1+sqrt(2))+atanh(sqrt(2+2*sqrt(2))*sqrt(-sqrt(-1+sec(x))+sqrt(1+sec(x)))/(sqrt(2)-sqrt(-1+sec(x))+sqrt(1+sec(x))))*sqrt(-1+sqrt(2))-atan(1/2*(-sqrt(2)-sqrt(-1+sec(x))+sqrt(1+sec(x)))*sqrt(2+2*sqrt(2))/sqrt(-sqrt(-1+sec(x))+sqrt(1+sec(x))))*sqrt(1+sqrt(2))-atanh(sqrt(-2+2*sqrt(2))*sqrt(-sqrt(-1+sec(x))+sqrt(1+sec(x)))/(sqrt(2)-sqrt(-1+sec(x))+sqrt(1+sec(x))))*sqrt(1+sqrt(2)))],
+
+-- Problem #46
+[x*atan(x)^2*log(1+x^2),x,13,3*x*atan(x)-3/2*atan(x)^2-1/2*x^2*atan(x)^2-3/2*log(1+x^2)-x*atan(x)*log(1+x^2)+1/2*(1+x^2)*atan(x)^2*log(1+x^2)+1/4*log(1+x^2)^2],
+
+-- Problem #47
+[atan(x*sqrt(1+x^2)),x,12,1/2*atan(sqrt(3)-2*sqrt(1+x^2))+x*atan(x*sqrt(1+x^2))-1/2*atan(sqrt(3)+2*sqrt(1+x^2))-1/4*log(2+x^2-sqrt(3)*sqrt(1+x^2))*sqrt(3)+1/4*log(2+x^2+sqrt(3)*sqrt(1+x^2))*sqrt(3)],
+
+-- Problem #48
+[atan(-sqrt(x)+sqrt(1+x)),x,6,(1+x)*atan(-sqrt(x)+sqrt(1+x))+1/2*sqrt(x),1/4*%pi*x-1/2*atan(sqrt(x))-1/2*x*atan(sqrt(x))+1/2*sqrt(x)],
+
+-- Problem #49
+[asin(x/sqrt(1-x^2)),x,4,x*asin(x/sqrt(1-x^2))+atan(sqrt(1-2*x^2))],
+
+-- Problem #50
+[atan(x*sqrt(1-x^2)),x,6,x*atan(x*sqrt(1-x^2))+atanh(sqrt(1-x^2)*sqrt(1/2*(-1+sqrt(5))))*sqrt(1/2*(-1+sqrt(5)))-atan(sqrt(1-x^2)*sqrt(1/2*(1+sqrt(5))))*sqrt(1/2*(1+sqrt(5))),x*atan(x*sqrt(1-x^2))-atan(sqrt(1-x^2)*sqrt(2/(-1+sqrt(5))))*sqrt(2/(-1+sqrt(5)))+atanh(sqrt(1-x^2)*sqrt(2/(1+sqrt(5))))*sqrt(2/(1+sqrt(5)))]]

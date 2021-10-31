@@ -1,0 +1,392 @@
+-- Axiom integration test file: "8 Special functions\8.1 Error functions.input"
+
+lst: '[
+
+-- Integration Problems Involving The Error Function
+
+-- Integrands of the form (c+d x)^m Erf[a+b x]
+
+-- Integrands of the form x^m Erf[b x]
+[x^5*erf(b*x),x,5,-5/16*erf(b*x)/b^6+1/6*x^6*erf(b*x)+5/8*x/(%e^(b^2*x^2)*b^5*sqrt(%pi))+5/12*x^3/(%e^(b^2*x^2)*b^3*sqrt(%pi))+1/6*x^5/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[x^3*erf(b*x),x,4,-3/16*erf(b*x)/b^4+1/4*x^4*erf(b*x)+3/8*x/(%e^(b^2*x^2)*b^3*sqrt(%pi))+1/4*x^3/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[x*erf(b*x),x,3,-1/4*erf(b*x)/b^2+1/2*x^2*erf(b*x)+1/2*x/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[erf(b*x)/x,x,1,2*b*x*HypergeometricPFQ([1/2,1/2],[3/2,3/2],-b^2*x^2)/sqrt(%pi)],
+[erf(b*x)/x^3,x,3,-b^2*erf(b*x)-1/2*erf(b*x)/x^2-b/(%e^(b^2*x^2)*x*sqrt(%pi))],
+[erf(b*x)/x^5,x,4,1/3*b^4*erf(b*x)-1/4*erf(b*x)/x^4-1/6*b/(%e^(b^2*x^2)*x^3*sqrt(%pi))+1/3*b^3/(%e^(b^2*x^2)*x*sqrt(%pi))],
+[erf(b*x)/x^7,x,5,-4/45*b^6*erf(b*x)-1/6*erf(b*x)/x^6-1/15*b/(%e^(b^2*x^2)*x^5*sqrt(%pi))+2/45*b^3/(%e^(b^2*x^2)*x^3*sqrt(%pi))-4/45*b^5/(%e^(b^2*x^2)*x*sqrt(%pi))],
+[x^6*erf(b*x),x,5,1/7*x^7*erf(b*x)+6/7/(%e^(b^2*x^2)*b^7*sqrt(%pi))+6/7*x^2/(%e^(b^2*x^2)*b^5*sqrt(%pi))+3/7*x^4/(%e^(b^2*x^2)*b^3*sqrt(%pi))+1/7*x^6/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[x^4*erf(b*x),x,4,1/5*x^5*erf(b*x)+2/5/(%e^(b^2*x^2)*b^5*sqrt(%pi))+2/5*x^2/(%e^(b^2*x^2)*b^3*sqrt(%pi))+1/5*x^4/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[x^2*erf(b*x),x,3,1/3*x^3*erf(b*x)+1/3/(%e^(b^2*x^2)*b^3*sqrt(%pi))+1/3*x^2/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[erf(b*x),x,1,x*erf(b*x)+1/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[erf(b*x)/x^2,x,2,-erf(b*x)/x+b*Ei(-b^2*x^2)/sqrt(%pi)],
+[erf(b*x)/x^4,x,3,-1/3*erf(b*x)/x^3-1/3*b/(%e^(b^2*x^2)*x^2*sqrt(%pi))-1/3*b^3*Ei(-b^2*x^2)/sqrt(%pi)],
+[erf(b*x)/x^6,x,4,-1/5*erf(b*x)/x^5-1/10*b/(%e^(b^2*x^2)*x^4*sqrt(%pi))+1/10*b^3/(%e^(b^2*x^2)*x^2*sqrt(%pi))+1/10*b^5*Ei(-b^2*x^2)/sqrt(%pi)],
+
+-- Integrands of the form (c+d x)^m Erf[a+b x]
+[(c+d*x)^3*erf(a+b*x),x,12,-3/16*d^3*erf(a+b*x)/b^4-3/4*d*(b*c-a*d)^2*erf(a+b*x)/b^4-1/4*(b*c-a*d)^4*erf(a+b*x)/(b^4*d)+1/4*(c+d*x)^4*erf(a+b*x)/d+d^2*(b*c-a*d)/(%e^((a+b*x)^2)*b^4*sqrt(%pi))+(b*c-a*d)^3/(%e^((a+b*x)^2)*b^4*sqrt(%pi))+3/8*d^3*(a+b*x)/(%e^((a+b*x)^2)*b^4*sqrt(%pi))+3/2*d*(b*c-a*d)^2*(a+b*x)/(%e^((a+b*x)^2)*b^4*sqrt(%pi))+d^2*(b*c-a*d)*(a+b*x)^2/(%e^((a+b*x)^2)*b^4*sqrt(%pi))+1/4*d^3*(a+b*x)^3/(%e^((a+b*x)^2)*b^4*sqrt(%pi))],
+[(c+d*x)^2*erf(a+b*x),x,9,-1/2*d*(b*c-a*d)*erf(a+b*x)/b^3-1/3*(b*c-a*d)^3*erf(a+b*x)/(b^3*d)+1/3*(c+d*x)^3*erf(a+b*x)/d+1/3*d^2/(%e^((a+b*x)^2)*b^3*sqrt(%pi))+(b*c-a*d)^2/(%e^((a+b*x)^2)*b^3*sqrt(%pi))+d*(b*c-a*d)*(a+b*x)/(%e^((a+b*x)^2)*b^3*sqrt(%pi))+1/3*d^2*(a+b*x)^2/(%e^((a+b*x)^2)*b^3*sqrt(%pi))],
+[(c+d*x)*erf(a+b*x),x,7,-1/4*d*erf(a+b*x)/b^2-1/2*(b*c-a*d)^2*erf(a+b*x)/(b^2*d)+1/2*(c+d*x)^2*erf(a+b*x)/d+(b*c-a*d)/(%e^((a+b*x)^2)*b^2*sqrt(%pi))+1/2*d*(a+b*x)/(%e^((a+b*x)^2)*b^2*sqrt(%pi))],
+[erf(a+b*x),x,1,(a+b*x)*erf(a+b*x)/b+1/(%e^((a+b*x)^2)*b*sqrt(%pi))],
+[erf(a+b*x)/(c+d*x),x,0,Unintegrable(erf(a+b*x)/(c+d*x),x)],
+[erf(a+b*x)/(c+d*x)^2,x,1,-erf(a+b*x)/(d*(c+d*x))+2*b*Unintegrable(1/(%e^((a+b*x)^2)*(c+d*x)),x)/(d*sqrt(%pi))],
+[erf(a+b*x)/(c+d*x)^3,x,3,-b^2*erf(a+b*x)/d^3-1/2*erf(a+b*x)/(d*(c+d*x)^2)-b/(%e^((a+b*x)^2)*d^2*(c+d*x)*sqrt(%pi))+2*b^2*(b*c-a*d)*Unintegrable(1/(%e^((a+b*x)^2)*(c+d*x)),x)/(d^3*sqrt(%pi))],
+
+-- Integrands of the form (c+d x)^m Erf[a+b x]^2
+
+-- Integrands of the form x^m Erf[b x]^2
+[x^5*erf(b*x)^2,x,12,11/12/(%e^(2*b^2*x^2)*%pi*b^6)+7/12*x^2/(%e^(2*b^2*x^2)*%pi*b^4)+1/6*x^4/(%e^(2*b^2*x^2)*%pi*b^2)-5/16*erf(b*x)^2/b^6+1/6*x^6*erf(b*x)^2+5/4*x*erf(b*x)/(%e^(b^2*x^2)*b^5*sqrt(%pi))+5/6*x^3*erf(b*x)/(%e^(b^2*x^2)*b^3*sqrt(%pi))+1/3*x^5*erf(b*x)/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[x^3*erf(b*x)^2,x,8,1/2/(%e^(2*b^2*x^2)*%pi*b^4)+1/4*x^2/(%e^(2*b^2*x^2)*%pi*b^2)-3/16*erf(b*x)^2/b^4+1/4*x^4*erf(b*x)^2+3/4*x*erf(b*x)/(%e^(b^2*x^2)*b^3*sqrt(%pi))+1/2*x^3*erf(b*x)/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[x*erf(b*x)^2,x,5,1/2/(%e^(2*b^2*x^2)*%pi*b^2)-1/4*erf(b*x)^2/b^2+1/2*x^2*erf(b*x)^2+x*erf(b*x)/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[erf(b*x)^2/x,x,0,Unintegrable(erf(b*x)^2/x,x)],
+[erf(b*x)^2/x^3,x,5,2*b^2*Ei(-2*b^2*x^2)/%pi-b^2*erf(b*x)^2-1/2*erf(b*x)^2/x^2-2*b*erf(b*x)/(%e^(b^2*x^2)*x*sqrt(%pi))],
+[erf(b*x)^2/x^5,x,8,-1/3*b^2/(%e^(2*b^2*x^2)*%pi*x^2)-4/3*b^4*Ei(-2*b^2*x^2)/%pi+1/3*b^4*erf(b*x)^2-1/4*erf(b*x)^2/x^4-1/3*b*erf(b*x)/(%e^(b^2*x^2)*x^3*sqrt(%pi))+2/3*b^3*erf(b*x)/(%e^(b^2*x^2)*x*sqrt(%pi))],
+[erf(b*x)^2/x^7,x,12,-1/15*b^2/(%e^(2*b^2*x^2)*%pi*x^4)+2/9*b^4/(%e^(2*b^2*x^2)*%pi*x^2)+28/45*b^6*Ei(-2*b^2*x^2)/%pi-4/45*b^6*erf(b*x)^2-1/6*erf(b*x)^2/x^6-2/15*b*erf(b*x)/(%e^(b^2*x^2)*x^5*sqrt(%pi))+4/45*b^3*erf(b*x)/(%e^(b^2*x^2)*x^3*sqrt(%pi))-8/45*b^5*erf(b*x)/(%e^(b^2*x^2)*x*sqrt(%pi))],
+[x^4*erf(b*x)^2,x,10,11/20*x/(%e^(2*b^2*x^2)*%pi*b^4)+1/5*x^3/(%e^(2*b^2*x^2)*%pi*b^2)+1/5*x^5*erf(b*x)^2+4/5*erf(b*x)/(%e^(b^2*x^2)*b^5*sqrt(%pi))+4/5*x^2*erf(b*x)/(%e^(b^2*x^2)*b^3*sqrt(%pi))+2/5*x^4*erf(b*x)/(%e^(b^2*x^2)*b*sqrt(%pi))-43/40*erf(b*x*sqrt(2))/(b^5*sqrt(2*%pi))],
+[x^2*erf(b*x)^2,x,6,1/3*x/(%e^(2*b^2*x^2)*%pi*b^2)+1/3*x^3*erf(b*x)^2+2/3*erf(b*x)/(%e^(b^2*x^2)*b^3*sqrt(%pi))+2/3*x^2*erf(b*x)/(%e^(b^2*x^2)*b*sqrt(%pi))-5/6*erf(b*x*sqrt(2))/(b^3*sqrt(2*%pi))],
+[erf(b*x)^2,x,4,x*erf(b*x)^2-erf(b*x*sqrt(2))*sqrt(2/%pi)/b+2*erf(b*x)/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[erf(b*x)^2/x^2,x,0,Unintegrable(erf(b*x)^2/x^2,x)],
+[erf(b*x)^2/x^4,x,0,Unintegrable(erf(b*x)^2/x^4,x)],
+[erf(b*x)^2/x^6,x,0,Unintegrable(erf(b*x)^2/x^6,x)],
+
+-- Integrands of the form (c+d x)^m Erf[a+b x]^2
+[(c+d*x)^2*erf(a+b*x)^2,x,16,d*(b*c-a*d)/(%e^(2*(a+b*x)^2)*%pi*b^3)+1/3*d^2*(a+b*x)/(%e^(2*(a+b*x)^2)*%pi*b^3)-1/2*d*(b*c-a*d)*erf(a+b*x)^2/b^3+(b*c-a*d)^2*(a+b*x)*erf(a+b*x)^2/b^3+d*(b*c-a*d)*(a+b*x)^2*erf(a+b*x)^2/b^3+1/3*d^2*(a+b*x)^3*erf(a+b*x)^2/b^3-(b*c-a*d)^2*erf((a+b*x)*sqrt(2))*sqrt(2/%pi)/b^3+2/3*d^2*erf(a+b*x)/(%e^((a+b*x)^2)*b^3*sqrt(%pi))+2*(b*c-a*d)^2*erf(a+b*x)/(%e^((a+b*x)^2)*b^3*sqrt(%pi))+2*d*(b*c-a*d)*(a+b*x)*erf(a+b*x)/(%e^((a+b*x)^2)*b^3*sqrt(%pi))+2/3*d^2*(a+b*x)^2*erf(a+b*x)/(%e^((a+b*x)^2)*b^3*sqrt(%pi))-5/6*d^2*erf((a+b*x)*sqrt(2))/(b^3*sqrt(2*%pi))],
+[(c+d*x)*erf(a+b*x)^2,x,10,1/2*d/(%e^(2*(a+b*x)^2)*%pi*b^2)-1/4*d*erf(a+b*x)^2/b^2+(b*c-a*d)*(a+b*x)*erf(a+b*x)^2/b^2+1/2*d*(a+b*x)^2*erf(a+b*x)^2/b^2-(b*c-a*d)*erf((a+b*x)*sqrt(2))*sqrt(2/%pi)/b^2+2*(b*c-a*d)*erf(a+b*x)/(%e^((a+b*x)^2)*b^2*sqrt(%pi))+d*(a+b*x)*erf(a+b*x)/(%e^((a+b*x)^2)*b^2*sqrt(%pi))],
+[erf(a+b*x)^2,x,4,(a+b*x)*erf(a+b*x)^2/b-erf((a+b*x)*sqrt(2))*sqrt(2/%pi)/b+2*erf(a+b*x)/(%e^((a+b*x)^2)*b*sqrt(%pi))],
+[erf(a+b*x)^2/(c+d*x),x,0,Unintegrable(erf(a+b*x)^2/(c+d*x),x)],
+[erf(a+b*x)^2/(c+d*x)^2,x,0,Unintegrable(erf(a+b*x)^2/(c+d*x)^2,x)],
+
+-- Integrands of the form (e x)^m Erf[d (a+b Log[c x^n])]
+[x^2*erf(d*(a+b*log(c*x^n))),x,5,1/3*x^3*erf(d*(a+b*log(c*x^n)))-1/3*%e^(1/4*(9-12*a*b*d^2*n)/(b^2*d^2*n^2))*x^3*erf(1/2*(2*a*b*d^2+(-3)/n+2*b^2*d^2*log(c*x^n))/(b*d))/(c*x^n)^(3/n)],
+[x*erf(d*(a+b*log(c*x^n))),x,5,1/2*x^2*erf(d*(a+b*log(c*x^n)))-1/2*%e^((1-2*a*b*d^2*n)/(b^2*d^2*n^2))*x^2*erf((a*b*d^2+(-1)/n+b^2*d^2*log(c*x^n))/(b*d))/(c*x^n)^(2/n)],
+[erf(d*(a+b*log(c*x^n))),x,5,x*erf(d*(a+b*log(c*x^n)))-%e^(1/4*(1-4*a*b*d^2*n)/(b^2*d^2*n^2))*x*erf(1/2*(2*a*b*d^2+(-1)/n+2*b^2*d^2*log(c*x^n))/(b*d))/(c*x^n)^(1/n)],
+[erf(d*(a+b*log(c*x^n)))/x,x,3,erf(d*(a+b*log(c*x^n)))*(a+b*log(c*x^n))/(b*n)+1/(%e^(d^2*(a+b*log(c*x^n))^2)*b*d*n*sqrt(%pi))],
+[erf(d*(a+b*log(c*x^n)))/x^2,x,5,-erf(d*(a+b*log(c*x^n)))/x+%e^(1/4/(b^2*d^2*n^2)+a/(b*n))*(c*x^n)^(1/n)*erf(1/2*(2*a*b*d^2+1/n+2*b^2*d^2*log(c*x^n))/(b*d))/x],
+[erf(d*(a+b*log(c*x^n)))/x^3,x,5,-1/2*erf(d*(a+b*log(c*x^n)))/x^2+1/2*%e^((1+2*a*b*d^2*n)/(b^2*d^2*n^2))*(c*x^n)^(2/n)*erf((1+a*b*d^2*n+b^2*d^2*n*log(c*x^n))/(b*d*n))/x^2],
+[(e*x)^m*erf(d*(a+b*log(c*x^n))),x,5,(e*x)^(1+m)*erf(d*(a+b*log(c*x^n)))/(e*(1+m))+%e^(1/4*(1+m)*(1+m-4*a*b*d^2*n)/(b^2*d^2*n^2))*x*(e*x)^m*erf(1/2*(1+m-2*a*b*d^2*n-2*b^2*d^2*n*log(c*x^n))/(b*d*n))/((1+m)*(c*x^n)^((1+m)/n))],
+
+-- Integrands of the form (e x)^m E^(c+d x^2) Erf[a+b x]^n
+
+-- Integrands of the form E^(c-b^2 x^2) Erf[b x]^n
+[%e^(c-b^2*x^2)*erf(b*x)^2,x,2,1/6*%e^c*erf(b*x)^3*sqrt(%pi)/b],
+[%e^(c-b^2*x^2)*erf(b*x),x,2,1/4*%e^c*erf(b*x)^2*sqrt(%pi)/b],
+[%e^(c-b^2*x^2)/erf(b*x),x,2,1/2*%e^c*log(erf(b*x))*sqrt(%pi)/b],
+[%e^(c-b^2*x^2)/erf(b*x)^2,x,2,-1/2*%e^c*sqrt(%pi)/(b*erf(b*x))],
+[%e^(c-b^2*x^2)/erf(b*x)^3,x,2,-1/4*%e^c*sqrt(%pi)/(b*erf(b*x)^2)],
+[%e^(c-b^2*x^2)*erf(b*x)^n,x,2,1/2*%e^c*erf(b*x)^(1+n)*sqrt(%pi)/(b*(1+n))],
+
+-- Integrands of the form x^m E^(c+d x^2) Erf[b x]
+[%e^(c+d*x^2)*x^5*erf(b*x),x,9,%e^(c+d*x^2)*erf(b*x)/d^3-%e^(c+d*x^2)*x^2*erf(b*x)/d^2+1/2*%e^(c+d*x^2)*x^4*erf(b*x)/d+1/2*%e^c*b*erf(x*sqrt(b^2-d))/((b^2-d)^(3/2)*d^2)-3/8*%e^c*b*erf(x*sqrt(b^2-d))/((b^2-d)^(5/2)*d)-%e^(c-(b^2-d)*x^2)*b*x/((b^2-d)*d^2*sqrt(%pi))+3/4*%e^(c-(b^2-d)*x^2)*b*x/((b^2-d)^2*d*sqrt(%pi))+1/2*%e^(c-(b^2-d)*x^2)*b*x^3/((b^2-d)*d*sqrt(%pi))-%e^c*b*erf(x*sqrt(b^2-d))/(d^3*sqrt(b^2-d))],
+[%e^(c+d*x^2)*x^3*erf(b*x),x,5,-1/2*%e^(c+d*x^2)*erf(b*x)/d^2+1/2*%e^(c+d*x^2)*x^2*erf(b*x)/d-1/4*%e^c*b*erf(x*sqrt(b^2-d))/((b^2-d)^(3/2)*d)+1/2*%e^(c-(b^2-d)*x^2)*b*x/((b^2-d)*d*sqrt(%pi))+1/2*%e^c*b*erf(x*sqrt(b^2-d))/(d^2*sqrt(b^2-d))],
+[%e^(c+d*x^2)*x*erf(b*x),x,2,1/2*%e^(c+d*x^2)*erf(b*x)/d-1/2*%e^c*b*erf(x*sqrt(b^2-d))/(d*sqrt(b^2-d))],
+[%e^(c+d*x^2)*erf(b*x)/x,x,0,Unintegrable(%e^(c+d*x^2)*erf(b*x)/x,x)],
+[%e^(c+d*x^2)*erf(b*x)/x^3,x,3,-1/2*%e^(c+d*x^2)*erf(b*x)/x^2-%e^(c-(b^2-d)*x^2)*b/(x*sqrt(%pi))-%e^c*b*erf(x*sqrt(b^2-d))*sqrt(b^2-d)+d*Unintegrable(%e^(c+d*x^2)*erf(b*x)/x,x)],
+[%e^(c+d*x^2)*erf(b*x)/x^5,x,7,-1/4*%e^(c+d*x^2)*erf(b*x)/x^4-1/4*%e^(c+d*x^2)*d*erf(b*x)/x^2+1/3*%e^c*b*(b^2-d)^(3/2)*erf(x*sqrt(b^2-d))-1/6*%e^(c-(b^2-d)*x^2)*b/(x^3*sqrt(%pi))+1/3*%e^(c-(b^2-d)*x^2)*b*(b^2-d)/(x*sqrt(%pi))-1/2*%e^(c-(b^2-d)*x^2)*b*d/(x*sqrt(%pi))-1/2*%e^c*b*d*erf(x*sqrt(b^2-d))*sqrt(b^2-d)+1/2*d^2*Unintegrable(%e^(c+d*x^2)*erf(b*x)/x,x)],
+[%e^(c+d*x^2)*x^4*erf(b*x),x,5,-3/4*%e^(c+d*x^2)*x*erf(b*x)/d^2+1/2*%e^(c+d*x^2)*x^3*erf(b*x)/d-3/4*%e^(c-(b^2-d)*x^2)*b/((b^2-d)*d^2*sqrt(%pi))+1/2*%e^(c-(b^2-d)*x^2)*b/((b^2-d)^2*d*sqrt(%pi))+1/2*%e^(c-(b^2-d)*x^2)*b*x^2/((b^2-d)*d*sqrt(%pi))+3/4*Unintegrable(%e^(c+d*x^2)*erf(b*x),x)/d^2],
+[%e^(c+d*x^2)*x^2*erf(b*x),x,2,1/2*%e^(c+d*x^2)*x*erf(b*x)/d+1/2*%e^(c-(b^2-d)*x^2)*b/((b^2-d)*d*sqrt(%pi))-1/2*Unintegrable(%e^(c+d*x^2)*erf(b*x),x)/d],
+[%e^(c+d*x^2)*erf(b*x),x,0,Unintegrable(%e^(c+d*x^2)*erf(b*x),x)],
+[%e^(c+d*x^2)*erf(b*x)/x^2,x,2,-%e^(c+d*x^2)*erf(b*x)/x+%e^c*b*Ei(-(b^2-d)*x^2)/sqrt(%pi)+2*d*Unintegrable(%e^(c+d*x^2)*erf(b*x),x)],
+[%e^(c+d*x^2)*erf(b*x)/x^4,x,5,-1/3*%e^(c+d*x^2)*erf(b*x)/x^3-2/3*%e^(c+d*x^2)*d*erf(b*x)/x-1/3*%e^(c-(b^2-d)*x^2)*b/(x^2*sqrt(%pi))-1/3*%e^c*b*(b^2-d)*Ei(-(b^2-d)*x^2)/sqrt(%pi)+2/3*%e^c*b*d*Ei(-(b^2-d)*x^2)/sqrt(%pi)+4/3*d^2*Unintegrable(%e^(c+d*x^2)*erf(b*x),x)],
+[%e^(c+b^2*x^2)*x^5*erf(b*x),x,8,%e^(c+b^2*x^2)*erf(b*x)/b^6-%e^(c+b^2*x^2)*x^2*erf(b*x)/b^4+1/2*%e^(c+b^2*x^2)*x^4*erf(b*x)/b^2-2*%e^c*x/(b^5*sqrt(%pi))+2/3*%e^c*x^3/(b^3*sqrt(%pi))-1/5*%e^c*x^5/(b*sqrt(%pi))],
+[%e^(c+b^2*x^2)*x^3*erf(b*x),x,5,-1/2*%e^(c+b^2*x^2)*erf(b*x)/b^4+1/2*%e^(c+b^2*x^2)*x^2*erf(b*x)/b^2+%e^c*x/(b^3*sqrt(%pi))-1/3*%e^c*x^3/(b*sqrt(%pi))],
+[%e^(c+b^2*x^2)*x*erf(b*x),x,2,1/2*%e^(c+b^2*x^2)*erf(b*x)/b^2-%e^c*x/(b*sqrt(%pi))],
+[%e^(c+b^2*x^2)*erf(b*x)/x,x,1,2*%e^c*b*x*HypergeometricPFQ([1/2,1],[3/2,3/2],b^2*x^2)/sqrt(%pi)],
+[%e^(c+b^2*x^2)*erf(b*x)/x^3,x,4,-1/2*%e^(c+b^2*x^2)*erf(b*x)/x^2-%e^c*b/(x*sqrt(%pi))+2*%e^c*b^3*x*HypergeometricPFQ([1/2,1],[3/2,3/2],b^2*x^2)/sqrt(%pi)],
+[%e^(c+b^2*x^2)*erf(b*x)/x^5,x,7,-1/4*%e^(c+b^2*x^2)*erf(b*x)/x^4-1/4*%e^(c+b^2*x^2)*b^2*erf(b*x)/x^2-1/6*%e^c*b/(x^3*sqrt(%pi))-1/2*%e^c*b^3/(x*sqrt(%pi))+%e^c*b^5*x*HypergeometricPFQ([1/2,1],[3/2,3/2],b^2*x^2)/sqrt(%pi)],
+[%e^(c+b^2*x^2)*x^4*erf(b*x),x,7,-3/4*%e^(c+b^2*x^2)*x*erf(b*x)/b^4+1/2*%e^(c+b^2*x^2)*x^3*erf(b*x)/b^2+3/4*%e^c*x^2/(b^3*sqrt(%pi))-1/4*%e^c*x^4/(b*sqrt(%pi))+3/4*%e^c*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/(b^3*sqrt(%pi))],
+[%e^(c+b^2*x^2)*x^2*erf(b*x),x,4,1/2*%e^(c+b^2*x^2)*x*erf(b*x)/b^2-1/2*%e^c*x^2/(b*sqrt(%pi))-1/2*%e^c*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/(b*sqrt(%pi))],
+[%e^(c+b^2*x^2)*erf(b*x),x,1,%e^c*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)],
+[%e^(c+b^2*x^2)*erf(b*x)/x^2,x,4,-%e^(c+b^2*x^2)*erf(b*x)/x+2*%e^c*b^3*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)+2*%e^c*b*log(x)/sqrt(%pi)],
+[%e^(c+b^2*x^2)*erf(b*x)/x^4,x,7,-1/3*%e^(c+b^2*x^2)*erf(b*x)/x^3-2/3*%e^(c+b^2*x^2)*b^2*erf(b*x)/x-1/3*%e^c*b/(x^2*sqrt(%pi))+4/3*%e^c*b^5*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)+4/3*%e^c*b^3*log(x)/sqrt(%pi)],
+[x^5*erf(b*x)/%e^(b^2*x^2),x,9,-erf(b*x)/(%e^(b^2*x^2)*b^6)-x^2*erf(b*x)/(%e^(b^2*x^2)*b^4)-1/2*x^4*erf(b*x)/(%e^(b^2*x^2)*b^2)+43/32*erf(b*x*sqrt(2))/(b^6*sqrt(2))-11/16*x/(%e^(2*b^2*x^2)*b^5*sqrt(%pi))-1/4*x^3/(%e^(2*b^2*x^2)*b^3*sqrt(%pi))],
+[x^3*erf(b*x)/%e^(b^2*x^2),x,5,-1/2*erf(b*x)/(%e^(b^2*x^2)*b^4)-1/2*x^2*erf(b*x)/(%e^(b^2*x^2)*b^2)+5/8*erf(b*x*sqrt(2))/(b^4*sqrt(2))-1/4*x/(%e^(2*b^2*x^2)*b^3*sqrt(%pi))],
+[x*erf(b*x)/%e^(b^2*x^2),x,2,-1/2*erf(b*x)/(%e^(b^2*x^2)*b^2)+1/2*erf(b*x*sqrt(2))/(b^2*sqrt(2))],
+[erf(b*x)/(%e^(b^2*x^2)*x),x,0,Unintegrable(erf(b*x)/(%e^(b^2*x^2)*x),x)],
+[erf(b*x)/(%e^(b^2*x^2)*x^3),x,3,-1/2*erf(b*x)/(%e^(b^2*x^2)*x^2)-b^2*erf(b*x*sqrt(2))*sqrt(2)-b/(%e^(2*b^2*x^2)*x*sqrt(%pi))-b^2*Unintegrable(erf(b*x)/(%e^(b^2*x^2)*x),x)],
+[erf(b*x)/(%e^(b^2*x^2)*x^5),x,7,-1/4*erf(b*x)/(%e^(b^2*x^2)*x^4)+1/4*b^2*erf(b*x)/(%e^(b^2*x^2)*x^2)+b^4*erf(b*x*sqrt(2))/sqrt(2)+2/3*b^4*erf(b*x*sqrt(2))*sqrt(2)-1/6*b/(%e^(2*b^2*x^2)*x^3*sqrt(%pi))+7/6*b^3/(%e^(2*b^2*x^2)*x*sqrt(%pi))+1/2*b^4*Unintegrable(erf(b*x)/(%e^(b^2*x^2)*x),x)],
+[x^4*erf(b*x)/%e^(b^2*x^2),x,7,-3/4*x*erf(b*x)/(%e^(b^2*x^2)*b^4)-1/2*x^3*erf(b*x)/(%e^(b^2*x^2)*b^2)+(-1/2)/(%e^(2*b^2*x^2)*b^5*sqrt(%pi))-1/4*x^2/(%e^(2*b^2*x^2)*b^3*sqrt(%pi))+3/16*erf(b*x)^2*sqrt(%pi)/b^5],
+[x^2*erf(b*x)/%e^(b^2*x^2),x,4,-1/2*x*erf(b*x)/(%e^(b^2*x^2)*b^2)+(-1/4)/(%e^(2*b^2*x^2)*b^3*sqrt(%pi))+1/8*erf(b*x)^2*sqrt(%pi)/b^3],
+[erf(b*x)/%e^(b^2*x^2),x,2,1/4*erf(b*x)^2*sqrt(%pi)/b],
+[erf(b*x)/(%e^(b^2*x^2)*x^2),x,4,-erf(b*x)/(%e^(b^2*x^2)*x)+b*Ei(-2*b^2*x^2)/sqrt(%pi)-1/2*b*erf(b*x)^2*sqrt(%pi)],
+[erf(b*x)/(%e^(b^2*x^2)*x^4),x,7,-1/3*erf(b*x)/(%e^(b^2*x^2)*x^3)+2/3*b^2*erf(b*x)/(%e^(b^2*x^2)*x)-1/3*b/(%e^(2*b^2*x^2)*x^2*sqrt(%pi))-4/3*b^3*Ei(-2*b^2*x^2)/sqrt(%pi)+1/3*b^3*erf(b*x)^2*sqrt(%pi)],
+
+-- Integrands of the form x^m E^(c+d x^2) Erf[a+b x]
+[%e^(c+d*x^2)*x^3*erf(a+b*x),x,10,-1/2*%e^(c+d*x^2)*erf(a+b*x)/d^2+1/2*%e^(c+d*x^2)*x^2*erf(a+b*x)/d-1/2*%e^(c+a^2*d/(b^2-d))*a^2*b^3*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/((b^2-d)^(5/2)*d)-1/4*%e^(c+a^2*d/(b^2-d))*b*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/((b^2-d)^(3/2)*d)-1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*a*b^2/((b^2-d)^2*d*sqrt(%pi))+1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b*x/((b^2-d)*d*sqrt(%pi))+1/2*%e^(c+a^2*d/(b^2-d))*b*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/(d^2*sqrt(b^2-d))],
+[%e^(c+d*x^2)*x*erf(a+b*x),x,3,1/2*%e^(c+d*x^2)*erf(a+b*x)/d-1/2*%e^(c+a^2*d/(b^2-d))*b*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/(d*sqrt(b^2-d))],
+[%e^(c+d*x^2)*erf(a+b*x)/x,x,0,Unintegrable(%e^(c+d*x^2)*erf(a+b*x)/x,x)],
+[%e^(c+d*x^2)*erf(a+b*x)/x^3,x,4,-1/2*%e^(c+d*x^2)*erf(a+b*x)/x^2-%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b/(x*sqrt(%pi))-%e^(c+a^2*d/(b^2-d))*b*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))*sqrt(b^2-d)-2*a*b^2*Unintegrable(%e^(-a^2+c-2*a*b*x+(-b^2+d)*x^2)/x,x)/sqrt(%pi)+d*Unintegrable(%e^(c+d*x^2)*erf(a+b*x)/x,x)],
+[%e^(c+d*x^2)*x^4*erf(a+b*x),x,15,-3/4*%e^(c+d*x^2)*x*erf(a+b*x)/d^2+1/2*%e^(c+d*x^2)*x^3*erf(a+b*x)/d-3/4*%e^(c+a^2*d/(b^2-d))*a*b^2*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/((b^2-d)^(3/2)*d^2)+1/2*%e^(c+a^2*d/(b^2-d))*a^3*b^4*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/((b^2-d)^(7/2)*d)+3/4*%e^(c+a^2*d/(b^2-d))*a*b^2*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/((b^2-d)^(5/2)*d)-3/4*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b/((b^2-d)*d^2*sqrt(%pi))+1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*a^2*b^3/((b^2-d)^3*d*sqrt(%pi))+1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b/((b^2-d)^2*d*sqrt(%pi))-1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*a*b^2*x/((b^2-d)^2*d*sqrt(%pi))+1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b*x^2/((b^2-d)*d*sqrt(%pi))+3/4*Unintegrable(%e^(c+d*x^2)*erf(a+b*x),x)/d^2],
+[%e^(c+d*x^2)*x^2*erf(a+b*x),x,4,1/2*%e^(c+d*x^2)*x*erf(a+b*x)/d+1/2*%e^(c+a^2*d/(b^2-d))*a*b^2*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/((b^2-d)^(3/2)*d)+1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b/((b^2-d)*d*sqrt(%pi))-1/2*Unintegrable(%e^(c+d*x^2)*erf(a+b*x),x)/d],
+[%e^(c+d*x^2)*erf(a+b*x),x,0,Unintegrable(%e^(c+d*x^2)*erf(a+b*x),x)],
+[%e^(c+d*x^2)*erf(a+b*x)/x^2,x,1,-%e^(c+d*x^2)*erf(a+b*x)/x+2*b*Unintegrable(%e^(-a^2+c-2*a*b*x+(-b^2+d)*x^2)/x,x)/sqrt(%pi)+2*d*Unintegrable(%e^(c+d*x^2)*erf(a+b*x),x)],
+[%e^(c+d*x^2)*erf(a+b*x)/x^4,x,6,-1/3*%e^(c+d*x^2)*erf(a+b*x)/x^3-2/3*%e^(c+d*x^2)*d*erf(a+b*x)/x-1/3*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b/(x^2*sqrt(%pi))+2/3*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*a*b^2/(x*sqrt(%pi))+2/3*%e^(c+a^2*d/(b^2-d))*a*b^2*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))*sqrt(b^2-d)+4/3*a^2*b^3*Unintegrable(%e^(-a^2+c-2*a*b*x+(-b^2+d)*x^2)/x,x)/sqrt(%pi)-2/3*b*(b^2-d)*Unintegrable(%e^(-a^2+c-2*a*b*x+(-b^2+d)*x^2)/x,x)/sqrt(%pi)+4/3*b*d*Unintegrable(%e^(-a^2+c-2*a*b*x+(-b^2+d)*x^2)/x,x)/sqrt(%pi)+4/3*d^2*Unintegrable(%e^(c+d*x^2)*erf(a+b*x),x)],
+[erf(b*x)/(%e^(b^2*x^2)*x^3)+b^2*erf(b*x)/(%e^(b^2*x^2)*x),x,4,-1/2*erf(b*x)/(%e^(b^2*x^2)*x^2)-b^2*erf(b*x*sqrt(2))*sqrt(2)-b/(%e^(2*b^2*x^2)*x*sqrt(%pi))],
+
+-- Integrands of the form (e x)^m Trig[c+d x^2] Erf[a+b x]^n
+[erf(b*x)*sin(c+%i*b^2*x^2),x,4,1/2*%i*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/(%e^(%i*c)*sqrt(%pi))-1/8*%i*%e^(%i*c)*erf(b*x)^2*sqrt(%pi)/b],
+[erf(b*x)*sin(c-%i*b^2*x^2),x,4,-1/2*%i*%e^(%i*c)*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)+1/8*%i*erf(b*x)^2*sqrt(%pi)/(%e^(%i*c)*b)],
+[cos(c+%i*b^2*x^2)*erf(b*x),x,4,1/2*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/(%e^(%i*c)*sqrt(%pi))+1/8*%e^(%i*c)*erf(b*x)^2*sqrt(%pi)/b],
+[cos(c-%i*b^2*x^2)*erf(b*x),x,4,1/2*%e^(%i*c)*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)+1/8*erf(b*x)^2*sqrt(%pi)/(%e^(%i*c)*b)],
+[erf(b*x)*sinh(c+b^2*x^2),x,4,1/2*%e^c*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)-1/8*erf(b*x)^2*sqrt(%pi)/(%e^c*b)],
+[erf(b*x)*sinh(c-b^2*x^2),x,4,-1/2*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/(%e^c*sqrt(%pi))+1/8*%e^c*erf(b*x)^2*sqrt(%pi)/b],
+[cosh(c+b^2*x^2)*erf(b*x),x,4,1/2*%e^c*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)+1/8*erf(b*x)^2*sqrt(%pi)/(%e^c*b)],
+[cosh(c-b^2*x^2)*erf(b*x),x,4,1/2*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/(%e^c*sqrt(%pi))+1/8*%e^c*erf(b*x)^2*sqrt(%pi)/b],
+
+-- Integration Problems Involving The Complementary Error Function
+
+-- Integrands of the form (c+d x)^m Erfc[a+b x]
+
+-- Integrands of the form x^m Erfc[b x]
+[x^5*erfc(b*x),x,5,5/16*erf(b*x)/b^6+1/6*x^6*erfc(b*x)-5/8*x/(%e^(b^2*x^2)*b^5*sqrt(%pi))-5/12*x^3/(%e^(b^2*x^2)*b^3*sqrt(%pi))-1/6*x^5/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[x^3*erfc(b*x),x,4,3/16*erf(b*x)/b^4+1/4*x^4*erfc(b*x)-3/8*x/(%e^(b^2*x^2)*b^3*sqrt(%pi))-1/4*x^3/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[x*erfc(b*x),x,3,1/4*erf(b*x)/b^2+1/2*x^2*erfc(b*x)-1/2*x/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[erfc(b*x)/x,x,2,log(x)-2*b*x*HypergeometricPFQ([1/2,1/2],[3/2,3/2],-b^2*x^2)/sqrt(%pi)],
+[erfc(b*x)/x^3,x,3,b^2*erf(b*x)-1/2*erfc(b*x)/x^2+b/(%e^(b^2*x^2)*x*sqrt(%pi))],
+[erfc(b*x)/x^5,x,4,-1/3*b^4*erf(b*x)-1/4*erfc(b*x)/x^4+1/6*b/(%e^(b^2*x^2)*x^3*sqrt(%pi))-1/3*b^3/(%e^(b^2*x^2)*x*sqrt(%pi))],
+[erfc(b*x)/x^7,x,5,4/45*b^6*erf(b*x)-1/6*erfc(b*x)/x^6+1/15*b/(%e^(b^2*x^2)*x^5*sqrt(%pi))-2/45*b^3/(%e^(b^2*x^2)*x^3*sqrt(%pi))+4/45*b^5/(%e^(b^2*x^2)*x*sqrt(%pi))],
+[x^6*erfc(b*x),x,5,1/7*x^7*erfc(b*x)+(-6/7)/(%e^(b^2*x^2)*b^7*sqrt(%pi))-6/7*x^2/(%e^(b^2*x^2)*b^5*sqrt(%pi))-3/7*x^4/(%e^(b^2*x^2)*b^3*sqrt(%pi))-1/7*x^6/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[x^4*erfc(b*x),x,4,1/5*x^5*erfc(b*x)+(-2/5)/(%e^(b^2*x^2)*b^5*sqrt(%pi))-2/5*x^2/(%e^(b^2*x^2)*b^3*sqrt(%pi))-1/5*x^4/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[x^2*erfc(b*x),x,3,1/3*x^3*erfc(b*x)+(-1/3)/(%e^(b^2*x^2)*b^3*sqrt(%pi))-1/3*x^2/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[erfc(b*x),x,1,x*erfc(b*x)+(-1)/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[erfc(b*x)/x^2,x,2,-erfc(b*x)/x-b*Ei(-b^2*x^2)/sqrt(%pi)],
+[erfc(b*x)/x^4,x,3,-1/3*erfc(b*x)/x^3+1/3*b/(%e^(b^2*x^2)*x^2*sqrt(%pi))+1/3*b^3*Ei(-b^2*x^2)/sqrt(%pi)],
+[erfc(b*x)/x^6,x,4,-1/5*erfc(b*x)/x^5+1/10*b/(%e^(b^2*x^2)*x^4*sqrt(%pi))-1/10*b^3/(%e^(b^2*x^2)*x^2*sqrt(%pi))-1/10*b^5*Ei(-b^2*x^2)/sqrt(%pi)],
+
+-- Integrands of the form (c+d x)^m Erfc[a+b x]
+[(c+d*x)^3*erfc(a+b*x),x,12,3/16*d^3*erf(a+b*x)/b^4+3/4*d*(b*c-a*d)^2*erf(a+b*x)/b^4+1/4*(b*c-a*d)^4*erf(a+b*x)/(b^4*d)+1/4*(c+d*x)^4*erfc(a+b*x)/d-d^2*(b*c-a*d)/(%e^((a+b*x)^2)*b^4*sqrt(%pi))-(b*c-a*d)^3/(%e^((a+b*x)^2)*b^4*sqrt(%pi))-3/8*d^3*(a+b*x)/(%e^((a+b*x)^2)*b^4*sqrt(%pi))-3/2*d*(b*c-a*d)^2*(a+b*x)/(%e^((a+b*x)^2)*b^4*sqrt(%pi))-d^2*(b*c-a*d)*(a+b*x)^2/(%e^((a+b*x)^2)*b^4*sqrt(%pi))-1/4*d^3*(a+b*x)^3/(%e^((a+b*x)^2)*b^4*sqrt(%pi))],
+[(c+d*x)^2*erfc(a+b*x),x,9,1/2*d*(b*c-a*d)*erf(a+b*x)/b^3+1/3*(b*c-a*d)^3*erf(a+b*x)/(b^3*d)+1/3*(c+d*x)^3*erfc(a+b*x)/d-1/3*d^2/(%e^((a+b*x)^2)*b^3*sqrt(%pi))-(b*c-a*d)^2/(%e^((a+b*x)^2)*b^3*sqrt(%pi))-d*(b*c-a*d)*(a+b*x)/(%e^((a+b*x)^2)*b^3*sqrt(%pi))-1/3*d^2*(a+b*x)^2/(%e^((a+b*x)^2)*b^3*sqrt(%pi))],
+[(c+d*x)*erfc(a+b*x),x,7,1/4*d*erf(a+b*x)/b^2+1/2*(b*c-a*d)^2*erf(a+b*x)/(b^2*d)+1/2*(c+d*x)^2*erfc(a+b*x)/d+(-b*c+a*d)/(%e^((a+b*x)^2)*b^2*sqrt(%pi))-1/2*d*(a+b*x)/(%e^((a+b*x)^2)*b^2*sqrt(%pi))],
+[erfc(a+b*x),x,1,(a+b*x)*erfc(a+b*x)/b+(-1)/(%e^((a+b*x)^2)*b*sqrt(%pi))],
+[erfc(a+b*x)/(c+d*x),x,0,Unintegrable(erfc(a+b*x)/(c+d*x),x)],
+[erfc(a+b*x)/(c+d*x)^2,x,1,-erfc(a+b*x)/(d*(c+d*x))-2*b*Unintegrable(1/(%e^((a+b*x)^2)*(c+d*x)),x)/(d*sqrt(%pi))],
+[erfc(a+b*x)/(c+d*x)^3,x,3,b^2*erf(a+b*x)/d^3-1/2*erfc(a+b*x)/(d*(c+d*x)^2)+b/(%e^((a+b*x)^2)*d^2*(c+d*x)*sqrt(%pi))-2*b^2*(b*c-a*d)*Unintegrable(1/(%e^((a+b*x)^2)*(c+d*x)),x)/(d^3*sqrt(%pi))],
+
+-- Integrands of the form (c+d x)^m Erfc[a+b x]^2
+
+-- Integrands of the form x^m Erfc[b x]^2
+[x^5*erfc(b*x)^2,x,12,11/12/(%e^(2*b^2*x^2)*%pi*b^6)+7/12*x^2/(%e^(2*b^2*x^2)*%pi*b^4)+1/6*x^4/(%e^(2*b^2*x^2)*%pi*b^2)-5/16*erfc(b*x)^2/b^6+1/6*x^6*erfc(b*x)^2-5/4*x*erfc(b*x)/(%e^(b^2*x^2)*b^5*sqrt(%pi))-5/6*x^3*erfc(b*x)/(%e^(b^2*x^2)*b^3*sqrt(%pi))-1/3*x^5*erfc(b*x)/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[x^3*erfc(b*x)^2,x,8,1/2/(%e^(2*b^2*x^2)*%pi*b^4)+1/4*x^2/(%e^(2*b^2*x^2)*%pi*b^2)-3/16*erfc(b*x)^2/b^4+1/4*x^4*erfc(b*x)^2-3/4*x*erfc(b*x)/(%e^(b^2*x^2)*b^3*sqrt(%pi))-1/2*x^3*erfc(b*x)/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[x*erfc(b*x)^2,x,5,1/2/(%e^(2*b^2*x^2)*%pi*b^2)-1/4*erfc(b*x)^2/b^2+1/2*x^2*erfc(b*x)^2-x*erfc(b*x)/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[erfc(b*x)^2/x,x,0,Unintegrable(erfc(b*x)^2/x,x)],
+[erfc(b*x)^2/x^3,x,5,2*b^2*Ei(-2*b^2*x^2)/%pi-b^2*erfc(b*x)^2-1/2*erfc(b*x)^2/x^2+2*b*erfc(b*x)/(%e^(b^2*x^2)*x*sqrt(%pi))],
+[erfc(b*x)^2/x^5,x,8,-1/3*b^2/(%e^(2*b^2*x^2)*%pi*x^2)-4/3*b^4*Ei(-2*b^2*x^2)/%pi+1/3*b^4*erfc(b*x)^2-1/4*erfc(b*x)^2/x^4+1/3*b*erfc(b*x)/(%e^(b^2*x^2)*x^3*sqrt(%pi))-2/3*b^3*erfc(b*x)/(%e^(b^2*x^2)*x*sqrt(%pi))],
+[erfc(b*x)^2/x^7,x,12,-1/15*b^2/(%e^(2*b^2*x^2)*%pi*x^4)+2/9*b^4/(%e^(2*b^2*x^2)*%pi*x^2)+28/45*b^6*Ei(-2*b^2*x^2)/%pi-4/45*b^6*erfc(b*x)^2-1/6*erfc(b*x)^2/x^6+2/15*b*erfc(b*x)/(%e^(b^2*x^2)*x^5*sqrt(%pi))-4/45*b^3*erfc(b*x)/(%e^(b^2*x^2)*x^3*sqrt(%pi))+8/45*b^5*erfc(b*x)/(%e^(b^2*x^2)*x*sqrt(%pi))],
+[x^4*erfc(b*x)^2,x,10,11/20*x/(%e^(2*b^2*x^2)*%pi*b^4)+1/5*x^3/(%e^(2*b^2*x^2)*%pi*b^2)+1/5*x^5*erfc(b*x)^2-4/5*erfc(b*x)/(%e^(b^2*x^2)*b^5*sqrt(%pi))-4/5*x^2*erfc(b*x)/(%e^(b^2*x^2)*b^3*sqrt(%pi))-2/5*x^4*erfc(b*x)/(%e^(b^2*x^2)*b*sqrt(%pi))-43/40*erf(b*x*sqrt(2))/(b^5*sqrt(2*%pi))],
+[x^2*erfc(b*x)^2,x,6,1/3*x/(%e^(2*b^2*x^2)*%pi*b^2)+1/3*x^3*erfc(b*x)^2-2/3*erfc(b*x)/(%e^(b^2*x^2)*b^3*sqrt(%pi))-2/3*x^2*erfc(b*x)/(%e^(b^2*x^2)*b*sqrt(%pi))-5/6*erf(b*x*sqrt(2))/(b^3*sqrt(2*%pi))],
+[erfc(b*x)^2,x,4,x*erfc(b*x)^2-erf(b*x*sqrt(2))*sqrt(2/%pi)/b-2*erfc(b*x)/(%e^(b^2*x^2)*b*sqrt(%pi))],
+[erfc(b*x)^2/x^2,x,0,Unintegrable(erfc(b*x)^2/x^2,x)],
+[erfc(b*x)^2/x^4,x,0,Unintegrable(erfc(b*x)^2/x^4,x)],
+[erfc(b*x)^2/x^6,x,0,Unintegrable(erfc(b*x)^2/x^6,x)],
+
+-- Integrands of the form (c+d x)^m Erfc[a+b x]^2
+[(c+d*x)^2*erfc(a+b*x)^2,x,16,d*(b*c-a*d)/(%e^(2*(a+b*x)^2)*%pi*b^3)+1/3*d^2*(a+b*x)/(%e^(2*(a+b*x)^2)*%pi*b^3)-1/2*d*(b*c-a*d)*erfc(a+b*x)^2/b^3+(b*c-a*d)^2*(a+b*x)*erfc(a+b*x)^2/b^3+d*(b*c-a*d)*(a+b*x)^2*erfc(a+b*x)^2/b^3+1/3*d^2*(a+b*x)^3*erfc(a+b*x)^2/b^3-(b*c-a*d)^2*erf((a+b*x)*sqrt(2))*sqrt(2/%pi)/b^3-2/3*d^2*erfc(a+b*x)/(%e^((a+b*x)^2)*b^3*sqrt(%pi))-2*(b*c-a*d)^2*erfc(a+b*x)/(%e^((a+b*x)^2)*b^3*sqrt(%pi))-2*d*(b*c-a*d)*(a+b*x)*erfc(a+b*x)/(%e^((a+b*x)^2)*b^3*sqrt(%pi))-2/3*d^2*(a+b*x)^2*erfc(a+b*x)/(%e^((a+b*x)^2)*b^3*sqrt(%pi))-5/6*d^2*erf((a+b*x)*sqrt(2))/(b^3*sqrt(2*%pi))],
+[(c+d*x)*erfc(a+b*x)^2,x,10,1/2*d/(%e^(2*(a+b*x)^2)*%pi*b^2)-1/4*d*erfc(a+b*x)^2/b^2+(b*c-a*d)*(a+b*x)*erfc(a+b*x)^2/b^2+1/2*d*(a+b*x)^2*erfc(a+b*x)^2/b^2-(b*c-a*d)*erf((a+b*x)*sqrt(2))*sqrt(2/%pi)/b^2-2*(b*c-a*d)*erfc(a+b*x)/(%e^((a+b*x)^2)*b^2*sqrt(%pi))-d*(a+b*x)*erfc(a+b*x)/(%e^((a+b*x)^2)*b^2*sqrt(%pi))],
+[erfc(a+b*x)^2,x,4,(a+b*x)*erfc(a+b*x)^2/b-erf((a+b*x)*sqrt(2))*sqrt(2/%pi)/b-2*erfc(a+b*x)/(%e^((a+b*x)^2)*b*sqrt(%pi))],
+[erfc(a+b*x)^2/(c+d*x),x,0,Unintegrable(erfc(a+b*x)^2/(c+d*x),x)],
+[erfc(a+b*x)^2/(c+d*x)^2,x,0,Unintegrable(erfc(a+b*x)^2/(c+d*x)^2,x)],
+
+-- Integrands of the form (e x)^m Erfc[d (a+b Log[c x^n])]
+[x^2*erfc(d*(a+b*log(c*x^n))),x,5,1/3*%e^(1/4*(9-12*a*b*d^2*n)/(b^2*d^2*n^2))*x^3*erf(1/2*(2*a*b*d^2+(-3)/n+2*b^2*d^2*log(c*x^n))/(b*d))/(c*x^n)^(3/n)+1/3*x^3*erfc(d*(a+b*log(c*x^n)))],
+[x*erfc(d*(a+b*log(c*x^n))),x,5,1/2*%e^((1-2*a*b*d^2*n)/(b^2*d^2*n^2))*x^2*erf((a*b*d^2+(-1)/n+b^2*d^2*log(c*x^n))/(b*d))/(c*x^n)^(2/n)+1/2*x^2*erfc(d*(a+b*log(c*x^n)))],
+[erfc(d*(a+b*log(c*x^n))),x,5,%e^(1/4*(1-4*a*b*d^2*n)/(b^2*d^2*n^2))*x*erf(1/2*(2*a*b*d^2+(-1)/n+2*b^2*d^2*log(c*x^n))/(b*d))/(c*x^n)^(1/n)+x*erfc(d*(a+b*log(c*x^n)))],
+[erfc(d*(a+b*log(c*x^n)))/x,x,3,erfc(d*(a+b*log(c*x^n)))*(a+b*log(c*x^n))/(b*n)+(-1)/(%e^(d^2*(a+b*log(c*x^n))^2)*b*d*n*sqrt(%pi))],
+[erfc(d*(a+b*log(c*x^n)))/x^2,x,5,-%e^(1/4/(b^2*d^2*n^2)+a/(b*n))*(c*x^n)^(1/n)*erf(1/2*(2*a*b*d^2+1/n+2*b^2*d^2*log(c*x^n))/(b*d))/x-erfc(d*(a+b*log(c*x^n)))/x],
+[erfc(d*(a+b*log(c*x^n)))/x^3,x,5,-1/2*%e^((1+2*a*b*d^2*n)/(b^2*d^2*n^2))*(c*x^n)^(2/n)*erf((1+a*b*d^2*n+b^2*d^2*n*log(c*x^n))/(b*d*n))/x^2-1/2*erfc(d*(a+b*log(c*x^n)))/x^2],
+[(e*x)^m*erfc(d*(a+b*log(c*x^n))),x,5,-%e^(1/4*(1+m)*(1+m-4*a*b*d^2*n)/(b^2*d^2*n^2))*x*(e*x)^m*erf(1/2*(1+m-2*a*b*d^2*n-2*b^2*d^2*n*log(c*x^n))/(b*d*n))/((1+m)*(c*x^n)^((1+m)/n))+(e*x)^(1+m)*erfc(d*(a+b*log(c*x^n)))/(e*(1+m))],
+
+-- Integrands of the form (e x)^m E^(c+d x^2) Erfc[a+b x]^n
+
+-- Integrands of the form E^(c-b^2 x^2) Erfc[b x]^n
+[%e^(c-b^2*x^2)*erfc(b*x)^2,x,2,-1/6*%e^c*erfc(b*x)^3*sqrt(%pi)/b],
+[%e^(c-b^2*x^2)*erfc(b*x),x,2,-1/4*%e^c*erfc(b*x)^2*sqrt(%pi)/b],
+[%e^(c-b^2*x^2)/erfc(b*x),x,2,-1/2*%e^c*log(erfc(b*x))*sqrt(%pi)/b],
+[%e^(c-b^2*x^2)/erfc(b*x)^2,x,2,1/2*%e^c*sqrt(%pi)/(b*erfc(b*x))],
+[%e^(c-b^2*x^2)/erfc(b*x)^3,x,2,1/4*%e^c*sqrt(%pi)/(b*erfc(b*x)^2)],
+[%e^(c-b^2*x^2)*erfc(b*x)^n,x,2,-1/2*%e^c*erfc(b*x)^(1+n)*sqrt(%pi)/(b*(1+n))],
+
+-- Integrands of the form x^m E^(c+d x^2) Erfc[b x]
+[%e^(c+d*x^2)*x^5*erfc(b*x),x,9,-1/2*%e^c*b*erf(x*sqrt(b^2-d))/((b^2-d)^(3/2)*d^2)+3/8*%e^c*b*erf(x*sqrt(b^2-d))/((b^2-d)^(5/2)*d)+%e^(c+d*x^2)*erfc(b*x)/d^3-%e^(c+d*x^2)*x^2*erfc(b*x)/d^2+1/2*%e^(c+d*x^2)*x^4*erfc(b*x)/d+%e^(c-(b^2-d)*x^2)*b*x/((b^2-d)*d^2*sqrt(%pi))-3/4*%e^(c-(b^2-d)*x^2)*b*x/((b^2-d)^2*d*sqrt(%pi))-1/2*%e^(c-(b^2-d)*x^2)*b*x^3/((b^2-d)*d*sqrt(%pi))+%e^c*b*erf(x*sqrt(b^2-d))/(d^3*sqrt(b^2-d))],
+[%e^(c+d*x^2)*x^3*erfc(b*x),x,5,1/4*%e^c*b*erf(x*sqrt(b^2-d))/((b^2-d)^(3/2)*d)-1/2*%e^(c+d*x^2)*erfc(b*x)/d^2+1/2*%e^(c+d*x^2)*x^2*erfc(b*x)/d-1/2*%e^(c-(b^2-d)*x^2)*b*x/((b^2-d)*d*sqrt(%pi))-1/2*%e^c*b*erf(x*sqrt(b^2-d))/(d^2*sqrt(b^2-d))],
+[%e^(c+d*x^2)*x*erfc(b*x),x,2,1/2*%e^(c+d*x^2)*erfc(b*x)/d+1/2*%e^c*b*erf(x*sqrt(b^2-d))/(d*sqrt(b^2-d))],
+[%e^(c+d*x^2)*erfc(b*x)/x,x,0,Unintegrable(%e^(c+d*x^2)*erfc(b*x)/x,x)],
+[%e^(c+d*x^2)*erfc(b*x)/x^3,x,3,-1/2*%e^(c+d*x^2)*erfc(b*x)/x^2+%e^(c-(b^2-d)*x^2)*b/(x*sqrt(%pi))+%e^c*b*erf(x*sqrt(b^2-d))*sqrt(b^2-d)+d*Unintegrable(%e^(c+d*x^2)*erfc(b*x)/x,x)],
+[%e^(c+d*x^2)*erfc(b*x)/x^5,x,7,-1/3*%e^c*b*(b^2-d)^(3/2)*erf(x*sqrt(b^2-d))-1/4*%e^(c+d*x^2)*erfc(b*x)/x^4-1/4*%e^(c+d*x^2)*d*erfc(b*x)/x^2+1/6*%e^(c-(b^2-d)*x^2)*b/(x^3*sqrt(%pi))-1/3*%e^(c-(b^2-d)*x^2)*b*(b^2-d)/(x*sqrt(%pi))+1/2*%e^(c-(b^2-d)*x^2)*b*d/(x*sqrt(%pi))+1/2*%e^c*b*d*erf(x*sqrt(b^2-d))*sqrt(b^2-d)+1/2*d^2*Unintegrable(%e^(c+d*x^2)*erfc(b*x)/x,x)],
+[%e^(c+d*x^2)*x^4*erfc(b*x),x,5,-3/4*%e^(c+d*x^2)*x*erfc(b*x)/d^2+1/2*%e^(c+d*x^2)*x^3*erfc(b*x)/d+3/4*%e^(c-(b^2-d)*x^2)*b/((b^2-d)*d^2*sqrt(%pi))-1/2*%e^(c-(b^2-d)*x^2)*b/((b^2-d)^2*d*sqrt(%pi))-1/2*%e^(c-(b^2-d)*x^2)*b*x^2/((b^2-d)*d*sqrt(%pi))+3/4*Unintegrable(%e^(c+d*x^2)*erfc(b*x),x)/d^2],
+[%e^(c+d*x^2)*x^2*erfc(b*x),x,2,1/2*%e^(c+d*x^2)*x*erfc(b*x)/d-1/2*%e^(c-(b^2-d)*x^2)*b/((b^2-d)*d*sqrt(%pi))-1/2*Unintegrable(%e^(c+d*x^2)*erfc(b*x),x)/d],
+[%e^(c+d*x^2)*erfc(b*x),x,0,Unintegrable(%e^(c+d*x^2)*erfc(b*x),x)],
+[%e^(c+d*x^2)*erfc(b*x)/x^2,x,2,-%e^(c+d*x^2)*erfc(b*x)/x-%e^c*b*Ei(-(b^2-d)*x^2)/sqrt(%pi)+2*d*Unintegrable(%e^(c+d*x^2)*erfc(b*x),x)],
+[%e^(c+d*x^2)*erfc(b*x)/x^4,x,5,-1/3*%e^(c+d*x^2)*erfc(b*x)/x^3-2/3*%e^(c+d*x^2)*d*erfc(b*x)/x+1/3*%e^(c-(b^2-d)*x^2)*b/(x^2*sqrt(%pi))+1/3*%e^c*b*(b^2-d)*Ei(-(b^2-d)*x^2)/sqrt(%pi)-2/3*%e^c*b*d*Ei(-(b^2-d)*x^2)/sqrt(%pi)+4/3*d^2*Unintegrable(%e^(c+d*x^2)*erfc(b*x),x)],
+[%e^(c+b^2*x^2)*x^5*erfc(b*x),x,8,%e^(c+b^2*x^2)*erfc(b*x)/b^6-%e^(c+b^2*x^2)*x^2*erfc(b*x)/b^4+1/2*%e^(c+b^2*x^2)*x^4*erfc(b*x)/b^2+2*%e^c*x/(b^5*sqrt(%pi))-2/3*%e^c*x^3/(b^3*sqrt(%pi))+1/5*%e^c*x^5/(b*sqrt(%pi))],
+[%e^(c+b^2*x^2)*x^3*erfc(b*x),x,5,-1/2*%e^(c+b^2*x^2)*erfc(b*x)/b^4+1/2*%e^(c+b^2*x^2)*x^2*erfc(b*x)/b^2-%e^c*x/(b^3*sqrt(%pi))+1/3*%e^c*x^3/(b*sqrt(%pi))],
+[%e^(c+b^2*x^2)*x*erfc(b*x),x,2,1/2*%e^(c+b^2*x^2)*erfc(b*x)/b^2+%e^c*x/(b*sqrt(%pi))],
+[%e^(c+b^2*x^2)*erfc(b*x)/x,x,3,1/2*%e^c*Ei(b^2*x^2)-2*%e^c*b*x*HypergeometricPFQ([1/2,1],[3/2,3/2],b^2*x^2)/sqrt(%pi)],
+[%e^(c+b^2*x^2)*erfc(b*x)/x^3,x,6,1/2*%e^c*b^2*Ei(b^2*x^2)-1/2*%e^(c+b^2*x^2)*erfc(b*x)/x^2+%e^c*b/(x*sqrt(%pi))-2*%e^c*b^3*x*HypergeometricPFQ([1/2,1],[3/2,3/2],b^2*x^2)/sqrt(%pi)],
+[%e^(c+b^2*x^2)*erfc(b*x)/x^5,x,9,1/4*%e^c*b^4*Ei(b^2*x^2)-1/4*%e^(c+b^2*x^2)*erfc(b*x)/x^4-1/4*%e^(c+b^2*x^2)*b^2*erfc(b*x)/x^2+1/6*%e^c*b/(x^3*sqrt(%pi))+1/2*%e^c*b^3/(x*sqrt(%pi))-%e^c*b^5*x*HypergeometricPFQ([1/2,1],[3/2,3/2],b^2*x^2)/sqrt(%pi)],
+[%e^(c+b^2*x^2)*x^4*erfc(b*x),x,9,-3/4*%e^(c+b^2*x^2)*x*erfc(b*x)/b^4+1/2*%e^(c+b^2*x^2)*x^3*erfc(b*x)/b^2-3/4*%e^c*x^2/(b^3*sqrt(%pi))+1/4*%e^c*x^4/(b*sqrt(%pi))-3/4*%e^c*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/(b^3*sqrt(%pi))+3/8*%e^c*erfi(b*x)*sqrt(%pi)/b^5],
+[%e^(c+b^2*x^2)*x^2*erfc(b*x),x,6,1/2*%e^(c+b^2*x^2)*x*erfc(b*x)/b^2+1/2*%e^c*x^2/(b*sqrt(%pi))+1/2*%e^c*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/(b*sqrt(%pi))-1/4*%e^c*erfi(b*x)*sqrt(%pi)/b^3],
+[%e^(c+b^2*x^2)*erfc(b*x),x,3,-%e^c*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)+1/2*%e^c*erfi(b*x)*sqrt(%pi)/b],
+[%e^(c+b^2*x^2)*erfc(b*x)/x^2,x,6,-%e^(c+b^2*x^2)*erfc(b*x)/x-2*%e^c*b^3*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)-2*%e^c*b*log(x)/sqrt(%pi)+%e^c*b*erfi(b*x)*sqrt(%pi)],
+[%e^(c+b^2*x^2)*erfc(b*x)/x^4,x,9,-1/3*%e^(c+b^2*x^2)*erfc(b*x)/x^3-2/3*%e^(c+b^2*x^2)*b^2*erfc(b*x)/x+1/3*%e^c*b/(x^2*sqrt(%pi))-4/3*%e^c*b^5*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)-4/3*%e^c*b^3*log(x)/sqrt(%pi)+2/3*%e^c*b^3*erfi(b*x)*sqrt(%pi)],
+[x^5*erfc(b*x)/%e^(b^2*x^2),x,9,-erfc(b*x)/(%e^(b^2*x^2)*b^6)-x^2*erfc(b*x)/(%e^(b^2*x^2)*b^4)-1/2*x^4*erfc(b*x)/(%e^(b^2*x^2)*b^2)-43/32*erf(b*x*sqrt(2))/(b^6*sqrt(2))+11/16*x/(%e^(2*b^2*x^2)*b^5*sqrt(%pi))+1/4*x^3/(%e^(2*b^2*x^2)*b^3*sqrt(%pi))],
+[x^3*erfc(b*x)/%e^(b^2*x^2),x,5,-1/2*erfc(b*x)/(%e^(b^2*x^2)*b^4)-1/2*x^2*erfc(b*x)/(%e^(b^2*x^2)*b^2)-5/8*erf(b*x*sqrt(2))/(b^4*sqrt(2))+1/4*x/(%e^(2*b^2*x^2)*b^3*sqrt(%pi))],
+[x*erfc(b*x)/%e^(b^2*x^2),x,2,-1/2*erfc(b*x)/(%e^(b^2*x^2)*b^2)-1/2*erf(b*x*sqrt(2))/(b^2*sqrt(2))],
+[erfc(b*x)/(%e^(b^2*x^2)*x),x,0,Unintegrable(erfc(b*x)/(%e^(b^2*x^2)*x),x)],
+[erfc(b*x)/(%e^(b^2*x^2)*x^3),x,3,-1/2*erfc(b*x)/(%e^(b^2*x^2)*x^2)+b^2*erf(b*x*sqrt(2))*sqrt(2)+b/(%e^(2*b^2*x^2)*x*sqrt(%pi))-b^2*Unintegrable(erfc(b*x)/(%e^(b^2*x^2)*x),x)],
+[erfc(b*x)/(%e^(b^2*x^2)*x^5),x,7,-1/4*erfc(b*x)/(%e^(b^2*x^2)*x^4)+1/4*b^2*erfc(b*x)/(%e^(b^2*x^2)*x^2)-b^4*erf(b*x*sqrt(2))/sqrt(2)-2/3*b^4*erf(b*x*sqrt(2))*sqrt(2)+1/6*b/(%e^(2*b^2*x^2)*x^3*sqrt(%pi))-7/6*b^3/(%e^(2*b^2*x^2)*x*sqrt(%pi))+1/2*b^4*Unintegrable(erfc(b*x)/(%e^(b^2*x^2)*x),x)],
+[x^4*erfc(b*x)/%e^(b^2*x^2),x,7,-3/4*x*erfc(b*x)/(%e^(b^2*x^2)*b^4)-1/2*x^3*erfc(b*x)/(%e^(b^2*x^2)*b^2)+1/2/(%e^(2*b^2*x^2)*b^5*sqrt(%pi))+1/4*x^2/(%e^(2*b^2*x^2)*b^3*sqrt(%pi))-3/16*erfc(b*x)^2*sqrt(%pi)/b^5],
+[x^2*erfc(b*x)/%e^(b^2*x^2),x,4,-1/2*x*erfc(b*x)/(%e^(b^2*x^2)*b^2)+1/4/(%e^(2*b^2*x^2)*b^3*sqrt(%pi))-1/8*erfc(b*x)^2*sqrt(%pi)/b^3],
+[erfc(b*x)/%e^(b^2*x^2),x,2,-1/4*erfc(b*x)^2*sqrt(%pi)/b],
+[erfc(b*x)/(%e^(b^2*x^2)*x^2),x,4,-erfc(b*x)/(%e^(b^2*x^2)*x)-b*Ei(-2*b^2*x^2)/sqrt(%pi)+1/2*b*erfc(b*x)^2*sqrt(%pi)],
+[erfc(b*x)/(%e^(b^2*x^2)*x^4),x,7,-1/3*erfc(b*x)/(%e^(b^2*x^2)*x^3)+2/3*b^2*erfc(b*x)/(%e^(b^2*x^2)*x)+1/3*b/(%e^(2*b^2*x^2)*x^2*sqrt(%pi))+4/3*b^3*Ei(-2*b^2*x^2)/sqrt(%pi)-1/3*b^3*erfc(b*x)^2*sqrt(%pi)],
+
+-- Integrands of the form x^m E^(c+d x^2) Erfc[a+b x]
+[%e^(c+d*x^2)*x^3*erfc(a+b*x),x,10,1/2*%e^(c+a^2*d/(b^2-d))*a^2*b^3*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/((b^2-d)^(5/2)*d)+1/4*%e^(c+a^2*d/(b^2-d))*b*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/((b^2-d)^(3/2)*d)-1/2*%e^(c+d*x^2)*erfc(a+b*x)/d^2+1/2*%e^(c+d*x^2)*x^2*erfc(a+b*x)/d+1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*a*b^2/((b^2-d)^2*d*sqrt(%pi))-1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b*x/((b^2-d)*d*sqrt(%pi))-1/2*%e^(c+a^2*d/(b^2-d))*b*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/(d^2*sqrt(b^2-d))],
+[%e^(c+d*x^2)*x*erfc(a+b*x),x,3,1/2*%e^(c+d*x^2)*erfc(a+b*x)/d+1/2*%e^(c+a^2*d/(b^2-d))*b*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/(d*sqrt(b^2-d))],
+[%e^(c+d*x^2)*erfc(a+b*x)/x,x,0,Unintegrable(%e^(c+d*x^2)*erfc(a+b*x)/x,x)],
+[%e^(c+d*x^2)*erfc(a+b*x)/x^3,x,4,-1/2*%e^(c+d*x^2)*erfc(a+b*x)/x^2+%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b/(x*sqrt(%pi))+%e^(c+a^2*d/(b^2-d))*b*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))*sqrt(b^2-d)+2*a*b^2*Unintegrable(%e^(-a^2+c-2*a*b*x+(-b^2+d)*x^2)/x,x)/sqrt(%pi)+d*Unintegrable(%e^(c+d*x^2)*erfc(a+b*x)/x,x)],
+[%e^(c+d*x^2)*x^4*erfc(a+b*x),x,15,3/4*%e^(c+a^2*d/(b^2-d))*a*b^2*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/((b^2-d)^(3/2)*d^2)-1/2*%e^(c+a^2*d/(b^2-d))*a^3*b^4*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/((b^2-d)^(7/2)*d)-3/4*%e^(c+a^2*d/(b^2-d))*a*b^2*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/((b^2-d)^(5/2)*d)-3/4*%e^(c+d*x^2)*x*erfc(a+b*x)/d^2+1/2*%e^(c+d*x^2)*x^3*erfc(a+b*x)/d+3/4*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b/((b^2-d)*d^2*sqrt(%pi))-1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*a^2*b^3/((b^2-d)^3*d*sqrt(%pi))-1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b/((b^2-d)^2*d*sqrt(%pi))+1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*a*b^2*x/((b^2-d)^2*d*sqrt(%pi))-1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b*x^2/((b^2-d)*d*sqrt(%pi))+3/4*Unintegrable(%e^(c+d*x^2)*erfc(a+b*x),x)/d^2],
+[%e^(c+d*x^2)*x^2*erfc(a+b*x),x,4,-1/2*%e^(c+a^2*d/(b^2-d))*a*b^2*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))/((b^2-d)^(3/2)*d)+1/2*%e^(c+d*x^2)*x*erfc(a+b*x)/d-1/2*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b/((b^2-d)*d*sqrt(%pi))-1/2*Unintegrable(%e^(c+d*x^2)*erfc(a+b*x),x)/d],
+[%e^(c+d*x^2)*erfc(a+b*x),x,0,Unintegrable(%e^(c+d*x^2)*erfc(a+b*x),x)],
+[%e^(c+d*x^2)*erfc(a+b*x)/x^2,x,1,-%e^(c+d*x^2)*erfc(a+b*x)/x-2*b*Unintegrable(%e^(-a^2+c-2*a*b*x+(-b^2+d)*x^2)/x,x)/sqrt(%pi)+2*d*Unintegrable(%e^(c+d*x^2)*erfc(a+b*x),x)],
+[%e^(c+d*x^2)*erfc(a+b*x)/x^4,x,6,-1/3*%e^(c+d*x^2)*erfc(a+b*x)/x^3-2/3*%e^(c+d*x^2)*d*erfc(a+b*x)/x+1/3*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*b/(x^2*sqrt(%pi))-2/3*%e^(-a^2+c-2*a*b*x-(b^2-d)*x^2)*a*b^2/(x*sqrt(%pi))-2/3*%e^(c+a^2*d/(b^2-d))*a*b^2*erf((a*b+(b^2-d)*x)/sqrt(b^2-d))*sqrt(b^2-d)-4/3*a^2*b^3*Unintegrable(%e^(-a^2+c-2*a*b*x+(-b^2+d)*x^2)/x,x)/sqrt(%pi)+2/3*b*(b^2-d)*Unintegrable(%e^(-a^2+c-2*a*b*x+(-b^2+d)*x^2)/x,x)/sqrt(%pi)-4/3*b*d*Unintegrable(%e^(-a^2+c-2*a*b*x+(-b^2+d)*x^2)/x,x)/sqrt(%pi)+4/3*d^2*Unintegrable(%e^(c+d*x^2)*erfc(a+b*x),x)],
+[erfc(b*x)/(%e^(b^2*x^2)*x^3)+b^2*erfc(b*x)/(%e^(b^2*x^2)*x),x,4,-1/2*erfc(b*x)/(%e^(b^2*x^2)*x^2)+b^2*erf(b*x*sqrt(2))*sqrt(2)+b/(%e^(2*b^2*x^2)*x*sqrt(%pi))],
+
+-- Integrands of the form (e x)^m Trig[c+d x^2] Erfc[a+b x]^n
+[erfc(b*x)*sin(c+%i*b^2*x^2),x,6,-1/2*%i*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/(%e^(%i*c)*sqrt(%pi))+1/8*%i*%e^(%i*c)*erfc(b*x)^2*sqrt(%pi)/b+1/4*%i*erfi(b*x)*sqrt(%pi)/(%e^(%i*c)*b)],
+[erfc(b*x)*sin(c-%i*b^2*x^2),x,6,1/2*%i*%e^(%i*c)*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)-1/8*%i*erfc(b*x)^2*sqrt(%pi)/(%e^(%i*c)*b)-1/4*%i*%e^(%i*c)*erfi(b*x)*sqrt(%pi)/b],
+[cos(c+%i*b^2*x^2)*erfc(b*x),x,6,-1/2*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/(%e^(%i*c)*sqrt(%pi))-1/8*%e^(%i*c)*erfc(b*x)^2*sqrt(%pi)/b+1/4*erfi(b*x)*sqrt(%pi)/(%e^(%i*c)*b)],
+[cos(c-%i*b^2*x^2)*erfc(b*x),x,6,-1/2*%e^(%i*c)*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)-1/8*erfc(b*x)^2*sqrt(%pi)/(%e^(%i*c)*b)+1/4*%e^(%i*c)*erfi(b*x)*sqrt(%pi)/b],
+[erfc(b*x)*sinh(c+b^2*x^2),x,6,-1/2*%e^c*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)+1/8*erfc(b*x)^2*sqrt(%pi)/(%e^c*b)+1/4*%e^c*erfi(b*x)*sqrt(%pi)/b],
+[erfc(b*x)*sinh(c-b^2*x^2),x,6,1/2*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/(%e^c*sqrt(%pi))-1/8*%e^c*erfc(b*x)^2*sqrt(%pi)/b-1/4*erfi(b*x)*sqrt(%pi)/(%e^c*b)],
+[cosh(c+b^2*x^2)*erfc(b*x),x,6,-1/2*%e^c*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/sqrt(%pi)-1/8*erfc(b*x)^2*sqrt(%pi)/(%e^c*b)+1/4*%e^c*erfi(b*x)*sqrt(%pi)/b],
+[cosh(c-b^2*x^2)*erfc(b*x),x,6,-1/2*b*x^2*HypergeometricPFQ([1,1],[3/2,2],b^2*x^2)/(%e^c*sqrt(%pi))-1/8*%e^c*erfc(b*x)^2*sqrt(%pi)/b+1/4*erfi(b*x)*sqrt(%pi)/(%e^c*b)],
+
+-- Integration Problems Involving The Imaginary Error Function
+
+-- Integrands of the form (c+d x)^m Erfi[a+b x]
+
+-- Integrands of the form x^m Erfi[b x]
+[x^5*erfi(b*x),x,5,5/16*erfi(b*x)/b^6+1/6*x^6*erfi(b*x)-5/8*%e^(b^2*x^2)*x/(b^5*sqrt(%pi))+5/12*%e^(b^2*x^2)*x^3/(b^3*sqrt(%pi))-1/6*%e^(b^2*x^2)*x^5/(b*sqrt(%pi))],
+[x^3*erfi(b*x),x,4,-3/16*erfi(b*x)/b^4+1/4*x^4*erfi(b*x)+3/8*%e^(b^2*x^2)*x/(b^3*sqrt(%pi))-1/4*%e^(b^2*x^2)*x^3/(b*sqrt(%pi))],
+[x*erfi(b*x),x,3,1/4*erfi(b*x)/b^2+1/2*x^2*erfi(b*x)-1/2*%e^(b^2*x^2)*x/(b*sqrt(%pi))],
+[erfi(b*x)/x,x,1,2*b*x*HypergeometricPFQ([1/2,1/2],[3/2,3/2],b^2*x^2)/sqrt(%pi)],
+[erfi(b*x)/x^3,x,3,b^2*erfi(b*x)-1/2*erfi(b*x)/x^2-%e^(b^2*x^2)*b/(x*sqrt(%pi))],
+[erfi(b*x)/x^5,x,4,1/3*b^4*erfi(b*x)-1/4*erfi(b*x)/x^4-1/6*%e^(b^2*x^2)*b/(x^3*sqrt(%pi))-1/3*%e^(b^2*x^2)*b^3/(x*sqrt(%pi))],
+[erfi(b*x)/x^7,x,5,4/45*b^6*erfi(b*x)-1/6*erfi(b*x)/x^6-1/15*%e^(b^2*x^2)*b/(x^5*sqrt(%pi))-2/45*%e^(b^2*x^2)*b^3/(x^3*sqrt(%pi))-4/45*%e^(b^2*x^2)*b^5/(x*sqrt(%pi))],
+[x^6*erfi(b*x),x,5,1/7*x^7*erfi(b*x)+6/7*%e^(b^2*x^2)/(b^7*sqrt(%pi))-6/7*%e^(b^2*x^2)*x^2/(b^5*sqrt(%pi))+3/7*%e^(b^2*x^2)*x^4/(b^3*sqrt(%pi))-1/7*%e^(b^2*x^2)*x^6/(b*sqrt(%pi))],
+[x^4*erfi(b*x),x,4,1/5*x^5*erfi(b*x)-2/5*%e^(b^2*x^2)/(b^5*sqrt(%pi))+2/5*%e^(b^2*x^2)*x^2/(b^3*sqrt(%pi))-1/5*%e^(b^2*x^2)*x^4/(b*sqrt(%pi))],
+[x^2*erfi(b*x),x,3,1/3*x^3*erfi(b*x)+1/3*%e^(b^2*x^2)/(b^3*sqrt(%pi))-1/3*%e^(b^2*x^2)*x^2/(b*sqrt(%pi))],
+[erfi(b*x),x,1,x*erfi(b*x)-%e^(b^2*x^2)/(b*sqrt(%pi))],
+[erfi(b*x)/x^2,x,2,-erfi(b*x)/x+b*Ei(b^2*x^2)/sqrt(%pi)],
+[erfi(b*x)/x^4,x,3,-1/3*erfi(b*x)/x^3-1/3*%e^(b^2*x^2)*b/(x^2*sqrt(%pi))+1/3*b^3*Ei(b^2*x^2)/sqrt(%pi)],
+[erfi(b*x)/x^6,x,4,-1/5*erfi(b*x)/x^5-1/10*%e^(b^2*x^2)*b/(x^4*sqrt(%pi))-1/10*%e^(b^2*x^2)*b^3/(x^2*sqrt(%pi))+1/10*b^5*Ei(b^2*x^2)/sqrt(%pi)],
+
+-- Integrands of the form (c+d x)^m Erfi[a+b x]
+[(c+d*x)^3*erfi(a+b*x),x,12,-3/16*d^3*erfi(a+b*x)/b^4+3/4*d*(b*c-a*d)^2*erfi(a+b*x)/b^4-1/4*(b*c-a*d)^4*erfi(a+b*x)/(b^4*d)+1/4*(c+d*x)^4*erfi(a+b*x)/d+%e^((a+b*x)^2)*d^2*(b*c-a*d)/(b^4*sqrt(%pi))-%e^((a+b*x)^2)*(b*c-a*d)^3/(b^4*sqrt(%pi))+3/8*%e^((a+b*x)^2)*d^3*(a+b*x)/(b^4*sqrt(%pi))-3/2*%e^((a+b*x)^2)*d*(b*c-a*d)^2*(a+b*x)/(b^4*sqrt(%pi))-%e^((a+b*x)^2)*d^2*(b*c-a*d)*(a+b*x)^2/(b^4*sqrt(%pi))-1/4*%e^((a+b*x)^2)*d^3*(a+b*x)^3/(b^4*sqrt(%pi))],
+[(c+d*x)^2*erfi(a+b*x),x,9,1/2*d*(b*c-a*d)*erfi(a+b*x)/b^3-1/3*(b*c-a*d)^3*erfi(a+b*x)/(b^3*d)+1/3*(c+d*x)^3*erfi(a+b*x)/d+1/3*%e^((a+b*x)^2)*d^2/(b^3*sqrt(%pi))-%e^((a+b*x)^2)*(b*c-a*d)^2/(b^3*sqrt(%pi))-%e^((a+b*x)^2)*d*(b*c-a*d)*(a+b*x)/(b^3*sqrt(%pi))-1/3*%e^((a+b*x)^2)*d^2*(a+b*x)^2/(b^3*sqrt(%pi))],
+[(c+d*x)*erfi(a+b*x),x,7,1/4*d*erfi(a+b*x)/b^2-1/2*(b*c-a*d)^2*erfi(a+b*x)/(b^2*d)+1/2*(c+d*x)^2*erfi(a+b*x)/d-%e^((a+b*x)^2)*(b*c-a*d)/(b^2*sqrt(%pi))-1/2*%e^((a+b*x)^2)*d*(a+b*x)/(b^2*sqrt(%pi))],
+[erfi(a+b*x),x,1,(a+b*x)*erfi(a+b*x)/b-%e^((a+b*x)^2)/(b*sqrt(%pi))],
+[erfi(a+b*x)/(c+d*x),x,0,Unintegrable(erfi(a+b*x)/(c+d*x),x)],
+[erfi(a+b*x)/(c+d*x)^2,x,1,-erfi(a+b*x)/(d*(c+d*x))+2*b*Unintegrable(%e^((a+b*x)^2)/(c+d*x),x)/(d*sqrt(%pi))],
+[erfi(a+b*x)/(c+d*x)^3,x,3,b^2*erfi(a+b*x)/d^3-1/2*erfi(a+b*x)/(d*(c+d*x)^2)-%e^((a+b*x)^2)*b/(d^2*(c+d*x)*sqrt(%pi))-2*b^2*(b*c-a*d)*Unintegrable(%e^((a+b*x)^2)/(c+d*x),x)/(d^3*sqrt(%pi))],
+
+-- Integrands of the form (c+d x)^m Erfi[a+b x]^2
+
+-- Integrands of the form x^m Erfi[b x]^2
+[x^5*erfi(b*x)^2,x,12,11/12*%e^(2*b^2*x^2)/(%pi*b^6)-7/12*%e^(2*b^2*x^2)*x^2/(%pi*b^4)+1/6*%e^(2*b^2*x^2)*x^4/(%pi*b^2)+5/16*erfi(b*x)^2/b^6+1/6*x^6*erfi(b*x)^2-5/4*%e^(b^2*x^2)*x*erfi(b*x)/(b^5*sqrt(%pi))+5/6*%e^(b^2*x^2)*x^3*erfi(b*x)/(b^3*sqrt(%pi))-1/3*%e^(b^2*x^2)*x^5*erfi(b*x)/(b*sqrt(%pi))],
+[x^3*erfi(b*x)^2,x,8,-1/2*%e^(2*b^2*x^2)/(%pi*b^4)+1/4*%e^(2*b^2*x^2)*x^2/(%pi*b^2)-3/16*erfi(b*x)^2/b^4+1/4*x^4*erfi(b*x)^2+3/4*%e^(b^2*x^2)*x*erfi(b*x)/(b^3*sqrt(%pi))-1/2*%e^(b^2*x^2)*x^3*erfi(b*x)/(b*sqrt(%pi))],
+[x*erfi(b*x)^2,x,5,1/2*%e^(2*b^2*x^2)/(%pi*b^2)+1/4*erfi(b*x)^2/b^2+1/2*x^2*erfi(b*x)^2-%e^(b^2*x^2)*x*erfi(b*x)/(b*sqrt(%pi))],
+[erfi(b*x)^2/x,x,0,Unintegrable(erfi(b*x)^2/x,x)],
+[erfi(b*x)^2/x^3,x,5,2*b^2*Ei(2*b^2*x^2)/%pi+b^2*erfi(b*x)^2-1/2*erfi(b*x)^2/x^2-2*%e^(b^2*x^2)*b*erfi(b*x)/(x*sqrt(%pi))],
+[erfi(b*x)^2/x^5,x,8,-1/3*%e^(2*b^2*x^2)*b^2/(%pi*x^2)+4/3*b^4*Ei(2*b^2*x^2)/%pi+1/3*b^4*erfi(b*x)^2-1/4*erfi(b*x)^2/x^4-1/3*%e^(b^2*x^2)*b*erfi(b*x)/(x^3*sqrt(%pi))-2/3*%e^(b^2*x^2)*b^3*erfi(b*x)/(x*sqrt(%pi))],
+[erfi(b*x)^2/x^7,x,12,-1/15*%e^(2*b^2*x^2)*b^2/(%pi*x^4)-2/9*%e^(2*b^2*x^2)*b^4/(%pi*x^2)+28/45*b^6*Ei(2*b^2*x^2)/%pi+4/45*b^6*erfi(b*x)^2-1/6*erfi(b*x)^2/x^6-2/15*%e^(b^2*x^2)*b*erfi(b*x)/(x^5*sqrt(%pi))-4/45*%e^(b^2*x^2)*b^3*erfi(b*x)/(x^3*sqrt(%pi))-8/45*%e^(b^2*x^2)*b^5*erfi(b*x)/(x*sqrt(%pi))],
+[x^4*erfi(b*x)^2,x,10,-11/20*%e^(2*b^2*x^2)*x/(%pi*b^4)+1/5*%e^(2*b^2*x^2)*x^3/(%pi*b^2)+1/5*x^5*erfi(b*x)^2-4/5*%e^(b^2*x^2)*erfi(b*x)/(b^5*sqrt(%pi))+4/5*%e^(b^2*x^2)*x^2*erfi(b*x)/(b^3*sqrt(%pi))-2/5*%e^(b^2*x^2)*x^4*erfi(b*x)/(b*sqrt(%pi))+43/40*erfi(b*x*sqrt(2))/(b^5*sqrt(2*%pi))],
+[x^2*erfi(b*x)^2,x,6,1/3*%e^(2*b^2*x^2)*x/(%pi*b^2)+1/3*x^3*erfi(b*x)^2+2/3*%e^(b^2*x^2)*erfi(b*x)/(b^3*sqrt(%pi))-2/3*%e^(b^2*x^2)*x^2*erfi(b*x)/(b*sqrt(%pi))-5/6*erfi(b*x*sqrt(2))/(b^3*sqrt(2*%pi))],
+[erfi(b*x)^2,x,4,x*erfi(b*x)^2+erfi(b*x*sqrt(2))*sqrt(2/%pi)/b-2*%e^(b^2*x^2)*erfi(b*x)/(b*sqrt(%pi))],
+[erfi(b*x)^2/x^2,x,0,Unintegrable(erfi(b*x)^2/x^2,x)],
+[erfi(b*x)^2/x^4,x,0,Unintegrable(erfi(b*x)^2/x^4,x)],
+[erfi(b*x)^2/x^6,x,0,Unintegrable(erfi(b*x)^2/x^6,x)],
+
+-- Integrands of the form (c+d x)^m Erfi[a+b x]^2
+[(c+d*x)^2*erfi(a+b*x)^2,x,16,%e^(2*(a+b*x)^2)*d*(b*c-a*d)/(%pi*b^3)+1/3*%e^(2*(a+b*x)^2)*d^2*(a+b*x)/(%pi*b^3)+1/2*d*(b*c-a*d)*erfi(a+b*x)^2/b^3+(b*c-a*d)^2*(a+b*x)*erfi(a+b*x)^2/b^3+d*(b*c-a*d)*(a+b*x)^2*erfi(a+b*x)^2/b^3+1/3*d^2*(a+b*x)^3*erfi(a+b*x)^2/b^3+(b*c-a*d)^2*erfi((a+b*x)*sqrt(2))*sqrt(2/%pi)/b^3+2/3*%e^((a+b*x)^2)*d^2*erfi(a+b*x)/(b^3*sqrt(%pi))-2*%e^((a+b*x)^2)*(b*c-a*d)^2*erfi(a+b*x)/(b^3*sqrt(%pi))-2*%e^((a+b*x)^2)*d*(b*c-a*d)*(a+b*x)*erfi(a+b*x)/(b^3*sqrt(%pi))-2/3*%e^((a+b*x)^2)*d^2*(a+b*x)^2*erfi(a+b*x)/(b^3*sqrt(%pi))-5/6*d^2*erfi((a+b*x)*sqrt(2))/(b^3*sqrt(2*%pi))],
+[(c+d*x)*erfi(a+b*x)^2,x,10,1/2*%e^(2*(a+b*x)^2)*d/(%pi*b^2)+1/4*d*erfi(a+b*x)^2/b^2+(b*c-a*d)*(a+b*x)*erfi(a+b*x)^2/b^2+1/2*d*(a+b*x)^2*erfi(a+b*x)^2/b^2+(b*c-a*d)*erfi((a+b*x)*sqrt(2))*sqrt(2/%pi)/b^2-2*%e^((a+b*x)^2)*(b*c-a*d)*erfi(a+b*x)/(b^2*sqrt(%pi))-%e^((a+b*x)^2)*d*(a+b*x)*erfi(a+b*x)/(b^2*sqrt(%pi))],
+[erfi(a+b*x)^2,x,4,(a+b*x)*erfi(a+b*x)^2/b+erfi((a+b*x)*sqrt(2))*sqrt(2/%pi)/b-2*%e^((a+b*x)^2)*erfi(a+b*x)/(b*sqrt(%pi))],
+[erfi(a+b*x)^2/(c+d*x),x,0,Unintegrable(erfi(a+b*x)^2/(c+d*x),x)],
+[erfi(a+b*x)^2/(c+d*x)^2,x,0,Unintegrable(erfi(a+b*x)^2/(c+d*x)^2,x)],
+
+-- Integrands of the form (e x)^m Erfi[d (a+b Log[c x^n])]
+[x^2*erfi(d*(a+b*log(c*x^n))),x,5,1/3*x^3*erfi(d*(a+b*log(c*x^n)))-1/3*x^3*erfi(1/2*(2*a*b*d^2+3/n+2*b^2*d^2*log(c*x^n))/(b*d))/(%e^(3/4*(3+4*a*b*d^2*n)/(b^2*d^2*n^2))*(c*x^n)^(3/n))],
+[x*erfi(d*(a+b*log(c*x^n))),x,5,1/2*x^2*erfi(d*(a+b*log(c*x^n)))-1/2*x^2*erfi((a*b*d^2+1/n+b^2*d^2*log(c*x^n))/(b*d))/(%e^((1+2*a*b*d^2*n)/(b^2*d^2*n^2))*(c*x^n)^(2/n))],
+[erfi(d*(a+b*log(c*x^n))),x,5,x*erfi(d*(a+b*log(c*x^n)))-x*erfi(1/2*(2*a*b*d^2+1/n+2*b^2*d^2*log(c*x^n))/(b*d))/(%e^(1/4*(1+4*a*b*d^2*n)/(b^2*d^2*n^2))*(c*x^n)^(1/n))],
+[erfi(d*(a+b*log(c*x^n)))/x,x,3,erfi(d*(a+b*log(c*x^n)))*(a+b*log(c*x^n))/(b*n)-%e^((a*d+b*d*log(c*x^n))^2)/(b*d*n*sqrt(%pi))],
+[erfi(d*(a+b*log(c*x^n)))/x^2,x,5,-erfi(d*(a+b*log(c*x^n)))/x+%e^((-1/4)/(b^2*d^2*n^2)+a/(b*n))*(c*x^n)^(1/n)*erfi(1/2*(2*a*b*d^2+(-1)/n+2*b^2*d^2*log(c*x^n))/(b*d))/x],
+[erfi(d*(a+b*log(c*x^n)))/x^3,x,5,-1/2*erfi(d*(a+b*log(c*x^n)))/x^2+1/2*(c*x^n)^(2/n)*erfi((a*b*d^2+(-1)/n+b^2*d^2*log(c*x^n))/(b*d))/(%e^((1-2*a*b*d^2*n)/(b^2*d^2*n^2))*x^2)],
+[(e*x)^m*erfi(d*(a+b*log(c*x^n))),x,5,(e*x)^(1+m)*erfi(d*(a+b*log(c*x^n)))/(e*(1+m))-x*(e*x)^m*erfi(1/2*(1+m+2*a*b*d^2*n+2*b^2*d^2*n*log(c*x^n))/(b*d*n))/(%e^(1/4*(1+m)*(1+m+4*a*b*d^2*n)/(b^2*d^2*n^2))*(1+m)*(c*x^n)^((1+m)/n))],
+
+-- Integrands of the form (e x)^m E^(c+d x^2) Erfi[a+b x]^n
+
+-- Integrands of the form E^(c+b^2 x^2) Erfi[b x]^n
+[%e^(c+b^2*x^2)*erfi(b*x)^2,x,2,1/6*%e^c*erfi(b*x)^3*sqrt(%pi)/b],
+[%e^(c+b^2*x^2)*erfi(b*x),x,2,1/4*%e^c*erfi(b*x)^2*sqrt(%pi)/b],
+[%e^(c+b^2*x^2)/erfi(b*x),x,2,1/2*%e^c*log(erfi(b*x))*sqrt(%pi)/b],
+[%e^(c+b^2*x^2)/erfi(b*x)^2,x,2,-1/2*%e^c*sqrt(%pi)/(b*erfi(b*x))],
+[%e^(c+b^2*x^2)/erfi(b*x)^3,x,2,-1/4*%e^c*sqrt(%pi)/(b*erfi(b*x)^2)],
+[%e^(c+b^2*x^2)*erfi(b*x)^n,x,2,1/2*%e^c*erfi(b*x)^(1+n)*sqrt(%pi)/(b*(1+n))],
+
+-- Integrands of the form x^m E^(c+d x^2) Erfi[b x]
+[%e^(c+d*x^2)*x^5*erfi(b*x),x,9,%e^(c+d*x^2)*erfi(b*x)/d^3-%e^(c+d*x^2)*x^2*erfi(b*x)/d^2+1/2*%e^(c+d*x^2)*x^4*erfi(b*x)/d-3/8*%e^c*b*erfi(x*sqrt(b^2+d))/(d*(b^2+d)^(5/2))-1/2*%e^c*b*erfi(x*sqrt(b^2+d))/(d^2*(b^2+d)^(3/2))+3/4*%e^(c+(b^2+d)*x^2)*b*x/(d*(b^2+d)^2*sqrt(%pi))+%e^(c+(b^2+d)*x^2)*b*x/(d^2*(b^2+d)*sqrt(%pi))-1/2*%e^(c+(b^2+d)*x^2)*b*x^3/(d*(b^2+d)*sqrt(%pi))-%e^c*b*erfi(x*sqrt(b^2+d))/(d^3*sqrt(b^2+d))],
+[%e^(c+d*x^2)*x^3*erfi(b*x),x,5,-1/2*%e^(c+d*x^2)*erfi(b*x)/d^2+1/2*%e^(c+d*x^2)*x^2*erfi(b*x)/d+1/4*%e^c*b*erfi(x*sqrt(b^2+d))/(d*(b^2+d)^(3/2))-1/2*%e^(c+(b^2+d)*x^2)*b*x/(d*(b^2+d)*sqrt(%pi))+1/2*%e^c*b*erfi(x*sqrt(b^2+d))/(d^2*sqrt(b^2+d))],
+[%e^(c+d*x^2)*x*erfi(b*x),x,2,1/2*%e^(c+d*x^2)*erfi(b*x)/d-1/2*%e^c*b*erfi(x*sqrt(b^2+d))/(d*sqrt(b^2+d))],
+[%e^(c+d*x^2)*erfi(b*x)/x,x,0,Unintegrable(%e^(c+d*x^2)*erfi(b*x)/x,x)],
+[%e^(c+d*x^2)*erfi(b*x)/x^3,x,3,-1/2*%e^(c+d*x^2)*erfi(b*x)/x^2-%e^(c+(b^2+d)*x^2)*b/(x*sqrt(%pi))+%e^c*b*erfi(x*sqrt(b^2+d))*sqrt(b^2+d)+d*Unintegrable(%e^(c+d*x^2)*erfi(b*x)/x,x)],
+[%e^(c+d*x^2)*erfi(b*x)/x^5,x,7,-1/4*%e^(c+d*x^2)*erfi(b*x)/x^4-1/4*%e^(c+d*x^2)*d*erfi(b*x)/x^2+1/3*%e^c*b*(b^2+d)^(3/2)*erfi(x*sqrt(b^2+d))-1/6*%e^(c+(b^2+d)*x^2)*b/(x^3*sqrt(%pi))-1/2*%e^(c+(b^2+d)*x^2)*b*d/(x*sqrt(%pi))-1/3*%e^(c+(b^2+d)*x^2)*b*(b^2+d)/(x*sqrt(%pi))+1/2*%e^c*b*d*erfi(x*sqrt(b^2+d))*sqrt(b^2+d)+1/2*d^2*Unintegrable(%e^(c+d*x^2)*erfi(b*x)/x,x)],
+[%e^(c+d*x^2)*x^4*erfi(b*x),x,5,-3/4*%e^(c+d*x^2)*x*erfi(b*x)/d^2+1/2*%e^(c+d*x^2)*x^3*erfi(b*x)/d+1/2*%e^(c+(b^2+d)*x^2)*b/(d*(b^2+d)^2*sqrt(%pi))+3/4*%e^(c+(b^2+d)*x^2)*b/(d^2*(b^2+d)*sqrt(%pi))-1/2*%e^(c+(b^2+d)*x^2)*b*x^2/(d*(b^2+d)*sqrt(%pi))+3/4*Unintegrable(%e^(c+d*x^2)*erfi(b*x),x)/d^2],
+[%e^(c+d*x^2)*x^2*erfi(b*x),x,2,1/2*%e^(c+d*x^2)*x*erfi(b*x)/d-1/2*%e^(c+(b^2+d)*x^2)*b/(d*(b^2+d)*sqrt(%pi))-1/2*Unintegrable(%e^(c+d*x^2)*erfi(b*x),x)/d],
+[%e^(c+d*x^2)*erfi(b*x),x,0,Unintegrable(%e^(c+d*x^2)*erfi(b*x),x)],
+[%e^(c+d*x^2)*erfi(b*x)/x^2,x,2,-%e^(c+d*x^2)*erfi(b*x)/x+%e^c*b*Ei((b^2+d)*x^2)/sqrt(%pi)+2*d*Unintegrable(%e^(c+d*x^2)*erfi(b*x),x)],
+[%e^(c+d*x^2)*erfi(b*x)/x^4,x,5,-1/3*%e^(c+d*x^2)*erfi(b*x)/x^3-2/3*%e^(c+d*x^2)*d*erfi(b*x)/x-1/3*%e^(c+(b^2+d)*x^2)*b/(x^2*sqrt(%pi))+2/3*%e^c*b*d*Ei((b^2+d)*x^2)/sqrt(%pi)+1/3*%e^c*b*(b^2+d)*Ei((b^2+d)*x^2)/sqrt(%pi)+4/3*d^2*Unintegrable(%e^(c+d*x^2)*erfi(b*x),x)],
+[x^5*erfi(b*x)/%e^(b^2*x^2),x,6,-erfi(b*x)/(%e^(b^2*x^2)*b^6)-x^2*erfi(b*x)/(%e^(b^2*x^2)*b^4)-1/2*x^4*erfi(b*x)/(%e^(b^2*x^2)*b^2)+2*x/(b^5*sqrt(%pi))+2/3*x^3/(b^3*sqrt(%pi))+1/5*x^5/(b*sqrt(%pi))],
+[x^3*erfi(b*x)/%e^(b^2*x^2),x,4,-1/2*erfi(b*x)/(%e^(b^2*x^2)*b^4)-1/2*x^2*erfi(b*x)/(%e^(b^2*x^2)*b^2)+x/(b^3*sqrt(%pi))+1/3*x^3/(b*sqrt(%pi))],
+[x*erfi(b*x)/%e^(b^2*x^2),x,2,-1/2*erfi(b*x)/(%e^(b^2*x^2)*b^2)+x/(b*sqrt(%pi))],
+[erfi(b*x)/(%e^(b^2*x^2)*x),x,1,2*b*x*HypergeometricPFQ([1/2,1],[3/2,3/2],-b^2*x^2)/sqrt(%pi)],
+[erfi(b*x)/(%e^(b^2*x^2)*x^3),x,3,-1/2*erfi(b*x)/(%e^(b^2*x^2)*x^2)-b/(x*sqrt(%pi))-2*b^3*x*HypergeometricPFQ([1/2,1],[3/2,3/2],-b^2*x^2)/sqrt(%pi)],
+[erfi(b*x)/(%e^(b^2*x^2)*x^5),x,5,-1/4*erfi(b*x)/(%e^(b^2*x^2)*x^4)+1/4*b^2*erfi(b*x)/(%e^(b^2*x^2)*x^2)-1/6*b/(x^3*sqrt(%pi))+1/2*b^3/(x*sqrt(%pi))+b^5*x*HypergeometricPFQ([1/2,1],[3/2,3/2],-b^2*x^2)/sqrt(%pi)],
+[x^6*erfi(b*x)/%e^(b^2*x^2),x,7,-15/8*x*erfi(b*x)/(%e^(b^2*x^2)*b^6)-5/4*x^3*erfi(b*x)/(%e^(b^2*x^2)*b^4)-1/2*x^5*erfi(b*x)/(%e^(b^2*x^2)*b^2)+15/8*x^2/(b^5*sqrt(%pi))+5/8*x^4/(b^3*sqrt(%pi))+1/6*x^6/(b*sqrt(%pi))+15/8*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/(b^5*sqrt(%pi))],
+[x^4*erfi(b*x)/%e^(b^2*x^2),x,5,-3/4*x*erfi(b*x)/(%e^(b^2*x^2)*b^4)-1/2*x^3*erfi(b*x)/(%e^(b^2*x^2)*b^2)+3/4*x^2/(b^3*sqrt(%pi))+1/4*x^4/(b*sqrt(%pi))+3/4*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/(b^3*sqrt(%pi))],
+[x^2*erfi(b*x)/%e^(b^2*x^2),x,3,-1/2*x*erfi(b*x)/(%e^(b^2*x^2)*b^2)+1/2*x^2/(b*sqrt(%pi))+1/2*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/(b*sqrt(%pi))],
+[erfi(b*x)/%e^(b^2*x^2),x,1,b*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/sqrt(%pi)],
+[erfi(b*x)/(%e^(b^2*x^2)*x^2),x,3,-erfi(b*x)/(%e^(b^2*x^2)*x)-2*b^3*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/sqrt(%pi)+2*b*log(x)/sqrt(%pi)],
+[erfi(b*x)/(%e^(b^2*x^2)*x^4),x,5,-1/3*erfi(b*x)/(%e^(b^2*x^2)*x^3)+2/3*b^2*erfi(b*x)/(%e^(b^2*x^2)*x)-1/3*b/(x^2*sqrt(%pi))+4/3*b^5*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/sqrt(%pi)-4/3*b^3*log(x)/sqrt(%pi)],
+[erfi(b*x)/(%e^(b^2*x^2)*x^6),x,7,-1/5*erfi(b*x)/(%e^(b^2*x^2)*x^5)+2/15*b^2*erfi(b*x)/(%e^(b^2*x^2)*x^3)-4/15*b^4*erfi(b*x)/(%e^(b^2*x^2)*x)-1/10*b/(x^4*sqrt(%pi))+2/15*b^3/(x^2*sqrt(%pi))-8/15*b^7*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/sqrt(%pi)+8/15*b^5*log(x)/sqrt(%pi)],
+[%e^(c+b^2*x^2)*x^5*erfi(b*x),x,9,%e^(c+b^2*x^2)*erfi(b*x)/b^6-%e^(c+b^2*x^2)*x^2*erfi(b*x)/b^4+1/2*%e^(c+b^2*x^2)*x^4*erfi(b*x)/b^2-43/32*%e^c*erfi(b*x*sqrt(2))/(b^6*sqrt(2))+11/16*%e^(c+2*b^2*x^2)*x/(b^5*sqrt(%pi))-1/4*%e^(c+2*b^2*x^2)*x^3/(b^3*sqrt(%pi))],
+[%e^(c+b^2*x^2)*x^3*erfi(b*x),x,5,-1/2*%e^(c+b^2*x^2)*erfi(b*x)/b^4+1/2*%e^(c+b^2*x^2)*x^2*erfi(b*x)/b^2+5/8*%e^c*erfi(b*x*sqrt(2))/(b^4*sqrt(2))-1/4*%e^(c+2*b^2*x^2)*x/(b^3*sqrt(%pi))],
+[%e^(c+b^2*x^2)*x*erfi(b*x),x,2,1/2*%e^(c+b^2*x^2)*erfi(b*x)/b^2-1/2*%e^c*erfi(b*x*sqrt(2))/(b^2*sqrt(2))],
+[%e^(c+b^2*x^2)*erfi(b*x)/x,x,0,Unintegrable(%e^(c+b^2*x^2)*erfi(b*x)/x,x)],
+[%e^(c+b^2*x^2)*erfi(b*x)/x^3,x,3,-1/2*%e^(c+b^2*x^2)*erfi(b*x)/x^2+%e^c*b^2*erfi(b*x*sqrt(2))*sqrt(2)-%e^(c+2*b^2*x^2)*b/(x*sqrt(%pi))+b^2*Unintegrable(%e^(c+b^2*x^2)*erfi(b*x)/x,x)],
+[%e^(c+b^2*x^2)*erfi(b*x)/x^5,x,7,-1/4*%e^(c+b^2*x^2)*erfi(b*x)/x^4-1/4*%e^(c+b^2*x^2)*b^2*erfi(b*x)/x^2+%e^c*b^4*erfi(b*x*sqrt(2))/sqrt(2)+2/3*%e^c*b^4*erfi(b*x*sqrt(2))*sqrt(2)-1/6*%e^(c+2*b^2*x^2)*b/(x^3*sqrt(%pi))-7/6*%e^(c+2*b^2*x^2)*b^3/(x*sqrt(%pi))+1/2*b^4*Unintegrable(%e^(c+b^2*x^2)*erfi(b*x)/x,x)],
+[%e^(c+b^2*x^2)*x^4*erfi(b*x),x,7,-3/4*%e^(c+b^2*x^2)*x*erfi(b*x)/b^4+1/2*%e^(c+b^2*x^2)*x^3*erfi(b*x)/b^2+1/2*%e^(c+2*b^2*x^2)/(b^5*sqrt(%pi))-1/4*%e^(c+2*b^2*x^2)*x^2/(b^3*sqrt(%pi))+3/16*%e^c*erfi(b*x)^2*sqrt(%pi)/b^5],
+[%e^(c+b^2*x^2)*x^2*erfi(b*x),x,4,1/2*%e^(c+b^2*x^2)*x*erfi(b*x)/b^2-1/4*%e^(c+2*b^2*x^2)/(b^3*sqrt(%pi))-1/8*%e^c*erfi(b*x)^2*sqrt(%pi)/b^3],
+[%e^(c+b^2*x^2)*erfi(b*x),x,2,1/4*%e^c*erfi(b*x)^2*sqrt(%pi)/b],
+[%e^(c+b^2*x^2)*erfi(b*x)/x^2,x,4,-%e^(c+b^2*x^2)*erfi(b*x)/x+%e^c*b*Ei(2*b^2*x^2)/sqrt(%pi)+1/2*%e^c*b*erfi(b*x)^2*sqrt(%pi)],
+[%e^(c+b^2*x^2)*erfi(b*x)/x^4,x,7,-1/3*%e^(c+b^2*x^2)*erfi(b*x)/x^3-2/3*%e^(c+b^2*x^2)*b^2*erfi(b*x)/x-1/3*%e^(c+2*b^2*x^2)*b/(x^2*sqrt(%pi))+4/3*%e^c*b^3*Ei(2*b^2*x^2)/sqrt(%pi)+1/3*%e^c*b^3*erfi(b*x)^2*sqrt(%pi)],
+
+-- Integrands of the form x^m E^(c+d x^2) Erfi[a+b x]
+[%e^(c+d*x^2)*x^3*erfi(a+b*x),x,10,-1/2*%e^(c+d*x^2)*erfi(a+b*x)/d^2+1/2*%e^(c+d*x^2)*x^2*erfi(a+b*x)/d-1/2*%e^(c+a^2*d/(b^2+d))*a^2*b^3*erfi((a*b+(b^2+d)*x)/sqrt(b^2+d))/(d*(b^2+d)^(5/2))+1/4*%e^(c+a^2*d/(b^2+d))*b*erfi((a*b+(b^2+d)*x)/sqrt(b^2+d))/(d*(b^2+d)^(3/2))+1/2*%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)*a*b^2/(d*(b^2+d)^2*sqrt(%pi))-1/2*%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)*b*x/(d*(b^2+d)*sqrt(%pi))+1/2*%e^(c+a^2*d/(b^2+d))*b*erfi((a*b+(b^2+d)*x)/sqrt(b^2+d))/(d^2*sqrt(b^2+d))],
+[%e^(c+d*x^2)*x*erfi(a+b*x),x,3,1/2*%e^(c+d*x^2)*erfi(a+b*x)/d-1/2*%e^(c+a^2*d/(b^2+d))*b*erfi((a*b+(b^2+d)*x)/sqrt(b^2+d))/(d*sqrt(b^2+d))],
+[%e^(c+d*x^2)*erfi(a+b*x)/x,x,0,Unintegrable(%e^(c+d*x^2)*erfi(a+b*x)/x,x)],
+[%e^(c+d*x^2)*erfi(a+b*x)/x^3,x,4,-1/2*%e^(c+d*x^2)*erfi(a+b*x)/x^2-%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)*b/(x*sqrt(%pi))+%e^(c+a^2*d/(b^2+d))*b*erfi((a*b+(b^2+d)*x)/sqrt(b^2+d))*sqrt(b^2+d)+2*a*b^2*Unintegrable(%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)/x,x)/sqrt(%pi)+d*Unintegrable(%e^(c+d*x^2)*erfi(a+b*x)/x,x)],
+[%e^(c+d*x^2)*x^4*erfi(a+b*x),x,15,-3/4*%e^(c+d*x^2)*x*erfi(a+b*x)/d^2+1/2*%e^(c+d*x^2)*x^3*erfi(a+b*x)/d+1/2*%e^(c+a^2*d/(b^2+d))*a^3*b^4*erfi((a*b+(b^2+d)*x)/sqrt(b^2+d))/(d*(b^2+d)^(7/2))-3/4*%e^(c+a^2*d/(b^2+d))*a*b^2*erfi((a*b+(b^2+d)*x)/sqrt(b^2+d))/(d*(b^2+d)^(5/2))-3/4*%e^(c+a^2*d/(b^2+d))*a*b^2*erfi((a*b+(b^2+d)*x)/sqrt(b^2+d))/(d^2*(b^2+d)^(3/2))-1/2*%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)*a^2*b^3/(d*(b^2+d)^3*sqrt(%pi))+1/2*%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)*b/(d*(b^2+d)^2*sqrt(%pi))+3/4*%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)*b/(d^2*(b^2+d)*sqrt(%pi))+1/2*%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)*a*b^2*x/(d*(b^2+d)^2*sqrt(%pi))-1/2*%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)*b*x^2/(d*(b^2+d)*sqrt(%pi))+3/4*Unintegrable(%e^(c+d*x^2)*erfi(a+b*x),x)/d^2],
+[%e^(c+d*x^2)*x^2*erfi(a+b*x),x,4,1/2*%e^(c+d*x^2)*x*erfi(a+b*x)/d+1/2*%e^(c+a^2*d/(b^2+d))*a*b^2*erfi((a*b+(b^2+d)*x)/sqrt(b^2+d))/(d*(b^2+d)^(3/2))-1/2*%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)*b/(d*(b^2+d)*sqrt(%pi))-1/2*Unintegrable(%e^(c+d*x^2)*erfi(a+b*x),x)/d],
+[%e^(c+d*x^2)*erfi(a+b*x),x,0,Unintegrable(%e^(c+d*x^2)*erfi(a+b*x),x)],
+[%e^(c+d*x^2)*erfi(a+b*x)/x^2,x,1,-%e^(c+d*x^2)*erfi(a+b*x)/x+2*b*Unintegrable(%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)/x,x)/sqrt(%pi)+2*d*Unintegrable(%e^(c+d*x^2)*erfi(a+b*x),x)],
+[%e^(c+d*x^2)*erfi(a+b*x)/x^4,x,6,-1/3*%e^(c+d*x^2)*erfi(a+b*x)/x^3-2/3*%e^(c+d*x^2)*d*erfi(a+b*x)/x-1/3*%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)*b/(x^2*sqrt(%pi))-2/3*%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)*a*b^2/(x*sqrt(%pi))+2/3*%e^(c+a^2*d/(b^2+d))*a*b^2*erfi((a*b+(b^2+d)*x)/sqrt(b^2+d))*sqrt(b^2+d)+4/3*a^2*b^3*Unintegrable(%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)/x,x)/sqrt(%pi)+4/3*b*d*Unintegrable(%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)/x,x)/sqrt(%pi)+2/3*b*(b^2+d)*Unintegrable(%e^(a^2+c+2*a*b*x+(b^2+d)*x^2)/x,x)/sqrt(%pi)+4/3*d^2*Unintegrable(%e^(c+d*x^2)*erfi(a+b*x),x)],
+[erfi(b*x)/(%e^(b^2*x^2)*x^3)+b^2*erfi(b*x)/(%e^(b^2*x^2)*x),x,5,-1/2*erfi(b*x)/(%e^(b^2*x^2)*x^2)-b/(x*sqrt(%pi))],
+
+-- Integrands of the form (e x)^m Trig[c+d x^2] Erfi[a+b x]^n
+[erfi(b*x)*sin(c+%i*b^2*x^2),x,4,-1/2*%i*%e^(%i*c)*b*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/sqrt(%pi)+1/8*%i*erfi(b*x)^2*sqrt(%pi)/(%e^(%i*c)*b)],
+[erfi(b*x)*sin(c-%i*b^2*x^2),x,4,1/2*%i*b*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/(%e^(%i*c)*sqrt(%pi))-1/8*%i*%e^(%i*c)*erfi(b*x)^2*sqrt(%pi)/b],
+[cos(c+%i*b^2*x^2)*erfi(b*x),x,4,1/2*%e^(%i*c)*b*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/sqrt(%pi)+1/8*erfi(b*x)^2*sqrt(%pi)/(%e^(%i*c)*b)],
+[cos(c-%i*b^2*x^2)*erfi(b*x),x,4,1/2*b*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/(%e^(%i*c)*sqrt(%pi))+1/8*%e^(%i*c)*erfi(b*x)^2*sqrt(%pi)/b],
+[erfi(b*x)*sinh(c+b^2*x^2),x,4,-1/2*b*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/(%e^c*sqrt(%pi))+1/8*%e^c*erfi(b*x)^2*sqrt(%pi)/b],
+[erfi(b*x)*sinh(c-b^2*x^2),x,4,1/2*%e^c*b*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/sqrt(%pi)-1/8*erfi(b*x)^2*sqrt(%pi)/(%e^c*b)],
+[cosh(c+b^2*x^2)*erfi(b*x),x,4,1/2*b*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/(%e^c*sqrt(%pi))+1/8*%e^c*erfi(b*x)^2*sqrt(%pi)/b],
+[cosh(c-b^2*x^2)*erfi(b*x),x,4,1/2*%e^c*b*x^2*HypergeometricPFQ([1,1],[3/2,2],-b^2*x^2)/sqrt(%pi)+1/8*erfi(b*x)^2*sqrt(%pi)/(%e^c*b)]]

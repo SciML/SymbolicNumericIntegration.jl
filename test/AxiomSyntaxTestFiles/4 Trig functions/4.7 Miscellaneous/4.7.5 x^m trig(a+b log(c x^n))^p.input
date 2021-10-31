@@ -1,0 +1,433 @@
+-- Axiom integration test file: "4 Trig functions\4.7 Miscellaneous\4.7.5 x^m trig(a+b log(c x^n))^p.input"
+
+lst: '[
+
+-- Problems for integrands of the form (e x)^m Trig[d (a+b Log[c x^n])]^p
+
+-- Integrands of the form (e x)^m Sin[d (a+b Log[c x^n])]^p
+
+-- Integrands of the form (e x)^m Sin[d (a+b Log[c x^n])]^p
+[x^2*sin(a+b*log(c*x^n)),x,1,-b*n*x^3*cos(a+b*log(c*x^n))/(9+b^2*n^2)+3*x^3*sin(a+b*log(c*x^n))/(9+b^2*n^2)],
+[x*sin(a+b*log(c*x^n)),x,1,-b*n*x^2*cos(a+b*log(c*x^n))/(4+b^2*n^2)+2*x^2*sin(a+b*log(c*x^n))/(4+b^2*n^2)],
+[sin(a+b*log(c*x^n)),x,1,-b*n*x*cos(a+b*log(c*x^n))/(1+b^2*n^2)+x*sin(a+b*log(c*x^n))/(1+b^2*n^2)],
+[sin(a+b*log(c*x^n))/x,x,2,-cos(a+b*log(c*x^n))/(b*n)],
+[sin(a+b*log(c*x^n))/x^2,x,1,-b*n*cos(a+b*log(c*x^n))/((1+b^2*n^2)*x)-sin(a+b*log(c*x^n))/((1+b^2*n^2)*x)],
+[sin(a+b*log(c*x^n))/x^3,x,1,-b*n*cos(a+b*log(c*x^n))/((4+b^2*n^2)*x^2)-2*sin(a+b*log(c*x^n))/((4+b^2*n^2)*x^2)],
+[x^2*sin(a+b*log(c*x^n))^2,x,2,2/3*b^2*n^2*x^3/(9+4*b^2*n^2)-2*b*n*x^3*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(9+4*b^2*n^2)+3*x^3*sin(a+b*log(c*x^n))^2/(9+4*b^2*n^2)],
+[x*sin(a+b*log(c*x^n))^2,x,2,1/4*b^2*n^2*x^2/(1+b^2*n^2)-1/2*b*n*x^2*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(1+b^2*n^2)+1/2*x^2*sin(a+b*log(c*x^n))^2/(1+b^2*n^2)],
+[sin(a+b*log(c*x^n))^2,x,2,2*b^2*n^2*x/(1+4*b^2*n^2)-2*b*n*x*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(1+4*b^2*n^2)+x*sin(a+b*log(c*x^n))^2/(1+4*b^2*n^2)],
+[sin(a+b*log(c*x^n))^2/x,x,3,1/2*log(x)-1/2*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(b*n)],
+[sin(a+b*log(c*x^n))^2/x^2,x,2,-2*b^2*n^2/((1+4*b^2*n^2)*x)-2*b*n*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/((1+4*b^2*n^2)*x)-sin(a+b*log(c*x^n))^2/((1+4*b^2*n^2)*x)],
+[sin(a+b*log(c*x^n))^2/x^3,x,2,-1/4*b^2*n^2/((1+b^2*n^2)*x^2)-1/2*b*n*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/((1+b^2*n^2)*x^2)-1/2*sin(a+b*log(c*x^n))^2/((1+b^2*n^2)*x^2)],
+[x^2*sin(a+b*log(c*x^n))^3,x,2,-2/3*b^3*n^3*x^3*cos(a+b*log(c*x^n))/(9+10*b^2*n^2+b^4*n^4)+2*b^2*n^2*x^3*sin(a+b*log(c*x^n))/(9+10*b^2*n^2+b^4*n^4)-1/3*b*n*x^3*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))^2/(1+b^2*n^2)+1/3*x^3*sin(a+b*log(c*x^n))^3/(1+b^2*n^2)],
+[x*sin(a+b*log(c*x^n))^3,x,2,-6*b^3*n^3*x^2*cos(a+b*log(c*x^n))/(16+40*b^2*n^2+9*b^4*n^4)+12*b^2*n^2*x^2*sin(a+b*log(c*x^n))/(16+40*b^2*n^2+9*b^4*n^4)-3*b*n*x^2*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))^2/(4+9*b^2*n^2)+2*x^2*sin(a+b*log(c*x^n))^3/(4+9*b^2*n^2)],
+[sin(a+b*log(c*x^n))^3,x,2,-6*b^3*n^3*x*cos(a+b*log(c*x^n))/(1+10*b^2*n^2+9*b^4*n^4)+6*b^2*n^2*x*sin(a+b*log(c*x^n))/(1+10*b^2*n^2+9*b^4*n^4)-3*b*n*x*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))^2/(1+9*b^2*n^2)+x*sin(a+b*log(c*x^n))^3/(1+9*b^2*n^2)],
+[sin(a+b*log(c*x^n))^3/x,x,3,-cos(a+b*log(c*x^n))/(b*n)+1/3*cos(a+b*log(c*x^n))^3/(b*n)],
+[sin(a+b*log(c*x^n))^3/x^2,x,2,-6*b^3*n^3*cos(a+b*log(c*x^n))/((1+10*b^2*n^2+9*b^4*n^4)*x)-6*b^2*n^2*sin(a+b*log(c*x^n))/((1+10*b^2*n^2+9*b^4*n^4)*x)-3*b*n*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))^2/((1+9*b^2*n^2)*x)-sin(a+b*log(c*x^n))^3/((1+9*b^2*n^2)*x)],
+[sin(a+b*log(c*x^n))^3/x^3,x,2,-6*b^3*n^3*cos(a+b*log(c*x^n))/((16+40*b^2*n^2+9*b^4*n^4)*x^2)-12*b^2*n^2*sin(a+b*log(c*x^n))/((16+40*b^2*n^2+9*b^4*n^4)*x^2)-3*b*n*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))^2/((4+9*b^2*n^2)*x^2)-2*sin(a+b*log(c*x^n))^3/((4+9*b^2*n^2)*x^2)],
+[x^2*sin(a+b*log(c*x^n))^4,x,3,8*b^4*n^4*x^3/(81+180*b^2*n^2+64*b^4*n^4)-24*b^3*n^3*x^3*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(81+180*b^2*n^2+64*b^4*n^4)+36*b^2*n^2*x^3*sin(a+b*log(c*x^n))^2/(81+180*b^2*n^2+64*b^4*n^4)-4*b*n*x^3*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))^3/(9+16*b^2*n^2)+3*x^3*sin(a+b*log(c*x^n))^4/(9+16*b^2*n^2)],
+[x*sin(a+b*log(c*x^n))^4,x,3,3/4*b^4*n^4*x^2/(1+5*b^2*n^2+4*b^4*n^4)-3/2*b^3*n^3*x^2*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(1+5*b^2*n^2+4*b^4*n^4)+3/2*b^2*n^2*x^2*sin(a+b*log(c*x^n))^2/(1+5*b^2*n^2+4*b^4*n^4)-b*n*x^2*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))^3/(1+4*b^2*n^2)+1/2*x^2*sin(a+b*log(c*x^n))^4/(1+4*b^2*n^2)],
+[sin(a+b*log(c*x^n))^4,x,3,24*b^4*n^4*x/(1+20*b^2*n^2+64*b^4*n^4)-24*b^3*n^3*x*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(1+20*b^2*n^2+64*b^4*n^4)+12*b^2*n^2*x*sin(a+b*log(c*x^n))^2/(1+20*b^2*n^2+64*b^4*n^4)-4*b*n*x*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))^3/(1+16*b^2*n^2)+x*sin(a+b*log(c*x^n))^4/(1+16*b^2*n^2)],
+[sin(a+b*log(c*x^n))^4/x,x,4,3/8*log(x)-3/8*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(b*n)-1/4*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))^3/(b*n)],
+[sin(a+b*log(c*x^n))^4/x^2,x,3,-24*b^4*n^4/((1+20*b^2*n^2+64*b^4*n^4)*x)-24*b^3*n^3*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/((1+20*b^2*n^2+64*b^4*n^4)*x)-12*b^2*n^2*sin(a+b*log(c*x^n))^2/((1+20*b^2*n^2+64*b^4*n^4)*x)-4*b*n*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))^3/((1+16*b^2*n^2)*x)-sin(a+b*log(c*x^n))^4/((1+16*b^2*n^2)*x)],
+[sin(a+b*log(c*x^n))^4/x^3,x,3,-3/4*b^4*n^4/((1+5*b^2*n^2+4*b^4*n^4)*x^2)-3/2*b^3*n^3*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/((1+5*b^2*n^2+4*b^4*n^4)*x^2)-3/2*b^2*n^2*sin(a+b*log(c*x^n))^2/((1+5*b^2*n^2+4*b^4*n^4)*x^2)-b*n*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))^3/((1+4*b^2*n^2)*x^2)-1/2*sin(a+b*log(c*x^n))^4/((1+4*b^2*n^2)*x^2)],
+[sin(log(a+b*x)),x,2,-1/2*(a+b*x)*cos(log(a+b*x))/b+1/2*(a+b*x)*sin(log(a+b*x))/b],
+
+-- Integrands of the form (e x)^m Sin[d (a+b Log[c x^n])]^p when b^2 n^2 p^2+(m+1)^2=0
+[x^m*sin(a+log(c*x^n)*sqrt(-(1+m)^2/n^2)),x,3,-1/4*%e^(a*(1+m)/(n*sqrt(-(1+m)^2/n^2)))*x^(1+m)*(c*x^n)^((1+m)/n)/(n*sqrt(-(1+m)^2/n^2))+1/2*%e^(a*n*sqrt(-(1+m)^2/n^2)/(1+m))*(1+m)*x^(1+m)*log(x)/(n*(c*x^n)^((1+m)/n)*sqrt(-(1+m)^2/n^2))],
+[x^2*sin(a+log(c*x^n)*sqrt((-9)/n^2)),x,3,1/12*n*x^3*(c*x^n)^(3/n)*sqrt((-1)/n^2)/%e^(a*n*sqrt((-1)/n^2))-1/2*%e^(a*n*sqrt((-1)/n^2))*n*x^3*log(x)*sqrt((-1)/n^2)/(c*x^n)^(3/n)],
+[x*sin(a+log(c*x^n)*sqrt((-4)/n^2)),x,3,1/8*n*x^2*(c*x^n)^(2/n)*sqrt((-1)/n^2)/%e^(a*n*sqrt((-1)/n^2))-1/2*%e^(a*n*sqrt((-1)/n^2))*n*x^2*log(x)*sqrt((-1)/n^2)/(c*x^n)^(2/n)],
+[sin(a+log(c*x^n)*sqrt((-1)/n^2)),x,3,1/4*n*x*(c*x^n)^(1/n)*sqrt((-1)/n^2)/%e^(a*n*sqrt((-1)/n^2))-1/2*%e^(a*n*sqrt((-1)/n^2))*n*x*log(x)*sqrt((-1)/n^2)/(c*x^n)^(1/n)],
+[sin(a+log(c*x^n)*sqrt(0))/x,x,2,log(x)*sin(a)],
+[sin(a+log(c*x^n)*sqrt((-1)/n^2))/x^2,x,3,1/4*%e^(a*n*sqrt((-1)/n^2))*n*sqrt((-1)/n^2)/(x*(c*x^n)^(1/n))+1/2*n*(c*x^n)^(1/n)*log(x)*sqrt((-1)/n^2)/(%e^(a*n*sqrt((-1)/n^2))*x)],
+[sin(a+log(c*x^n)*sqrt((-4)/n^2))/x^3,x,3,1/8*%e^(a*n*sqrt((-1)/n^2))*n*sqrt((-1)/n^2)/(x^2*(c*x^n)^(2/n))+1/2*n*(c*x^n)^(2/n)*log(x)*sqrt((-1)/n^2)/(%e^(a*n*sqrt((-1)/n^2))*x^2)],
+[x^m*sin(a+log(c*x^n)*sqrt(-1/4*(1+m)^2/n^2))^2,x,3,1/2*x^(1+m)/(1+m)-1/8*x^(1+m)*(c*x^n)^((1+m)/n)/(%e^(2*a*n*sqrt(-(1+m)^2/n^2)/(1+m))*(1+m))-1/4*%e^(2*a*n*sqrt(-(1+m)^2/n^2)/(1+m))*x^(1+m)*log(x)/(c*x^n)^((1+m)/n)],
+[x^2*sin(a+log(c*x^n)*sqrt((-9/4)/n^2))^2,x,3,1/6*x^3-1/24*x^3*(c*x^n)^(3/n)/%e^(2*a*n*sqrt((-1)/n^2))-1/4*%e^(2*a*n*sqrt((-1)/n^2))*x^3*log(x)/(c*x^n)^(3/n)],
+[x*sin(a+log(c*x^n)*sqrt((-1)/n^2))^2,x,3,1/4*x^2-1/16*x^2*(c*x^n)^(2/n)/%e^(2*a*n*sqrt((-1)/n^2))-1/4*%e^(2*a*n*sqrt((-1)/n^2))*x^2*log(x)/(c*x^n)^(2/n)],
+[sin(a+log(c*x^n)*sqrt((-1/4)/n^2))^2,x,3,1/2*x-1/8*x*(c*x^n)^(1/n)/%e^(2*a*n*sqrt((-1)/n^2))-1/4*%e^(2*a*n*sqrt((-1)/n^2))*x*log(x)/(c*x^n)^(1/n)],
+[sin(a+log(c*x^n)*sqrt(0))^2/x,x,2,log(x)*sin(a)^2],
+[sin(a+log(c*x^n)*sqrt((-1/4)/n^2))^2/x^2,x,3,(-1/2)/x+1/8*%e^(2*a*n*sqrt((-1)/n^2))/(x*(c*x^n)^(1/n))-1/4*(c*x^n)^(1/n)*log(x)/(%e^(2*a*n*sqrt((-1)/n^2))*x)],
+[sin(a+log(c*x^n)*sqrt((-1)/n^2))^2/x^3,x,3,(-1/4)/x^2+1/16*%e^(2*a*n*sqrt((-1)/n^2))/(x^2*(c*x^n)^(2/n))-1/4*(c*x^n)^(2/n)*log(x)/(%e^(2*a*n*sqrt((-1)/n^2))*x^2)],
+[x^m*sin(a+log(c*x^n)*sqrt(-1/4*(1+m)^2/n^2))^3,x,2,8/5*x^(1+m)*sin(a+1/2*log(c*x^n)*sqrt(-(1+m)^2/n^2))/(1+m)-4/5*x^(1+m)*sin(a+1/2*log(c*x^n)*sqrt(-(1+m)^2/n^2))^3/(1+m)-4/5*n*x^(1+m)*cos(a+1/2*log(c*x^n)*sqrt(-(1+m)^2/n^2))*sqrt(-(1+m)^2/n^2)/(1+m)^2+6/5*n*x^(1+m)*cos(a+1/2*log(c*x^n)*sqrt(-(1+m)^2/n^2))*sin(a+1/2*log(c*x^n)*sqrt(-(1+m)^2/n^2))^2*sqrt(-(1+m)^2/n^2)/(1+m)^2],
+[x^2*sin(a+log(c*x^n)*sqrt((-1)/n^2))^3,x,3,-3/16*%e^(a*n*sqrt((-1)/n^2))*n*x^3*sqrt((-1)/n^2)/(c*x^n)^(1/n)+3/32*n*x^3*(c*x^n)^(1/n)*sqrt((-1)/n^2)/%e^(a*n*sqrt((-1)/n^2))-1/48*n*x^3*(c*x^n)^(3/n)*sqrt((-1)/n^2)/%e^(3*a*n*sqrt((-1)/n^2))+1/8*%e^(3*a*n*sqrt((-1)/n^2))*n*x^3*log(x)*sqrt((-1)/n^2)/(c*x^n)^(3/n)],
+[x*sin(a+log(c*x^n)*sqrt((-4/9)/n^2))^3,x,3,-9/32*%e^(a*n*sqrt((-1)/n^2))*n*x^2*sqrt((-1)/n^2)/(c*x^n)^(2/3/n)+9/64*n*x^2*(c*x^n)^(2/3/n)*sqrt((-1)/n^2)/%e^(a*n*sqrt((-1)/n^2))-1/32*n*x^2*(c*x^n)^(2/n)*sqrt((-1)/n^2)/%e^(3*a*n*sqrt((-1)/n^2))+1/8*%e^(3*a*n*sqrt((-1)/n^2))*n*x^2*log(x)*sqrt((-1)/n^2)/(c*x^n)^(2/n)],
+[sin(a+log(c*x^n)*sqrt((-1/9)/n^2))^3,x,3,-9/16*%e^(a*n*sqrt((-1)/n^2))*n*x*sqrt((-1)/n^2)/(c*x^n)^(1/3/n)+9/32*n*x*(c*x^n)^(1/3/n)*sqrt((-1)/n^2)/%e^(a*n*sqrt((-1)/n^2))-1/16*n*x*(c*x^n)^(1/n)*sqrt((-1)/n^2)/%e^(3*a*n*sqrt((-1)/n^2))+1/8*%e^(3*a*n*sqrt((-1)/n^2))*n*x*log(x)*sqrt((-1)/n^2)/(c*x^n)^(1/n)],
+[sin(a+log(c*x^n)*sqrt(0))^3/x,x,2,log(x)*sin(a)^3],
+[sin(a+log(c*x^n)*sqrt((-1/9)/n^2))^3/x^2,x,3,-1/16*%e^(3*a*n*sqrt((-1)/n^2))*n*sqrt((-1)/n^2)/(x*(c*x^n)^(1/n))+9/32*%e^(a*n*sqrt((-1)/n^2))*n*sqrt((-1)/n^2)/(x*(c*x^n)^(1/3/n))-9/16*n*(c*x^n)^(1/3/n)*sqrt((-1)/n^2)/(%e^(a*n*sqrt((-1)/n^2))*x)-1/8*n*(c*x^n)^(1/n)*log(x)*sqrt((-1)/n^2)/(%e^(3*a*n*sqrt((-1)/n^2))*x)],
+[sin(a+log(c*x^n)*sqrt((-4/9)/n^2))^3/x^3,x,3,-1/32*%e^(3*a*n*sqrt((-1)/n^2))*n*sqrt((-1)/n^2)/(x^2*(c*x^n)^(2/n))+9/64*%e^(a*n*sqrt((-1)/n^2))*n*sqrt((-1)/n^2)/(x^2*(c*x^n)^(2/3/n))-9/32*n*(c*x^n)^(2/3/n)*sqrt((-1)/n^2)/(%e^(a*n*sqrt((-1)/n^2))*x^2)-1/8*n*(c*x^n)^(2/n)*log(x)*sqrt((-1)/n^2)/(%e^(3*a*n*sqrt((-1)/n^2))*x^2)],
+[x^m*sin(a+log(c*x^2)*sqrt(-1/4*(1+m)^2)),x,3,-1/4*%e^(a*(1+m)/sqrt(-(1+m)^2))*x^(1+m)*(c*x^2)^(1/2*(1+m))/sqrt(-(1+m)^2)+1/2*%e^(a*sqrt(-(1+m)^2)/(1+m))*(1+m)*x^(1+m)*(c*x^2)^(1/2*(-1-m))*log(x)/sqrt(-(1+m)^2)],
+[sin(a+log(c*x^2)*sqrt(-1/4)),x,3,1/4*%i*c*x^3/(%e^(%i*a)*sqrt(c*x^2))-1/2*%i*%e^(%i*a)*x*log(x)/sqrt(c*x^2)],
+[x^m*sin(a+log(c*x^2)*sqrt(-1/16*(1+m)^2))^2,x,3,1/2*x^(1+m)/(1+m)-1/8*%e^(2*a*(1+m)/sqrt(-(1+m)^2))*x^(1+m)*(c*x^2)^(1/2*(1+m))/(1+m)-1/4*x^(1+m)*(c*x^2)^(1/2*(-1-m))*log(x)/%e^(2*a*(1+m)/sqrt(-(1+m)^2))],
+[sin(a+log(c*x^2)*sqrt(-1/16))^2,x,3,1/2*x-1/8*c*x^3/(%e^(2*%i*a)*sqrt(c*x^2))-1/4*%e^(2*%i*a)*x*log(x)/sqrt(c*x^2)],
+[x^m*sin(a+log(c*x^2)*sqrt(-1/36*(1+m)^2))^3,x,3,9/16*%e^(a*sqrt(-(1+m)^2)/(1+m))*x^(1+m)*(c*x^2)^(1/6*(-1-m))/sqrt(-(1+m)^2)-9/32*%e^(a*(1+m)/sqrt(-(1+m)^2))*x^(1+m)*(c*x^2)^(1/6*(1+m))/sqrt(-(1+m)^2)+1/16*%e^(3*a*(1+m)/sqrt(-(1+m)^2))*x^(1+m)*(c*x^2)^(1/2*(1+m))/sqrt(-(1+m)^2)-1/8*(1+m)*x^(1+m)*(c*x^2)^(1/2*(-1-m))*log(x)/(%e^(3*a*(1+m)/sqrt(-(1+m)^2))*sqrt(-(1+m)^2))],
+[sin(a+log(c*x^2)*sqrt(-1/36))^3,x,3,-9/16*%i*%e^(%i*a)*x/(c*x^2)^(1/6)+9/32*%i*x*(c*x^2)^(1/6)/%e^(%i*a)-1/16*%i*c*x^3/(%e^(3*%i*a)*sqrt(c*x^2))+1/8*%i*%e^(3*%i*a)*x*log(x)/sqrt(c*x^2)],
+
+-- Integrands of the form (e x)^m Sin[d (a+b Log[c x^n])]^(p/2)
+
+-- p>0
+[x*sqrt(sin(a+b*log(c*x^n))),x,3,2*x^2*hypergeometric(-1/2,1/4*(-1+(-4*%i)/(b*n)),1/4*(3+(-4*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(sin(a+b*log(c*x^n)))/((4-%i*b*n)*sqrt(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b)))],
+[sqrt(sin(a+b*log(c*x^n))),x,3,2*x*hypergeometric(-1/2,1/4*(-2*%i-b*n)/(b*n),1/4*(3+(-2*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(sin(a+b*log(c*x^n)))/((2-%i*b*n)*sqrt(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b)))],
+[sqrt(sin(a+b*log(c*x^n)))/x,x,2,2*elliptic_e(1/2*(-1/2*%pi+a+b*log(c*x^n)),2)/(b*n)],
+[sqrt(sin(a+b*log(c*x^n)))/x^2,x,3,-2*hypergeometric(-1/2,1/4*(-1+2*%i/(b*n)),1/4*(3+2*%i/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(sin(a+b*log(c*x^n)))/((2+%i*b*n)*x*sqrt(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b)))],
+[sqrt(sin(a+b*log(c*x^n)))/x^3,x,3,-2*hypergeometric(-1/2,1/4*(-1+4*%i/(b*n)),1/4*(3+4*%i/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(sin(a+b*log(c*x^n)))/((4+%i*b*n)*x^2*sqrt(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b)))],
+[x*sin(a+b*log(c*x^n))^(3/2),x,3,2*x^2*hypergeometric(-3/2,1/4*(-3+(-4*%i)/(b*n)),1/4*(1+(-4*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sin(a+b*log(c*x^n))^(3/2)/((4-3*%i*b*n)*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2))],
+[sin(a+b*log(c*x^n))^(3/2),x,3,2*x*hypergeometric(-3/2,1/4*(-3+(-2*%i)/(b*n)),1/4*(1+(-2*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sin(a+b*log(c*x^n))^(3/2)/((2-3*%i*b*n)*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2))],
+[sin(a+b*log(c*x^n))^(3/2)/x,x,3,2/3*elliptic_f(1/2*(-1/2*%pi+a+b*log(c*x^n)),2)/(b*n)-2/3*cos(a+b*log(c*x^n))*sqrt(sin(a+b*log(c*x^n)))/(b*n)],
+[sin(a+b*log(c*x^n))^(3/2)/x^2,x,3,-2*hypergeometric(-3/2,1/4*(-3+2*%i/(b*n)),1/4*(1+2*%i/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sin(a+b*log(c*x^n))^(3/2)/((2+3*%i*b*n)*x*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2))],
+[sin(a+b*log(c*x^n))^(3/2)/x^3,x,3,-2*hypergeometric(-3/2,1/4*(-3+4*%i/(b*n)),1/4*(1+4*%i/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sin(a+b*log(c*x^n))^(3/2)/((4+3*%i*b*n)*x^2*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2))],
+
+-- p<0
+[1/sqrt(sin(a+b*log(c*x^n))),x,3,2*x*hypergeometric(1/2,1/4*(1+(-2*%i)/(b*n)),1/4*(5+(-2*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+%i*b*n)*sqrt(sin(a+b*log(c*x^n))))],
+[1/(x*sqrt(sin(a+b*log(c*x^n)))),x,2,2*elliptic_f(1/2*(-1/2*%pi+a+b*log(c*x^n)),2)/(b*n)],
+[1/sin(a+b*log(c*x^n))^(3/2),x,3,2*x*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2)*hypergeometric(3/2,1/4*(3+(-2*%i)/(b*n)),1/4*(7+(-2*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+3*%i*b*n)*sin(a+b*log(c*x^n))^(3/2))],
+[1/(x*sin(a+b*log(c*x^n))^(3/2)),x,3,-2*elliptic_e(1/2*(-1/2*%pi+a+b*log(c*x^n)),2)/(b*n)-2*cos(a+b*log(c*x^n))/(b*n*sqrt(sin(a+b*log(c*x^n))))],
+[1/sin(a+b*log(c*x^n))^(5/2),x,3,2*x*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(5/2)*hypergeometric(5/2,1/4*(5+(-2*%i)/(b*n)),1/4*(9+(-2*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+5*%i*b*n)*sin(a+b*log(c*x^n))^(5/2))],
+[1/(x*sin(a+b*log(c*x^n))^(5/2)),x,3,2/3*elliptic_f(1/2*(-1/2*%pi+a+b*log(c*x^n)),2)/(b*n)-2/3*cos(a+b*log(c*x^n))/(b*n*sin(a+b*log(c*x^n))^(3/2))],
+[1/sin(a-2*%i*log(c*x))^(3/2),x,3,1/2*(1-%e^(2*%i*a)*c^4*x^4)/(%e^(2*%i*a)*c^4*x^3*sin(a-2*%i*log(c*x))^(3/2))],
+
+-- Integrands of the form (e x)^m Sin[d (a+b Log[c x^n])]^p when m symbolic
+[(e*x)^m*sin(d*(a+b*log(c*x^n)))^4,x,3,24*b^4*d^4*n^4*(e*x)^(1+m)/(e*(1+m)*((1+m)^2+4*b^2*d^2*n^2)*((1+m)^2+16*b^2*d^2*n^2))-24*b^3*d^3*n^3*(e*x)^(1+m)*cos(d*(a+b*log(c*x^n)))*sin(d*(a+b*log(c*x^n)))/(e*((1+m)^2+4*b^2*d^2*n^2)*((1+m)^2+16*b^2*d^2*n^2))+12*b^2*d^2*(1+m)*n^2*(e*x)^(1+m)*sin(d*(a+b*log(c*x^n)))^2/(e*((1+m)^2+4*b^2*d^2*n^2)*((1+m)^2+16*b^2*d^2*n^2))-4*b*d*n*(e*x)^(1+m)*cos(d*(a+b*log(c*x^n)))*sin(d*(a+b*log(c*x^n)))^3/(e*((1+m)^2+16*b^2*d^2*n^2))+(1+m)*(e*x)^(1+m)*sin(d*(a+b*log(c*x^n)))^4/(e*((1+m)^2+16*b^2*d^2*n^2))],
+[(e*x)^m*sin(d*(a+b*log(c*x^n)))^3,x,2,-6*b^3*d^3*n^3*(e*x)^(1+m)*cos(d*(a+b*log(c*x^n)))/(e*((1+m)^2+b^2*d^2*n^2)*((1+m)^2+9*b^2*d^2*n^2))+6*b^2*d^2*(1+m)*n^2*(e*x)^(1+m)*sin(d*(a+b*log(c*x^n)))/(e*((1+m)^2+b^2*d^2*n^2)*((1+m)^2+9*b^2*d^2*n^2))-3*b*d*n*(e*x)^(1+m)*cos(d*(a+b*log(c*x^n)))*sin(d*(a+b*log(c*x^n)))^2/(e*((1+m)^2+9*b^2*d^2*n^2))+(1+m)*(e*x)^(1+m)*sin(d*(a+b*log(c*x^n)))^3/(e*((1+m)^2+9*b^2*d^2*n^2))],
+[(e*x)^m*sin(d*(a+b*log(c*x^n)))^2,x,2,2*b^2*d^2*n^2*(e*x)^(1+m)/(e*(1+m)*((1+m)^2+4*b^2*d^2*n^2))-2*b*d*n*(e*x)^(1+m)*cos(d*(a+b*log(c*x^n)))*sin(d*(a+b*log(c*x^n)))/(e*((1+m)^2+4*b^2*d^2*n^2))+(1+m)*(e*x)^(1+m)*sin(d*(a+b*log(c*x^n)))^2/(e*((1+m)^2+4*b^2*d^2*n^2))],
+[(e*x)^m*sin(d*(a+b*log(c*x^n))),x,1,-b*d*n*(e*x)^(1+m)*cos(d*(a+b*log(c*x^n)))/(e*((1+m)^2+b^2*d^2*n^2))+(1+m)*(e*x)^(1+m)*sin(d*(a+b*log(c*x^n)))/(e*((1+m)^2+b^2*d^2*n^2))],
+[(e*x)^m*sin(d*(a+b*log(c*x^n)))^(3/2),x,3,2*(e*x)^(1+m)*hypergeometric(-3/2,1/4*(-2*%i-2*%i*m-3*b*d*n)/(b*d*n),1/4*(-2*%i-2*%i*m+b*d*n)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))*sin(d*(a+b*log(c*x^n)))^(3/2)/(e*(2+2*m-3*%i*b*d*n)*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^(3/2))],
+[(e*x)^m*sin(d*(a+b*log(c*x^n)))^(1/2),x,3,2*(e*x)^(1+m)*hypergeometric(-1/2,1/4*(-2*%i-2*%i*m-b*d*n)/(b*d*n),1/4*(-2*%i-2*%i*m+3*b*d*n)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))*sqrt(sin(d*(a+b*log(c*x^n))))/(e*(2+2*m-%i*b*d*n)*sqrt(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))],
+[(e*x)^m/sin(d*(a+b*log(c*x^n)))^(1/2),x,3,2*(e*x)^(1+m)*hypergeometric(1/2,1/4*(-2*%i-2*%i*m+b*d*n)/(b*d*n),1/4*(-2*%i-2*%i*m+5*b*d*n)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))*sqrt(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(e*(2+2*m+%i*b*d*n)*sqrt(sin(d*(a+b*log(c*x^n)))))],
+[(e*x)^m/sin(d*(a+b*log(c*x^n)))^(3/2),x,3,2*(e*x)^(1+m)*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^(3/2)*hypergeometric(3/2,1/4*(-2*%i-2*%i*m+3*b*d*n)/(b*d*n),1/4*(-2*%i-2*%i*m+7*b*d*n)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(e*(2+2*m+3*%i*b*d*n)*sin(d*(a+b*log(c*x^n)))^(3/2))],
+[(e*x)^m/sin(d*(a+b*log(c*x^n)))^(5/2),x,3,2*(e*x)^(1+m)*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^(5/2)*hypergeometric(5/2,1/4*(-2*%i-2*%i*m+5*b*d*n)/(b*d*n),1/4*(-2*%i-2*%i*m+9*b*d*n)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(e*(2+2*m+5*%i*b*d*n)*sin(d*(a+b*log(c*x^n)))^(5/2))],
+
+-- Integrands of the form (e x)^m Sin[d (a+b Log[c x^n])]^p when p symbolic
+[(e*x)^m*sin(d*(a+b*log(c*x^n)))^p,x,3,(e*x)^(1+m)*hypergeometric(-p,1/2*(-%i-%i*m-b*d*n*p)/(b*d*n),1/2*(2-%i*(1+m)/(b*d*n)-p),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))*sin(d*(a+b*log(c*x^n)))^p/(e*(1+m-%i*b*d*n*p)*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^p)],
+[x^2*sin(a+b*log(c*x^n))^p,x,3,x^3*hypergeometric(-p,1/2*(-3*%i-b*n*p)/(b*n),1/2*(2+(-3*%i)/(b*n)-p),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sin(a+b*log(c*x^n))^p/((3-%i*b*n*p)*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^p)],
+[x*sin(a+b*log(c*x^n))^p,x,3,x^2*hypergeometric(1/2*((-2*%i)/(b*n)-p),-p,1/2*(2+(-2*%i)/(b*n)-p),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sin(a+b*log(c*x^n))^p/((2-%i*b*n*p)*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^p)],
+[sin(a+b*log(c*x^n))^p,x,3,x*hypergeometric(-p,1/2*(-%i-b*n*p)/(b*n),1/2*(2+(-%i)/(b*n)-p),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sin(a+b*log(c*x^n))^p/((1-%i*b*n*p)*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^p)],
+[sin(a+b*log(c*x^n))^p/x,x,2,cos(a+b*log(c*x^n))*hypergeometric(1/2,1/2*(1+p),1/2*(3+p),sin(a+b*log(c*x^n))^2)*sin(a+b*log(c*x^n))^(1+p)/(b*n*(1+p)*sqrt(cos(a+b*log(c*x^n))^2))],
+[sin(a+b*log(c*x^n))^p/x^2,x,3,-hypergeometric(1/2*(%i/(b*n)-p),-p,1/2*(2+%i/(b*n)-p),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sin(a+b*log(c*x^n))^p/((1+%i*b*n*p)*x*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^p)],
+[sin(a+b*log(c*x^n))^p/x^3,x,3,-hypergeometric(1/2*(2*%i/(b*n)-p),-p,1/2*(2+2*%i/(b*n)-p),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sin(a+b*log(c*x^n))^p/((2+%i*b*n*p)*x^2*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^p)],
+
+-- Integrands of the form (e x)^m Cos[d (a+b Log[c x^n])]^p
+
+-- Integrands of the form (e x)^m Cos[d (a+b Log[c x^n])]^p
+
+-- p>0
+[x^2*cos(a+b*log(c*x^n)),x,1,3*x^3*cos(a+b*log(c*x^n))/(9+b^2*n^2)+b*n*x^3*sin(a+b*log(c*x^n))/(9+b^2*n^2)],
+[x*cos(a+b*log(c*x^n)),x,1,2*x^2*cos(a+b*log(c*x^n))/(4+b^2*n^2)+b*n*x^2*sin(a+b*log(c*x^n))/(4+b^2*n^2)],
+[cos(a+b*log(c*x^n)),x,1,x*cos(a+b*log(c*x^n))/(1+b^2*n^2)+b*n*x*sin(a+b*log(c*x^n))/(1+b^2*n^2)],
+[cos(a+b*log(c*x^n))/x,x,2,sin(a+b*log(c*x^n))/(b*n)],
+[cos(a+b*log(c*x^n))/x^2,x,1,-cos(a+b*log(c*x^n))/((1+b^2*n^2)*x)+b*n*sin(a+b*log(c*x^n))/((1+b^2*n^2)*x)],
+[x^2*cos(a+b*log(c*x^n))^2,x,2,2/3*b^2*n^2*x^3/(9+4*b^2*n^2)+3*x^3*cos(a+b*log(c*x^n))^2/(9+4*b^2*n^2)+2*b*n*x^3*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(9+4*b^2*n^2)],
+[x*cos(a+b*log(c*x^n))^2,x,2,1/4*b^2*n^2*x^2/(1+b^2*n^2)+1/2*x^2*cos(a+b*log(c*x^n))^2/(1+b^2*n^2)+1/2*b*n*x^2*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(1+b^2*n^2)],
+[cos(a+b*log(c*x^n))^2,x,2,2*b^2*n^2*x/(1+4*b^2*n^2)+x*cos(a+b*log(c*x^n))^2/(1+4*b^2*n^2)+2*b*n*x*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(1+4*b^2*n^2)],
+[cos(a+b*log(c*x^n))^2/x,x,3,1/2*log(x)+1/2*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(b*n)],
+[cos(a+b*log(c*x^n))^2/x^2,x,2,-2*b^2*n^2/((1+4*b^2*n^2)*x)-cos(a+b*log(c*x^n))^2/((1+4*b^2*n^2)*x)+2*b*n*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/((1+4*b^2*n^2)*x)],
+[x^2*cos(a+b*log(c*x^n))^3,x,2,2*b^2*n^2*x^3*cos(a+b*log(c*x^n))/(9+10*b^2*n^2+b^4*n^4)+1/3*x^3*cos(a+b*log(c*x^n))^3/(1+b^2*n^2)+2/3*b^3*n^3*x^3*sin(a+b*log(c*x^n))/(9+10*b^2*n^2+b^4*n^4)+1/3*b*n*x^3*cos(a+b*log(c*x^n))^2*sin(a+b*log(c*x^n))/(1+b^2*n^2)],
+[x*cos(a+b*log(c*x^n))^3,x,2,12*b^2*n^2*x^2*cos(a+b*log(c*x^n))/(16+40*b^2*n^2+9*b^4*n^4)+2*x^2*cos(a+b*log(c*x^n))^3/(4+9*b^2*n^2)+6*b^3*n^3*x^2*sin(a+b*log(c*x^n))/(16+40*b^2*n^2+9*b^4*n^4)+3*b*n*x^2*cos(a+b*log(c*x^n))^2*sin(a+b*log(c*x^n))/(4+9*b^2*n^2)],
+[cos(a+b*log(c*x^n))^3,x,2,6*b^2*n^2*x*cos(a+b*log(c*x^n))/(1+10*b^2*n^2+9*b^4*n^4)+x*cos(a+b*log(c*x^n))^3/(1+9*b^2*n^2)+6*b^3*n^3*x*sin(a+b*log(c*x^n))/(1+10*b^2*n^2+9*b^4*n^4)+3*b*n*x*cos(a+b*log(c*x^n))^2*sin(a+b*log(c*x^n))/(1+9*b^2*n^2)],
+[cos(a+b*log(c*x^n))^3/x,x,3,sin(a+b*log(c*x^n))/(b*n)-1/3*sin(a+b*log(c*x^n))^3/(b*n)],
+[cos(a+b*log(c*x^n))^3/x^2,x,2,-6*b^2*n^2*cos(a+b*log(c*x^n))/((1+10*b^2*n^2+9*b^4*n^4)*x)-cos(a+b*log(c*x^n))^3/((1+9*b^2*n^2)*x)+6*b^3*n^3*sin(a+b*log(c*x^n))/((1+10*b^2*n^2+9*b^4*n^4)*x)+3*b*n*cos(a+b*log(c*x^n))^2*sin(a+b*log(c*x^n))/((1+9*b^2*n^2)*x)],
+[cos(a+b*log(c*x^n))^4,x,3,24*b^4*n^4*x/(1+20*b^2*n^2+64*b^4*n^4)+12*b^2*n^2*x*cos(a+b*log(c*x^n))^2/(1+20*b^2*n^2+64*b^4*n^4)+x*cos(a+b*log(c*x^n))^4/(1+16*b^2*n^2)+24*b^3*n^3*x*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(1+20*b^2*n^2+64*b^4*n^4)+4*b*n*x*cos(a+b*log(c*x^n))^3*sin(a+b*log(c*x^n))/(1+16*b^2*n^2)],
+[cos(a+b*log(c*x^n))^4/x,x,4,3/8*log(x)+3/8*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(b*n)+1/4*cos(a+b*log(c*x^n))^3*sin(a+b*log(c*x^n))/(b*n)],
+[cos(log(6+3*x)),x,2,1/2*(2+x)*cos(log(3*(2+x)))+1/2*(2+x)*sin(log(3*(2+x)))],
+
+-- Integrands of the form (e x)^m Cos[d (a+b Log[c x^n])]^p when b^2 n^2 p^2+(m+1)^2=0
+[x^m*cos(a+log(c*x^n)*sqrt(-(1+m)^2/n^2)),x,3,1/4*%e^(a*(1+m)/(n*sqrt(-(1+m)^2/n^2)))*x^(1+m)*(c*x^n)^((1+m)/n)/(1+m)+1/2*%e^(a*n*sqrt(-(1+m)^2/n^2)/(1+m))*x^(1+m)*log(x)/(c*x^n)^((1+m)/n)],
+[cos(a+log(c*x^n)*sqrt((-1)/n^2)),x,3,1/4*x*(c*x^n)^(1/n)/%e^(a*n*sqrt((-1)/n^2))+1/2*%e^(a*n*sqrt((-1)/n^2))*x*log(x)/(c*x^n)^(1/n)],
+[x^m*cos(a+log(c*x^n)*sqrt(-1/4*(1+m)^2/n^2))^2,x,3,1/2*x^(1+m)/(1+m)+1/8*x^(1+m)*(c*x^n)^((1+m)/n)/(%e^(2*a*n*sqrt(-(1+m)^2/n^2)/(1+m))*(1+m))+1/4*%e^(2*a*n*sqrt(-(1+m)^2/n^2)/(1+m))*x^(1+m)*log(x)/(c*x^n)^((1+m)/n)],
+[cos(a+log(c*x^n)*sqrt((-1/4)/n^2))^2,x,3,1/2*x+1/8*x*(c*x^n)^(1/n)/%e^(2*a*n*sqrt((-1)/n^2))+1/4*%e^(2*a*n*sqrt((-1)/n^2))*x*log(x)/(c*x^n)^(1/n)],
+[x^m*cos(a+log(c*x^n)*sqrt(-1/4*(1+m)^2/n^2))^3,x,2,8/5*x^(1+m)*cos(a+1/2*log(c*x^n)*sqrt(-(1+m)^2/n^2))/(1+m)-4/5*x^(1+m)*cos(a+1/2*log(c*x^n)*sqrt(-(1+m)^2/n^2))^3/(1+m)+4/5*n*x^(1+m)*sin(a+1/2*log(c*x^n)*sqrt(-(1+m)^2/n^2))*sqrt(-(1+m)^2/n^2)/(1+m)^2-6/5*n*x^(1+m)*cos(a+1/2*log(c*x^n)*sqrt(-(1+m)^2/n^2))^2*sin(a+1/2*log(c*x^n)*sqrt(-(1+m)^2/n^2))*sqrt(-(1+m)^2/n^2)/(1+m)^2],
+[cos(a+log(c*x^n)*sqrt((-1/9)/n^2))^3,x,3,9/16*%e^(a*n*sqrt((-1)/n^2))*x/(c*x^n)^(1/3/n)+9/32*x*(c*x^n)^(1/3/n)/%e^(a*n*sqrt((-1)/n^2))+1/16*x*(c*x^n)^(1/n)/%e^(3*a*n*sqrt((-1)/n^2))+1/8*%e^(3*a*n*sqrt((-1)/n^2))*x*log(x)/(c*x^n)^(1/n)],
+
+-- Integrands of the form (e x)^m Cos[d (a+b Log[c x^n])]^(p/2)
+
+-- p>0
+[sqrt(cos(a+b*log(c*x^n))),x,3,2*x*hypergeometric(-1/2,1/4*(-2*%i-b*n)/(b*n),1/4*(3+(-2*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(cos(a+b*log(c*x^n)))/((2-%i*b*n)*sqrt(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b)))],
+[sqrt(cos(a+b*log(c*x^n)))/x,x,2,2*elliptic_e(1/2*(a+b*log(c*x^n)),2)/(b*n)],
+[cos(a+b*log(c*x^n))^(3/2),x,3,2*x*cos(a+b*log(c*x^n))^(3/2)*hypergeometric(-3/2,1/4*(-3+(-2*%i)/(b*n)),1/4*(1+(-2*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2-3*%i*b*n)*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2))],
+[cos(a+b*log(c*x^n))^(3/2)/x,x,3,2/3*elliptic_f(1/2*(a+b*log(c*x^n)),2)/(b*n)+2/3*sin(a+b*log(c*x^n))*sqrt(cos(a+b*log(c*x^n)))/(b*n)],
+[cos(a+b*log(c*x^n))^(5/2),x,3,2*x*cos(a+b*log(c*x^n))^(5/2)*hypergeometric(-5/2,1/4*(-5+(-2*%i)/(b*n)),1/4*(-2*%i-b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2-5*%i*b*n)*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(5/2))],
+[cos(a+b*log(c*x^n))^(5/2)/x,x,3,6/5*elliptic_e(1/2*(a+b*log(c*x^n)),2)/(b*n)+2/5*cos(a+b*log(c*x^n))^(3/2)*sin(a+b*log(c*x^n))/(b*n)],
+
+-- p<0
+[1/sqrt(cos(a+b*log(c*x^n))),x,3,2*x*hypergeometric(1/2,1/4*(1+(-2*%i)/(b*n)),1/4*(5+(-2*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+%i*b*n)*sqrt(cos(a+b*log(c*x^n))))],
+[1/(x*sqrt(cos(a+b*log(c*x^n)))),x,2,2*elliptic_f(1/2*(a+b*log(c*x^n)),2)/(b*n)],
+[1/cos(a+b*log(c*x^n))^(3/2),x,3,2*x*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2)*hypergeometric(3/2,1/4*(3+(-2*%i)/(b*n)),1/4*(7+(-2*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+3*%i*b*n)*cos(a+b*log(c*x^n))^(3/2))],
+[1/(x*cos(a+b*log(c*x^n))^(3/2)),x,3,-2*elliptic_e(1/2*(a+b*log(c*x^n)),2)/(b*n)+2*sin(a+b*log(c*x^n))/(b*n*sqrt(cos(a+b*log(c*x^n))))],
+[1/cos(a+b*log(c*x^n))^(5/2),x,3,2*x*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(5/2)*hypergeometric(5/2,1/4*(5+(-2*%i)/(b*n)),1/4*(9+(-2*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+5*%i*b*n)*cos(a+b*log(c*x^n))^(5/2))],
+[1/(x*cos(a+b*log(c*x^n))^(5/2)),x,3,2/3*elliptic_f(1/2*(a+b*log(c*x^n)),2)/(b*n)+2/3*sin(a+b*log(c*x^n))/(b*n*cos(a+b*log(c*x^n))^(3/2))],
+[1/cos(a-2*%i*log(c*x))^(3/2),x,3,1/2*(-1-%e^(2*%i*a)*c^4*x^4)/(%e^(2*%i*a)*c^4*x^3*cos(a-2*%i*log(c*x))^(3/2))],
+
+-- Integrands of the form (e x)^m Cos[d (a+b Log[c x^n])]^p when m symbolic
+[x^m*cos(a+b*log(c*x^n))^4,x,3,24*b^4*n^4*x^(1+m)/((1+m)*((1+m)^2+4*b^2*n^2)*((1+m)^2+16*b^2*n^2))+12*b^2*(1+m)*n^2*x^(1+m)*cos(a+b*log(c*x^n))^2/(((1+m)^2+4*b^2*n^2)*((1+m)^2+16*b^2*n^2))+(1+m)*x^(1+m)*cos(a+b*log(c*x^n))^4/((1+m)^2+16*b^2*n^2)+24*b^3*n^3*x^(1+m)*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/(((1+m)^2+4*b^2*n^2)*((1+m)^2+16*b^2*n^2))+4*b*n*x^(1+m)*cos(a+b*log(c*x^n))^3*sin(a+b*log(c*x^n))/((1+m)^2+16*b^2*n^2)],
+[x^m*cos(a+b*log(c*x^n))^3,x,2,6*b^2*(1+m)*n^2*x^(1+m)*cos(a+b*log(c*x^n))/(((1+m)^2+b^2*n^2)*((1+m)^2+9*b^2*n^2))+(1+m)*x^(1+m)*cos(a+b*log(c*x^n))^3/((1+m)^2+9*b^2*n^2)+6*b^3*n^3*x^(1+m)*sin(a+b*log(c*x^n))/(((1+m)^2+b^2*n^2)*((1+m)^2+9*b^2*n^2))+3*b*n*x^(1+m)*cos(a+b*log(c*x^n))^2*sin(a+b*log(c*x^n))/((1+m)^2+9*b^2*n^2)],
+[x^m*cos(a+b*log(c*x^n))^2,x,2,2*b^2*n^2*x^(1+m)/((1+m)*((1+m)^2+4*b^2*n^2))+(1+m)*x^(1+m)*cos(a+b*log(c*x^n))^2/((1+m)^2+4*b^2*n^2)+2*b*n*x^(1+m)*cos(a+b*log(c*x^n))*sin(a+b*log(c*x^n))/((1+m)^2+4*b^2*n^2)],
+[x^m*cos(a+b*log(c*x^n)),x,1,(1+m)*x^(1+m)*cos(a+b*log(c*x^n))/((1+m)^2+b^2*n^2)+b*n*x^(1+m)*sin(a+b*log(c*x^n))/((1+m)^2+b^2*n^2)],
+[x^m*cos(a+b*log(c*x^n))^(3/2),x,3,2*x^(1+m)*cos(a+b*log(c*x^n))^(3/2)*hypergeometric(-3/2,1/4*(-2*%i-2*%i*m-3*b*n)/(b*n),1/4*(-2*%i-2*%i*m+b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+2*m-3*%i*b*n)*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2))],
+[x^m*cos(a+b*log(c*x^n))^(1/2),x,3,2*x^(1+m)*hypergeometric(-1/2,1/4*(-2*%i-2*%i*m-b*n)/(b*n),1/4*(-2*%i-2*%i*m+3*b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(cos(a+b*log(c*x^n)))/((2+2*m-%i*b*n)*sqrt(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b)))],
+[x^m/cos(a+b*log(c*x^n))^(1/2),x,3,2*x^(1+m)*hypergeometric(1/2,1/4*(-2*%i-2*%i*m+b*n)/(b*n),1/4*(-2*%i-2*%i*m+5*b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+2*m+%i*b*n)*sqrt(cos(a+b*log(c*x^n))))],
+[x^m/cos(a+b*log(c*x^n))^(3/2),x,3,2*x^(1+m)*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2)*hypergeometric(3/2,1/4*(-2*%i-2*%i*m+3*b*n)/(b*n),1/4*(-2*%i-2*%i*m+7*b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+2*m+3*%i*b*n)*cos(a+b*log(c*x^n))^(3/2))],
+[x^m/cos(a+b*log(c*x^n))^(5/2),x,3,2*x^(1+m)*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(5/2)*hypergeometric(5/2,1/4*(-2*%i-2*%i*m+5*b*n)/(b*n),1/4*(-2*%i-2*%i*m+9*b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+2*m+5*%i*b*n)*cos(a+b*log(c*x^n))^(5/2))],
+
+-- Integrands of the form (e x)^m Cos[d (a+b Log[c x^n])]^p when p symbolic
+[(e*x)^m*cos(d*(a+b*log(c*x^n)))^p,x,3,(e*x)^(1+m)*cos(d*(a+b*log(c*x^n)))^p*hypergeometric(-p,1/2*(-%i-%i*m-b*d*n*p)/(b*d*n),1/2*(2-%i*(1+m)/(b*d*n)-p),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(e*(1+m-%i*b*d*n*p)*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^p)],
+[x*cos(a+b*log(c*x^n))^p,x,3,x^2*cos(a+b*log(c*x^n))^p*hypergeometric(1/2*((-2*%i)/(b*n)-p),-p,1/2*(2+(-2*%i)/(b*n)-p),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2-%i*b*n*p)*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^p)],
+[cos(a+b*log(c*x^n))^p,x,3,x*cos(a+b*log(c*x^n))^p*hypergeometric(-p,1/2*(-%i-b*n*p)/(b*n),1/2*(2+(-%i)/(b*n)-p),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((1-%i*b*n*p)*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^p)],
+
+-- Integrands of the form (e x)^m Tan[d (a+b Log[c x^n])]^p
+
+-- Integrands of the form x^m Tan[a+b Log[x]]^p
+[x^3*tan(a+%i*log(x)),x,5,-%i*%e^(2*%i*a)*x^2+1/4*%i*x^4+%i*%e^(4*%i*a)*log(%e^(2*%i*a)+x^2)],
+[x^2*tan(a+%i*log(x)),x,5,-2*%i*%e^(2*%i*a)*x+1/3*%i*x^3+2*%i*%e^(3*%i*a)*atan(x/%e^(%i*a))],
+[x*tan(a+%i*log(x)),x,5,1/2*%i*x^2-%i*%e^(2*%i*a)*log(%e^(2*%i*a)+x^2)],
+[tan(a+%i*log(x)),x,4,%i*x-2*%i*%e^(%i*a)*atan(x/%e^(%i*a))],
+[tan(a+%i*log(x))/x,x,2,%i*log(cos(a+%i*log(x)))],
+[tan(a+%i*log(x))/x^2,x,4,%i/x+2*%i*atan(x/%e^(%i*a))/%e^(%i*a)],
+[tan(a+%i*log(x))/x^3,x,4,1/2*%i/x^2-%i*log(1+%e^(2*%i*a)/x^2)/%e^(2*%i*a)],
+[tan(a+%i*log(x))/x^4,x,5,1/3*%i/x^3+(-2*%i)/(%e^(2*%i*a)*x)-2*%i*atan(x/%e^(%i*a))/%e^(3*%i*a)],
+[x^3*tan(a+%i*log(x))^2,x,5,2*%e^(2*%i*a)*x^2-1/4*x^4-2*%e^(6*%i*a)/(%e^(2*%i*a)+x^2)-4*%e^(4*%i*a)*log(%e^(2*%i*a)+x^2)],
+[x^2*tan(a+%i*log(x))^2,x,6,6*%e^(2*%i*a)*x-1/3*x^3-2*%e^(2*%i*a)*x^3/(%e^(2*%i*a)+x^2)-6*%e^(3*%i*a)*atan(x/%e^(%i*a))],
+[x*tan(a+%i*log(x))^2,x,5,-1/2*x^2+2*%e^(4*%i*a)/(%e^(2*%i*a)+x^2)+2*%e^(2*%i*a)*log(%e^(2*%i*a)+x^2)],
+[tan(a+%i*log(x))^2,x,6,-x-2*%e^(2*%i*a)*x/(%e^(2*%i*a)+x^2)+2*%e^(%i*a)*atan(x/%e^(%i*a))],
+[tan(a+%i*log(x))^2/x,x,3,-log(x)-%i*tan(a+%i*log(x))],
+[tan(a+%i*log(x))^2/x^2,x,5,%e^(2*%i*a)/(x*(%e^(2*%i*a)+x^2))+3*x/(%e^(2*%i*a)+x^2)+2*atan(x/%e^(%i*a))/%e^(%i*a)],
+[tan(a+%i*log(x))^2/x^3,x,4,(-2)/(%e^(2*%i*a)*(1+%e^(2*%i*a)/x^2))+1/2/x^2-2*log(1+%e^(2*%i*a)/x^2)/%e^(2*%i*a)],
+
+-- Integrands of the form (e x)^m Tan[a+b Log[x]]^p with m symbolic
+[(e*x)^m*tan(a+%i*log(x)),x,4,-%i*(e*x)^(1+m)/(e*(1+m))+2*%i*(e*x)^(1+m)*hypergeometric(1,1/2*(-1-m),1/2*(1-m),-%e^(2*%i*a)/x^2)/(e*(1+m))],
+[(e*x)^m*tan(a+%i*log(x))^2,x,5,-x*(e*x)^m/(1+m)+2*x*(e*x)^m/(1+%e^(2*%i*a)/x^2)-2*x*(e*x)^m*hypergeometric(1,1/2*(-1-m),1/2*(1-m),-%e^(2*%i*a)/x^2)],
+[(e*x)^m*tan(a+%i*log(x))^3,x,6,-1/2*%i*(1-m)*m*x*(e*x)^m/(1+m)+1/2*%i*(1-%e^(2*%i*a)/x^2)^2*x*(e*x)^m/(1+%e^(2*%i*a)/x^2)^2+1/2*%i*(%e^(2*%i*a)*(3+m)+%e^(4*%i*a)*(1-m)/x^2)*x*(e*x)^m/(%e^(2*%i*a)*(1+%e^(2*%i*a)/x^2))-%i*(3+2*m+m^2)*x*(e*x)^m*hypergeometric(1,1/2*(-1-m),1/2*(1-m),-%e^(2*%i*a)/x^2)/(1+m)],
+
+-- Integrands of the form (e x)^m Tan[a+b Log[x]]^p with p symbolic
+[tan(a+b*log(x))^p,x,4,x*(%i*(1-%e^(2*%i*a)*x^(2*%i*b))/(1+%e^(2*%i*a)*x^(2*%i*b)))^p*(1+%e^(2*%i*a)*x^(2*%i*b))^p*AppellF1((-1/2*%i)/b,-p,p,1+(-1/2*%i)/b,%e^(2*%i*a)*x^(2*%i*b),-%e^(2*%i*a)*x^(2*%i*b))/(1-%e^(2*%i*a)*x^(2*%i*b))^p],
+[(e*x)^m*tan(a+b*log(x))^p,x,4,(e*x)^(1+m)*(%i*(1-%e^(2*%i*a)*x^(2*%i*b))/(1+%e^(2*%i*a)*x^(2*%i*b)))^p*(1+%e^(2*%i*a)*x^(2*%i*b))^p*AppellF1(-1/2*%i*(1+m)/b,-p,p,1-1/2*%i*(1+m)/b,%e^(2*%i*a)*x^(2*%i*b),-%e^(2*%i*a)*x^(2*%i*b))/(e*(1+m)*(1-%e^(2*%i*a)*x^(2*%i*b))^p)],
+[tan(a+log(x))^p,x,4,(%i*(1-%e^(2*%i*a)*x^(2*%i))/(1+%e^(2*%i*a)*x^(2*%i)))^p*(1+%e^(2*%i*a)*x^(2*%i))^p*x*AppellF1(-1/2*%i,-p,p,1-1/2*%i,%e^(2*%i*a)*x^(2*%i),-%e^(2*%i*a)*x^(2*%i))/(1-%e^(2*%i*a)*x^(2*%i))^p],
+[tan(a+2*log(x))^p,x,4,(%i*(1-%e^(2*%i*a)*x^(4*%i))/(1+%e^(2*%i*a)*x^(4*%i)))^p*(1+%e^(2*%i*a)*x^(4*%i))^p*x*AppellF1(-1/4*%i,-p,p,1-1/4*%i,%e^(2*%i*a)*x^(4*%i),-%e^(2*%i*a)*x^(4*%i))/(1-%e^(2*%i*a)*x^(4*%i))^p],
+[tan(a+3*log(x))^p,x,4,(%i*(1-%e^(2*%i*a)*x^(6*%i))/(1+%e^(2*%i*a)*x^(6*%i)))^p*(1+%e^(2*%i*a)*x^(6*%i))^p*x*AppellF1(-1/6*%i,-p,p,1-1/6*%i,%e^(2*%i*a)*x^(6*%i),-%e^(2*%i*a)*x^(6*%i))/(1-%e^(2*%i*a)*x^(6*%i))^p],
+
+-- Integrands of the form x^m Tan[a+b Log[c x^n]]^p
+[x^3*tan(d*(a+b*log(c*x^n))),x,4,-1/4*%i*x^4+1/2*%i*x^4*hypergeometric(1,(-2*%i)/(b*d*n),1+(-2*%i)/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))],
+[x^2*tan(d*(a+b*log(c*x^n))),x,4,-1/3*%i*x^3+2/3*%i*x^3*hypergeometric(1,(-3/2*%i)/(b*d*n),1+(-3/2*%i)/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))],
+[x*tan(d*(a+b*log(c*x^n))),x,4,-1/2*%i*x^2+%i*x^2*hypergeometric(1,(-%i)/(b*d*n),1+(-%i)/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))],
+[tan(d*(a+b*log(c*x^n))),x,4,-%i*x+2*%i*x*hypergeometric(1,(-1/2*%i)/(b*d*n),1+(-1/2*%i)/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))],
+[tan(d*(a+b*log(c*x^n)))/x,x,2,-log(cos(a*d+b*d*log(c*x^n)))/(b*d*n)],
+[tan(d*(a+b*log(c*x^n)))/x^2,x,4,%i/x-2*%i*hypergeometric(1,1/2*%i/(b*d*n),1+1/2*%i/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/x],
+[tan(d*(a+b*log(c*x^n)))/x^3,x,4,1/2*%i/x^2-%i*hypergeometric(1,%i/(b*d*n),1+%i/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/x^2],
+[x^3*tan(d*(a+b*log(c*x^n)))^2,x,5,1/4*(4*%i-b*d*n)*x^4/(b*d*n)+%i*x^4*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*x^4*hypergeometric(1,(-2*%i)/(b*d*n),1+(-2*%i)/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n)],
+[x^2*tan(d*(a+b*log(c*x^n)))^2,x,5,1/3*(3*%i-b*d*n)*x^3/(b*d*n)+%i*x^3*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*x^3*hypergeometric(1,(-3/2*%i)/(b*d*n),1+(-3/2*%i)/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n)],
+[x*tan(d*(a+b*log(c*x^n)))^2,x,5,1/2*(2*%i-b*d*n)*x^2/(b*d*n)+%i*x^2*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*x^2*hypergeometric(1,(-%i)/(b*d*n),1+(-%i)/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n)],
+[tan(d*(a+b*log(c*x^n)))^2,x,5,(%i-b*d*n)*x/(b*d*n)+%i*x*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*x*hypergeometric(1,(-1/2*%i)/(b*d*n),1+(-1/2*%i)/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n)],
+[tan(d*(a+b*log(c*x^n)))^2/x,x,3,-log(x)+tan(a*d+b*d*log(c*x^n))/(b*d*n)],
+[tan(d*(a+b*log(c*x^n)))^2/x^2,x,5,(1+%i/(b*d*n))/x+%i*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*x*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*hypergeometric(1,1/2*%i/(b*d*n),1+1/2*%i/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*x)],
+[tan(d*(a+b*log(c*x^n)))^2/x^3,x,5,1/2*(1+2*%i/(b*d*n))/x^2+%i*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*x^2*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*hypergeometric(1,%i/(b*d*n),1+%i/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*x^2)],
+[tan(a+b*log(c*x^n))^3/x,x,3,log(cos(a+b*log(c*x^n)))/(b*n)+1/2*tan(a+b*log(c*x^n))^2/(b*n)],
+[tan(a+b*log(c*x^n))^4/x,x,4,log(x)-tan(a+b*log(c*x^n))/(b*n)+1/3*tan(a+b*log(c*x^n))^3/(b*n)],
+[tan(a+b*log(c*x^n))^5/x,x,4,-log(cos(a+b*log(c*x^n)))/(b*n)-1/2*tan(a+b*log(c*x^n))^2/(b*n)+1/4*tan(a+b*log(c*x^n))^4/(b*n)],
+
+-- Integrands of the form (e x)^m Tan[a+b Log[c x^n]]^p with m symbolic
+[(e*x)^m*tan(d*(a+b*log(c*x^n))),x,4,-%i*(e*x)^(1+m)/(e*(1+m))+2*%i*(e*x)^(1+m)*hypergeometric(1,-1/2*%i*(1+m)/(b*d*n),1-1/2*%i*(1+m)/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(e*(1+m))],
+[(e*x)^m*tan(d*(a+b*log(c*x^n)))^2,x,5,(%i*(1+m)-b*d*n)*(e*x)^(1+m)/(b*d*e*(1+m)*n)+%i*(e*x)^(1+m)*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*e*n*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*(e*x)^(1+m)*hypergeometric(1,-1/2*%i*(1+m)/(b*d*n),1-1/2*%i*(1+m)/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*e*n)],
+[(e*x)^m*tan(d*(a+b*log(c*x^n)))^3,x,6,-1/2*(%i*(1+m)-b*d*n)*(1+m+2*%i*b*d*n)*(e*x)^(1+m)/(b^2*d^2*e*(1+m)*n^2)-1/2*(e*x)^(1+m)*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^2/(b*d*e*n*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^2)-1/2*%i*(e*x)^(1+m)*(%e^(2*%i*a*d)*(1+m-2*%i*b*d*n)/n-%e^(4*%i*a*d)*(1+m+2*%i*b*d*n)*(c*x^n)^(2*%i*b*d)/n)/(%e^(2*%i*a*d)*b^2*d^2*e*n*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))+%i*(1+2*m+m^2-2*b^2*d^2*n^2)*(e*x)^(1+m)*hypergeometric(1,-1/2*%i*(1+m)/(b*d*n),1-1/2*%i*(1+m)/(b*d*n),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b^2*d^2*e*(1+m)*n^2)],
+
+-- Integrands of the form (e x)^m Tan[a+b Log[c x^n]]^p with p symbolic
+[tan(d*(a+b*log(c*x^n)))^p,x,5,x*(%i*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))^p*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^p*AppellF1((-1/2*%i)/(b*d*n),-p,p,1+(-1/2*%i)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^p],
+[(e*x)^m*tan(d*(a+b*log(c*x^n)))^p,x,5,(e*x)^(1+m)*(%i*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))^p*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^p*AppellF1(-1/2*%i*(1+m)/(b*d*n),-p,p,1-1/2*%i*(1+m)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(e*(1+m)*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^p)],
+
+-- Integrands of the form x^m Tan[a+b Log[c x^n]]^(p/2)
+[tan(a+b*log(c*x^n))^(5/2)/x,x,13,atan(1-sqrt(2)*sqrt(tan(a+b*log(c*x^n))))/(b*n*sqrt(2))-atan(1+sqrt(2)*sqrt(tan(a+b*log(c*x^n))))/(b*n*sqrt(2))-1/2*log(1-sqrt(2)*sqrt(tan(a+b*log(c*x^n)))+tan(a+b*log(c*x^n)))/(b*n*sqrt(2))+1/2*log(1+sqrt(2)*sqrt(tan(a+b*log(c*x^n)))+tan(a+b*log(c*x^n)))/(b*n*sqrt(2))+2/3*tan(a+b*log(c*x^n))^(3/2)/(b*n)],
+[tan(a+b*log(c*x^n))^(3/2)/x,x,13,atan(1-sqrt(2)*sqrt(tan(a+b*log(c*x^n))))/(b*n*sqrt(2))-atan(1+sqrt(2)*sqrt(tan(a+b*log(c*x^n))))/(b*n*sqrt(2))+1/2*log(1-sqrt(2)*sqrt(tan(a+b*log(c*x^n)))+tan(a+b*log(c*x^n)))/(b*n*sqrt(2))-1/2*log(1+sqrt(2)*sqrt(tan(a+b*log(c*x^n)))+tan(a+b*log(c*x^n)))/(b*n*sqrt(2))+2*sqrt(tan(a+b*log(c*x^n)))/(b*n)],
+[tan(a+b*log(c*x^n))^(1/2)/x,x,12,-atan(1-sqrt(2)*sqrt(tan(a+b*log(c*x^n))))/(b*n*sqrt(2))+atan(1+sqrt(2)*sqrt(tan(a+b*log(c*x^n))))/(b*n*sqrt(2))+1/2*log(1-sqrt(2)*sqrt(tan(a+b*log(c*x^n)))+tan(a+b*log(c*x^n)))/(b*n*sqrt(2))-1/2*log(1+sqrt(2)*sqrt(tan(a+b*log(c*x^n)))+tan(a+b*log(c*x^n)))/(b*n*sqrt(2))],
+[1/(x*tan(a+b*log(c*x^n))^(1/2)),x,12,-atan(1-sqrt(2)*sqrt(tan(a+b*log(c*x^n))))/(b*n*sqrt(2))+atan(1+sqrt(2)*sqrt(tan(a+b*log(c*x^n))))/(b*n*sqrt(2))-1/2*log(1-sqrt(2)*sqrt(tan(a+b*log(c*x^n)))+tan(a+b*log(c*x^n)))/(b*n*sqrt(2))+1/2*log(1+sqrt(2)*sqrt(tan(a+b*log(c*x^n)))+tan(a+b*log(c*x^n)))/(b*n*sqrt(2))],
+[1/(x*tan(a+b*log(c*x^n))^(3/2)),x,13,atan(1-sqrt(2)*sqrt(tan(a+b*log(c*x^n))))/(b*n*sqrt(2))-atan(1+sqrt(2)*sqrt(tan(a+b*log(c*x^n))))/(b*n*sqrt(2))-1/2*log(1-sqrt(2)*sqrt(tan(a+b*log(c*x^n)))+tan(a+b*log(c*x^n)))/(b*n*sqrt(2))+1/2*log(1+sqrt(2)*sqrt(tan(a+b*log(c*x^n)))+tan(a+b*log(c*x^n)))/(b*n*sqrt(2))+(-2)/(b*n*sqrt(tan(a+b*log(c*x^n))))],
+[1/(x*tan(a+b*log(c*x^n))^(5/2)),x,13,atan(1-sqrt(2)*sqrt(tan(a+b*log(c*x^n))))/(b*n*sqrt(2))-atan(1+sqrt(2)*sqrt(tan(a+b*log(c*x^n))))/(b*n*sqrt(2))+1/2*log(1-sqrt(2)*sqrt(tan(a+b*log(c*x^n)))+tan(a+b*log(c*x^n)))/(b*n*sqrt(2))-1/2*log(1+sqrt(2)*sqrt(tan(a+b*log(c*x^n)))+tan(a+b*log(c*x^n)))/(b*n*sqrt(2))+(-2/3)/(b*n*tan(a+b*log(c*x^n))^(3/2))],
+
+-- Integrands of the form (e x)^m Cot[d (a+b Log[c x^n])]^p
+
+-- Integrands of the form x^m Cot[a+b Log[x]]^p
+[x^3*cot(a+%i*log(x)),x,5,-%i*%e^(2*%i*a)*x^2-1/4*%i*x^4-%i*%e^(4*%i*a)*log(%e^(2*%i*a)-x^2)],
+[x^2*cot(a+%i*log(x)),x,5,-2*%i*%e^(2*%i*a)*x-1/3*%i*x^3+2*%i*%e^(3*%i*a)*atanh(x/%e^(%i*a))],
+[x*cot(a+%i*log(x)),x,5,-1/2*%i*x^2-%i*%e^(2*%i*a)*log(%e^(2*%i*a)-x^2)],
+[cot(a+%i*log(x)),x,4,-%i*x+2*%i*%e^(%i*a)*atanh(x/%e^(%i*a))],
+[cot(a+%i*log(x))/x,x,2,-%i*log(sin(a+%i*log(x)))],
+[cot(a+%i*log(x))/x^2,x,4,(-%i)/x+2*%i*atanh(x/%e^(%i*a))/%e^(%i*a)],
+[cot(a+%i*log(x))/x^3,x,4,(-1/2*%i)/x^2-%i*log(1-%e^(2*%i*a)/x^2)/%e^(2*%i*a)],
+[cot(a+%i*log(x))/x^4,x,5,(-1/3*%i)/x^3+(-2*%i)/(%e^(2*%i*a)*x)+2*%i*atanh(x/%e^(%i*a))/%e^(3*%i*a)],
+[x^3*cot(a+%i*log(x))^2,x,5,-2*%e^(2*%i*a)*x^2-1/4*x^4-2*%e^(6*%i*a)/(%e^(2*%i*a)-x^2)-4*%e^(4*%i*a)*log(%e^(2*%i*a)-x^2)],
+[x^2*cot(a+%i*log(x))^2,x,6,-6*%e^(2*%i*a)*x-1/3*x^3-2*%e^(2*%i*a)*x^3/(%e^(2*%i*a)-x^2)+6*%e^(3*%i*a)*atanh(x/%e^(%i*a))],
+[x*cot(a+%i*log(x))^2,x,5,-1/2*x^2-2*%e^(4*%i*a)/(%e^(2*%i*a)-x^2)-2*%e^(2*%i*a)*log(%e^(2*%i*a)-x^2)],
+[cot(a+%i*log(x))^2,x,6,-x-2*%e^(2*%i*a)*x/(%e^(2*%i*a)-x^2)+2*%e^(%i*a)*atanh(x/%e^(%i*a))],
+[cot(a+%i*log(x))^2/x,x,3,%i*cot(a+%i*log(x))-log(x)],
+[cot(a+%i*log(x))^2/x^2,x,5,%e^(2*%i*a)/(x*(%e^(2*%i*a)-x^2))-3*x/(%e^(2*%i*a)-x^2)-2*atanh(x/%e^(%i*a))/%e^(%i*a)],
+[cot(a+%i*log(x))^2/x^3,x,4,2/(%e^(2*%i*a)*(1-%e^(2*%i*a)/x^2))+1/2/x^2+2*log(1-%e^(2*%i*a)/x^2)/%e^(2*%i*a)],
+
+-- Integrands of the form (e x)^m Cot[a+b Log[x]]^p with m symbolic
+[(e*x)^m*cot(a+%i*log(x)),x,4,%i*(e*x)^(1+m)/(e*(1+m))-2*%i*(e*x)^(1+m)*hypergeometric(1,1/2*(-1-m),1/2*(1-m),%e^(2*%i*a)/x^2)/(e*(1+m))],
+[(e*x)^m*cot(a+%i*log(x))^2,x,5,-x*(e*x)^m/(1+m)+2*x*(e*x)^m/(1-%e^(2*%i*a)/x^2)-2*x*(e*x)^m*hypergeometric(1,1/2*(-1-m),1/2*(1-m),%e^(2*%i*a)/x^2)],
+[(e*x)^m*cot(a+%i*log(x))^3,x,6,1/2*%i*(1-m)*m*x*(e*x)^m/(1+m)-1/2*%i*(1+%e^(2*%i*a)/x^2)^2*x*(e*x)^m/(1-%e^(2*%i*a)/x^2)^2-1/2*%i*(3+m-%e^(2*%i*a)*(1-m)/x^2)*x*(e*x)^m/(1-%e^(2*%i*a)/x^2)+%i*(3+2*m+m^2)*x*(e*x)^m*hypergeometric(1,1/2*(-1-m),1/2*(1-m),%e^(2*%i*a)/x^2)/(1+m)],
+
+-- Integrands of the form (e x)^m Cot[a+b Log[x]]^p with p symbolic
+[cot(a+b*log(x))^p,x,4,x*(1-%e^(2*%i*a)*x^(2*%i*b))^p*(-%i*(1+%e^(2*%i*a)*x^(2*%i*b))/(1-%e^(2*%i*a)*x^(2*%i*b)))^p*AppellF1((-1/2*%i)/b,p,-p,1+(-1/2*%i)/b,%e^(2*%i*a)*x^(2*%i*b),-%e^(2*%i*a)*x^(2*%i*b))/(1+%e^(2*%i*a)*x^(2*%i*b))^p],
+[(e*x)^m*cot(a+b*log(x))^p,x,4,(e*x)^(1+m)*(1-%e^(2*%i*a)*x^(2*%i*b))^p*(-%i*(1+%e^(2*%i*a)*x^(2*%i*b))/(1-%e^(2*%i*a)*x^(2*%i*b)))^p*AppellF1(-1/2*%i*(1+m)/b,p,-p,1-1/2*%i*(1+m)/b,%e^(2*%i*a)*x^(2*%i*b),-%e^(2*%i*a)*x^(2*%i*b))/(e*(1+m)*(1+%e^(2*%i*a)*x^(2*%i*b))^p)],
+[cot(a+log(x))^p,x,4,(1-%e^(2*%i*a)*x^(2*%i))^p*(-%i*(1+%e^(2*%i*a)*x^(2*%i))/(1-%e^(2*%i*a)*x^(2*%i)))^p*x*AppellF1(-1/2*%i,p,-p,1-1/2*%i,%e^(2*%i*a)*x^(2*%i),-%e^(2*%i*a)*x^(2*%i))/(1+%e^(2*%i*a)*x^(2*%i))^p],
+[cot(a+2*log(x))^p,x,4,(1-%e^(2*%i*a)*x^(4*%i))^p*(-%i*(1+%e^(2*%i*a)*x^(4*%i))/(1-%e^(2*%i*a)*x^(4*%i)))^p*x*AppellF1(-1/4*%i,p,-p,1-1/4*%i,%e^(2*%i*a)*x^(4*%i),-%e^(2*%i*a)*x^(4*%i))/(1+%e^(2*%i*a)*x^(4*%i))^p],
+[cot(a+3*log(x))^p,x,4,(1-%e^(2*%i*a)*x^(6*%i))^p*(-%i*(1+%e^(2*%i*a)*x^(6*%i))/(1-%e^(2*%i*a)*x^(6*%i)))^p*x*AppellF1(-1/6*%i,p,-p,1-1/6*%i,%e^(2*%i*a)*x^(6*%i),-%e^(2*%i*a)*x^(6*%i))/(1+%e^(2*%i*a)*x^(6*%i))^p],
+
+-- Integrands of the form x^m Cot[a+b Log[c x^n]]^p
+[x^3*cot(d*(a+b*log(c*x^n))),x,4,1/4*%i*x^4-1/2*%i*x^4*hypergeometric(1,(-2*%i)/(b*d*n),1+(-2*%i)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))],
+[x^2*cot(d*(a+b*log(c*x^n))),x,4,1/3*%i*x^3-2/3*%i*x^3*hypergeometric(1,(-3/2*%i)/(b*d*n),1+(-3/2*%i)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))],
+[x*cot(d*(a+b*log(c*x^n))),x,4,1/2*%i*x^2-%i*x^2*hypergeometric(1,(-%i)/(b*d*n),1+(-%i)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))],
+[cot(d*(a+b*log(c*x^n))),x,4,%i*x-2*%i*x*hypergeometric(1,(-1/2*%i)/(b*d*n),1+(-1/2*%i)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))],
+[cot(d*(a+b*log(c*x^n)))/x,x,2,log(sin(a*d+b*d*log(c*x^n)))/(b*d*n)],
+[cot(d*(a+b*log(c*x^n)))/x^2,x,4,(-%i)/x+2*%i*hypergeometric(1,1/2*%i/(b*d*n),1+1/2*%i/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/x],
+[cot(d*(a+b*log(c*x^n)))/x^3,x,4,(-1/2*%i)/x^2+%i*hypergeometric(1,%i/(b*d*n),1+%i/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/x^2],
+[x^3*cot(d*(a+b*log(c*x^n)))^2,x,5,1/4*(4*%i-b*d*n)*x^4/(b*d*n)+%i*x^4*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*x^4*hypergeometric(1,(-2*%i)/(b*d*n),1+(-2*%i)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n)],
+[x^2*cot(d*(a+b*log(c*x^n)))^2,x,5,1/3*(3*%i-b*d*n)*x^3/(b*d*n)+%i*x^3*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*x^3*hypergeometric(1,(-3/2*%i)/(b*d*n),1+(-3/2*%i)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n)],
+[x*cot(d*(a+b*log(c*x^n)))^2,x,5,1/2*(2*%i-b*d*n)*x^2/(b*d*n)+%i*x^2*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*x^2*hypergeometric(1,(-%i)/(b*d*n),1+(-%i)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n)],
+[cot(d*(a+b*log(c*x^n)))^2,x,5,(%i-b*d*n)*x/(b*d*n)+%i*x*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*x*hypergeometric(1,(-1/2*%i)/(b*d*n),1+(-1/2*%i)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n)],
+[cot(d*(a+b*log(c*x^n)))^2/x,x,3,-cot(a*d+b*d*log(c*x^n))/(b*d*n)-log(x)],
+[cot(d*(a+b*log(c*x^n)))^2/x^2,x,5,(1+%i/(b*d*n))/x+%i*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*x*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*hypergeometric(1,1/2*%i/(b*d*n),1+1/2*%i/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*x)],
+[cot(d*(a+b*log(c*x^n)))^2/x^3,x,5,1/2*(1+2*%i/(b*d*n))/x^2+%i*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*x^2*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*hypergeometric(1,%i/(b*d*n),1+%i/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*n*x^2)],
+[cot(a+b*log(c*x^n))^3/x,x,3,-1/2*cot(a+b*log(c*x^n))^2/(b*n)-log(sin(a+b*log(c*x^n)))/(b*n)],
+[cot(a+b*log(c*x^n))^4/x,x,4,cot(a+b*log(c*x^n))/(b*n)-1/3*cot(a+b*log(c*x^n))^3/(b*n)+log(x)],
+[cot(a+b*log(c*x^n))^5/x,x,4,1/2*cot(a+b*log(c*x^n))^2/(b*n)-1/4*cot(a+b*log(c*x^n))^4/(b*n)+log(sin(a+b*log(c*x^n)))/(b*n)],
+
+-- Integrands of the form (e x)^m Cot[a+b Log[c x^n]]^p with m symbolic
+[(e*x)^m*cot(d*(a+b*log(c*x^n))),x,4,%i*(e*x)^(1+m)/(e*(1+m))-2*%i*(e*x)^(1+m)*hypergeometric(1,-1/2*%i*(1+m)/(b*d*n),1-1/2*%i*(1+m)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(e*(1+m))],
+[(e*x)^m*cot(d*(a+b*log(c*x^n)))^2,x,5,(%i*(1+m)-b*d*n)*(e*x)^(1+m)/(b*d*e*(1+m)*n)+%i*(e*x)^(1+m)*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*e*n*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-2*%i*(e*x)^(1+m)*hypergeometric(1,-1/2*%i*(1+m)/(b*d*n),1-1/2*%i*(1+m)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b*d*e*n)],
+[(e*x)^m*cot(d*(a+b*log(c*x^n)))^3,x,6,1/2*(%i*(1+m)-b*d*n)*(1+m+2*%i*b*d*n)*(e*x)^(1+m)/(b^2*d^2*e*(1+m)*n^2)+1/2*(e*x)^(1+m)*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^2/(b*d*e*n*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^2)+1/2*%i*(e*x)^(1+m)*(%e^(2*%i*a*d)*(1+m-2*%i*b*d*n)/n+%e^(4*%i*a*d)*(1+m+2*%i*b*d*n)*(c*x^n)^(2*%i*b*d)/n)/(%e^(2*%i*a*d)*b^2*d^2*e*n*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))-%i*(1+2*m+m^2-2*b^2*d^2*n^2)*(e*x)^(1+m)*hypergeometric(1,-1/2*%i*(1+m)/(b*d*n),1-1/2*%i*(1+m)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(b^2*d^2*e*(1+m)*n^2)],
+
+-- Integrands of the form (e x)^m Cot[a+b Log[c x^n]]^p with p symbolic
+[cot(d*(a+b*log(c*x^n)))^p,x,5,x*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^p*(-%i*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))^p*AppellF1((-1/2*%i)/(b*d*n),p,-p,1+(-1/2*%i)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^p],
+[(e*x)^m*cot(d*(a+b*log(c*x^n)))^p,x,5,(e*x)^(1+m)*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^p*(-%i*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d)))^p*AppellF1(-1/2*%i*(1+m)/(b*d*n),p,-p,1-1/2*%i*(1+m)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(e*(1+m)*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^p)],
+
+-- Integrands of the form x^m Cot[a+b Log[c x^n]]^(p/2)
+[cot(a+b*log(c*x^n))^(5/2)/x,x,13,-2/3*cot(a+b*log(c*x^n))^(3/2)/(b*n)-atan(1-sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))+atan(1+sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))+1/2*log(1+cot(a+b*log(c*x^n))-sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))-1/2*log(1+cot(a+b*log(c*x^n))+sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))],
+[cot(a+b*log(c*x^n))^(3/2)/x,x,13,-atan(1-sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))+atan(1+sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))-1/2*log(1+cot(a+b*log(c*x^n))-sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))+1/2*log(1+cot(a+b*log(c*x^n))+sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))-2*sqrt(cot(a+b*log(c*x^n)))/(b*n)],
+[cot(a+b*log(c*x^n))^(1/2)/x,x,12,atan(1-sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))-atan(1+sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))-1/2*log(1+cot(a+b*log(c*x^n))-sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))+1/2*log(1+cot(a+b*log(c*x^n))+sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))],
+[1/(x*cot(a+b*log(c*x^n))^(1/2)),x,12,atan(1-sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))-atan(1+sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))+1/2*log(1+cot(a+b*log(c*x^n))-sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))-1/2*log(1+cot(a+b*log(c*x^n))+sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))],
+[1/(x*cot(a+b*log(c*x^n))^(3/2)),x,13,-atan(1-sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))+atan(1+sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))+1/2*log(1+cot(a+b*log(c*x^n))-sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))-1/2*log(1+cot(a+b*log(c*x^n))+sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))+2/(b*n*sqrt(cot(a+b*log(c*x^n))))],
+[1/(x*cot(a+b*log(c*x^n))^(5/2)),x,13,2/3/(b*n*cot(a+b*log(c*x^n))^(3/2))-atan(1-sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))+atan(1+sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))-1/2*log(1+cot(a+b*log(c*x^n))-sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))+1/2*log(1+cot(a+b*log(c*x^n))+sqrt(2)*sqrt(cot(a+b*log(c*x^n))))/(b*n*sqrt(2))],
+
+-- Integrands of the form (e x)^m Sec[d (a+b Log[c x^n])]^p
+
+-- Integrands of the form (e x)^m Sec[d (a+b Log[c x^n])]^p
+[x^2*sec(a+b*log(c*x^n)),x,3,2*%e^(%i*a)*x^3*(c*x^n)^(%i*b)*hypergeometric(1,1/2*(1+(-3*%i)/(b*n)),3/2*(1+(-%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(3+%i*b*n)],
+[x*sec(a+b*log(c*x^n)),x,3,2*%e^(%i*a)*x^2*(c*x^n)^(%i*b)*hypergeometric(1,1/2*(1+(-2*%i)/(b*n)),1/2*(3+(-2*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(2+%i*b*n)],
+[sec(a+b*log(c*x^n)),x,3,2*%e^(%i*a)*x*(c*x^n)^(%i*b)*hypergeometric(1,1/2*(1+(-%i)/(b*n)),1/2*(3+(-%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(1+%i*b*n)],
+[sec(a+b*log(c*x^n))/x,x,2,atanh(sin(a+b*log(c*x^n)))/(b*n)],
+[sec(a+b*log(c*x^n))/x^2,x,3,-2*%e^(%i*a)*(c*x^n)^(%i*b)*hypergeometric(1,1/2*(1+%i/(b*n)),1/2*(3+%i/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((1-%i*b*n)*x)],
+[sec(a+b*log(c*x^n))/x^3,x,3,-2*%e^(%i*a)*(c*x^n)^(%i*b)*hypergeometric(1,1/2*(1+2*%i/(b*n)),1/2*(3+2*%i/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2-%i*b*n)*x^2)],
+[x^2*sec(a+b*log(c*x^n))^2,x,3,4*%e^(2*%i*a)*x^3*(c*x^n)^(2*%i*b)*hypergeometric(2,1/2*(2+(-3*%i)/(b*n)),1/2*(4+(-3*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(3+2*%i*b*n)],
+[x*sec(a+b*log(c*x^n))^2,x,3,2*%e^(2*%i*a)*x^2*(c*x^n)^(2*%i*b)*hypergeometric(2,1+(-%i)/(b*n),2+(-%i)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(1+%i*b*n)],
+[sec(a+b*log(c*x^n))^2,x,3,4*%e^(2*%i*a)*x*(c*x^n)^(2*%i*b)*hypergeometric(2,1/2*(2+(-%i)/(b*n)),1/2*(4+(-%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(1+2*%i*b*n)],
+[sec(a+b*log(c*x^n))^2/x,x,3,tan(a+b*log(c*x^n))/(b*n)],
+[sec(a+b*log(c*x^n))^2/x^2,x,3,-4*%e^(2*%i*a)*(c*x^n)^(2*%i*b)*hypergeometric(2,1/2*(2+%i/(b*n)),1/2*(4+%i/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((1-2*%i*b*n)*x)],
+[sec(a+b*log(c*x^n))^2/x^3,x,3,-2*%e^(2*%i*a)*(c*x^n)^(2*%i*b)*hypergeometric(2,1+%i/(b*n),2+%i/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((1-%i*b*n)*x^2)],
+[x*sec(a+b*log(c*x^n))^3,x,3,8*%e^(3*%i*a)*x^2*(c*x^n)^(3*%i*b)*hypergeometric(3,1/2*(3+(-2*%i)/(b*n)),1/2*(5+(-2*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(2+3*%i*b*n)],
+[sec(a+b*log(c*x^n))^3,x,3,8*%e^(3*%i*a)*x*(c*x^n)^(3*%i*b)*hypergeometric(3,1/2*(3+(-%i)/(b*n)),1/2*(5+(-%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(1+3*%i*b*n)],
+[sec(a+b*log(c*x^n))^3/x,x,3,1/2*atanh(sin(a+b*log(c*x^n)))/(b*n)+1/2*sec(a+b*log(c*x^n))*tan(a+b*log(c*x^n))/(b*n)],
+[sec(a+b*log(c*x^n))^3/x^2,x,3,-8*%e^(3*%i*a)*(c*x^n)^(3*%i*b)*hypergeometric(3,1/2*(3+%i/(b*n)),1/2*(5+%i/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((1-3*%i*b*n)*x)],
+[sec(a+b*log(c*x^n))^3/x^3,x,3,-8*%e^(3*%i*a)*(c*x^n)^(3*%i*b)*hypergeometric(3,1/2*(3+2*%i/(b*n)),1/2*(5+2*%i/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2-3*%i*b*n)*x^2)],
+[x*sec(a+b*log(c*x^n))^4,x,3,8*%e^(4*%i*a)*x^2*(c*x^n)^(4*%i*b)*hypergeometric(4,2+(-%i)/(b*n),3+(-%i)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(1+2*%i*b*n)],
+[sec(a+b*log(c*x^n))^4,x,3,16*%e^(4*%i*a)*x*(c*x^n)^(4*%i*b)*hypergeometric(4,1/2*(4+(-%i)/(b*n)),1/2*(6+(-%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(1+4*%i*b*n)],
+[sec(a+b*log(c*x^n))^4/x,x,3,tan(a+b*log(c*x^n))/(b*n)+1/3*tan(a+b*log(c*x^n))^3/(b*n)],
+[sec(a+b*log(c*x^n))^4/x^2,x,3,-16*%e^(4*%i*a)*(c*x^n)^(4*%i*b)*hypergeometric(4,1/2*(4+%i/(b*n)),1/2*(6+%i/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((1-4*%i*b*n)*x)],
+[sec(a+b*log(c*x^n))^4/x^3,x,3,-8*%e^(4*%i*a)*(c*x^n)^(4*%i*b)*hypergeometric(4,2+%i/(b*n),3+%i/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((1-2*%i*b*n)*x^2)],
+[-(1+b^2*n^2)*sec(a+b*log(c*x^n))+2*b^2*n^2*sec(a+b*log(c*x^n))^3,x,-7,-x*sec(a+b*log(c*x^n))+b*n*x*sec(a+b*log(c*x^n))*tan(a+b*log(c*x^n))],
+
+-- Integrands of the form (e x)^m Sec[d (a+b Log[c x^n])]^p when b^2 n^2 (p-2)^2+(m+1)^2=0
+[x^m*sec(a+2*log(c*x^(1/2*sqrt(-(1+m)^2))))^3,x,-3,1/2*x^(1+m)*sec(a+2*log(c*x^(1/2*sqrt(-(1+m)^2))))/(1+m)+1/2*x^(1+m)*sec(a+2*log(c*x^(1/2*sqrt(-(1+m)^2))))*tan(a+2*log(c*x^(1/2*sqrt(-(1+m)^2))))/sqrt(-(1+m)^2)],
+[x*sec(a+2*log(c*x^%i))^3,x,3,%e^(%i*a)*(c*x^%i)^(2*%i)*x^2/(1+%e^(2*%i*a)*(c*x^%i)^(4*%i))^2],
+[sec(a+2*log(c*x^(1/2*%i)))^3,x,3,1/2*x*sec(a+2*log(c*x^(1/2*%i)))-1/2*%i*x*sec(a+2*log(c*x^(1/2*%i)))*tan(a+2*log(c*x^(1/2*%i))),2*%e^(%i*a)*(c*x^(1/2*%i))^(2*%i)*x/(1+%e^(2*%i*a)*(c*x^(1/2*%i))^(4*%i))^2],
+[sec(a+2*log(c/x^(1/2*%i)))^3,x,3,2*%e^(3*%i*a)*(c/x^(1/2*%i))^(6*%i)*x/(1+%e^(2*%i*a)*(c/x^(1/2*%i))^(4*%i))^2],
+[sec(a+%i*log(c*x^n)/(n*(-2+p)))^p,x,3,1/2*(2-p)*x*(1+%e^(2*%i*a)*(c*x^n)^(2/(n*(2-p))))*sec(a-%i*log(c*x^n)/(n*(2-p)))^p/(%e^(2*%i*a)*(1-p)*(c*x^n)^(2/(n*(2-p))))],
+[sec(a-%i*log(c*x^n)/(n*(-2+p)))^p,x,3,1/2*(2-p)*x*(1+%e^(2*%i*a)/(c*x^n)^(2/(n*(2-p))))*sec(a+%i*log(c*x^n)/(n*(2-p)))^p/(1-p)],
+
+-- Integrands of the form (e x)^m Sec[d (a+b Log[c x^n])]^(p/2)
+
+-- p>0
+[sqrt(sec(a+b*log(c*x^n))),x,3,2*x*hypergeometric(1/2,1/4*(1+(-2*%i)/(b*n)),1/4*(5+(-2*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(sec(a+b*log(c*x^n)))/(2+%i*b*n)],
+[sqrt(sec(a+b*log(c*x^n)))/x,x,3,2*elliptic_f(1/2*(a+b*log(c*x^n)),2)*sqrt(cos(a+b*log(c*x^n)))*sqrt(sec(a+b*log(c*x^n)))/(b*n)],
+[sec(a+b*log(c*x^n))^(3/2),x,3,2*x*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2)*hypergeometric(3/2,1/4*(3+(-2*%i)/(b*n)),1/4*(7+(-2*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sec(a+b*log(c*x^n))^(3/2)/(2+3*%i*b*n)],
+[sec(a+b*log(c*x^n))^(3/2)/x,x,4,2*sin(a+b*log(c*x^n))*sqrt(sec(a+b*log(c*x^n)))/(b*n)-2*elliptic_e(1/2*(a+b*log(c*x^n)),2)*sqrt(cos(a+b*log(c*x^n)))*sqrt(sec(a+b*log(c*x^n)))/(b*n)],
+[sec(a+b*log(c*x^n))^(5/2),x,3,2*x*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(5/2)*hypergeometric(5/2,1/4*(5+(-2*%i)/(b*n)),1/4*(9+(-2*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sec(a+b*log(c*x^n))^(5/2)/(2+5*%i*b*n)],
+[sec(a+b*log(c*x^n))^(5/2)/x,x,4,2/3*sec(a+b*log(c*x^n))^(3/2)*sin(a+b*log(c*x^n))/(b*n)+2/3*elliptic_f(1/2*(a+b*log(c*x^n)),2)*sqrt(cos(a+b*log(c*x^n)))*sqrt(sec(a+b*log(c*x^n)))/(b*n)],
+
+-- p<0
+[1/sqrt(sec(a+b*log(c*x^n))),x,3,2*x*hypergeometric(-1/2,1/4*(-2*%i-b*n)/(b*n),1/4*(3+(-2*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2-%i*b*n)*sqrt(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(sec(a+b*log(c*x^n))))],
+[1/(x*sqrt(sec(a+b*log(c*x^n)))),x,3,2*elliptic_e(1/2*(a+b*log(c*x^n)),2)*sqrt(cos(a+b*log(c*x^n)))*sqrt(sec(a+b*log(c*x^n)))/(b*n)],
+[1/sec(a+b*log(c*x^n))^(3/2),x,3,2*x*hypergeometric(-3/2,1/4*(-3+(-2*%i)/(b*n)),1/4*(1+(-2*%i)/(b*n)),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2-3*%i*b*n)*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2)*sec(a+b*log(c*x^n))^(3/2))],
+[1/(x*sec(a+b*log(c*x^n))^(3/2)),x,4,2/3*sin(a+b*log(c*x^n))/(b*n*sqrt(sec(a+b*log(c*x^n))))+2/3*elliptic_f(1/2*(a+b*log(c*x^n)),2)*sqrt(cos(a+b*log(c*x^n)))*sqrt(sec(a+b*log(c*x^n)))/(b*n)],
+[1/sec(a+b*log(c*x^n))^(5/2),x,3,2*x*hypergeometric(-5/2,1/4*(-5+(-2*%i)/(b*n)),1/4*(-2*%i-b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2-5*%i*b*n)*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(5/2)*sec(a+b*log(c*x^n))^(5/2))],
+[1/(x*sec(a+b*log(c*x^n))^(5/2)),x,4,2/5*sin(a+b*log(c*x^n))/(b*n*sec(a+b*log(c*x^n))^(3/2))+6/5*elliptic_e(1/2*(a+b*log(c*x^n)),2)*sqrt(cos(a+b*log(c*x^n)))*sqrt(sec(a+b*log(c*x^n)))/(b*n)],
+
+-- Integrands of the form (e x)^m Sec[d (a+b Log[c x^n])]^p when m symbolic
+[x^m*sec(a+b*log(c*x^n))^3,x,3,8*%e^(3*%i*a)*x^(1+m)*(c*x^n)^(3*%i*b)*hypergeometric(3,1/2*(-%i*(1+m)+3*b*n)/(b*n),1/2*(-%i*(1+m)+5*b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(1+m+3*%i*b*n)],
+[x^m*sec(a+b*log(c*x^n))^2,x,3,4*%e^(2*%i*a)*x^(1+m)*(c*x^n)^(2*%i*b)*hypergeometric(2,1/2*(-%i*(1+m)+2*b*n)/(b*n),1/2*(-%i*(1+m)+4*b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(1+m+2*%i*b*n)],
+[x^m*sec(a+b*log(c*x^n)),x,3,2*%e^(%i*a)*x^(1+m)*(c*x^n)^(%i*b)*hypergeometric(1,1/2*(-%i-%i*m+b*n)/(b*n),1/2*(-%i*(1+m)+3*b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(1+m+%i*b*n)],
+[x^m*sec(a+b*log(c*x^n))^(5/2),x,3,2*x^(1+m)*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(5/2)*hypergeometric(5/2,1/4*(-2*%i-2*%i*m+5*b*n)/(b*n),1/4*(-2*%i-2*%i*m+9*b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sec(a+b*log(c*x^n))^(5/2)/(2+2*m+5*%i*b*n)],
+[x^m*sec(a+b*log(c*x^n))^(3/2),x,3,2*x^(1+m)*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2)*hypergeometric(3/2,1/4*(-2*%i-2*%i*m+3*b*n)/(b*n),1/4*(-2*%i-2*%i*m+7*b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sec(a+b*log(c*x^n))^(3/2)/(2+2*m+3*%i*b*n)],
+[x^m*sec(a+b*log(c*x^n))^(1/2),x,3,2*x^(1+m)*hypergeometric(1/2,1/4*(-2*%i-2*%i*m+b*n)/(b*n),1/4*(-2*%i-2*%i*m+5*b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(sec(a+b*log(c*x^n)))/(2+2*m+%i*b*n)],
+[x^m/sec(a+b*log(c*x^n))^(1/2),x,3,2*x^(1+m)*hypergeometric(-1/2,1/4*(-2*%i-2*%i*m-b*n)/(b*n),1/4*(-2*%i-2*%i*m+3*b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+2*m-%i*b*n)*sqrt(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(sec(a+b*log(c*x^n))))],
+[x^m/sec(a+b*log(c*x^n))^(3/2),x,3,2*x^(1+m)*hypergeometric(-3/2,1/4*(-2*%i-2*%i*m-3*b*n)/(b*n),1/4*(-2*%i-2*%i*m+b*n)/(b*n),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+2*m-3*%i*b*n)*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2)*sec(a+b*log(c*x^n))^(3/2))],
+
+-- Integrands of the form (e x)^m Sec[d (a+b Log[c x^n])]^p when p symbolic
+[(e*x)^m*sec(d*(a+b*log(c*x^n)))^p,x,3,(e*x)^(1+m)*(1+%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^p*hypergeometric(p,1/2*(-%i-%i*m+b*d*n*p)/(b*d*n),1/2*(2-%i*(1+m)/(b*d*n)+p),-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))*sec(d*(a+b*log(c*x^n)))^p/(e*(1+m+%i*b*d*n*p))],
+[x*sec(a+b*log(c*x^n))^p,x,3,x^2*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^p*hypergeometric(p,1/2*((-2*%i)/(b*n)+p),1/2*(2+(-2*%i)/(b*n)+p),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sec(a+b*log(c*x^n))^p/(2+%i*b*n*p)],
+[sec(a+b*log(c*x^n))^p,x,3,x*(1+%e^(2*%i*a)*(c*x^n)^(2*%i*b))^p*hypergeometric(p,1/2*(-%i+b*n*p)/(b*n),1/2*(2+(-%i)/(b*n)+p),-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sec(a+b*log(c*x^n))^p/(1+%i*b*n*p)],
+
+-- Integrands of the form (e x)^m Csc[d (a+b Log[c x^n])]^p
+
+-- Integrands of the form (e x)^m Csc[d (a+b Log[c x^n])]^p
+[x^2*csc(a+b*log(c*x^n)),x,3,2*%e^(%i*a)*x^3*(c*x^n)^(%i*b)*hypergeometric(1,1/2*(1+(-3*%i)/(b*n)),3/2*(1+(-%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(3*%i-b*n)],
+[x*csc(a+b*log(c*x^n)),x,3,2*%e^(%i*a)*x^2*(c*x^n)^(%i*b)*hypergeometric(1,1/2*(1+(-2*%i)/(b*n)),1/2*(3+(-2*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(2*%i-b*n)],
+[csc(a+b*log(c*x^n)),x,3,2*%e^(%i*a)*x*(c*x^n)^(%i*b)*hypergeometric(1,1/2*(1+(-%i)/(b*n)),1/2*(3+(-%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(%i-b*n)],
+[csc(a+b*log(c*x^n))/x,x,2,-atanh(cos(a+b*log(c*x^n)))/(b*n)],
+[csc(a+b*log(c*x^n))/x^2,x,3,-2*%e^(%i*a)*(c*x^n)^(%i*b)*hypergeometric(1,1/2*(1+%i/(b*n)),1/2*(3+%i/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((%i+b*n)*x)],
+[csc(a+b*log(c*x^n))/x^3,x,3,-2*%e^(%i*a)*(c*x^n)^(%i*b)*hypergeometric(1,1/2*(1+2*%i/(b*n)),1/2*(3+2*%i/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2*%i+b*n)*x^2)],
+[csc(a+b*log(c*x^n))^2,x,3,-4*%e^(2*%i*a)*x*(c*x^n)^(2*%i*b)*hypergeometric(2,1/2*(2+(-%i)/(b*n)),1/2*(4+(-%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(1+2*%i*b*n)],
+[csc(a+b*log(c*x^n))^2/x,x,3,-cot(a+b*log(c*x^n))/(b*n)],
+[csc(a+b*log(c*x^n))^3,x,3,-8*%e^(3*%i*a)*x*(c*x^n)^(3*%i*b)*hypergeometric(3,1/2*(3+(-%i)/(b*n)),1/2*(5+(-%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(%i-3*b*n)],
+[csc(a+b*log(c*x^n))^3/x,x,3,-1/2*atanh(cos(a+b*log(c*x^n)))/(b*n)-1/2*cot(a+b*log(c*x^n))*csc(a+b*log(c*x^n))/(b*n)],
+[csc(a+b*log(c*x^n))^4,x,3,16*%e^(4*%i*a)*x*(c*x^n)^(4*%i*b)*hypergeometric(4,1/2*(4+(-%i)/(b*n)),1/2*(6+(-%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(1+4*%i*b*n)],
+[csc(a+b*log(c*x^n))^4/x,x,3,-cot(a+b*log(c*x^n))/(b*n)-1/3*cot(a+b*log(c*x^n))^3/(b*n)],
+[-(1+b^2*n^2)*csc(a+b*log(c*x^n))+2*b^2*n^2*csc(a+b*log(c*x^n))^3,x,-7,-x*csc(a+b*log(c*x^n))-b*n*x*cot(a+b*log(c*x^n))*csc(a+b*log(c*x^n))],
+
+-- Integrands of the form (e x)^m Csc[d (a+b Log[c x^n])]^p when b^2 n^2 (p-2)^2+(m+1)^2=0
+[x^m*csc(a+2*log(c*x^(1/2*sqrt(-(1+m)^2))))^3,x,-3,1/2*x^(1+m)*csc(a+2*log(c*x^(1/2*sqrt(-(1+m)^2))))/(1+m)-1/2*x^(1+m)*cot(a+2*log(c*x^(1/2*sqrt(-(1+m)^2))))*csc(a+2*log(c*x^(1/2*sqrt(-(1+m)^2))))/sqrt(-(1+m)^2)],
+[x*csc(a+2*log(c*x^%i))^3,x,3,-%i*%e^(%i*a)*(c*x^%i)^(2*%i)*x^2/(1-%e^(2*%i*a)*(c*x^%i)^(4*%i))^2],
+[csc(a+2*log(c*x^(1/2*%i)))^3,x,3,1/2*x*csc(a+2*log(c*x^(1/2*%i)))+1/2*%i*x*cot(a+2*log(c*x^(1/2*%i)))*csc(a+2*log(c*x^(1/2*%i))),-2*%i*%e^(%i*a)*(c*x^(1/2*%i))^(2*%i)*x/(1-%e^(2*%i*a)*(c*x^(1/2*%i))^(4*%i))^2],
+[csc(a+2*log(c/x^(1/2*%i)))^3,x,3,2*%i*%e^(3*%i*a)*(c/x^(1/2*%i))^(6*%i)*x/(1-%e^(2*%i*a)*(c/x^(1/2*%i))^(4*%i))^2],
+[csc(a+%i*log(c*x^n)/(n*(-2+p)))^p,x,3,-1/2*(2-p)*x*(1-%e^(2*%i*a)*(c*x^n)^(2/(n*(2-p))))*csc(a-%i*log(c*x^n)/(n*(2-p)))^p/(%e^(2*%i*a)*(1-p)*(c*x^n)^(2/(n*(2-p))))],
+[csc(a-%i*log(c*x^n)/(n*(-2+p)))^p,x,3,1/2*(2-p)*x*(1-%e^(2*%i*a)/(c*x^n)^(2/(n*(2-p))))*csc(a+%i*log(c*x^n)/(n*(2-p)))^p/(1-p)],
+
+-- Integrands of the form (e x)^m Csc[d (a+b Log[c x^n])]^(p/2)
+
+-- p>0
+[sqrt(csc(a+b*log(c*x^n))),x,3,2*x*hypergeometric(1/2,1/4*(1+(-2*%i)/(b*n)),1/4*(5+(-2*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(csc(a+b*log(c*x^n)))/(2+%i*b*n)],
+[sqrt(csc(a+b*log(c*x^n)))/x,x,3,2*elliptic_f(1/2*(-1/2*%pi+a+b*log(c*x^n)),2)*sqrt(csc(a+b*log(c*x^n)))*sqrt(sin(a+b*log(c*x^n)))/(b*n)],
+[csc(a+b*log(c*x^n))^(3/2),x,3,2*x*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2)*csc(a+b*log(c*x^n))^(3/2)*hypergeometric(3/2,1/4*(3+(-2*%i)/(b*n)),1/4*(7+(-2*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(2+3*%i*b*n)],
+[csc(a+b*log(c*x^n))^(3/2)/x,x,4,-2*cos(a+b*log(c*x^n))*sqrt(csc(a+b*log(c*x^n)))/(b*n)-2*elliptic_e(1/2*(-1/2*%pi+a+b*log(c*x^n)),2)*sqrt(csc(a+b*log(c*x^n)))*sqrt(sin(a+b*log(c*x^n)))/(b*n)],
+[csc(a+b*log(c*x^n))^(5/2),x,3,2*x*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(5/2)*csc(a+b*log(c*x^n))^(5/2)*hypergeometric(5/2,1/4*(5+(-2*%i)/(b*n)),1/4*(9+(-2*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(2+5*%i*b*n)],
+[csc(a+b*log(c*x^n))^(5/2)/x,x,4,-2/3*cos(a+b*log(c*x^n))*csc(a+b*log(c*x^n))^(3/2)/(b*n)+2/3*elliptic_f(1/2*(-1/2*%pi+a+b*log(c*x^n)),2)*sqrt(csc(a+b*log(c*x^n)))*sqrt(sin(a+b*log(c*x^n)))/(b*n)],
+
+-- p<0
+[1/sqrt(csc(a+b*log(c*x^n))),x,3,2*x*hypergeometric(-1/2,1/4*(-2*%i-b*n)/(b*n),1/4*(3+(-2*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2-%i*b*n)*sqrt(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(csc(a+b*log(c*x^n))))],
+[1/(x*sqrt(csc(a+b*log(c*x^n)))),x,3,2*elliptic_e(1/2*(-1/2*%pi+a+b*log(c*x^n)),2)*sqrt(csc(a+b*log(c*x^n)))*sqrt(sin(a+b*log(c*x^n)))/(b*n)],
+[1/csc(a+b*log(c*x^n))^(3/2),x,3,2*x*hypergeometric(-3/2,1/4*(-3+(-2*%i)/(b*n)),1/4*(1+(-2*%i)/(b*n)),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2-3*%i*b*n)*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2)*csc(a+b*log(c*x^n))^(3/2))],
+[1/(x*csc(a+b*log(c*x^n))^(3/2)),x,4,-2/3*cos(a+b*log(c*x^n))/(b*n*sqrt(csc(a+b*log(c*x^n))))+2/3*elliptic_f(1/2*(-1/2*%pi+a+b*log(c*x^n)),2)*sqrt(csc(a+b*log(c*x^n)))*sqrt(sin(a+b*log(c*x^n)))/(b*n)],
+[1/csc(a+b*log(c*x^n))^(5/2),x,3,2*x*hypergeometric(-5/2,1/4*(-5+(-2*%i)/(b*n)),1/4*(-2*%i-b*n)/(b*n),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2-5*%i*b*n)*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(5/2)*csc(a+b*log(c*x^n))^(5/2))],
+[1/(x*csc(a+b*log(c*x^n))^(5/2)),x,4,-2/5*cos(a+b*log(c*x^n))/(b*n*csc(a+b*log(c*x^n))^(3/2))+6/5*elliptic_e(1/2*(-1/2*%pi+a+b*log(c*x^n)),2)*sqrt(csc(a+b*log(c*x^n)))*sqrt(sin(a+b*log(c*x^n)))/(b*n)],
+
+-- Integrands of the form (e x)^m Csc[d (a+b Log[c x^n])]^p when m symbolic
+[(e*x)^m*csc(d*(a+b*log(c*x^n)))^3,x,3,-8*%e^(3*%i*a*d)*(e*x)^(1+m)*(c*x^n)^(3*%i*b*d)*hypergeometric(3,1/2*(-%i*(1+m)+3*b*d*n)/(b*d*n),1/2*(-%i*(1+m)+5*b*d*n)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(e*(%i*(1+m)-3*b*d*n))],
+[(e*x)^m*csc(d*(a+b*log(c*x^n)))^2,x,3,-4*%e^(2*%i*a*d)*(e*x)^(1+m)*(c*x^n)^(2*%i*b*d)*hypergeometric(2,1/2*(-%i*(1+m)+2*b*d*n)/(b*d*n),1/2*(-%i*(1+m)+4*b*d*n)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(e*(1+m+2*%i*b*d*n))],
+[(e*x)^m*csc(d*(a+b*log(c*x^n))),x,3,2*%e^(%i*a*d)*(e*x)^(1+m)*(c*x^n)^(%i*b*d)*hypergeometric(1,1/2*(-%i-%i*m+b*d*n)/(b*d*n),1/2*(-%i*(1+m)+3*b*d*n)/(b*d*n),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(e*(%i*(1+m)-b*d*n))],
+[x^m*csc(a+b*log(c*x^n))^(5/2),x,3,2*x^(1+m)*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(5/2)*csc(a+b*log(c*x^n))^(5/2)*hypergeometric(5/2,1/4*(-2*%i-2*%i*m+5*b*n)/(b*n),1/4*(-2*%i-2*%i*m+9*b*n)/(b*n),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(2+2*m+5*%i*b*n)],
+[x^m*csc(a+b*log(c*x^n))^(3/2),x,3,2*x^(1+m)*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2)*csc(a+b*log(c*x^n))^(3/2)*hypergeometric(3/2,1/4*(-2*%i-2*%i*m+3*b*n)/(b*n),1/4*(-2*%i-2*%i*m+7*b*n)/(b*n),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(2+2*m+3*%i*b*n)],
+[x^m*csc(a+b*log(c*x^n))^(1/2),x,3,2*x^(1+m)*hypergeometric(1/2,1/4*(-2*%i-2*%i*m+b*n)/(b*n),1/4*(-2*%i-2*%i*m+5*b*n)/(b*n),%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(csc(a+b*log(c*x^n)))/(2+2*m+%i*b*n)],
+[x^m/csc(a+b*log(c*x^n))^(1/2),x,3,2*x^(1+m)*hypergeometric(-1/2,1/4*(-2*%i-2*%i*m-b*n)/(b*n),1/4*(-2*%i-2*%i*m+3*b*n)/(b*n),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+2*m-%i*b*n)*sqrt(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))*sqrt(csc(a+b*log(c*x^n))))],
+[x^m/csc(a+b*log(c*x^n))^(3/2),x,3,2*x^(1+m)*hypergeometric(-3/2,1/4*(-2*%i-2*%i*m-3*b*n)/(b*n),1/4*(-2*%i-2*%i*m+b*n)/(b*n),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/((2+2*m-3*%i*b*n)*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^(3/2)*csc(a+b*log(c*x^n))^(3/2))],
+
+-- Integrands of the form (e x)^m Csc[d (a+b Log[c x^n])]^p when p symbolic
+[(e*x)^m*csc(d*(a+b*log(c*x^n)))^p,x,3,(e*x)^(1+m)*(1-%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))^p*csc(d*(a+b*log(c*x^n)))^p*hypergeometric(p,1/2*(-%i-%i*m+b*d*n*p)/(b*d*n),1/2*(2-%i*(1+m)/(b*d*n)+p),%e^(2*%i*a*d)*(c*x^n)^(2*%i*b*d))/(e*(1+m+%i*b*d*n*p))],
+[x*csc(a+b*log(c*x^n))^p,x,3,x^2*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^p*csc(a+b*log(c*x^n))^p*hypergeometric(p,1/2*((-2*%i)/(b*n)+p),1/2*(2+(-2*%i)/(b*n)+p),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(2+%i*b*n*p)],
+[csc(a+b*log(c*x^n))^p,x,3,x*(1-%e^(2*%i*a)*(c*x^n)^(2*%i*b))^p*csc(a+b*log(c*x^n))^p*hypergeometric(p,1/2*(-%i+b*n*p)/(b*n),1/2*(2+(-%i)/(b*n)+p),%e^(2*%i*a)*(c*x^n)^(2*%i*b))/(1+%i*b*n*p)]]

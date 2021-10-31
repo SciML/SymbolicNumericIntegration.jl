@@ -1,0 +1,22 @@
+-- Axiom integration test file: "4 Trig functions\4.7 Miscellaneous\4.7.4 x^m (a+b trig^n)^p.input"
+
+lst: '[
+
+-- Integrands of the form x^m (a+b trig(c+d x)^n)^p
+
+-- Integrands of the form x^m (a+b Sin[c+d x]^n)^p
+
+-- Integrands of the form x^m (a+b Sin[c+d x]^2)^p
+[x/(a+b*sin(x)^2),x,9,-1/2*%i*x*log(1-%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+1/2*%i*x*log(1-%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))-1/4*polylog(2,%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+1/4*polylog(2,%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))],
+[x^2/(a+b*sin(x)^2),x,11,-1/2*%i*x^2*log(1-%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+1/2*%i*x^2*log(1-%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))-1/2*x*polylog(2,%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+1/2*x*polylog(2,%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))-1/4*%i*polylog(3,%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+1/4*%i*polylog(3,%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))],
+[x^3/(a+b*sin(x)^2),x,13,-1/2*%i*x^3*log(1-%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+1/2*%i*x^3*log(1-%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))-3/4*x^2*polylog(2,%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+3/4*x^2*polylog(2,%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))-3/4*%i*x*polylog(3,%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+3/4*%i*x*polylog(3,%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+3/8*polylog(4,%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))-3/8*polylog(4,%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))],
+[x/(a+b*sin(c+d*x)^2)^2,x,12,-1/4*log(2*a+b-b*cos(2*c+2*d*x))/(a*(a+b)*d^2)-1/4*%i*(2*a+b)*x*log(1-%e^(2*%i*(c+d*x))*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(a^(3/2)*(a+b)^(3/2)*d)+1/4*%i*(2*a+b)*x*log(1-%e^(2*%i*(c+d*x))*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(a^(3/2)*(a+b)^(3/2)*d)-1/8*(2*a+b)*polylog(2,%e^(2*%i*(c+d*x))*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(a^(3/2)*(a+b)^(3/2)*d^2)+1/8*(2*a+b)*polylog(2,%e^(2*%i*(c+d*x))*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(a^(3/2)*(a+b)^(3/2)*d^2)+1/2*b*x*sin(2*c+2*d*x)/(a*(a+b)*d*(2*a+b-b*cos(2*c+2*d*x)))],
+[x*sqrt(sin(x)^2),x,3,sqrt(sin(x)^2)-x*cot(x)*sqrt(sin(x)^2)],
+
+-- Integrands of the form x^m (a+b Cos[c+d x]^n)^p
+
+-- Integrands of the form x^m (a+b Cos[c+d x]^2)^p
+[x/(a+b*cos(x)^2),x,9,-1/2*%i*x*log(1+%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+1/2*%i*x*log(1+%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))-1/4*polylog(2,-%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+1/4*polylog(2,-%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))],
+[x^2/(a+b*cos(x)^2),x,11,-1/2*%i*x^2*log(1+%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+1/2*%i*x^2*log(1+%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))-1/2*x*polylog(2,-%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+1/2*x*polylog(2,-%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))-1/4*%i*polylog(3,-%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+1/4*%i*polylog(3,-%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))],
+[x^3/(a+b*cos(x)^2),x,13,-1/2*%i*x^3*log(1+%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+1/2*%i*x^3*log(1+%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))-3/4*x^2*polylog(2,-%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+3/4*x^2*polylog(2,-%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))-3/4*%i*x*polylog(3,-%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+3/4*%i*x*polylog(3,-%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))+3/8*polylog(4,-%e^(2*%i*x)*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))-3/8*polylog(4,-%e^(2*%i*x)*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(sqrt(a)*sqrt(a+b))],
+[x/(a+b*cos(c+d*x)^2)^2,x,12,-1/4*log(2*a+b+b*cos(2*c+2*d*x))/(a*(a+b)*d^2)-1/4*%i*(2*a+b)*x*log(1+%e^(2*%i*(c+d*x))*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(a^(3/2)*(a+b)^(3/2)*d)+1/4*%i*(2*a+b)*x*log(1+%e^(2*%i*(c+d*x))*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(a^(3/2)*(a+b)^(3/2)*d)-1/8*(2*a+b)*polylog(2,-%e^(2*%i*(c+d*x))*b/(2*a+b-2*sqrt(a)*sqrt(a+b)))/(a^(3/2)*(a+b)^(3/2)*d^2)+1/8*(2*a+b)*polylog(2,-%e^(2*%i*(c+d*x))*b/(2*a+b+2*sqrt(a)*sqrt(a+b)))/(a^(3/2)*(a+b)^(3/2)*d^2)-1/2*b*x*sin(2*c+2*d*x)/(a*(a+b)*d*(2*a+b+b*cos(2*c+2*d*x)))]]

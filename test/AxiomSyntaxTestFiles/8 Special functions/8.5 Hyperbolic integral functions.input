@@ -1,0 +1,189 @@
+-- Axiom integration test file: "8 Special functions\8.5 Hyperbolic integral functions.input"
+
+lst: '[
+
+-- Integration Problems Involving Hyperbolic Integral Functions
+
+-- Hyperbolic sine integral function
+
+-- Integrands of the form x^m SinhIntegral[b x]^n
+[x^m*Shi(b*x),x,5,-1/2*x^m*GAMMA(1+m,-b*x)/(b*(1+m)*(-b*x)^m)-1/2*x^m*GAMMA(1+m,b*x)/(b*(1+m)*(b*x)^m)+x^(1+m)*Shi(b*x)/(1+m)],
+[x^3*Shi(b*x),x,6,-3/2*x*cosh(b*x)/b^3-1/4*x^3*cosh(b*x)/b+1/4*x^4*Shi(b*x)+3/2*sinh(b*x)/b^4+3/4*x^2*sinh(b*x)/b^2],
+[x^2*Shi(b*x),x,5,-2/3*cosh(b*x)/b^3-1/3*x^2*cosh(b*x)/b+1/3*x^3*Shi(b*x)+2/3*x*sinh(b*x)/b^2],
+[x*Shi(b*x),x,4,-1/2*x*cosh(b*x)/b+1/2*x^2*Shi(b*x)+1/2*sinh(b*x)/b^2],
+[Shi(b*x),x,1,-cosh(b*x)/b+x*Shi(b*x)],
+[Shi(b*x)/x,x,1,1/2*b*x*HypergeometricPFQ([1,1,1],[2,2,2],-b*x)+1/2*b*x*HypergeometricPFQ([1,1,1],[2,2,2],b*x)],
+[Shi(b*x)/x^2,x,4,b*Chi(b*x)-Shi(b*x)/x-sinh(b*x)/x],
+[Shi(b*x)/x^3,x,5,-1/4*b*cosh(b*x)/x+1/4*b^2*Shi(b*x)-1/2*Shi(b*x)/x^2-1/4*sinh(b*x)/x^2],
+[x^m*Shi(b*x)^2,x,0,CannotIntegrate(x^m*Shi(b*x)^2,x)],
+[x^3*Shi(b*x)^2,x,19,1/2*x^2/b^2-3/2*Chi(2*b*x)/b^4+3/2*log(x)/b^4-3*x*cosh(b*x)*Shi(b*x)/b^3-1/2*x^3*cosh(b*x)*Shi(b*x)/b+1/4*x^4*Shi(b*x)^2-x*cosh(b*x)*sinh(b*x)/b^3+3*Shi(b*x)*sinh(b*x)/b^4+3/2*x^2*Shi(b*x)*sinh(b*x)/b^2+2*sinh(b*x)^2/b^4+1/4*x^2*sinh(b*x)^2/b^2],
+[x^2*Shi(b*x)^2,x,15,5/6*x/b^2-4/3*cosh(b*x)*Shi(b*x)/b^3-2/3*x^2*cosh(b*x)*Shi(b*x)/b+1/3*x^3*Shi(b*x)^2+2/3*Shi(2*b*x)/b^3-5/6*cosh(b*x)*sinh(b*x)/b^3+4/3*x*Shi(b*x)*sinh(b*x)/b^2+1/3*x*sinh(b*x)^2/b^2],
+[x*Shi(b*x)^2,x,10,-1/2*Chi(2*b*x)/b^2+1/2*log(x)/b^2-x*cosh(b*x)*Shi(b*x)/b+1/2*x^2*Shi(b*x)^2+Shi(b*x)*sinh(b*x)/b^2+1/2*sinh(b*x)^2/b^2],
+[Shi(b*x)^2,x,6,-2*cosh(b*x)*Shi(b*x)/b+x*Shi(b*x)^2+Shi(2*b*x)/b],
+[Shi(b*x)^2/x,x,0,CannotIntegrate(Shi(b*x)^2/x,x)],
+[Shi(b*x)^2/x^2,x,0,CannotIntegrate(Shi(b*x)^2/x^2,x)],
+[Shi(b*x)^2/x^3,x,0,CannotIntegrate(Shi(b*x)^2/x^3,x)],
+
+-- Integrands of the form x^m SinhIntegral[a+b x]^n
+[x^m*Shi(a+b*x),x,1,-b*CannotIntegrate(x^(1+m)*sinh(a+b*x)/(a+b*x),x)/(1+m)+x^(1+m)*Shi(a+b*x)/(1+m)],
+[x^3*Shi(a+b*x),x,14,1/2*a*cosh(a+b*x)/b^4+1/4*a^3*cosh(a+b*x)/b^4-3/2*x*cosh(a+b*x)/b^3-1/4*a^2*x*cosh(a+b*x)/b^3+1/4*a*x^2*cosh(a+b*x)/b^2-1/4*x^3*cosh(a+b*x)/b-1/4*a^4*Shi(a+b*x)/b^4+1/4*x^4*Shi(a+b*x)+3/2*sinh(a+b*x)/b^4+1/4*a^2*sinh(a+b*x)/b^4-1/2*a*x*sinh(a+b*x)/b^3+3/4*x^2*sinh(a+b*x)/b^2],
+[x^2*Shi(a+b*x),x,10,-2/3*cosh(a+b*x)/b^3-1/3*a^2*cosh(a+b*x)/b^3+1/3*a*x*cosh(a+b*x)/b^2-1/3*x^2*cosh(a+b*x)/b+1/3*a^3*Shi(a+b*x)/b^3+1/3*x^3*Shi(a+b*x)-1/3*a*sinh(a+b*x)/b^3+2/3*x*sinh(a+b*x)/b^2],
+[x*Shi(a+b*x),x,7,1/2*a*cosh(a+b*x)/b^2-1/2*x*cosh(a+b*x)/b-1/2*a^2*Shi(a+b*x)/b^2+1/2*x^2*Shi(a+b*x)+1/2*sinh(a+b*x)/b^2],
+[Shi(a+b*x),x,1,-cosh(a+b*x)/b+(a+b*x)*Shi(a+b*x)/b],
+[Shi(a+b*x)/x,x,0,CannotIntegrate(Shi(a+b*x)/x,x)],
+[Shi(a+b*x)/x^2,x,7,b*cosh(a)*Shi(b*x)/a-b*Shi(a+b*x)/a-Shi(a+b*x)/x+b*Chi(b*x)*sinh(a)/a],
+[Shi(a+b*x)/x^3,x,11,1/2*b^2*Chi(b*x)*cosh(a)/a-1/2*b^2*cosh(a)*Shi(b*x)/a^2+1/2*b^2*Shi(a+b*x)/a^2-1/2*Shi(a+b*x)/x^2-1/2*b^2*Chi(b*x)*sinh(a)/a^2+1/2*b^2*Shi(b*x)*sinh(a)/a-1/2*b*sinh(a+b*x)/(a*x)],
+[x^m*Shi(a+b*x)^2,x,0,CannotIntegrate(x^m*Shi(a+b*x)^2,x)],
+[x^2*Shi(a+b*x)^2,x,39,2/3*x/b^2+a*Chi(2*a+2*b*x)/b^3-1/3*a*cosh(2*a+2*b*x)/b^3+1/6*x*cosh(2*a+2*b*x)/b^2-a*log(a+b*x)/b^3-4/3*cosh(a+b*x)*Shi(a+b*x)/b^3-2/3*a^2*cosh(a+b*x)*Shi(a+b*x)/b^3+2/3*a*x*cosh(a+b*x)*Shi(a+b*x)/b^2-2/3*x^2*cosh(a+b*x)*Shi(a+b*x)/b+1/3*a^2*(a+b*x)*Shi(a+b*x)^2/b^3-1/3*a*x*(a+b*x)*Shi(a+b*x)^2/b^2+1/3*x^2*(a+b*x)*Shi(a+b*x)^2/b+2/3*Shi(2*a+2*b*x)/b^3+a^2*Shi(2*a+2*b*x)/b^3-2/3*cosh(a+b*x)*sinh(a+b*x)/b^3-2/3*a*Shi(a+b*x)*sinh(a+b*x)/b^3+4/3*x*Shi(a+b*x)*sinh(a+b*x)/b^2-1/12*sinh(2*a+2*b*x)/b^3],
+[x*Shi(a+b*x)^2,x,17,-1/2*Chi(2*a+2*b*x)/b^2+1/4*cosh(2*a+2*b*x)/b^2+1/2*log(a+b*x)/b^2+a*cosh(a+b*x)*Shi(a+b*x)/b^2-x*cosh(a+b*x)*Shi(a+b*x)/b-1/2*a*(a+b*x)*Shi(a+b*x)^2/b^2+1/2*x*(a+b*x)*Shi(a+b*x)^2/b-a*Shi(2*a+2*b*x)/b^2+Shi(a+b*x)*sinh(a+b*x)/b^2],
+[Shi(a+b*x)^2,x,5,-2*cosh(a+b*x)*Shi(a+b*x)/b+(a+b*x)*Shi(a+b*x)^2/b+Shi(2*a+2*b*x)/b],
+[Shi(a+b*x)^2/x,x,0,CannotIntegrate(Shi(a+b*x)^2/x,x)],
+[Shi(a+b*x)^2/x^2,x,0,CannotIntegrate(Shi(a+b*x)^2/x^2,x)],
+[Shi(a+b*x)^2/x^3,x,0,CannotIntegrate(Shi(a+b*x)^2/x^3,x)],
+
+-- Integrands of the form (e x)^m SinhIntegral[d (a+b Log[c x^n])]
+[x^2*Shi(d*(a+b*log(c*x^n))),x,7,1/6*x^3*Ei((3-b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(3*a/(b*n))*(c*x^n)^(3/n))-1/6*x^3*Ei((3+b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(3*a/(b*n))*(c*x^n)^(3/n))+1/3*x^3*Shi(d*(a+b*log(c*x^n)))],
+[x*Shi(d*(a+b*log(c*x^n))),x,7,1/4*x^2*Ei((2-b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(2*a/(b*n))*(c*x^n)^(2/n))-1/4*x^2*Ei((2+b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(2*a/(b*n))*(c*x^n)^(2/n))+1/2*x^2*Shi(d*(a+b*log(c*x^n)))],
+[Shi(d*(a+b*log(c*x^n))),x,7,1/2*x*Ei((1-b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(a/(b*n))*(c*x^n)^(1/n))-1/2*x*Ei((1+b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(a/(b*n))*(c*x^n)^(1/n))+x*Shi(d*(a+b*log(c*x^n)))],
+[Shi(d*(a+b*log(c*x^n)))/x,x,3,-cosh(d*(a+b*log(c*x^n)))/(b*d*n)+(a+b*log(c*x^n))*Shi(d*(a+b*log(c*x^n)))/(b*n)],
+[Shi(d*(a+b*log(c*x^n)))/x^2,x,7,1/2*%e^(a/(b*n))*(c*x^n)^(1/n)*Ei(-(1-b*d*n)*(a+b*log(c*x^n))/(b*n))/x-1/2*%e^(a/(b*n))*(c*x^n)^(1/n)*Ei(-(1+b*d*n)*(a+b*log(c*x^n))/(b*n))/x-Shi(d*(a+b*log(c*x^n)))/x],
+[Shi(d*(a+b*log(c*x^n)))/x^3,x,7,1/4*%e^(2*a/(b*n))*(c*x^n)^(2/n)*Ei(-(2-b*d*n)*(a+b*log(c*x^n))/(b*n))/x^2-1/4*%e^(2*a/(b*n))*(c*x^n)^(2/n)*Ei(-(2+b*d*n)*(a+b*log(c*x^n))/(b*n))/x^2-1/2*Shi(d*(a+b*log(c*x^n)))/x^2],
+[(e*x)^m*Shi(d*(a+b*log(c*x^n))),x,7,1/2*x*(e*x)^m*Ei((1+m-b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(a*(1+m)/(b*n))*(1+m)*(c*x^n)^((1+m)/n))-1/2*x*(e*x)^m*Ei((1+m+b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(a*(1+m)/(b*n))*(1+m)*(c*x^n)^((1+m)/n))+(e*x)^(1+m)*Shi(d*(a+b*log(c*x^n)))/(e*(1+m))],
+
+-- Integrands of the form x^m Hyper[b x] SinhIntegral[b x]^n
+[Shi(b*x)*sinh(b*x)/x^3,x,14,b^2*Chi(2*b*x)-1/2*b*cosh(b*x)*Shi(b*x)/x+1/4*b^2*Shi(b*x)^2-1/2*b*cosh(b*x)*sinh(b*x)/x-1/2*Shi(b*x)*sinh(b*x)/x^2-1/4*sinh(b*x)^2/x^2-1/4*b*sinh(2*b*x)/x],
+[Shi(b*x)*sinh(b*x)/x^2,x,5,b*CannotIntegrate(cosh(b*x)*Shi(b*x)/x,x)+b*Shi(2*b*x)-Shi(b*x)*sinh(b*x)/x-sinh(b*x)^2/x],
+[Shi(b*x)*sinh(b*x)/x,x,1,1/2*Shi(b*x)^2],
+[Shi(b*x)*sinh(b*x),x,5,cosh(b*x)*Shi(b*x)/b-1/2*Shi(2*b*x)/b],
+[x*Shi(b*x)*sinh(b*x),x,9,1/2*Chi(2*b*x)/b^2-1/2*log(x)/b^2+x*cosh(b*x)*Shi(b*x)/b-Shi(b*x)*sinh(b*x)/b^2-1/2*sinh(b*x)^2/b^2],
+[x^2*Shi(b*x)*sinh(b*x),x,14,-5/4*x/b^2+2*cosh(b*x)*Shi(b*x)/b^3+x^2*cosh(b*x)*Shi(b*x)/b-Shi(2*b*x)/b^3+5/4*cosh(b*x)*sinh(b*x)/b^3-2*x*Shi(b*x)*sinh(b*x)/b^2-1/2*x*sinh(b*x)^2/b^2],
+[x^3*Shi(b*x)*sinh(b*x),x,18,-x^2/b^2+3*Chi(2*b*x)/b^4-3*log(x)/b^4+6*x*cosh(b*x)*Shi(b*x)/b^3+x^3*cosh(b*x)*Shi(b*x)/b+2*x*cosh(b*x)*sinh(b*x)/b^3-6*Shi(b*x)*sinh(b*x)/b^4-3*x^2*Shi(b*x)*sinh(b*x)/b^2-4*sinh(b*x)^2/b^4-1/2*x^2*sinh(b*x)^2/b^2],
+[cosh(b*x)*Shi(b*x)/x^3,x,12,1/2*b^2*CannotIntegrate(cosh(b*x)*Shi(b*x)/x,x)-1/4*b*cosh(2*b*x)/x-1/2*cosh(b*x)*Shi(b*x)/x^2+b^2*Shi(2*b*x)-1/2*b*Shi(b*x)*sinh(b*x)/x-1/2*b*sinh(b*x)^2/x-1/8*sinh(2*b*x)/x^2],
+[cosh(b*x)*Shi(b*x)/x^2,x,7,b*Chi(2*b*x)-cosh(b*x)*Shi(b*x)/x+1/2*b*Shi(b*x)^2-1/2*sinh(2*b*x)/x],
+[cosh(b*x)*Shi(b*x)/x,x,0,CannotIntegrate(cosh(b*x)*Shi(b*x)/x,x)],
+[cosh(b*x)*Shi(b*x),x,5,-1/2*Chi(2*b*x)/b+1/2*log(x)/b+Shi(b*x)*sinh(b*x)/b],
+[x*cosh(b*x)*Shi(b*x),x,9,1/2*x/b-cosh(b*x)*Shi(b*x)/b^2+1/2*Shi(2*b*x)/b^2-1/2*cosh(b*x)*sinh(b*x)/b^2+x*Shi(b*x)*sinh(b*x)/b],
+[x^2*cosh(b*x)*Shi(b*x),x,13,1/4*x^2/b-Chi(2*b*x)/b^3+log(x)/b^3-2*x*cosh(b*x)*Shi(b*x)/b^2-1/2*x*cosh(b*x)*sinh(b*x)/b^2+2*Shi(b*x)*sinh(b*x)/b^3+x^2*Shi(b*x)*sinh(b*x)/b+5/4*sinh(b*x)^2/b^3],
+[x^3*cosh(b*x)*Shi(b*x),x,20,4*x/b^3+1/6*x^3/b-6*cosh(b*x)*Shi(b*x)/b^4-3*x^2*cosh(b*x)*Shi(b*x)/b^2+3*Shi(2*b*x)/b^4-4*cosh(b*x)*sinh(b*x)/b^4-1/2*x^2*cosh(b*x)*sinh(b*x)/b^2+6*x*Shi(b*x)*sinh(b*x)/b^3+x^3*Shi(b*x)*sinh(b*x)/b+2*x*sinh(b*x)^2/b^3],
+
+-- Integrands of the form x^m Hyper[b x] SinhIntegral[d x]^n
+[Shi(2*x)*sinh(5*x),x,6,1/5*cosh(5*x)*Shi(2*x)+1/10*Shi(3*x)-1/10*Shi(7*x)],
+[cosh(5*x)*Shi(2*x),x,6,1/10*Chi(3*x)-1/10*Chi(7*x)+1/5*Shi(2*x)*sinh(5*x)],
+
+-- Integrands of the form x^m Hyper[a+b x] SinhIntegral[a+b x]^n
+
+--  {x^3*Sinh[a + b*x]*SinhIntegral[a + b*x], x, 32, (7*a*x)/(4*b^3) - x^2/b^2 + (3*Cosh[a + b*x]^2)/b^4 - (a^2*Cosh[a + b*x]^2)/(2*b^4) - (3*CosIntegral[2*a + 2*b*x])/b^4 + (3*a^2*CosIntegral[2*a + 2*b*x])/(2*b^4) + (3*Log[a + b*x])/b^4 - (3*a^2*Log[a + b*x])/(2*b^4) - (7*a*Cosh[a + b*x]*Sinh[a + b*x])/(4*b^4) + (2*x*Cosh[a + b*x]*Sinh[a + b*x])/b^3 - Sinh[a + b*x]^2/b^4 - (a*x*Sinh[a + b*x]^2)/(2*b^3) + (x^2*Sinh[a + b*x]^2)/(2*b^2) + (6*x*Cosh[a + b*x]*SinhIntegral[a + b*x])/b^3 - (x^3*Cosh[a + b*x]*SinhIntegral[a + b*x])/b - (6*Sinh[a + b*x]*SinhIntegral[a + b*x])/b^4 + (3*x^2*Sinh[a + b*x]*SinhIntegral[a + b*x])/b^2 + (3*a*SinhIntegral[2*a + 2*b*x])/b^4 - (a^3*SinhIntegral[2*a + 2*b*x])/(2*b^4)} 
+[x^2*Shi(a+b*x)*sinh(a+b*x),x,21,-x/b^2-a*Chi(2*a+2*b*x)/b^3+1/4*a*cosh(2*a+2*b*x)/b^3-1/4*x*cosh(2*a+2*b*x)/b^2+a*log(a+b*x)/b^3+2*cosh(a+b*x)*Shi(a+b*x)/b^3+x^2*cosh(a+b*x)*Shi(a+b*x)/b-Shi(2*a+2*b*x)/b^3-1/2*a^2*Shi(2*a+2*b*x)/b^3+cosh(a+b*x)*sinh(a+b*x)/b^3-2*x*Shi(a+b*x)*sinh(a+b*x)/b^2+1/8*sinh(2*a+2*b*x)/b^3],
+[x*Shi(a+b*x)*sinh(a+b*x),x,11,1/2*Chi(2*a+2*b*x)/b^2-1/4*cosh(2*a+2*b*x)/b^2-1/2*log(a+b*x)/b^2+x*cosh(a+b*x)*Shi(a+b*x)/b+1/2*a*Shi(2*a+2*b*x)/b^2-Shi(a+b*x)*sinh(a+b*x)/b^2],
+[Shi(a+b*x)*sinh(a+b*x),x,4,cosh(a+b*x)*Shi(a+b*x)/b-1/2*Shi(2*a+2*b*x)/b],
+[Shi(a+b*x)*sinh(a+b*x)/x,x,0,CannotIntegrate(Shi(a+b*x)*sinh(a+b*x)/x,x)],
+
+--  {x^3*Cosh[a + b*x]*SinhIntegral[a + b*x], x, 32, (4*x)/b^3 - (a^2*x)/(2*b^3) + (a*x^2)/(4*b^2) - x^3/(6*b) - (3*a*Cosh[a + b*x]^2)/(2*b^4) + (3*a*CosIntegral[2*a + 2*b*x])/b^4 - (a^3*CosIntegral[2*a + 2*b*x])/(2*b^4) - (3*a*Log[a + b*x])/b^4 + (a^3*Log[a + b*x])/(2*b^4) - (4*Cosh[a + b*x]*Sinh[a + b*x])/b^4 + (a^2*Cosh[a + b*x]*Sinh[a + b*x])/(2*b^4) - (a*x*Cosh[a + b*x]*Sinh[a + b*x])/(2*b^3) + (x^2*Cosh[a + b*x]*Sinh[a + b*x])/(2*b^2) + (a*Sinh[a + b*x]^2)/(4*b^4) - (2*x*Sinh[a + b*x]^2)/b^3 - (6*Cosh[a + b*x]*SinhIntegral[a + b*x])/b^4 + (3*x^2*Cosh[a + b*x]*SinhIntegral[a + b*x])/b^2 - (6*x*Sinh[a + b*x]*SinhIntegral[a + b*x])/b^3 + (x^3*Sinh[a + b*x]*SinhIntegral[a + b*x])/b + (3*SinhIntegral[2*a + 2*b*x])/b^4 - (3*a^2*SinhIntegral[2*a + 2*b*x])/(2*b^4)} 
+[x^2*cosh(a+b*x)*Shi(a+b*x),x,21,-1/2*a*x/b^2+1/4*x^2/b-Chi(2*a+2*b*x)/b^3-1/2*a^2*Chi(2*a+2*b*x)/b^3+1/2*cosh(2*a+2*b*x)/b^3+log(a+b*x)/b^3+1/2*a^2*log(a+b*x)/b^3-2*x*cosh(a+b*x)*Shi(a+b*x)/b^2-a*Shi(2*a+2*b*x)/b^3+1/2*a*cosh(a+b*x)*sinh(a+b*x)/b^3-1/2*x*cosh(a+b*x)*sinh(a+b*x)/b^2+2*Shi(a+b*x)*sinh(a+b*x)/b^3+x^2*Shi(a+b*x)*sinh(a+b*x)/b+1/4*sinh(a+b*x)^2/b^3],
+[x*cosh(a+b*x)*Shi(a+b*x),x,12,1/2*x/b+1/2*a*Chi(2*a+2*b*x)/b^2-1/2*a*log(a+b*x)/b^2-cosh(a+b*x)*Shi(a+b*x)/b^2+1/2*Shi(2*a+2*b*x)/b^2-1/2*cosh(a+b*x)*sinh(a+b*x)/b^2+x*Shi(a+b*x)*sinh(a+b*x)/b],
+[cosh(a+b*x)*Shi(a+b*x),x,4,-1/2*Chi(2*a+2*b*x)/b+1/2*log(a+b*x)/b+Shi(a+b*x)*sinh(a+b*x)/b],
+[cosh(a+b*x)*Shi(a+b*x)/x,x,0,CannotIntegrate(cosh(a+b*x)*Shi(a+b*x)/x,x)],
+
+-- Integrands of the form x^m Hyper[a+b x] SinhIntegral[c+d x]^n
+
+--  {x^2*Sinh[a + b*x]*SinhIntegral[c + d*x], x, 46, -((c*Cosh[a - c + (b - d)*x])/(2*b*(b - d)*d)) + (x*Cosh[a - c + (b - d)*x])/(2*b*(b - d)) + (c*Cosh[a + c + (b + d)*x])/(2*b*d*(b + d)) - (x*Cosh[a + c + (b + d)*x])/(2*b*(b + d)) + (CoshIntegral[((b - d)*(c + d*x))/d]*(2*b*c*d*Cosh[a - (b*c)/d] + (b^2*c^2 + 2*d^2)*Sinh[a - (b*c)/d]))/(2*b^3*d^2) - (CoshIntegral[((b + d)*(c + d*x))/d]*(2*b*c*d*Cosh[a - (b*c)/d] + (b^2*c^2 + 2*d^2)*Sinh[a - (b*c)/d]))/(2*b^3*d^2) - Sinh[a - c + (b - d)*x]/(2*b*(b - d)^2) - Sinh[a - c + (b - d)*x]/(b^2*(b - d)) + Sinh[a + c + (b + d)*x]/(2*b*(b + d)^2) + Sinh[a + c + (b + d)*x]/(b^2*(b + d)) + (((2 + b^2*x^2)*Cosh[a + b*x] - 2*b*x*Sinh[a + b*x])*SinhIntegral[c + d*x])/b^3 + (((b^2*c^2 + 2*d^2)*Cosh[a - (b*c)/d] + 2*b*c*d*Sinh[a - (b*c)/d])*SinhIntegral[((b - d)*(c + d*x))/d])/(2*b^3*d^2) - (((b^2*c^2 + 2*d^2)*Cosh[a - (b*c)/d] + 2*b*c*d*Sinh[a - (b*c)/d])*SinhIntegral[((b + d)*(c + d*x))/d])/(2*b^3*d^2)} 
+[x*Shi(c+d*x)*sinh(a+b*x),x,24,-1/2*Chi(c*(b-d)/d+(b-d)*x)*cosh(a-b*c/d)/b^2+1/2*Chi(c*(b+d)/d+(b+d)*x)*cosh(a-b*c/d)/b^2+1/2*cosh(a-c+(b-d)*x)/(b*(b-d))-1/2*cosh(a+c+(b+d)*x)/(b*(b+d))-1/2*c*cosh(a-b*c/d)*Shi(c*(b-d)/d+(b-d)*x)/(b*d)+x*cosh(a+b*x)*Shi(c+d*x)/b+1/2*c*cosh(a-b*c/d)*Shi(c*(b+d)/d+(b+d)*x)/(b*d)-1/2*c*Chi(c*(b-d)/d+(b-d)*x)*sinh(a-b*c/d)/(b*d)+1/2*c*Chi(c*(b+d)/d+(b+d)*x)*sinh(a-b*c/d)/(b*d)-1/2*Shi(c*(b-d)/d+(b-d)*x)*sinh(a-b*c/d)/b^2+1/2*Shi(c*(b+d)/d+(b+d)*x)*sinh(a-b*c/d)/b^2-Shi(c+d*x)*sinh(a+b*x)/b^2],
+[Shi(c+d*x)*sinh(a+b*x),x,9,1/2*cosh(a-b*c/d)*Shi(c*(b-d)/d+(b-d)*x)/b+cosh(a+b*x)*Shi(c+d*x)/b-1/2*cosh(a-b*c/d)*Shi(c*(b+d)/d+(b+d)*x)/b+1/2*Chi(c*(b-d)/d+(b-d)*x)*sinh(a-b*c/d)/b-1/2*Chi(c*(b+d)/d+(b+d)*x)*sinh(a-b*c/d)/b],
+[Shi(c+d*x)*sinh(a+b*x)/x,x,0,CannotIntegrate(Shi(c+d*x)*sinh(a+b*x)/x,x)],
+
+--  {x^2*Cosh[a + b*x]*SinhIntegral[c + d*x], x, 46, -(Cosh[a - c + (b - d)*x]/(2*b*(b - d)^2)) - Cosh[a - c + (b - d)*x]/(b^2*(b - d)) + Cosh[a + c + (b + d)*x]/(2*b*(b + d)^2) + Cosh[a + c + (b + d)*x]/(b^2*(b + d)) + (CoshIntegral[((b - d)*(c + d*x))/d]*((b^2*c^2 + 2*d^2)*Cosh[a - (b*c)/d] + 2*b*c*d*Sinh[a - (b*c)/d]))/(2*b^3*d^2) - (CoshIntegral[((b + d)*(c + d*x))/d]*((b^2*c^2 + 2*d^2)*Cosh[a - (b*c)/d] + 2*b*c*d*Sinh[a - (b*c)/d]))/(2*b^3*d^2) - (c*Sinh[a - c + (b - d)*x])/(2*b*(b - d)*d) + (x*Sinh[a - c + (b - d)*x])/(2*b*(b - d)) + (c*Sinh[a + c + (b + d)*x])/(2*b*d*(b + d)) - (x*Sinh[a + c + (b + d)*x])/(2*b*(b + d)) - ((2*b*x*Cosh[a + b*x] - (2 + b^2*x^2)*Sinh[a + b*x])*SinhIntegral[c + d*x])/b^3 + ((2*b*c*d*Cosh[a - (b*c)/d] + (b^2*c^2 + 2*d^2)*Sinh[a - (b*c)/d])*SinhIntegral[((b - d)*(c + d*x))/d])/(2*b^3*d^2) - ((2*b*c*d*Cosh[a - (b*c)/d] + (b^2*c^2 + 2*d^2)*Sinh[a - (b*c)/d])*SinhIntegral[((b + d)*(c + d*x))/d])/(2*b^3*d^2)} 
+[x*cosh(a+b*x)*Shi(c+d*x),x,24,-1/2*c*Chi(c*(b-d)/d+(b-d)*x)*cosh(a-b*c/d)/(b*d)+1/2*c*Chi(c*(b+d)/d+(b+d)*x)*cosh(a-b*c/d)/(b*d)-1/2*cosh(a-b*c/d)*Shi(c*(b-d)/d+(b-d)*x)/b^2-cosh(a+b*x)*Shi(c+d*x)/b^2+1/2*cosh(a-b*c/d)*Shi(c*(b+d)/d+(b+d)*x)/b^2-1/2*Chi(c*(b-d)/d+(b-d)*x)*sinh(a-b*c/d)/b^2+1/2*Chi(c*(b+d)/d+(b+d)*x)*sinh(a-b*c/d)/b^2-1/2*c*Shi(c*(b-d)/d+(b-d)*x)*sinh(a-b*c/d)/(b*d)+1/2*c*Shi(c*(b+d)/d+(b+d)*x)*sinh(a-b*c/d)/(b*d)+x*Shi(c+d*x)*sinh(a+b*x)/b+1/2*sinh(a-c+(b-d)*x)/(b*(b-d))-1/2*sinh(a+c+(b+d)*x)/(b*(b+d))],
+[cosh(a+b*x)*Shi(c+d*x),x,9,1/2*Chi(c*(b-d)/d+(b-d)*x)*cosh(a-b*c/d)/b-1/2*Chi(c*(b+d)/d+(b+d)*x)*cosh(a-b*c/d)/b+1/2*Shi(c*(b-d)/d+(b-d)*x)*sinh(a-b*c/d)/b-1/2*Shi(c*(b+d)/d+(b+d)*x)*sinh(a-b*c/d)/b+Shi(c+d*x)*sinh(a+b*x)/b],
+[cosh(a+b*x)*Shi(c+d*x)/x,x,0,CannotIntegrate(cosh(a+b*x)*Shi(c+d*x)/x,x)],
+
+-- Hyperbolic cosine integral function
+
+-- Integrands of the form x^m CoshIntegral[b x]^n
+[x^m*Chi(b*x),x,5,x^(1+m)*Chi(b*x)/(1+m)-1/2*x^m*GAMMA(1+m,-b*x)/(b*(1+m)*(-b*x)^m)+1/2*x^m*GAMMA(1+m,b*x)/(b*(1+m)*(b*x)^m)],
+[x^3*Chi(b*x),x,6,1/4*x^4*Chi(b*x)+3/2*cosh(b*x)/b^4+3/4*x^2*cosh(b*x)/b^2-3/2*x*sinh(b*x)/b^3-1/4*x^3*sinh(b*x)/b],
+[x^2*Chi(b*x),x,5,1/3*x^3*Chi(b*x)+2/3*x*cosh(b*x)/b^2-2/3*sinh(b*x)/b^3-1/3*x^2*sinh(b*x)/b],
+[x*Chi(b*x),x,4,1/2*x^2*Chi(b*x)+1/2*cosh(b*x)/b^2-1/2*x*sinh(b*x)/b],
+[Chi(b*x),x,1,x*Chi(b*x)-sinh(b*x)/b],
+[Chi(b*x)/x,x,1,-1/2*b*x*HypergeometricPFQ([1,1,1],[2,2,2],-b*x)+1/2*b*x*HypergeometricPFQ([1,1,1],[2,2,2],b*x)+EulerGamma*log(x)+1/2*log(b*x)^2],
+[Chi(b*x)/x^2,x,4,-Chi(b*x)/x-cosh(b*x)/x+b*Shi(b*x)],
+[Chi(b*x)/x^3,x,5,1/4*b^2*Chi(b*x)-1/2*Chi(b*x)/x^2-1/4*cosh(b*x)/x^2-1/4*b*sinh(b*x)/x],
+[x^m*Chi(b*x)^2,x,0,CannotIntegrate(x^m*Chi(b*x)^2,x)],
+[x^3*Chi(b*x)^2,x,19,-1/4*x^2/b^2+1/4*x^4*Chi(b*x)^2-3/2*Chi(2*b*x)/b^4+3*Chi(b*x)*cosh(b*x)/b^4+3/2*x^2*Chi(b*x)*cosh(b*x)/b^2+3/8*cosh(b*x)^2/b^4-3/2*log(x)/b^4-3*x*Chi(b*x)*sinh(b*x)/b^3-1/2*x^3*Chi(b*x)*sinh(b*x)/b-x*cosh(b*x)*sinh(b*x)/b^3+13/8*sinh(b*x)^2/b^4+1/4*x^2*sinh(b*x)^2/b^2],
+[x^2*Chi(b*x)^2,x,15,-1/2*x/b^2+1/3*x^3*Chi(b*x)^2+4/3*x*Chi(b*x)*cosh(b*x)/b^2+2/3*Shi(2*b*x)/b^3-4/3*Chi(b*x)*sinh(b*x)/b^3-2/3*x^2*Chi(b*x)*sinh(b*x)/b-5/6*cosh(b*x)*sinh(b*x)/b^3+1/3*x*sinh(b*x)^2/b^2],
+[x*Chi(b*x)^2,x,10,1/2*x^2*Chi(b*x)^2-1/2*Chi(2*b*x)/b^2+Chi(b*x)*cosh(b*x)/b^2-1/2*log(x)/b^2-x*Chi(b*x)*sinh(b*x)/b+1/2*sinh(b*x)^2/b^2],
+[Chi(b*x)^2,x,6,x*Chi(b*x)^2+Shi(2*b*x)/b-2*Chi(b*x)*sinh(b*x)/b],
+[Chi(b*x)^2/x,x,0,CannotIntegrate(Chi(b*x)^2/x,x)],
+[Chi(b*x)^2/x^2,x,0,CannotIntegrate(Chi(b*x)^2/x^2,x)],
+[Chi(b*x)^2/x^3,x,0,CannotIntegrate(Chi(b*x)^2/x^3,x)],
+
+-- Integrands of the form x^m CoshIntegral[a+b x]^n
+[x^m*Chi(a+b*x),x,1,-b*CannotIntegrate(x^(1+m)*cosh(a+b*x)/(a+b*x),x)/(1+m)+x^(1+m)*Chi(a+b*x)/(1+m)],
+[x^3*Chi(a+b*x),x,14,-1/4*a^4*Chi(a+b*x)/b^4+1/4*x^4*Chi(a+b*x)+3/2*cosh(a+b*x)/b^4+1/4*a^2*cosh(a+b*x)/b^4-1/2*a*x*cosh(a+b*x)/b^3+3/4*x^2*cosh(a+b*x)/b^2+1/2*a*sinh(a+b*x)/b^4+1/4*a^3*sinh(a+b*x)/b^4-3/2*x*sinh(a+b*x)/b^3-1/4*a^2*x*sinh(a+b*x)/b^3+1/4*a*x^2*sinh(a+b*x)/b^2-1/4*x^3*sinh(a+b*x)/b],
+[x^2*Chi(a+b*x),x,10,1/3*a^3*Chi(a+b*x)/b^3+1/3*x^3*Chi(a+b*x)-1/3*a*cosh(a+b*x)/b^3+2/3*x*cosh(a+b*x)/b^2-2/3*sinh(a+b*x)/b^3-1/3*a^2*sinh(a+b*x)/b^3+1/3*a*x*sinh(a+b*x)/b^2-1/3*x^2*sinh(a+b*x)/b],
+[x*Chi(a+b*x),x,7,-1/2*a^2*Chi(a+b*x)/b^2+1/2*x^2*Chi(a+b*x)+1/2*cosh(a+b*x)/b^2+1/2*a*sinh(a+b*x)/b^2-1/2*x*sinh(a+b*x)/b],
+[Chi(a+b*x),x,1,(a+b*x)*Chi(a+b*x)/b-sinh(a+b*x)/b],
+[Chi(a+b*x)/x,x,0,CannotIntegrate(Chi(a+b*x)/x,x)],
+[Chi(a+b*x)/x^2,x,7,-b*Chi(a+b*x)/a-Chi(a+b*x)/x+b*Chi(b*x)*cosh(a)/a+b*Shi(b*x)*sinh(a)/a],
+[Chi(a+b*x)/x^3,x,11,1/2*b^2*Chi(a+b*x)/a^2-1/2*Chi(a+b*x)/x^2-1/2*b^2*Chi(b*x)*cosh(a)/a^2-1/2*b*cosh(a+b*x)/(a*x)+1/2*b^2*cosh(a)*Shi(b*x)/a+1/2*b^2*Chi(b*x)*sinh(a)/a-1/2*b^2*Shi(b*x)*sinh(a)/a^2],
+[x^m*Chi(a+b*x)^2,x,0,CannotIntegrate(x^m*Chi(a+b*x)^2,x)],
+[x^2*Chi(a+b*x)^2,x,39,-2/3*x/b^2+1/3*a^2*(a+b*x)*Chi(a+b*x)^2/b^3-1/3*a*x*(a+b*x)*Chi(a+b*x)^2/b^2+1/3*x^2*(a+b*x)*Chi(a+b*x)^2/b+a*Chi(2*a+2*b*x)/b^3-2/3*a*Chi(a+b*x)*cosh(a+b*x)/b^3+4/3*x*Chi(a+b*x)*cosh(a+b*x)/b^2-1/3*a*cosh(2*a+2*b*x)/b^3+1/6*x*cosh(2*a+2*b*x)/b^2+a*log(a+b*x)/b^3+2/3*Shi(2*a+2*b*x)/b^3+a^2*Shi(2*a+2*b*x)/b^3-4/3*Chi(a+b*x)*sinh(a+b*x)/b^3-2/3*a^2*Chi(a+b*x)*sinh(a+b*x)/b^3+2/3*a*x*Chi(a+b*x)*sinh(a+b*x)/b^2-2/3*x^2*Chi(a+b*x)*sinh(a+b*x)/b-2/3*cosh(a+b*x)*sinh(a+b*x)/b^3-1/12*sinh(2*a+2*b*x)/b^3],
+[x*Chi(a+b*x)^2,x,17,-1/2*a*(a+b*x)*Chi(a+b*x)^2/b^2+1/2*x*(a+b*x)*Chi(a+b*x)^2/b-1/2*Chi(2*a+2*b*x)/b^2+Chi(a+b*x)*cosh(a+b*x)/b^2+1/4*cosh(2*a+2*b*x)/b^2-1/2*log(a+b*x)/b^2-a*Shi(2*a+2*b*x)/b^2+a*Chi(a+b*x)*sinh(a+b*x)/b^2-x*Chi(a+b*x)*sinh(a+b*x)/b],
+[Chi(a+b*x)^2,x,5,(a+b*x)*Chi(a+b*x)^2/b+Shi(2*a+2*b*x)/b-2*Chi(a+b*x)*sinh(a+b*x)/b],
+[Chi(a+b*x)^2/x,x,0,CannotIntegrate(Chi(a+b*x)^2/x,x)],
+[Chi(a+b*x)^2/x^2,x,0,CannotIntegrate(Chi(a+b*x)^2/x^2,x)],
+[Chi(a+b*x)^2/x^3,x,0,CannotIntegrate(Chi(a+b*x)^2/x^3,x)],
+
+-- Integrands of the form (e x)^m CoshIntegral[d (a+b Log[c x^n])]
+[x^2*Chi(d*(a+b*log(c*x^n))),x,7,1/3*x^3*Chi(d*(a+b*log(c*x^n)))-1/6*x^3*Ei((3-b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(3*a/(b*n))*(c*x^n)^(3/n))-1/6*x^3*Ei((3+b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(3*a/(b*n))*(c*x^n)^(3/n))],
+[x*Chi(d*(a+b*log(c*x^n))),x,7,1/2*x^2*Chi(d*(a+b*log(c*x^n)))-1/4*x^2*Ei((2-b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(2*a/(b*n))*(c*x^n)^(2/n))-1/4*x^2*Ei((2+b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(2*a/(b*n))*(c*x^n)^(2/n))],
+[Chi(d*(a+b*log(c*x^n))),x,7,x*Chi(d*(a+b*log(c*x^n)))-1/2*x*Ei((1-b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(a/(b*n))*(c*x^n)^(1/n))-1/2*x*Ei((1+b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(a/(b*n))*(c*x^n)^(1/n))],
+[Chi(d*(a+b*log(c*x^n)))/x,x,3,Chi(d*(a+b*log(c*x^n)))*(a+b*log(c*x^n))/(b*n)-sinh(d*(a+b*log(c*x^n)))/(b*d*n)],
+[Chi(d*(a+b*log(c*x^n)))/x^2,x,7,-Chi(d*(a+b*log(c*x^n)))/x+1/2*%e^(a/(b*n))*(c*x^n)^(1/n)*Ei(-(1-b*d*n)*(a+b*log(c*x^n))/(b*n))/x+1/2*%e^(a/(b*n))*(c*x^n)^(1/n)*Ei(-(1+b*d*n)*(a+b*log(c*x^n))/(b*n))/x],
+[Chi(d*(a+b*log(c*x^n)))/x^3,x,7,-1/2*Chi(d*(a+b*log(c*x^n)))/x^2+1/4*%e^(2*a/(b*n))*(c*x^n)^(2/n)*Ei(-(2-b*d*n)*(a+b*log(c*x^n))/(b*n))/x^2+1/4*%e^(2*a/(b*n))*(c*x^n)^(2/n)*Ei(-(2+b*d*n)*(a+b*log(c*x^n))/(b*n))/x^2],
+[(e*x)^m*Chi(d*(a+b*log(c*x^n))),x,7,(e*x)^(1+m)*Chi(d*(a+b*log(c*x^n)))/(e*(1+m))-1/2*x*(e*x)^m*Ei((1+m-b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(a*(1+m)/(b*n))*(1+m)*(c*x^n)^((1+m)/n))-1/2*x*(e*x)^m*Ei((1+m+b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(a*(1+m)/(b*n))*(1+m)*(c*x^n)^((1+m)/n))],
+
+-- Integrands of the form x^m Hyper[b x] CoshIntegral[b x]^n
+[Chi(b*x)*cosh(b*x)/x^3,x,14,1/4*b^2*Chi(b*x)^2+b^2*Chi(2*b*x)-1/2*Chi(b*x)*cosh(b*x)/x^2-1/4*cosh(b*x)^2/x^2-1/2*b*Chi(b*x)*sinh(b*x)/x-1/2*b*cosh(b*x)*sinh(b*x)/x-1/4*b*sinh(2*b*x)/x],
+[Chi(b*x)*cosh(b*x)/x^2,x,5,b*CannotIntegrate(Chi(b*x)*sinh(b*x)/x,x)-Chi(b*x)*cosh(b*x)/x-cosh(b*x)^2/x+b*Shi(2*b*x)],
+[Chi(b*x)*cosh(b*x)/x,x,1,1/2*Chi(b*x)^2],
+[Chi(b*x)*cosh(b*x),x,5,-1/2*Shi(2*b*x)/b+Chi(b*x)*sinh(b*x)/b],
+[x*Chi(b*x)*cosh(b*x),x,9,1/2*Chi(2*b*x)/b^2-Chi(b*x)*cosh(b*x)/b^2+1/2*log(x)/b^2+x*Chi(b*x)*sinh(b*x)/b-1/2*sinh(b*x)^2/b^2],
+[x^2*Chi(b*x)*cosh(b*x),x,14,3/4*x/b^2-2*x*Chi(b*x)*cosh(b*x)/b^2-Shi(2*b*x)/b^3+2*Chi(b*x)*sinh(b*x)/b^3+x^2*Chi(b*x)*sinh(b*x)/b+5/4*cosh(b*x)*sinh(b*x)/b^3-1/2*x*sinh(b*x)^2/b^2],
+[x^3*Chi(b*x)*cosh(b*x),x,18,1/2*x^2/b^2+3*Chi(2*b*x)/b^4-6*Chi(b*x)*cosh(b*x)/b^4-3*x^2*Chi(b*x)*cosh(b*x)/b^2-3/4*cosh(b*x)^2/b^4+3*log(x)/b^4+6*x*Chi(b*x)*sinh(b*x)/b^3+x^3*Chi(b*x)*sinh(b*x)/b+2*x*cosh(b*x)*sinh(b*x)/b^3-13/4*sinh(b*x)^2/b^4-1/2*x^2*sinh(b*x)^2/b^2],
+[Chi(b*x)*sinh(b*x)/x^3,x,12,1/2*b^2*CannotIntegrate(Chi(b*x)*sinh(b*x)/x,x)-1/2*b*Chi(b*x)*cosh(b*x)/x-1/2*b*cosh(b*x)^2/x-1/4*b*cosh(2*b*x)/x+b^2*Shi(2*b*x)-1/2*Chi(b*x)*sinh(b*x)/x^2-1/8*sinh(2*b*x)/x^2],
+[Chi(b*x)*sinh(b*x)/x^2,x,7,1/2*b*Chi(b*x)^2+b*Chi(2*b*x)-Chi(b*x)*sinh(b*x)/x-1/2*sinh(2*b*x)/x],
+[Chi(b*x)*sinh(b*x)/x,x,0,CannotIntegrate(Chi(b*x)*sinh(b*x)/x,x)],
+[Chi(b*x)*sinh(b*x),x,5,-1/2*Chi(2*b*x)/b+Chi(b*x)*cosh(b*x)/b-1/2*log(x)/b],
+[x*Chi(b*x)*sinh(b*x),x,9,-1/2*x/b+x*Chi(b*x)*cosh(b*x)/b+1/2*Shi(2*b*x)/b^2-Chi(b*x)*sinh(b*x)/b^2-1/2*cosh(b*x)*sinh(b*x)/b^2],
+[x^2*Chi(b*x)*sinh(b*x),x,13,-1/4*x^2/b-Chi(2*b*x)/b^3+2*Chi(b*x)*cosh(b*x)/b^3+x^2*Chi(b*x)*cosh(b*x)/b+1/4*cosh(b*x)^2/b^3-log(x)/b^3-2*x*Chi(b*x)*sinh(b*x)/b^2-1/2*x*cosh(b*x)*sinh(b*x)/b^2+sinh(b*x)^2/b^3],
+[x^3*Chi(b*x)*sinh(b*x),x,20,-5/2*x/b^3-1/6*x^3/b+6*x*Chi(b*x)*cosh(b*x)/b^3+x^3*Chi(b*x)*cosh(b*x)/b+1/2*x*cosh(b*x)^2/b^3+3*Shi(2*b*x)/b^4-6*Chi(b*x)*sinh(b*x)/b^4-3*x^2*Chi(b*x)*sinh(b*x)/b^2-4*cosh(b*x)*sinh(b*x)/b^4-1/2*x^2*cosh(b*x)*sinh(b*x)/b^2+3/2*x*sinh(b*x)^2/b^3],
+
+-- Integrands of the form x^m Hyper[b x] CoshIntegral[d x]^n
+[Chi(2*x)*sinh(5*x),x,6,-1/10*Chi(3*x)-1/10*Chi(7*x)+1/5*Chi(2*x)*cosh(5*x)],
+[Chi(2*x)*cosh(5*x),x,6,-1/10*Shi(3*x)-1/10*Shi(7*x)+1/5*Chi(2*x)*sinh(5*x)],
+
+-- Integrands of the form x^m Hyper[a+b x] CoshIntegral[a+b x]^n
+
+--  {x^3*Sinh[a + b*x]*CoshIntegral[a + b*x], x, 32, -((5*x)/(2*b^3)) - (a^2*x)/(2*b^3) + (a*x^2)/(4*b^2) - x^3/(6*b) - (7*a*Cosh[a + b*x]^2)/(4*b^4) + (x*Cosh[a + b*x]^2)/(2*b^3) + (6*x*Cosh[a + b*x]*CoshIntegral[a + b*x])/b^3 + (x^3*Cosh[a + b*x]*CoshIntegral[a + b*x])/b + (3*a*CoshIntegral[2*a + 2*b*x])/b^4 + (a^3*CoshIntegral[2*a + 2*b*x])/(2*b^4) + (3*a*Log[a + b*x])/b^4 + (a^3*Log[a + b*x])/(2*b^4) - (4*Cosh[a + b*x]*Sinh[a + b*x])/b^4 - (a^2*Cosh[a + b*x]*Sinh[a + b*x])/(2*b^4) + (a*x*Cosh[a + b*x]*Sinh[a + b*x])/(2*b^3) - (x^2*Cosh[a + b*x]*Sinh[a + b*x])/(2*b^2) - (6*CoshIntegral[a + b*x]*Sinh[a + b*x])/b^4 - (3*x^2*CoshIntegral[a + b*x]*Sinh[a + b*x])/b^2 + (3*x*Sinh[a + b*x]^2)/(2*b^3) + (3*SinhIntegral[2*a + 2*b*x])/b^4 + (3*a^2*SinhIntegral[2*a + 2*b*x])/(2*b^4)} 
+[x^2*Chi(a+b*x)*sinh(a+b*x),x,21,1/2*a*x/b^2-1/4*x^2/b-Chi(2*a+2*b*x)/b^3-1/2*a^2*Chi(2*a+2*b*x)/b^3+2*Chi(a+b*x)*cosh(a+b*x)/b^3+x^2*Chi(a+b*x)*cosh(a+b*x)/b+1/4*cosh(a+b*x)^2/b^3+1/2*cosh(2*a+2*b*x)/b^3-log(a+b*x)/b^3-1/2*a^2*log(a+b*x)/b^3-a*Shi(2*a+2*b*x)/b^3-2*x*Chi(a+b*x)*sinh(a+b*x)/b^2+1/2*a*cosh(a+b*x)*sinh(a+b*x)/b^3-1/2*x*cosh(a+b*x)*sinh(a+b*x)/b^2],
+[x*Chi(a+b*x)*sinh(a+b*x),x,12,-1/2*x/b+1/2*a*Chi(2*a+2*b*x)/b^2+x*Chi(a+b*x)*cosh(a+b*x)/b+1/2*a*log(a+b*x)/b^2+1/2*Shi(2*a+2*b*x)/b^2-Chi(a+b*x)*sinh(a+b*x)/b^2-1/2*cosh(a+b*x)*sinh(a+b*x)/b^2],
+[Chi(a+b*x)*sinh(a+b*x),x,4,-1/2*Chi(2*a+2*b*x)/b+Chi(a+b*x)*cosh(a+b*x)/b-1/2*log(a+b*x)/b],
+[Chi(a+b*x)*sinh(a+b*x)/x,x,0,CannotIntegrate(Chi(a+b*x)*sinh(a+b*x)/x,x)],
+
+--  {x^3*Cosh[a + b*x]*CoshIntegral[a + b*x], x, 32, -((5*a*x)/(4*b^3)) + x^2/(2*b^2) - (15*Cosh[a + b*x]^2)/(4*b^4) - (a^2*Cosh[a + b*x]^2)/(2*b^4) - (6*Cosh[a + b*x]*CoshIntegral[a + b*x])/b^4 - (3*x^2*Cosh[a + b*x]*CoshIntegral[a + b*x])/b^2 + (3*CoshIntegral[2*a + 2*b*x])/b^4 + (3*a^2*CoshIntegral[2*a + 2*b*x])/(2*b^4) + (3*Log[a + b*x])/b^4 + (3*a^2*Log[a + b*x])/(2*b^4) - (7*a*Cosh[a + b*x]*Sinh[a + b*x])/(4*b^4) + (2*x*Cosh[a + b*x]*Sinh[a + b*x])/b^3 + (6*x*CoshIntegral[a + b*x]*Sinh[a + b*x])/b^3 + (x^3*CoshIntegral[a + b*x]*Sinh[a + b*x])/b - Sinh[a + b*x]^2/(4*b^4) + (a*x*Sinh[a + b*x]^2)/(2*b^3) - (x^2*Sinh[a + b*x]^2)/(2*b^2) + (3*a*SinhIntegral[2*a + 2*b*x])/b^4 + (a^3*SinhIntegral[2*a + 2*b*x])/(2*b^4)} 
+[x^2*Chi(a+b*x)*cosh(a+b*x),x,21,x/b^2-a*Chi(2*a+2*b*x)/b^3-2*x*Chi(a+b*x)*cosh(a+b*x)/b^2+1/4*a*cosh(2*a+2*b*x)/b^3-1/4*x*cosh(2*a+2*b*x)/b^2-a*log(a+b*x)/b^3-Shi(2*a+2*b*x)/b^3-1/2*a^2*Shi(2*a+2*b*x)/b^3+2*Chi(a+b*x)*sinh(a+b*x)/b^3+x^2*Chi(a+b*x)*sinh(a+b*x)/b+cosh(a+b*x)*sinh(a+b*x)/b^3+1/8*sinh(2*a+2*b*x)/b^3],
+[x*Chi(a+b*x)*cosh(a+b*x),x,11,1/2*Chi(2*a+2*b*x)/b^2-Chi(a+b*x)*cosh(a+b*x)/b^2-1/4*cosh(2*a+2*b*x)/b^2+1/2*log(a+b*x)/b^2+1/2*a*Shi(2*a+2*b*x)/b^2+x*Chi(a+b*x)*sinh(a+b*x)/b],
+[Chi(a+b*x)*cosh(a+b*x),x,4,-1/2*Shi(2*a+2*b*x)/b+Chi(a+b*x)*sinh(a+b*x)/b],
+[Chi(a+b*x)*cosh(a+b*x)/x,x,0,CannotIntegrate(Chi(a+b*x)*cosh(a+b*x)/x,x)],
+
+-- Integrands of the form x^m Hyper[a+b x] CoshIntegral[c+d x]^n
+
+--  {x^2*Sinh[a + b*x]*CoshIntegral[c + d*x], x, 46, Cosh[a - c + (b - d)*x]/(2*b*(b - d)^2) + Cosh[a - c + (b - d)*x]/(b^2*(b - d)) + Cosh[a + c + (b + d)*x]/(2*b*(b + d)^2) + Cosh[a + c + (b + d)*x]/(b^2*(b + d)) - (CoshIntegral[((b - d)*(c + d*x))/d]*((b^2*c^2 + 2*d^2)*Cosh[a - (b*c)/d] + 2*b*c*d*Sinh[a - (b*c)/d]))/(2*b^3*d^2) - (CoshIntegral[((b + d)*(c + d*x))/d]*((b^2*c^2 + 2*d^2)*Cosh[a - (b*c)/d] + 2*b*c*d*Sinh[a - (b*c)/d]))/(2*b^3*d^2) + (CoshIntegral[c + d*x]*((2 + b^2*x^2)*Cosh[a + b*x] - 2*b*x*Sinh[a + b*x]))/b^3 + (c*Sinh[a - c + (b - d)*x])/(2*b*(b - d)*d) - (x*Sinh[a - c + (b - d)*x])/(2*b*(b - d)) + (c*Sinh[a + c + (b + d)*x])/(2*b*d*(b + d)) - (x*Sinh[a + c + (b + d)*x])/(2*b*(b + d)) - ((2*b*c*d*Cosh[a - (b*c)/d] + (b^2*c^2 + 2*d^2)*Sinh[a - (b*c)/d])*SinhIntegral[((b - d)*(c + d*x))/d])/(2*b^3*d^2) - ((2*b*c*d*Cosh[a - (b*c)/d] + (b^2*c^2 + 2*d^2)*Sinh[a - (b*c)/d])*SinhIntegral[((b + d)*(c + d*x))/d])/(2*b^3*d^2)} 
+[x*Chi(c+d*x)*sinh(a+b*x),x,24,1/2*c*Chi(c*(b-d)/d+(b-d)*x)*cosh(a-b*c/d)/(b*d)+1/2*c*Chi(c*(b+d)/d+(b+d)*x)*cosh(a-b*c/d)/(b*d)+x*Chi(c+d*x)*cosh(a+b*x)/b+1/2*cosh(a-b*c/d)*Shi(c*(b-d)/d+(b-d)*x)/b^2+1/2*cosh(a-b*c/d)*Shi(c*(b+d)/d+(b+d)*x)/b^2+1/2*Chi(c*(b-d)/d+(b-d)*x)*sinh(a-b*c/d)/b^2+1/2*Chi(c*(b+d)/d+(b+d)*x)*sinh(a-b*c/d)/b^2+1/2*c*Shi(c*(b-d)/d+(b-d)*x)*sinh(a-b*c/d)/(b*d)+1/2*c*Shi(c*(b+d)/d+(b+d)*x)*sinh(a-b*c/d)/(b*d)-Chi(c+d*x)*sinh(a+b*x)/b^2-1/2*sinh(a-c+(b-d)*x)/(b*(b-d))-1/2*sinh(a+c+(b+d)*x)/(b*(b+d))],
+[Chi(c+d*x)*sinh(a+b*x),x,9,-1/2*Chi(c*(b-d)/d+(b-d)*x)*cosh(a-b*c/d)/b-1/2*Chi(c*(b+d)/d+(b+d)*x)*cosh(a-b*c/d)/b+Chi(c+d*x)*cosh(a+b*x)/b-1/2*Shi(c*(b-d)/d+(b-d)*x)*sinh(a-b*c/d)/b-1/2*Shi(c*(b+d)/d+(b+d)*x)*sinh(a-b*c/d)/b],
+[Chi(c+d*x)*sinh(a+b*x)/x,x,0,CannotIntegrate(Chi(c+d*x)*sinh(a+b*x)/x,x)],
+
+--  {x^2*Cosh[a + b*x]*CoshIntegral[c + d*x], x, 46, (c*Cosh[a - c + (b - d)*x])/(2*b*(b - d)*d) - (x*Cosh[a - c + (b - d)*x])/(2*b*(b - d)) + (c*Cosh[a + c + (b + d)*x])/(2*b*d*(b + d)) - (x*Cosh[a + c + (b + d)*x])/(2*b*(b + d)) - (CoshIntegral[((b - d)*(c + d*x))/d]*(2*b*c*d*Cosh[a - (b*c)/d] + (b^2*c^2 + 2*d^2)*Sinh[a - (b*c)/d]))/(2*b^3*d^2) - (CoshIntegral[((b + d)*(c + d*x))/d]*(2*b*c*d*Cosh[a - (b*c)/d] + (b^2*c^2 + 2*d^2)*Sinh[a - (b*c)/d]))/(2*b^3*d^2) - (CoshIntegral[c + d*x]*(2*b*x*Cosh[a + b*x] - (2 + b^2*x^2)*Sinh[a + b*x]))/b^3 + Sinh[a - c + (b - d)*x]/(2*b*(b - d)^2) + Sinh[a - c + (b - d)*x]/(b^2*(b - d)) + Sinh[a + c + (b + d)*x]/(2*b*(b + d)^2) + Sinh[a + c + (b + d)*x]/(b^2*(b + d)) - (((b^2*c^2 + 2*d^2)*Cosh[a - (b*c)/d] + 2*b*c*d*Sinh[a - (b*c)/d])*SinhIntegral[((b - d)*(c + d*x))/d])/(2*b^3*d^2) - (((b^2*c^2 + 2*d^2)*Cosh[a - (b*c)/d] + 2*b*c*d*Sinh[a - (b*c)/d])*SinhIntegral[((b + d)*(c + d*x))/d])/(2*b^3*d^2)} 
+[x*Chi(c+d*x)*cosh(a+b*x),x,24,1/2*Chi(c*(b-d)/d+(b-d)*x)*cosh(a-b*c/d)/b^2+1/2*Chi(c*(b+d)/d+(b+d)*x)*cosh(a-b*c/d)/b^2-Chi(c+d*x)*cosh(a+b*x)/b^2-1/2*cosh(a-c+(b-d)*x)/(b*(b-d))-1/2*cosh(a+c+(b+d)*x)/(b*(b+d))+1/2*c*cosh(a-b*c/d)*Shi(c*(b-d)/d+(b-d)*x)/(b*d)+1/2*c*cosh(a-b*c/d)*Shi(c*(b+d)/d+(b+d)*x)/(b*d)+1/2*c*Chi(c*(b-d)/d+(b-d)*x)*sinh(a-b*c/d)/(b*d)+1/2*c*Chi(c*(b+d)/d+(b+d)*x)*sinh(a-b*c/d)/(b*d)+1/2*Shi(c*(b-d)/d+(b-d)*x)*sinh(a-b*c/d)/b^2+1/2*Shi(c*(b+d)/d+(b+d)*x)*sinh(a-b*c/d)/b^2+x*Chi(c+d*x)*sinh(a+b*x)/b],
+[Chi(c+d*x)*cosh(a+b*x),x,9,-1/2*cosh(a-b*c/d)*Shi(c*(b-d)/d+(b-d)*x)/b-1/2*cosh(a-b*c/d)*Shi(c*(b+d)/d+(b+d)*x)/b-1/2*Chi(c*(b-d)/d+(b-d)*x)*sinh(a-b*c/d)/b-1/2*Chi(c*(b+d)/d+(b+d)*x)*sinh(a-b*c/d)/b+Chi(c+d*x)*sinh(a+b*x)/b],
+[Chi(c+d*x)*cosh(a+b*x)/x,x,0,CannotIntegrate(Chi(c+d*x)*cosh(a+b*x)/x,x)]]

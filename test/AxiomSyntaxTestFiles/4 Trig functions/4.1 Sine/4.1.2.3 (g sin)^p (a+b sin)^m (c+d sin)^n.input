@@ -1,0 +1,188 @@
+-- Axiom integration test file: "4 Trig functions\4.1 Sine\4.1.2.3 (g sin)^p (a+b sin)^m (c+d sin)^n.input"
+
+lst: '[
+
+-- Integrands of the form (g Sin[e+f x])^p (a+a Sin[e+f x])^m (c-c Sin[e+f x])^n
+
+-- Integrands of the form (g Sin[e+f x])^p (a+a Sin[e+f x])^m (c-c Sin[e+f x])
+
+-- Integrands of the form Sin[e+f x]^p (a+a Sin[e+f x])^m (c-c Sin[e+f x])
+[sin(e+f*x)^3*(a+a*sin(e+f*x))^2*(c-c*sin(e+f*x)),x,13,1/16*a^2*c*x-1/3*a^2*c*cos(e+f*x)^3/f+1/5*a^2*c*cos(e+f*x)^5/f-1/16*a^2*c*cos(e+f*x)*sin(e+f*x)/f-1/24*a^2*c*cos(e+f*x)*sin(e+f*x)^3/f+1/6*a^2*c*cos(e+f*x)*sin(e+f*x)^5/f],
+[sin(e+f*x)^2*(a+a*sin(e+f*x))^2*(c-c*sin(e+f*x)),x,11,1/8*a^2*c*x-1/3*a^2*c*cos(e+f*x)^3/f+1/5*a^2*c*cos(e+f*x)^5/f-1/8*a^2*c*cos(e+f*x)*sin(e+f*x)/f+1/4*a^2*c*cos(e+f*x)*sin(e+f*x)^3/f],
+[sin(e+f*x)*(a+a*sin(e+f*x))^2*(c-c*sin(e+f*x)),x,10,1/8*a^2*c*x-1/3*a^2*c*cos(e+f*x)^3/f-1/8*a^2*c*cos(e+f*x)*sin(e+f*x)/f+1/4*a^2*c*cos(e+f*x)*sin(e+f*x)^3/f],
+[(a+a*sin(e+f*x))^2*(c-c*sin(e+f*x)),x,4,1/2*a^2*c*x-1/3*a^2*c*cos(e+f*x)^3/f+1/2*a^2*c*cos(e+f*x)*sin(e+f*x)/f],
+[csc(e+f*x)*(a+a*sin(e+f*x))^2*(c-c*sin(e+f*x)),x,6,1/2*a^2*c*x-a^2*c*atanh(cos(e+f*x))/f+a^2*c*cos(e+f*x)/f+1/2*a^2*c*cos(e+f*x)*sin(e+f*x)/f],
+[csc(e+f*x)^2*(a+a*sin(e+f*x))^2*(c-c*sin(e+f*x)),x,8,-a^2*c*x-a^2*c*atanh(cos(e+f*x))/f+a^2*c*cos(e+f*x)/f-a^2*c*cot(e+f*x)/f],
+[csc(e+f*x)^3*(a+a*sin(e+f*x))^2*(c-c*sin(e+f*x)),x,7,-a^2*c*x+1/2*a^2*c*atanh(cos(e+f*x))/f-a^2*c*cot(e+f*x)/f-1/2*a^2*c*cot(e+f*x)*csc(e+f*x)/f],
+[csc(e+f*x)^4*(a+a*sin(e+f*x))^2*(c-c*sin(e+f*x)),x,6,1/2*a^2*c*atanh(cos(e+f*x))/f-1/3*a^2*c*cot(e+f*x)^3/f-1/2*a^2*c*cot(e+f*x)*csc(e+f*x)/f],
+[csc(e+f*x)^5*(a+a*sin(e+f*x))^2*(c-c*sin(e+f*x)),x,11,1/8*a^2*c*atanh(cos(e+f*x))/f-1/3*a^2*c*cot(e+f*x)^3/f+1/8*a^2*c*cot(e+f*x)*csc(e+f*x)/f-1/4*a^2*c*cot(e+f*x)*csc(e+f*x)^3/f],
+[csc(e+f*x)^6*(a+a*sin(e+f*x))^2*(c-c*sin(e+f*x)),x,11,1/8*a^2*c*atanh(cos(e+f*x))/f-1/3*a^2*c*cot(e+f*x)^3/f-1/5*a^2*c*cot(e+f*x)^5/f+1/8*a^2*c*cot(e+f*x)*csc(e+f*x)/f-1/4*a^2*c*cot(e+f*x)*csc(e+f*x)^3/f],
+[csc(e+f*x)^7*(a+a*sin(e+f*x))^2*(c-c*sin(e+f*x)),x,13,1/16*a^2*c*atanh(cos(e+f*x))/f-1/3*a^2*c*cot(e+f*x)^3/f-1/5*a^2*c*cot(e+f*x)^5/f+1/16*a^2*c*cot(e+f*x)*csc(e+f*x)/f+1/24*a^2*c*cot(e+f*x)*csc(e+f*x)^3/f-1/6*a^2*c*cot(e+f*x)*csc(e+f*x)^5/f],
+
+-- Integrands of the form Sin[e+f x]^p (a+a Sin[e+f x])^(m/2) (c-c Sin[e+f x])
+[sin(c+d*x)^2*(a+a*sin(c+d*x))^(3/2)*(c-c*sin(c+d*x)),x,5,-8/63*a^3*c*cos(c+d*x)^3/(d*(a+a*sin(c+d*x))^(3/2))-2/9*c*cos(c+d*x)^3*(a+a*sin(c+d*x))^(3/2)/d-2/21*a^2*c*cos(c+d*x)^3/(d*sqrt(a+a*sin(c+d*x)))+4/21*a*c*cos(c+d*x)^3*sqrt(a+a*sin(c+d*x))/d,-2/21*c*cos(c+d*x)*(a+a*sin(c+d*x))^(3/2)/d-2/9*a^2*c*cos(c+d*x)/(d*sqrt(a+a*sin(c+d*x)))+2/63*a^2*c*cos(c+d*x)*sin(c+d*x)^3/(d*sqrt(a+a*sin(c+d*x)))+4/63*a*c*cos(c+d*x)*sqrt(a+a*sin(c+d*x))/d+2/9*a*c*cos(c+d*x)*sin(c+d*x)^3*sqrt(a+a*sin(c+d*x))/d],
+
+-- Integrands of the form (g Sin[e+f x])^p (a+a Sin[e+f x])^m / (c-c Sin[e+f x])
+
+-- Integrands of the form Sin[e+f x]^p (a+a Sin[e+f x])^(m/2) / (c-c Sin[e+f x])
+
+-- m>0
+[sqrt(a+a*sin(e+f*x))/(sin(e+f*x)*(c-c*sin(e+f*x))),x,5,-2*atanh(cos(e+f*x)*sqrt(a)/sqrt(a+a*sin(e+f*x)))*sqrt(a)/(c*f)+2*sec(e+f*x)*sqrt(a+a*sin(e+f*x))/(c*f)],
+
+-- m<0
+[1/(sin(e+f*x)*(c-c*sin(e+f*x))*sqrt(a+a*sin(e+f*x))),x,8,-2*atanh(cos(e+f*x)*sqrt(a)/sqrt(a+a*sin(e+f*x)))/(c*f*sqrt(a))+atanh(cos(e+f*x)*sqrt(a)/(sqrt(2)*sqrt(a+a*sin(e+f*x))))/(c*f*sqrt(2)*sqrt(a))+sec(e+f*x)*sqrt(a+a*sin(e+f*x))/(a*c*f)],
+
+-- Integrands of the form (g Sin[e+f x])^(p/2) (a+a Sin[e+f x])^(m/2) / (c-c Sin[e+f x])
+
+-- m>0
+[sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))/(c-c*sin(e+f*x)),x,6,2*atan(cos(e+f*x)*sqrt(a)*sqrt(g)/(sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))))*sqrt(a)*sqrt(g)/(c*f)+2*sec(e+f*x)*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))/(c*f)],
+[sqrt(a+a*sin(e+f*x))/((c-c*sin(e+f*x))*sqrt(g*sin(e+f*x))),x,3,2*sec(e+f*x)*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))/(c*f*g)],
+
+-- m<0
+[sqrt(g*sin(e+f*x))/((c-c*sin(e+f*x))*sqrt(a+a*sin(e+f*x))),x,6,atan(cos(e+f*x)*sqrt(a)*sqrt(g)/(sqrt(2)*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))))*sqrt(g)/(c*f*sqrt(2)*sqrt(a))+sec(e+f*x)*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))/(a*c*f)],
+[1/((c-c*sin(e+f*x))*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))),x,6,-atan(cos(e+f*x)*sqrt(a)*sqrt(g)/(sqrt(2)*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))))/(c*f*sqrt(2)*sqrt(a)*sqrt(g))+sec(e+f*x)*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))/(a*c*f*g)],
+
+-- Integrands of the form (a+a Sin[e+f x])^m (c-c Sin[e+f x])^n / Sin[e+f x]
+
+-- Integrands of the form (a+a Sin[e+f x])^(m/2) (c-c Sin[e+f x])^(n/2) / Sin[e+f x]
+
+-- m>0
+[sqrt(a+a*sin(e+f*x))*sqrt(c-c*sin(e+f*x))/sin(e+f*x),x,2,log(sin(e+f*x))*sec(e+f*x)*sqrt(a+a*sin(e+f*x))*sqrt(c-c*sin(e+f*x))/f],
+[sqrt(a+a*sin(e+f*x))/(sin(e+f*x)*sqrt(c-c*sin(e+f*x))),x,6,-a*cos(e+f*x)*log(1-sin(e+f*x))/(f*sqrt(a+a*sin(e+f*x))*sqrt(c-c*sin(e+f*x)))+log(sin(e+f*x))*sec(e+f*x)*sqrt(a+a*sin(e+f*x))*sqrt(c-c*sin(e+f*x))/(c*f)],
+
+-- m<0
+[sqrt(c-c*sin(e+f*x))/(sin(e+f*x)*sqrt(a+a*sin(e+f*x))),x,6,-c*cos(e+f*x)*log(1+sin(e+f*x))/(f*sqrt(a+a*sin(e+f*x))*sqrt(c-c*sin(e+f*x)))+log(sin(e+f*x))*sec(e+f*x)*sqrt(a+a*sin(e+f*x))*sqrt(c-c*sin(e+f*x))/(a*f)],
+[1/(sin(e+f*x)*sqrt(a+a*sin(e+f*x))*sqrt(c-c*sin(e+f*x))),x,3,cos(e+f*x)*log(tan(e+f*x))/(f*sqrt(a+a*sin(e+f*x))*sqrt(c-c*sin(e+f*x)))],
+
+-- Integrands of the form (g Sin[e+f x])^p (a+a Sin[e+f x])^m (c+d Sin[e+f x])^n
+
+-- Integrands of the form (g Sin[e+f x])^p (a+a Sin[e+f x])^m / (c+d Sin[e+f x])
+
+-- Integrands of the form Sin[e+f x]^p (a+a Sin[e+f x])^(m/2) / (c+d Sin[e+f x])
+
+-- m>0
+[sqrt(a+a*sin(e+f*x))/(sin(e+f*x)*(c+d*sin(e+f*x))),x,5,-2*atanh(cos(e+f*x)*sqrt(a)/sqrt(a+a*sin(e+f*x)))*sqrt(a)/(c*f)+2*atanh(cos(e+f*x)*sqrt(a)*sqrt(d)/(sqrt(c+d)*sqrt(a+a*sin(e+f*x))))*sqrt(a)*sqrt(d)/(c*f*sqrt(c+d))],
+
+-- m<0
+[1/(sin(e+f*x)*(c+d*sin(e+f*x))*sqrt(a+a*sin(e+f*x))),x,8,-2*atanh(cos(e+f*x)*sqrt(a)/sqrt(a+a*sin(e+f*x)))/(c*f*sqrt(a))+atanh(cos(e+f*x)*sqrt(a)/(sqrt(2)*sqrt(a+a*sin(e+f*x))))*sqrt(2)/((c-d)*f*sqrt(a))-2*d^(3/2)*atanh(cos(e+f*x)*sqrt(a)*sqrt(d)/(sqrt(c+d)*sqrt(a+a*sin(e+f*x))))/(c*(c-d)*f*sqrt(a)*sqrt(c+d))],
+
+-- Integrands of the form (g Sin[e+f x])^(p/2) (a+a Sin[e+f x])^(m/2) / (c+d Sin[e+f x])
+
+-- m>0
+[sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))/(c+d*sin(e+f*x)),x,5,-2*atan(cos(e+f*x)*sqrt(a)*sqrt(g)/(sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))))*sqrt(a)*sqrt(g)/(d*f)+2*atan(cos(e+f*x)*sqrt(a)*sqrt(c)*sqrt(g)/(sqrt(c+d)*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))))*sqrt(a)*sqrt(c)*sqrt(g)/(d*f*sqrt(c+d))],
+[sqrt(a+a*sin(e+f*x))/((c+d*sin(e+f*x))*sqrt(g*sin(e+f*x))),x,2,-2*atan(cos(e+f*x)*sqrt(a)*sqrt(c)*sqrt(g)/(sqrt(c+d)*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))))*sqrt(a)/(f*sqrt(c)*sqrt(c+d)*sqrt(g))],
+
+-- m<0
+[sqrt(g*sin(e+f*x))/((c+d*sin(e+f*x))*sqrt(a+a*sin(e+f*x))),x,5,atan(cos(e+f*x)*sqrt(a)*sqrt(g)/(sqrt(2)*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))))*sqrt(2)*sqrt(g)/((c-d)*f*sqrt(a))-2*atan(cos(e+f*x)*sqrt(a)*sqrt(c)*sqrt(g)/(sqrt(c+d)*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))))*sqrt(c)*sqrt(g)/((c-d)*f*sqrt(a)*sqrt(c+d))],
+[1/((c+d*sin(e+f*x))*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))),x,5,-atan(cos(e+f*x)*sqrt(a)*sqrt(g)/(sqrt(2)*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))))*sqrt(2)/((c-d)*f*sqrt(a)*sqrt(g))+2*d*atan(cos(e+f*x)*sqrt(a)*sqrt(c)*sqrt(g)/(sqrt(c+d)*sqrt(g*sin(e+f*x))*sqrt(a+a*sin(e+f*x))))/((c-d)*f*sqrt(a)*sqrt(c)*sqrt(c+d)*sqrt(g))],
+
+-- Integrands of the form (g Sin[e+f x])^p (c+d Sin[e+f x])^n / (a+a Sin[e+f x])
+
+-- Integrands of the form Sin[e+f x]^p (c+d Sin[e+f x])^(m/2) / (a+a Sin[e+f x])
+
+-- m>0
+[sqrt(a+b*sin(e+f*x))/(sin(e+f*x)*(c+c*sin(e+f*x))),x,9,cos(e+f*x)*sqrt(a+b*sin(e+f*x))/(f*(c+c*sin(e+f*x)))+elliptic_e(1/2*(-1/2*%pi+e+f*x),2*b/(a+b))*sqrt(a+b*sin(e+f*x))/(c*f*sqrt((a+b*sin(e+f*x))/(a+b)))-(a-b)*elliptic_f(1/2*(-1/2*%pi+e+f*x),2*b/(a+b))*sqrt((a+b*sin(e+f*x))/(a+b))/(c*f*sqrt(a+b*sin(e+f*x)))+2*a*elliptic_pi(2,1/2*(-1/2*%pi+e+f*x),2*b/(a+b))*sqrt((a+b*sin(e+f*x))/(a+b))/(c*f*sqrt(a+b*sin(e+f*x)))],
+
+-- m<0
+[1/(sin(e+f*x)*(c+c*sin(e+f*x))*sqrt(a+b*sin(e+f*x))),x,9,cos(e+f*x)*sqrt(a+b*sin(e+f*x))/((a-b)*f*(c+c*sin(e+f*x)))+elliptic_e(1/2*(-1/2*%pi+e+f*x),2*b/(a+b))*sqrt(a+b*sin(e+f*x))/((a-b)*c*f*sqrt((a+b*sin(e+f*x))/(a+b)))-elliptic_f(1/2*(-1/2*%pi+e+f*x),2*b/(a+b))*sqrt((a+b*sin(e+f*x))/(a+b))/(c*f*sqrt(a+b*sin(e+f*x)))+2*elliptic_pi(2,1/2*(-1/2*%pi+e+f*x),2*b/(a+b))*sqrt((a+b*sin(e+f*x))/(a+b))/(c*f*sqrt(a+b*sin(e+f*x)))],
+
+-- Integrands of the form (g Sin[e+f x])^(p/2) (c+d Sin[e+f x])^(m/2) / (a+a Sin[e+f x])
+
+-- m>0
+[sqrt(g*sin(e+f*x))*sqrt(a+b*sin(e+f*x))/(c+c*sin(e+f*x)),x,3,2*elliptic_pi(b/(a+b),asin(sqrt(a+b)*sqrt(g*sin(e+f*x))/(sqrt(g)*sqrt(a+b*sin(e+f*x)))),(-a+b)/(a+b))*sec(e+f*x)*(a+b*sin(e+f*x))*sqrt(g)*sqrt(a*(1-sin(e+f*x))/(a+b*sin(e+f*x)))*sqrt(a*(1+sin(e+f*x))/(a+b*sin(e+f*x)))/(c*f*sqrt(a+b))+g*elliptic_e(asin(cos(e+f*x)/(1+sin(e+f*x))),(-a+b)/(a+b))*sqrt(sin(e+f*x)/(1+sin(e+f*x)))*sqrt(a+b*sin(e+f*x))/(c*f*sqrt(g*sin(e+f*x))*sqrt((a+b*sin(e+f*x))/((a+b)*(1+sin(e+f*x)))))],
+[sqrt(a+b*sin(e+f*x))/((c+c*sin(e+f*x))*sqrt(g*sin(e+f*x))),x,1,-elliptic_e(asin(cos(e+f*x)/(1+sin(e+f*x))),(-a+b)/(a+b))*sqrt(sin(e+f*x)/(1+sin(e+f*x)))*sqrt(a+b*sin(e+f*x))/(c*f*sqrt(g*sin(e+f*x))*sqrt((a+b*sin(e+f*x))/((a+b)*(1+sin(e+f*x)))))],
+
+-- m<0
+[sqrt(g*sin(e+f*x))/((c+c*sin(e+f*x))*sqrt(a+b*sin(e+f*x))),x,3,g*elliptic_e(asin(cos(e+f*x)/(1+sin(e+f*x))),(-a+b)/(a+b))*sqrt(sin(e+f*x)/(1+sin(e+f*x)))*sqrt(a+b*sin(e+f*x))/((a-b)*c*f*sqrt(g*sin(e+f*x))*sqrt((a+b*sin(e+f*x))/((a+b)*(1+sin(e+f*x)))))-2*elliptic_f(asin(sqrt(g)*sqrt(a+b*sin(e+f*x))/(sqrt(a+b)*sqrt(g*sin(e+f*x)))),(-a-b)/(a-b))*sqrt(a+b)*sqrt(g)*sqrt(a*(1-csc(e+f*x))/(a+b))*sqrt(a*(1+csc(e+f*x))/(a-b))*tan(e+f*x)/((a-b)*c*f)],
+[1/((c+c*sin(e+f*x))*sqrt(g*sin(e+f*x))*sqrt(a+b*sin(e+f*x))),x,3,-elliptic_e(asin(cos(e+f*x)/(1+sin(e+f*x))),(-a+b)/(a+b))*sqrt(sin(e+f*x)/(1+sin(e+f*x)))*sqrt(a+b*sin(e+f*x))/((a-b)*c*f*sqrt(g*sin(e+f*x))*sqrt((a+b*sin(e+f*x))/((a+b)*(1+sin(e+f*x)))))+2*b*elliptic_f(asin(sqrt(g)*sqrt(a+b*sin(e+f*x))/(sqrt(a+b)*sqrt(g*sin(e+f*x)))),(-a-b)/(a-b))*sqrt(a+b)*sqrt(a*(1-csc(e+f*x))/(a+b))*sqrt(a*(1+csc(e+f*x))/(a-b))*tan(e+f*x)/(a*(a-b)*c*f*sqrt(g))],
+
+-- Integrands of the form (a+a Sin[e+f x])^m (c+d Sin[e+f x])^n / Sin[e+f x]
+
+-- Integrands of the form (a+a Sin[e+f x])^(m/2) (c+d Sin[e+f x])^(n/2) / Sin[e+f x]
+
+-- m>0
+[sqrt(a+a*sin(e+f*x))*sqrt(c+d*sin(e+f*x))/sin(e+f*x),x,5,-2*atanh(cos(e+f*x)*sqrt(a)*sqrt(c)/(sqrt(a+a*sin(e+f*x))*sqrt(c+d*sin(e+f*x))))*sqrt(a)*sqrt(c)/f-2*atan(cos(e+f*x)*sqrt(a)*sqrt(d)/(sqrt(a+a*sin(e+f*x))*sqrt(c+d*sin(e+f*x))))*sqrt(a)*sqrt(d)/f],
+[sqrt(a+a*sin(e+f*x))/(sin(e+f*x)*sqrt(c+d*sin(e+f*x))),x,2,-2*atanh(cos(e+f*x)*sqrt(a)*sqrt(c)/(sqrt(a+a*sin(e+f*x))*sqrt(c+d*sin(e+f*x))))*sqrt(a)/(f*sqrt(c))],
+
+-- m<0
+[sqrt(c+d*sin(e+f*x))/(sin(e+f*x)*sqrt(a+a*sin(e+f*x))),x,5,-2*atanh(cos(e+f*x)*sqrt(a)*sqrt(c)/(sqrt(a+a*sin(e+f*x))*sqrt(c+d*sin(e+f*x))))*sqrt(c)/(f*sqrt(a))+atanh(cos(e+f*x)*sqrt(a)*sqrt(c-d)/(sqrt(2)*sqrt(a+a*sin(e+f*x))*sqrt(c+d*sin(e+f*x))))*sqrt(2)*sqrt(c-d)/(f*sqrt(a))],
+[1/(sin(e+f*x)*sqrt(a+a*sin(e+f*x))*sqrt(c+d*sin(e+f*x))),x,5,-2*atanh(cos(e+f*x)*sqrt(a)*sqrt(c)/(sqrt(a+a*sin(e+f*x))*sqrt(c+d*sin(e+f*x))))/(f*sqrt(a)*sqrt(c))+atanh(cos(e+f*x)*sqrt(a)*sqrt(c-d)/(sqrt(2)*sqrt(a+a*sin(e+f*x))*sqrt(c+d*sin(e+f*x))))*sqrt(2)/(f*sqrt(a)*sqrt(c-d))],
+
+-- Integrands of the form (g Sin[e+f x])^p (a+b Sin[e+f x])^m (c+d Sin[e+f x])^n
+
+-- Integrands of the form (g Sin[e+f x])^p (a+b Sin[e+f x])^m / (c+d Sin[e+f x])
+
+-- Integrands of the form Sin[e+f x]^p (a+b Sin[e+f x])^m / (c+d Sin[e+f x])
+
+-- m>0
+
+-- m<0
+[sin(e+f*x)^2/((a+b*sin(e+f*x))^2*(c+d*sin(e+f*x))),x,8,-2*a*(a^2*c-2*b^2*c+a*b*d)*atan((b+a*tan(1/2*(e+f*x)))/sqrt(a^2-b^2))/((a^2-b^2)^(3/2)*(b*c-a*d)^2*f)+a^2*cos(e+f*x)/((a^2-b^2)*(b*c-a*d)*f*(a+b*sin(e+f*x)))+2*c^2*atan((d+c*tan(1/2*(e+f*x)))/sqrt(c^2-d^2))/((b*c-a*d)^2*f*sqrt(c^2-d^2))],
+
+-- Integrands of the form Sin[e+f x]^p (a+b Sin[e+f x])^(m/2) / (c+d Sin[e+f x])
+
+-- m>0
+--  {(c + d*Sin[e + f*x])^(5/2)/(Sin[e + f*x]*(a + b*Sin[e + f*x])), x, 0, -((2*d^2*EllipticE[(1/4)*(-2*e + Pi - 2*f*x), (2*d)/(c + d)]*Sqrt[c + d*Sin[e + f*x]])/(b*f*Sqrt[(c + d*Sin[e + f*x])/(c + d)])) + (2*d^2*(-2*b*c + a*d)*EllipticF[(1/4)*(-2*e + Pi - 2*f*x), (2*d)/(c + d)]*Sqrt[(c + d*Sin[e + f*x])/(c + d)])/(b^2*f*Sqrt[c + d*Sin[e + f*x]]) + (2*c^3*EllipticPi[2, -(Pi/4) + (1/2)*(e + f*x), (2*d)/(c + d)]*Sqrt[(c + d*Sin[e + f*x])/(c + d)])/(a*f*Sqrt[c + d*Sin[e + f*x]]) - (2*(b*c - a*d)^3*EllipticPi[(2*b)/(a + b), -(Pi/4) + (1/2)*(e + f*x), (2*d)/(c + d)]*Sqrt[(c + d*Sin[e + f*x])/(c + d)])/(a*b^2*(a + b)*f*Sqrt[c + d*Sin[e + f*x]])}
+
+-- {(c + d*Sin[e + f*x])^(3/2)/(Sin[e + f*x]*(a + b*Sin[e + f*x])), x, 0, -((2*d^2*EllipticF[(1/4)*(-2*e + Pi - 2*f*x), (2*d)/(c + d)]*Sqrt[(c + d*Sin[e + f*x])/(c + d)])/(b*f*Sqrt[c + d*Sin[e + f*x]])) + (2*c^2*EllipticPi[2, -(Pi/4) + (1/2)*(e + f*x), (2*d)/(c + d)]*Sqrt[(c + d*Sin[e + f*x])/(c + d)])/(a*f*Sqrt[c + d*Sin[e + f*x]]) - (2*(b*c - a*d)^2*EllipticPi[(2*b)/(a + b), -(Pi/4) + (1/2)*(e + f*x), (2*d)/(c + d)]*Sqrt[(c + d*Sin[e + f*x])/(c + d)])/(a*b*(a + b)*f*Sqrt[c + d*Sin[e + f*x]])} 
+[(c+d*sin(e+f*x))^(1/2)/(sin(e+f*x)*(a+b*sin(e+f*x))),x,5,2*c*elliptic_pi(2,1/2*(-1/2*%pi+e+f*x),2*d/(c+d))*sqrt((c+d*sin(e+f*x))/(c+d))/(a*f*sqrt(c+d*sin(e+f*x)))-2*(b*c-a*d)*elliptic_pi(2*b/(a+b),1/2*(-1/2*%pi+e+f*x),2*d/(c+d))*sqrt((c+d*sin(e+f*x))/(c+d))/(a*(a+b)*f*sqrt(c+d*sin(e+f*x)))],
+
+-- m<0
+[1/(sin(e+f*x)*(a+b*sin(e+f*x))*(c+d*sin(e+f*x))^(1/2)),x,5,2*elliptic_pi(2,1/2*(-1/2*%pi+e+f*x),2*d/(c+d))*sqrt((c+d*sin(e+f*x))/(c+d))/(a*f*sqrt(c+d*sin(e+f*x)))-2*b*elliptic_pi(2*b/(a+b),1/2*(-1/2*%pi+e+f*x),2*d/(c+d))*sqrt((c+d*sin(e+f*x))/(c+d))/(a*(a+b)*f*sqrt(c+d*sin(e+f*x)))],
+--  {1/(Sin[e + f*x]*(c + d*Sin[e + f*x])^(3/2)*(a + b*Sin[e + f*x])), x, 0, (2*d^3*Cos[e + f*x])/(c*(b*c - a*d)*(c^2 - d^2)*f*Sqrt[c + d*Sin[e + f*x]]) - (2*d^2*EllipticE[(1/4)*(-2*e + Pi - 2*f*x), (2*d)/(c + d)]*Sqrt[c + d*Sin[e + f*x]])/(c*(b*c - a*d)*(c^2 - d^2)*f*Sqrt[(c + d*Sin[e + f*x])/(c + d)]) + (2*EllipticPi[2, -(Pi/4) + (1/2)*(e + f*x), (2*d)/(c + d)]*Sqrt[(c + d*Sin[e + f*x])/(c + d)])/(a*c*f*Sqrt[c + d*Sin[e + f*x]]) - (2*b^2*EllipticPi[(2*b)/(a + b), -(Pi/4) + (1/2)*(e + f*x), (2*d)/(c + d)]*Sqrt[(c + d*Sin[e + f*x])/(c + d)])/(a*(a + b)*(b*c - a*d)*f*Sqrt[c + d*Sin[e + f*x]])}
+
+-- {1/(Sin[e + f*x]*(c + d*Sin[e + f*x])^(5/2)*(a + b*Sin[e + f*x])), x, 0, sdx[(2*d^3*Cos[e + f*x])/(3*c*(b*c - a*d)*(c^2 - d^2)*f*(c + d*Sin[e + f*x])^(3/2)) + (2*d^3*(10*b*c^3 - 7*a*c^2*d - 6*b*c*d^2 + 3*a*d^3)*Cos[e + f*x])/(3*c^2*(b*c - a*d)^2*(c^2 - d^2)^2*f*Sqrt[c + d*Sin[e + f*x]]) - (2*d^2*(10*b*c^3 - 7*a*c^2*d - 6*b*c*d^2 + 3*a*d^3)*EllipticE[(1/4)*(-2*e + Pi - 2*f*x), (2*d)/(c + d)]*Sqrt[c + d*Sin[e + f*x]])/(3*c^2*(b*c - a*d)^2*(c^2 - d^2)^2*f*Sqrt[(c + d*Sin[e + f*x])/(c + d)]) + (2*d^2*EllipticF[(1/4)*(-2*e + Pi - 2*f*x), (2*d)/(c + d)]*Sqrt[(c + d*Sin[e + f*x])/(c + d)])/(3*c*(b*c - a*d)*(c^2 - d^2)*f*Sqrt[c + d*Sin[e + f*x]]) + (2*EllipticPi[2, -(Pi/4) + (1/2)*(e + f*x), (2*d)/(c + d)]*Sqrt[(c + d*Sin[e + f*x])/(c + d)])/(a*c^2*f*Sqrt[c + d*Sin[e + f*x]]) - (2*b^3*EllipticPi[(2*b)/(a + b), -(Pi/4) + (1/2)*(e + f*x), (2*d)/(c + d)]*Sqrt[(c + d*Sin[e + f*x])/(c + d)])/(a*(a + b)*(b*c - a*d)^2*f*Sqrt[c + d*Sin[e + f*x]])]} 
+
+-- Integrands of the form (g Sin[e+f x])^(p/2) (a+b Sin[e+f x])^(m/2) / (c+d Sin[e+f x])
+
+-- m>0
+[sqrt(g*sin(e+f*x))*sqrt(a+b*sin(e+f*x))/(c+d*sin(e+f*x)),x,3,2*elliptic_pi((a+b)/b,asin(sqrt(g)*sqrt(a+b*sin(e+f*x))/(sqrt(a+b)*sqrt(g*sin(e+f*x)))),(-a-b)/(a-b))*sqrt(a+b)*sqrt(g)*sqrt(a*(1-csc(e+f*x))/(a+b))*sqrt(a*(1+csc(e+f*x))/(a-b))*tan(e+f*x)/(d*f)-2*(b*c-a*d)*elliptic_pi(2*c/(c+d),asin(sqrt(1-csc(e+f*x))/sqrt(2)),2*a/(a+b))*sqrt(-cot(e+f*x)^2)*sqrt((b+a*csc(e+f*x))/(a+b))*sqrt(g*sin(e+f*x))*tan(e+f*x)/(d*(c+d)*f*sqrt(a+b*sin(e+f*x)))],
+[sqrt(a+b*sin(e+f*x))/((c+d*sin(e+f*x))*sqrt(g*sin(e+f*x))),x,3,-2*elliptic_f(asin(sqrt(g)*sqrt(a+b*sin(e+f*x))/(sqrt(a+b)*sqrt(g*sin(e+f*x)))),(-a-b)/(a-b))*sqrt(a+b)*sqrt(a*(1-csc(e+f*x))/(a+b))*sqrt(a*(1+csc(e+f*x))/(a-b))*tan(e+f*x)/(c*f*sqrt(g))+2*(b*c-a*d)*elliptic_pi(2*c/(c+d),asin(sqrt(1-csc(e+f*x))/sqrt(2)),2*a/(a+b))*sqrt(-cot(e+f*x)^2)*sqrt((b+a*csc(e+f*x))/(a+b))*sqrt(g*sin(e+f*x))*tan(e+f*x)/(c*(c+d)*f*g*sqrt(a+b*sin(e+f*x)))],
+
+-- m<0
+[sqrt(g*sin(e+f*x))/((c+d*sin(e+f*x))*sqrt(a+b*sin(e+f*x))),x,1,2*elliptic_pi(2*c/(c+d),asin(sqrt(1-csc(e+f*x))/sqrt(2)),2*a/(a+b))*sqrt(-cot(e+f*x)^2)*sqrt((b+a*csc(e+f*x))/(a+b))*sqrt(g*sin(e+f*x))*tan(e+f*x)/((c+d)*f*sqrt(a+b*sin(e+f*x)))],
+[1/((c+d*sin(e+f*x))*sqrt(g*sin(e+f*x))*sqrt(a+b*sin(e+f*x))),x,3,-2*elliptic_f(asin(sqrt(g)*sqrt(a+b*sin(e+f*x))/(sqrt(a+b)*sqrt(g*sin(e+f*x)))),(-a-b)/(a-b))*sqrt(a+b)*sqrt(a*(1-csc(e+f*x))/(a+b))*sqrt(a*(1+csc(e+f*x))/(a-b))*tan(e+f*x)/(a*c*f*sqrt(g))-2*d*elliptic_pi(2*c/(c+d),asin(sqrt(1-csc(e+f*x))/sqrt(2)),2*a/(a+b))*sqrt(-cot(e+f*x)^2)*sqrt((b+a*csc(e+f*x))/(a+b))*sqrt(g*sin(e+f*x))*tan(e+f*x)/(c*(c+d)*f*g*sqrt(a+b*sin(e+f*x)))],
+
+-- Integrands of the form (g Sin[e+f x])^p (a+b Sin[e+f x])^m / (c+d Sin[e+f x])^(1/2)
+
+-- Integrands of the form (g Sin[e+f x])^(p/2) (a+b Sin[e+f x])^(m/2) / (c+d Sin[e+f x])^(1/2)
+
+-- m>0
+--  {Sqrt[g*Sin[e + f*x]]*(c + d*Sin[e + f*x])^(5/2)/(a + b*Sin[e + f*x]), x, 0, 0}
+
+-- {Sqrt[g*Sin[e + f*x]]*(c + d*Sin[e + f*x])^(3/2)/(a + b*Sin[e + f*x]), x, 0, 0} 
+[(c+d*sin(e+f*x))^(1/2)*sqrt(g*sin(e+f*x))/(a+b*sin(e+f*x)),x,3,2*elliptic_pi((c+d)/d,asin(sqrt(g)*sqrt(c+d*sin(e+f*x))/(sqrt(c+d)*sqrt(g*sin(e+f*x)))),(-c-d)/(c-d))*sqrt(c+d)*sqrt(g)*sqrt(c*(1-csc(e+f*x))/(c+d))*sqrt(c*(1+csc(e+f*x))/(c-d))*tan(e+f*x)/(b*f)+2*(b*c-a*d)*elliptic_pi(2*a/(a+b),asin(sqrt(1-csc(e+f*x))/sqrt(2)),2*c/(c+d))*sqrt(-cot(e+f*x)^2)*sqrt((d+c*csc(e+f*x))/(c+d))*sqrt(g*sin(e+f*x))*tan(e+f*x)/(b*(a+b)*f*sqrt(c+d*sin(e+f*x)))],
+
+-- m<0
+[sqrt(g*sin(e+f*x))/((a+b*sin(e+f*x))*(c+d*sin(e+f*x))^(1/2)),x,1,2*elliptic_pi(2*a/(a+b),asin(sqrt(1-csc(e+f*x))/sqrt(2)),2*c/(c+d))*sqrt(-cot(e+f*x)^2)*sqrt((d+c*csc(e+f*x))/(c+d))*sqrt(g*sin(e+f*x))*tan(e+f*x)/((a+b)*f*sqrt(c+d*sin(e+f*x)))],
+--  {Sqrt[g*Sin[e + f*x]]/((c + d*Sin[e + f*x])^(3/2)*(a + b*Sin[e + f*x])), x, 0, 0}
+
+-- {Sqrt[g*Sin[e + f*x]]/((c + d*Sin[e + f*x])^(5/2)*(a + b*Sin[e + f*x])), x, 0, 0} 
+
+-- Integrands of the form (a+b Sin[e+f x])^m (c+d Sin[e+f x])^n / Sin[e+f x]
+
+-- Integrands of the form (a+b Sin[e+f x])^(m/2) (c+d Sin[e+f x])^(n/2) / Sin[e+f x]
+
+-- m>0
+[sqrt(a+b*sin(e+f*x))*sqrt(c+d*sin(e+f*x))/sin(e+f*x),x,3,-2*elliptic_pi(a*(c+d)/((a+b)*c),asin(sqrt(a+b)*sqrt(c+d*sin(e+f*x))/(sqrt(c+d)*sqrt(a+b*sin(e+f*x)))),(a-b)*(c+d)/((a+b)*(c-d)))*sec(e+f*x)*(a+b*sin(e+f*x))*sqrt(c+d)*sqrt(-(b*c-a*d)*(1-sin(e+f*x))/((c+d)*(a+b*sin(e+f*x))))*sqrt((b*c-a*d)*(1+sin(e+f*x))/((c-d)*(a+b*sin(e+f*x))))/(f*sqrt(a+b))+2*elliptic_pi(b*(c+d)/((a+b)*d),asin(sqrt(a+b)*sqrt(c+d*sin(e+f*x))/(sqrt(c+d)*sqrt(a+b*sin(e+f*x)))),(a-b)*(c+d)/((a+b)*(c-d)))*sec(e+f*x)*(a+b*sin(e+f*x))*sqrt(c+d)*sqrt(-(b*c-a*d)*(1-sin(e+f*x))/((c+d)*(a+b*sin(e+f*x))))*sqrt((b*c-a*d)*(1+sin(e+f*x))/((c-d)*(a+b*sin(e+f*x))))/(f*sqrt(a+b))],
+[sqrt(a+b*sin(e+f*x))/(sin(e+f*x)*sqrt(c+d*sin(e+f*x))),x,1,-2*elliptic_pi(a*(c+d)/((a+b)*c),asin(sqrt(a+b)*sqrt(c+d*sin(e+f*x))/(sqrt(c+d)*sqrt(a+b*sin(e+f*x)))),(a-b)*(c+d)/((a+b)*(c-d)))*sec(e+f*x)*(a+b*sin(e+f*x))*sqrt(c+d)*sqrt(-(b*c-a*d)*(1-sin(e+f*x))/((c+d)*(a+b*sin(e+f*x))))*sqrt((b*c-a*d)*(1+sin(e+f*x))/((c-d)*(a+b*sin(e+f*x))))/(c*f*sqrt(a+b))],
+--  {(c + d*Sin[e + f*x])^(5/2)/(Sin[e + f*x]*Sqrt[a + b*Sin[e + f*x]]), x, 0, 0}
+
+-- {(c + d*Sin[e + f*x])^(3/2)/(Sin[e + f*x]*Sqrt[a + b*Sin[e + f*x]]), x, 0, 0} 
+
+-- m<0
+[1/(sin(e+f*x)*sqrt(a+b*sin(e+f*x))*sqrt(c+d*sin(e+f*x))),x,3,-2*elliptic_pi(a*(c+d)/((a+b)*c),asin(sqrt(a+b)*sqrt(c+d*sin(e+f*x))/(sqrt(c+d)*sqrt(a+b*sin(e+f*x)))),(a-b)*(c+d)/((a+b)*(c-d)))*sec(e+f*x)*(a+b*sin(e+f*x))*sqrt(c+d)*sqrt(-(b*c-a*d)*(1-sin(e+f*x))/((c+d)*(a+b*sin(e+f*x))))*sqrt((b*c-a*d)*(1+sin(e+f*x))/((c-d)*(a+b*sin(e+f*x))))/(a*c*f*sqrt(a+b))-2*b*elliptic_f(asin(sqrt(c+d)*sqrt(a+b*sin(e+f*x))/(sqrt(a+b)*sqrt(c+d*sin(e+f*x)))),(a+b)*(c-d)/((a-b)*(c+d)))*sec(e+f*x)*(c+d*sin(e+f*x))*sqrt(a+b)*sqrt((b*c-a*d)*(1-sin(e+f*x))/((a+b)*(c+d*sin(e+f*x))))*sqrt(-(b*c-a*d)*(1+sin(e+f*x))/((a-b)*(c+d*sin(e+f*x))))/(a*(b*c-a*d)*f*sqrt(c+d))],
+--  {1/(Sin[e + f*x]*(c + d*Sin[e + f*x])^(3/2)*Sqrt[a + b*Sin[e + f*x]]), x, 0, 0}
+
+-- {1/(Sin[e + f*x]*(c + d*Sin[e + f*x])^(5/2)*Sqrt[a + b*Sin[e + f*x]]), x, 0, 0} 
+
+-- Integrands of the form (g Cos[e+f x])^p (h Sin[e+f x])^q (a+a Sin[e+f x])^m (c-c Sin[e+f x])^n
+
+-- Integrands of the form (g Cos[e+f x])^p (h Sin[e+f x])^q (a+a Sin[e+f x])^m (c-c Sin[e+f x])^n
+
+--  {(g*Cos[e + f*x])^p*(h*Sin[e + f*x])^q*(a + a*Sin[e + f*x])^m*(c - c*Sin[e + f*x])^n, x, 0, 0} 
+
+-- Integrands of the form (a+a Sin[e+f x])^m (c-c Sin[e+f x])^n (A+B Sin[e+f x])^p
+
+-- Integrands of the form (a+a Sin[e+f x])^m (c-c Sin[e+f x])^n (A+B Sin[e+f x])^p
+[(a+a*sin(e+f*x))^m*(A+B*sin(e+f*x))^p*(c-c*sin(e+f*x))^n,x,4,2^(1/2+n)*AppellF1(1/2+m,1/2-n,-p,3/2+m,1/2*(1+sin(e+f*x)),-B*(1+sin(e+f*x))/(A-B))*sec(e+f*x)*(1-sin(e+f*x))^(1/2-n)*(a+a*sin(e+f*x))^(1+m)*(A+B*sin(e+f*x))^p*(c-c*sin(e+f*x))^n/(a*f*(1+2*m)*((A+B*sin(e+f*x))/(A-B))^p)]]

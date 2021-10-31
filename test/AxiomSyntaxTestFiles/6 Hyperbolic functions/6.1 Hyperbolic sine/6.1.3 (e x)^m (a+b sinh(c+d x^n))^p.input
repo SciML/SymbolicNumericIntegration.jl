@@ -1,0 +1,167 @@
+-- Axiom integration test file: "6 Hyperbolic functions\6.1 Hyperbolic sine\6.1.3 (e x)^m (a+b sinh(c+d x^n))^p.input"
+
+lst: '[
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d x^n])^p
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d x^2])^p
+
+-- Integrands of the form x^m (a+b Sinh[c+d x^2])^p
+
+-- p>0
+[x^3*sinh(a+b*x^2),x,3,1/2*x^2*cosh(a+b*x^2)/b-1/2*sinh(a+b*x^2)/b^2],
+[x^2*sinh(a+b*x^2),x,4,1/2*x*cosh(a+b*x^2)/b-1/8*erf(x*sqrt(b))*sqrt(%pi)/(%e^a*b^(3/2))-1/8*%e^a*erfi(x*sqrt(b))*sqrt(%pi)/b^(3/2)],
+[x*sinh(a+b*x^2),x,2,1/2*cosh(a+b*x^2)/b],
+[sinh(a+b*x^2),x,3,-1/4*erf(x*sqrt(b))*sqrt(%pi)/(%e^a*sqrt(b))+1/4*%e^a*erfi(x*sqrt(b))*sqrt(%pi)/sqrt(b)],
+[sinh(a+b*x^2)/x,x,3,1/2*cosh(a)*Shi(b*x^2)+1/2*Chi(b*x^2)*sinh(a)],
+[sinh(a+b*x^2)/x^2,x,4,-sinh(a+b*x^2)/x+1/2*erf(x*sqrt(b))*sqrt(%pi)*sqrt(b)/%e^a+1/2*%e^a*erfi(x*sqrt(b))*sqrt(%pi)*sqrt(b)],
+[sinh(a+b*x^2)/x^3,x,5,1/2*b*Chi(b*x^2)*cosh(a)+1/2*b*Shi(b*x^2)*sinh(a)-1/2*sinh(a+b*x^2)/x^2],
+[x^3*sinh(a+b*x^2)^2,x,3,-1/8*x^4+1/4*x^2*cosh(a+b*x^2)*sinh(a+b*x^2)/b-1/8*sinh(a+b*x^2)^2/b^2],
+[x^2*sinh(a+b*x^2)^2,x,6,-1/6*x^3+1/8*x*sinh(2*a+2*b*x^2)/b+1/32*erf(x*sqrt(2)*sqrt(b))*sqrt(1/2*%pi)/(%e^(2*a)*b^(3/2))-1/32*%e^(2*a)*erfi(x*sqrt(2)*sqrt(b))*sqrt(1/2*%pi)/b^(3/2)],
+[x*sinh(a+b*x^2)^2,x,3,-1/4*x^2+1/4*cosh(a+b*x^2)*sinh(a+b*x^2)/b],
+[sinh(a+b*x^2)^2,x,5,-1/2*x+1/8*erf(x*sqrt(2)*sqrt(b))*sqrt(1/2*%pi)/(%e^(2*a)*sqrt(b))+1/8*%e^(2*a)*erfi(x*sqrt(2)*sqrt(b))*sqrt(1/2*%pi)/sqrt(b)],
+[sinh(a+b*x^2)^2/x,x,5,1/4*Chi(2*b*x^2)*cosh(2*a)-1/2*log(x)+1/4*Shi(2*b*x^2)*sinh(2*a)],
+[sinh(a+b*x^2)^2/x^2,x,6,-sinh(a+b*x^2)^2/x-1/2*erf(x*sqrt(2)*sqrt(b))*sqrt(1/2*%pi)*sqrt(b)/%e^(2*a)+1/2*%e^(2*a)*erfi(x*sqrt(2)*sqrt(b))*sqrt(1/2*%pi)*sqrt(b)],
+[sinh(a+b*x^2)^2/x^3,x,7,1/4/x^2-1/4*cosh(2*(a+b*x^2))/x^2+1/2*b*cosh(2*a)*Shi(2*b*x^2)+1/2*b*Chi(2*b*x^2)*sinh(2*a)],
+[x^3*sinh(a+b*x^2)^3,x,4,-1/3*x^2*cosh(a+b*x^2)/b+1/3*sinh(a+b*x^2)/b^2+1/6*x^2*cosh(a+b*x^2)*sinh(a+b*x^2)^2/b-1/18*sinh(a+b*x^2)^3/b^2],
+[x^2*sinh(a+b*x^2)^3,x,10,-3/8*x*cosh(a+b*x^2)/b+1/24*x*cosh(3*a+3*b*x^2)/b-1/96*erf(x*sqrt(3)*sqrt(b))*sqrt(1/3*%pi)/(%e^(3*a)*b^(3/2))-1/96*%e^(3*a)*erfi(x*sqrt(3)*sqrt(b))*sqrt(1/3*%pi)/b^(3/2)+3/32*erf(x*sqrt(b))*sqrt(%pi)/(%e^a*b^(3/2))+3/32*%e^a*erfi(x*sqrt(b))*sqrt(%pi)/b^(3/2)],
+[x*sinh(a+b*x^2)^3,x,3,-1/2*cosh(a+b*x^2)/b+1/6*cosh(a+b*x^2)^3/b],
+[sinh(a+b*x^2)^3,x,8,-1/16*erf(x*sqrt(3)*sqrt(b))*sqrt(1/3*%pi)/(%e^(3*a)*sqrt(b))+1/16*%e^(3*a)*erfi(x*sqrt(3)*sqrt(b))*sqrt(1/3*%pi)/sqrt(b)+3/16*erf(x*sqrt(b))*sqrt(%pi)/(%e^a*sqrt(b))-3/16*%e^a*erfi(x*sqrt(b))*sqrt(%pi)/sqrt(b)],
+[sinh(a+b*x^2)^3/x,x,8,-3/8*cosh(a)*Shi(b*x^2)+1/8*cosh(3*a)*Shi(3*b*x^2)-3/8*Chi(b*x^2)*sinh(a)+1/8*Chi(3*b*x^2)*sinh(3*a)],
+[sinh(a+b*x^2)^3/x^2,x,9,-sinh(a+b*x^2)^3/x-3/8*erf(x*sqrt(b))*sqrt(%pi)*sqrt(b)/%e^a-3/8*%e^a*erfi(x*sqrt(b))*sqrt(%pi)*sqrt(b)+1/8*erf(x*sqrt(3)*sqrt(b))*sqrt(3*%pi)*sqrt(b)/%e^(3*a)+1/8*%e^(3*a)*erfi(x*sqrt(3)*sqrt(b))*sqrt(3*%pi)*sqrt(b)],
+[sinh(a+b*x^2)^3/x^3,x,12,-3/8*b*Chi(b*x^2)*cosh(a)+3/8*b*Chi(3*b*x^2)*cosh(3*a)-3/8*b*Shi(b*x^2)*sinh(a)+3/8*b*Shi(3*b*x^2)*sinh(3*a)+3/8*sinh(a+b*x^2)/x^2-1/8*sinh(3*(a+b*x^2))/x^2],
+[x*sinh(a+b*x^2)^7,x,3,-1/2*cosh(a+b*x^2)/b+1/2*cosh(a+b*x^2)^3/b-3/10*cosh(a+b*x^2)^5/b+1/14*cosh(a+b*x^2)^7/b],
+
+-- p<0
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d x^2])^p with m symbolic
+[(e*x)^m*sinh(a+b*x^2)^p,x,0,Unintegrable((e*x)^m*sinh(a+b*x^2)^p,x)],
+[(e*x)^m*sinh(a+b*x^2)^3,x,8,-1/16*3^(-1/2-1/2*m)*%e^(3*a)*(e*x)^(1+m)*(-b*x^2)^(1/2*(-1-m))*GAMMA(1/2*(1+m),-3*b*x^2)/e+3/16*%e^a*(e*x)^(1+m)*(-b*x^2)^(1/2*(-1-m))*GAMMA(1/2*(1+m),-b*x^2)/e-3/16*(e*x)^(1+m)*(b*x^2)^(1/2*(-1-m))*GAMMA(1/2*(1+m),b*x^2)/(%e^a*e)+1/16*3^(-1/2-1/2*m)*(e*x)^(1+m)*(b*x^2)^(1/2*(-1-m))*GAMMA(1/2*(1+m),3*b*x^2)/(%e^(3*a)*e)],
+[(e*x)^m*sinh(a+b*x^2)^2,x,5,-1/2*(e*x)^(1+m)/(e*(1+m))-2^(-7/2-1/2*m)*%e^(2*a)*(e*x)^(1+m)*(-b*x^2)^(1/2*(-1-m))*GAMMA(1/2*(1+m),-2*b*x^2)/e-2^(-7/2-1/2*m)*(e*x)^(1+m)*(b*x^2)^(1/2*(-1-m))*GAMMA(1/2*(1+m),2*b*x^2)/(%e^(2*a)*e)],
+[(e*x)^m*sinh(a+b*x^2),x,3,-1/4*%e^a*(e*x)^(1+m)*(-b*x^2)^(1/2*(-1-m))*GAMMA(1/2*(1+m),-b*x^2)/e+1/4*(e*x)^(1+m)*(b*x^2)^(1/2*(-1-m))*GAMMA(1/2*(1+m),b*x^2)/(%e^a*e)],
+[(e*x)^m/sinh(a+b*x^2),x,1,(e*x)^m*Unintegrable(x^m*csch(a+b*x^2),x)/x^m],
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d x^3])^p
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d x^4])^p
+
+-- Integrands of the form x^m (a+b Sinh[c+d x^2])^p
+
+-- p>0
+[x^3*sinh(a+b*x^4),x,2,1/4*cosh(a+b*x^4)/b],
+
+-- p<0
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d / x^1])^p
+
+-- Integrands of the form x^m (a+b Sinh[c+d / x])^p
+
+-- p>0
+[x^2*sinh(a+b/x),x,7,-1/6*b^3*Chi(b/x)*cosh(a)+1/6*b*x^2*cosh(a+b/x)-1/6*b^3*Shi(b/x)*sinh(a)+1/6*b^2*x*sinh(a+b/x)+1/3*x^3*sinh(a+b/x)],
+[x*sinh(a+b/x),x,6,1/2*b*x*cosh(a+b/x)-1/2*b^2*cosh(a)*Shi(b/x)-1/2*b^2*Chi(b/x)*sinh(a)+1/2*x^2*sinh(a+b/x)],
+[sinh(a+b/x),x,5,-b*Chi(b/x)*cosh(a)-b*Shi(b/x)*sinh(a)+x*sinh(a+b/x)],
+[sinh(a+b/x)/x,x,3,-cosh(a)*Shi(b/x)-Chi(b/x)*sinh(a)],
+[sinh(a+b/x)/x^2,x,2,-cosh(a+b/x)/b],
+[sinh(a+b/x)/x^3,x,3,-cosh(a+b/x)/(b*x)+sinh(a+b/x)/b^2],
+[sinh(a+b/x)/x^4,x,4,-2*cosh(a+b/x)/b^3-cosh(a+b/x)/(b*x^2)+2*sinh(a+b/x)/(b^2*x)],
+[sinh(a+b/x)/x^5,x,5,-cosh(a+b/x)/(b*x^3)-6*cosh(a+b/x)/(b^3*x)+6*sinh(a+b/x)/b^4+3*sinh(a+b/x)/(b^2*x^2)],
+
+-- p<0
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d / x])^p with m symbolic
+[(e*x)^m*sinh(a+b/x)^3,x,9,-1/8*3^(1+m)*%e^(3*a)*b*(-b/x)^m*(e*x)^m*GAMMA(-1-m,-3*b/x)+3/8*%e^a*b*(-b/x)^m*(e*x)^m*GAMMA(-1-m,-b/x)+3/8*b*(b/x)^m*(e*x)^m*GAMMA(-1-m,b/x)/%e^a-1/8*3^(1+m)*b*(b/x)^m*(e*x)^m*GAMMA(-1-m,3*b/x)/%e^(3*a)],
+[(e*x)^m*sinh(a+b/x)^2,x,6,-1/2*x*(e*x)^m/(1+m)-2^(-1+m)*%e^(2*a)*b*(-b/x)^m*(e*x)^m*GAMMA(-1-m,-2*b/x)+2^(-1+m)*b*(b/x)^m*(e*x)^m*GAMMA(-1-m,2*b/x)/%e^(2*a)],
+[(e*x)^m*sinh(a+b/x),x,4,-1/2*%e^a*b*(-b/x)^m*(e*x)^m*GAMMA(-1-m,-b/x)-1/2*b*(b/x)^m*(e*x)^m*GAMMA(-1-m,b/x)/%e^a],
+[(e*x)^m/sinh(a+b/x),x,1,(e*x)^m*Unintegrable(x^m*csch(a+b/x),x)/x^m],
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d / x^2])^p
+
+-- Integrands of the form x^m (a+b Sinh[c+d / x^2])^p
+
+-- p>0
+[x^4*sinh(a+b/x^2),x,7,2/15*b*x^3*cosh(a+b/x^2)+4/15*b^2*x*sinh(a+b/x^2)+1/5*x^5*sinh(a+b/x^2)-2/15*b^(5/2)*erf(sqrt(b)/x)*sqrt(%pi)/%e^a-2/15*%e^a*b^(5/2)*erfi(sqrt(b)/x)*sqrt(%pi)],
+[x^3*sinh(a+b/x^2),x,6,1/4*b*x^2*cosh(a+b/x^2)-1/4*b^2*cosh(a)*Shi(b/x^2)-1/4*b^2*Chi(b/x^2)*sinh(a)+1/4*x^4*sinh(a+b/x^2)],
+[x^2*sinh(a+b/x^2),x,6,2/3*b*x*cosh(a+b/x^2)+1/3*x^3*sinh(a+b/x^2)+1/3*b^(3/2)*erf(sqrt(b)/x)*sqrt(%pi)/%e^a-1/3*%e^a*b^(3/2)*erfi(sqrt(b)/x)*sqrt(%pi)],
+[x*sinh(a+b/x^2),x,5,-1/2*b*Chi(b/x^2)*cosh(a)-1/2*b*Shi(b/x^2)*sinh(a)+1/2*x^2*sinh(a+b/x^2)],
+[sinh(a+b/x^2),x,5,x*sinh(a+b/x^2)-1/2*erf(sqrt(b)/x)*sqrt(%pi)*sqrt(b)/%e^a-1/2*%e^a*erfi(sqrt(b)/x)*sqrt(%pi)*sqrt(b)],
+[sinh(a+b/x^2)/x,x,3,-1/2*cosh(a)*Shi(b/x^2)-1/2*Chi(b/x^2)*sinh(a)],
+[sinh(a+b/x^2)/x^2,x,4,1/4*erf(sqrt(b)/x)*sqrt(%pi)/(%e^a*sqrt(b))-1/4*%e^a*erfi(sqrt(b)/x)*sqrt(%pi)/sqrt(b)],
+[sinh(a+b/x^2)/x^3,x,2,-1/2*cosh(a+b/x^2)/b],
+[sinh(a+b/x^2)/x^4,x,5,-1/2*cosh(a+b/x^2)/(b*x)+1/8*erf(sqrt(b)/x)*sqrt(%pi)/(%e^a*b^(3/2))+1/8*%e^a*erfi(sqrt(b)/x)*sqrt(%pi)/b^(3/2)],
+[sinh(a+b/x^2)/x^5,x,3,-1/2*cosh(a+b/x^2)/(b*x^2)+1/2*sinh(a+b/x^2)/b^2],
+[sinh(a+b/x^2)/x^6,x,6,-1/2*cosh(a+b/x^2)/(b*x^3)+3/4*sinh(a+b/x^2)/(b^2*x)+3/16*erf(sqrt(b)/x)*sqrt(%pi)/(%e^a*b^(5/2))-3/16*%e^a*erfi(sqrt(b)/x)*sqrt(%pi)/b^(5/2)],
+[sinh(a+b/x^2)/x^7,x,4,-cosh(a+b/x^2)/b^3-1/2*cosh(a+b/x^2)/(b*x^4)+sinh(a+b/x^2)/(b^2*x^2)],
+
+-- p<0
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d / x])^p with m symbolic
+[(e*x)^m*sinh(a+b/x^2)^3,x,9,1/16*3^(1/2*(1+m))*%e^(3*a)*(-b/x^2)^(1/2*(1+m))*x*(e*x)^m*GAMMA(1/2*(-1-m),-3*b/x^2)-3/16*%e^a*(-b/x^2)^(1/2*(1+m))*x*(e*x)^m*GAMMA(1/2*(-1-m),-b/x^2)+3/16*(b/x^2)^(1/2*(1+m))*x*(e*x)^m*GAMMA(1/2*(-1-m),b/x^2)/%e^a-1/16*3^(1/2*(1+m))*(b/x^2)^(1/2*(1+m))*x*(e*x)^m*GAMMA(1/2*(-1-m),3*b/x^2)/%e^(3*a)],
+[(e*x)^m*sinh(a+b/x^2)^2,x,6,-1/2*x*(e*x)^m/(1+m)+2^(1/2*(-5+m))*%e^(2*a)*(-b/x^2)^(1/2*(1+m))*x*(e*x)^m*GAMMA(1/2*(-1-m),-2*b/x^2)+2^(1/2*(-5+m))*(b/x^2)^(1/2*(1+m))*x*(e*x)^m*GAMMA(1/2*(-1-m),2*b/x^2)/%e^(2*a)],
+[(e*x)^m*sinh(a+b/x^2),x,4,1/4*%e^a*(-b/x^2)^(1/2*(1+m))*x*(e*x)^m*GAMMA(1/2*(-1-m),-b/x^2)-1/4*(b/x^2)^(1/2*(1+m))*x*(e*x)^m*GAMMA(1/2*(-1-m),b/x^2)/%e^a],
+[(e*x)^m/sinh(a+b/x^2),x,1,(e*x)^m*Unintegrable(x^m*csch(a+b/x^2),x)/x^m],
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d x^(1/2)])^p
+[sinh(sqrt(x))/sqrt(x),x,2,2*cosh(sqrt(x))],
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d x^n])^p
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d x^n])^p
+
+-- p>0
+[x^2*sinh(a+b*x^n),x,3,-1/2*%e^a*x^3*GAMMA(3/n,-b*x^n)/(n*(-b*x^n)^(3/n))+1/2*x^3*GAMMA(3/n,b*x^n)/(%e^a*n*(b*x^n)^(3/n))],
+[x*sinh(a+b*x^n),x,3,-1/2*%e^a*x^2*GAMMA(2/n,-b*x^n)/(n*(-b*x^n)^(2/n))+1/2*x^2*GAMMA(2/n,b*x^n)/(%e^a*n*(b*x^n)^(2/n))],
+[sinh(a+b*x^n),x,3,-1/2*%e^a*x*GAMMA(1/n,-b*x^n)/(n*(-b*x^n)^(1/n))+1/2*x*GAMMA(1/n,b*x^n)/(%e^a*n*(b*x^n)^(1/n))],
+[sinh(a+b*x^n)/x,x,3,cosh(a)*Shi(b*x^n)/n+Chi(b*x^n)*sinh(a)/n],
+[sinh(a+b*x^n)/x^2,x,3,-1/2*%e^a*(-b*x^n)^(1/n)*GAMMA((-1)/n,-b*x^n)/(n*x)+1/2*(b*x^n)^(1/n)*GAMMA((-1)/n,b*x^n)/(%e^a*n*x)],
+[sinh(a+b*x^n)/x^3,x,3,-1/2*%e^a*(-b*x^n)^(2/n)*GAMMA((-2)/n,-b*x^n)/(n*x^2)+1/2*(b*x^n)^(2/n)*GAMMA((-2)/n,b*x^n)/(%e^a*n*x^2)],
+[x^2*sinh(a+b*x^n)^2,x,5,-1/6*x^3-2^(-2+(-3)/n)*%e^(2*a)*x^3*GAMMA(3/n,-2*b*x^n)/(n*(-b*x^n)^(3/n))-2^(-2+(-3)/n)*x^3*GAMMA(3/n,2*b*x^n)/(%e^(2*a)*n*(b*x^n)^(3/n))],
+[x*sinh(a+b*x^n)^2,x,5,-1/4*x^2-4^(-1+(-1)/n)*%e^(2*a)*x^2*GAMMA(2/n,-2*b*x^n)/(n*(-b*x^n)^(2/n))-4^(-1+(-1)/n)*x^2*GAMMA(2/n,2*b*x^n)/(%e^(2*a)*n*(b*x^n)^(2/n))],
+[sinh(a+b*x^n)^2,x,5,-1/2*x-2^(-2+(-1)/n)*%e^(2*a)*x*GAMMA(1/n,-2*b*x^n)/(n*(-b*x^n)^(1/n))-2^(-2+(-1)/n)*x*GAMMA(1/n,2*b*x^n)/(%e^(2*a)*n*(b*x^n)^(1/n))],
+[sinh(a+b*x^n)^2/x,x,5,1/2*Chi(2*b*x^n)*cosh(2*a)/n-1/2*log(x)+1/2*Shi(2*b*x^n)*sinh(2*a)/n],
+[sinh(a+b*x^n)^2/x^2,x,5,1/2/x-2^(-2+1/n)*%e^(2*a)*(-b*x^n)^(1/n)*GAMMA((-1)/n,-2*b*x^n)/(n*x)-2^(-2+1/n)*(b*x^n)^(1/n)*GAMMA((-1)/n,2*b*x^n)/(%e^(2*a)*n*x)],
+[x^2*sinh(a+b*x^n)^3,x,8,-1/8*%e^(3*a)*x^3*GAMMA(3/n,-3*b*x^n)/(3^(3/n)*n*(-b*x^n)^(3/n))+3/8*%e^a*x^3*GAMMA(3/n,-b*x^n)/(n*(-b*x^n)^(3/n))-3/8*x^3*GAMMA(3/n,b*x^n)/(%e^a*n*(b*x^n)^(3/n))+1/8*x^3*GAMMA(3/n,3*b*x^n)/(3^(3/n)*%e^(3*a)*n*(b*x^n)^(3/n))],
+[x*sinh(a+b*x^n)^3,x,8,-1/8*%e^(3*a)*x^2*GAMMA(2/n,-3*b*x^n)/(9^(1/n)*n*(-b*x^n)^(2/n))+3/8*%e^a*x^2*GAMMA(2/n,-b*x^n)/(n*(-b*x^n)^(2/n))-3/8*x^2*GAMMA(2/n,b*x^n)/(%e^a*n*(b*x^n)^(2/n))+1/8*x^2*GAMMA(2/n,3*b*x^n)/(9^(1/n)*%e^(3*a)*n*(b*x^n)^(2/n))],
+[sinh(a+b*x^n)^3,x,8,-1/8*%e^(3*a)*x*GAMMA(1/n,-3*b*x^n)/(3^(1/n)*n*(-b*x^n)^(1/n))+3/8*%e^a*x*GAMMA(1/n,-b*x^n)/(n*(-b*x^n)^(1/n))-3/8*x*GAMMA(1/n,b*x^n)/(%e^a*n*(b*x^n)^(1/n))+1/8*x*GAMMA(1/n,3*b*x^n)/(3^(1/n)*%e^(3*a)*n*(b*x^n)^(1/n))],
+[sinh(a+b*x^n)^3/x,x,8,-3/4*cosh(a)*Shi(b*x^n)/n+1/4*cosh(3*a)*Shi(3*b*x^n)/n-3/4*Chi(b*x^n)*sinh(a)/n+1/4*Chi(3*b*x^n)*sinh(3*a)/n],
+[sinh(a+b*x^n)^3/x^2,x,8,-1/8*3^(1/n)*%e^(3*a)*(-b*x^n)^(1/n)*GAMMA((-1)/n,-3*b*x^n)/(n*x)+3/8*%e^a*(-b*x^n)^(1/n)*GAMMA((-1)/n,-b*x^n)/(n*x)-3/8*(b*x^n)^(1/n)*GAMMA((-1)/n,b*x^n)/(%e^a*n*x)+1/8*3^(1/n)*(b*x^n)^(1/n)*GAMMA((-1)/n,3*b*x^n)/(%e^(3*a)*n*x)],
+
+-- p<0
+
+-- Integrands of the form (e x)^m (a+b Sinh[c+d x^n])^p with m symbolic
+[(e*x)^m*(b*sinh(c+d*x^n))^p,x,0,Unintegrable((e*x)^m*(b*sinh(c+d*x^n))^p,x)],
+[(e*x)^m*(a+b*sinh(c+d*x^n))^p,x,0,Unintegrable((e*x)^m*(a+b*sinh(c+d*x^n))^p,x)],
+[(e*x)^(-1+n)*(b*sinh(c+d*x^n))^p,x,3,(e*x)^n*cosh(c+d*x^n)*hypergeometric(1/2,1/2*(1+p),1/2*(3+p),-sinh(c+d*x^n)^2)*(b*sinh(c+d*x^n))^(1+p)/(b*d*e*n*(1+p)*x^n*sqrt(cosh(c+d*x^n)^2))],
+[(e*x)^(-1+2*n)*(b*sinh(c+d*x^n))^p,x,1,(e*x)^(2*n)*Unintegrable(x^(-1+2*n)*(b*sinh(c+d*x^n))^p,x)/(e*x^(2*n))],
+[(e*x)^(-1+n)*(a+b*sinh(c+d*x^n))^p,x,5,%i*(e*x)^n*AppellF1(1/2,1/2,-p,3/2,1/2*(1-%i*sinh(c+d*x^n)),b*(1-%i*sinh(c+d*x^n))/(%i*a+b))*cosh(c+d*x^n)*(a+b*sinh(c+d*x^n))^p*sqrt(2)/(d*e*n*x^n*((a+b*sinh(c+d*x^n))/(a-%i*b))^p*sqrt(1+%i*sinh(c+d*x^n)))],
+[(e*x)^(-1+2*n)*(a+b*sinh(c+d*x^n))^p,x,1,(e*x)^(2*n)*Unintegrable(x^(-1+2*n)*(a+b*sinh(c+d*x^n))^p,x)/(e*x^(2*n))],
+[(e*x)^m*sinh(a+b*x^n)^3,x,8,-1/8*%e^(3*a)*(e*x)^(1+m)*GAMMA((1+m)/n,-3*b*x^n)/(3^((1+m)/n)*e*n*(-b*x^n)^((1+m)/n))+3/8*%e^a*(e*x)^(1+m)*GAMMA((1+m)/n,-b*x^n)/(e*n*(-b*x^n)^((1+m)/n))-3/8*(e*x)^(1+m)*GAMMA((1+m)/n,b*x^n)/(%e^a*e*n*(b*x^n)^((1+m)/n))+1/8*(e*x)^(1+m)*GAMMA((1+m)/n,3*b*x^n)/(3^((1+m)/n)*%e^(3*a)*e*n*(b*x^n)^((1+m)/n))],
+[(e*x)^m*sinh(a+b*x^n)^2,x,5,-1/2*(e*x)^(1+m)/(e*(1+m))-%e^(2*a)*(e*x)^(1+m)*GAMMA((1+m)/n,-2*b*x^n)/(2^((1+m+2*n)/n)*e*n*(-b*x^n)^((1+m)/n))-(e*x)^(1+m)*GAMMA((1+m)/n,2*b*x^n)/(2^((1+m+2*n)/n)*%e^(2*a)*e*n*(b*x^n)^((1+m)/n))],
+[(e*x)^m*sinh(a+b*x^n),x,3,-1/2*%e^a*(e*x)^(1+m)*GAMMA((1+m)/n,-b*x^n)/(e*n*(-b*x^n)^((1+m)/n))+1/2*(e*x)^(1+m)*GAMMA((1+m)/n,b*x^n)/(%e^a*e*n*(b*x^n)^((1+m)/n))],
+[(e*x)^m/sinh(a+b*x^n)^2,x,1,(e*x)^m*Unintegrable(x^m*csch(a+b*x^n)^2,x)/x^m],
+[x^(-1-n)*sinh(a+b*x^n),x,5,b*Chi(b*x^n)*cosh(a)/n+b*Shi(b*x^n)*sinh(a)/n-sinh(a+b*x^n)/(n*x^n)],
+[x^(-1-n)*sinh(a+b*x^n)^2,x,7,1/2/(n*x^n)-1/2*cosh(2*(a+b*x^n))/(n*x^n)+b*cosh(2*a)*Shi(2*b*x^n)/n+b*Chi(2*b*x^n)*sinh(2*a)/n],
+[x^(-1-n)*sinh(a+b*x^n)^3,x,12,-3/4*b*Chi(b*x^n)*cosh(a)/n+3/4*b*Chi(3*b*x^n)*cosh(3*a)/n-3/4*b*Shi(b*x^n)*sinh(a)/n+3/4*b*Shi(3*b*x^n)*sinh(3*a)/n+3/4*sinh(a+b*x^n)/(n*x^n)-1/4*sinh(3*(a+b*x^n))/(n*x^n)],
+[x^(-1+1/2*n)*sinh(a+b*x^n),x,4,-1/2*erf(x^(1/2*n)*sqrt(b))*sqrt(%pi)/(%e^a*n*sqrt(b))+1/2*%e^a*erfi(x^(1/2*n)*sqrt(b))*sqrt(%pi)/(n*sqrt(b))],
+
+-- Integrands of the form (e x)^m Sinh[a+b (c+d x)^n]
+
+-- Integrands of the form (e x)^m Sinh[a+b (c+d x)^n]
+[x^2*sinh((a+b*x)^2),x,12,-a*cosh((a+b*x)^2)/b^3+1/2*(a+b*x)*cosh((a+b*x)^2)/b^3-1/8*erf(a+b*x)*sqrt(%pi)/b^3-1/4*a^2*erf(a+b*x)*sqrt(%pi)/b^3-1/8*erfi(a+b*x)*sqrt(%pi)/b^3+1/4*a^2*erfi(a+b*x)*sqrt(%pi)/b^3],
+[x*sinh((a+b*x)^2),x,8,1/2*cosh((a+b*x)^2)/b^2+1/4*a*erf(a+b*x)*sqrt(%pi)/b^2-1/4*a*erfi(a+b*x)*sqrt(%pi)/b^2],
+[sinh((a+b*x)^2),x,4,-1/4*erf(a+b*x)*sqrt(%pi)/b+1/4*erfi(a+b*x)*sqrt(%pi)/b],
+[sinh((a+b*x)^2)/x,x,1,b*CannotIntegrate(sinh((a+b*x)^2)/(b*x),x)],
+[sinh((a+b*x)^2)/x^2,x,1,Unintegrable(sinh((a+b*x)^2)/x^2,x),b^2*CannotIntegrate(sinh((a+b*x)^2)/(b^2*x^2),x)],
+
+-- Integrands of the form (e x)^m Sinh[a+b (c+d x)^(n/2)]
+[x^2*sinh(a+b*sqrt(c+d*x)),x,16,40*(c+d*x)^(3/2)*cosh(a+b*sqrt(c+d*x))/(b^3*d^3)-4*c*(c+d*x)^(3/2)*cosh(a+b*sqrt(c+d*x))/(b*d^3)+2*(c+d*x)^(5/2)*cosh(a+b*sqrt(c+d*x))/(b*d^3)-240*sinh(a+b*sqrt(c+d*x))/(b^6*d^3)+24*c*sinh(a+b*sqrt(c+d*x))/(b^4*d^3)-2*c^2*sinh(a+b*sqrt(c+d*x))/(b^2*d^3)-120*(c+d*x)*sinh(a+b*sqrt(c+d*x))/(b^4*d^3)+12*c*(c+d*x)*sinh(a+b*sqrt(c+d*x))/(b^2*d^3)-10*(c+d*x)^2*sinh(a+b*sqrt(c+d*x))/(b^2*d^3)+240*cosh(a+b*sqrt(c+d*x))*sqrt(c+d*x)/(b^5*d^3)-24*c*cosh(a+b*sqrt(c+d*x))*sqrt(c+d*x)/(b^3*d^3)+2*c^2*cosh(a+b*sqrt(c+d*x))*sqrt(c+d*x)/(b*d^3)],
+[x*sinh(a+b*sqrt(c+d*x)),x,10,2*(c+d*x)^(3/2)*cosh(a+b*sqrt(c+d*x))/(b*d^2)-12*sinh(a+b*sqrt(c+d*x))/(b^4*d^2)+2*c*sinh(a+b*sqrt(c+d*x))/(b^2*d^2)-6*(c+d*x)*sinh(a+b*sqrt(c+d*x))/(b^2*d^2)+12*cosh(a+b*sqrt(c+d*x))*sqrt(c+d*x)/(b^3*d^2)-2*c*cosh(a+b*sqrt(c+d*x))*sqrt(c+d*x)/(b*d^2)],
+[sinh(a+b*sqrt(c+d*x)),x,4,-2*sinh(a+b*sqrt(c+d*x))/(b^2*d)+2*cosh(a+b*sqrt(c+d*x))*sqrt(c+d*x)/(b*d)],
+[sinh(a+b*sqrt(c+d*x))/x,x,10,-cosh(a+b*sqrt(c))*Shi(b*(sqrt(c)-sqrt(c+d*x)))+cosh(a-b*sqrt(c))*Shi(b*(sqrt(c)+sqrt(c+d*x)))+Chi(b*(sqrt(c)+sqrt(c+d*x)))*sinh(a-b*sqrt(c))+Chi(b*(sqrt(c)-sqrt(c+d*x)))*sinh(a+b*sqrt(c))],
+[sinh(a+b*sqrt(c+d*x))/x^2,x,11,-sinh(a+b*sqrt(c+d*x))/x-1/2*b*d*Chi(b*(sqrt(c)+sqrt(c+d*x)))*cosh(a-b*sqrt(c))/sqrt(c)+1/2*b*d*Chi(b*(sqrt(c)-sqrt(c+d*x)))*cosh(a+b*sqrt(c))/sqrt(c)-1/2*b*d*Shi(b*(sqrt(c)+sqrt(c+d*x)))*sinh(a-b*sqrt(c))/sqrt(c)-1/2*b*d*Shi(b*(sqrt(c)-sqrt(c+d*x)))*sinh(a+b*sqrt(c))/sqrt(c)],
+
+-- Integrands of the form (e x)^m Sinh[a+b (c+d x)^(n/3)]
+[x^2*sinh(a+b*(c+d*x)^(1/3)),x,23,120960*cosh(a+b*(c+d*x)^(1/3))/(b^9*d^3)+6*c^2*cosh(a+b*(c+d*x)^(1/3))/(b^3*d^3)-720*c*(c+d*x)^(1/3)*cosh(a+b*(c+d*x)^(1/3))/(b^5*d^3)+60480*(c+d*x)^(2/3)*cosh(a+b*(c+d*x)^(1/3))/(b^7*d^3)+3*c^2*(c+d*x)^(2/3)*cosh(a+b*(c+d*x)^(1/3))/(b*d^3)-120*c*(c+d*x)*cosh(a+b*(c+d*x)^(1/3))/(b^3*d^3)+5040*(c+d*x)^(4/3)*cosh(a+b*(c+d*x)^(1/3))/(b^5*d^3)-6*c*(c+d*x)^(5/3)*cosh(a+b*(c+d*x)^(1/3))/(b*d^3)+168*(c+d*x)^2*cosh(a+b*(c+d*x)^(1/3))/(b^3*d^3)+3*(c+d*x)^(8/3)*cosh(a+b*(c+d*x)^(1/3))/(b*d^3)+720*c*sinh(a+b*(c+d*x)^(1/3))/(b^6*d^3)-120960*(c+d*x)^(1/3)*sinh(a+b*(c+d*x)^(1/3))/(b^8*d^3)-6*c^2*(c+d*x)^(1/3)*sinh(a+b*(c+d*x)^(1/3))/(b^2*d^3)+360*c*(c+d*x)^(2/3)*sinh(a+b*(c+d*x)^(1/3))/(b^4*d^3)-20160*(c+d*x)*sinh(a+b*(c+d*x)^(1/3))/(b^6*d^3)+30*c*(c+d*x)^(4/3)*sinh(a+b*(c+d*x)^(1/3))/(b^2*d^3)-1008*(c+d*x)^(5/3)*sinh(a+b*(c+d*x)^(1/3))/(b^4*d^3)-24*(c+d*x)^(7/3)*sinh(a+b*(c+d*x)^(1/3))/(b^2*d^3)],
+[x*sinh(a+b*(c+d*x)^(1/3)),x,13,-6*c*cosh(a+b*(c+d*x)^(1/3))/(b^3*d^2)+360*(c+d*x)^(1/3)*cosh(a+b*(c+d*x)^(1/3))/(b^5*d^2)-3*c*(c+d*x)^(2/3)*cosh(a+b*(c+d*x)^(1/3))/(b*d^2)+60*(c+d*x)*cosh(a+b*(c+d*x)^(1/3))/(b^3*d^2)+3*(c+d*x)^(5/3)*cosh(a+b*(c+d*x)^(1/3))/(b*d^2)-360*sinh(a+b*(c+d*x)^(1/3))/(b^6*d^2)+6*c*(c+d*x)^(1/3)*sinh(a+b*(c+d*x)^(1/3))/(b^2*d^2)-180*(c+d*x)^(2/3)*sinh(a+b*(c+d*x)^(1/3))/(b^4*d^2)-15*(c+d*x)^(4/3)*sinh(a+b*(c+d*x)^(1/3))/(b^2*d^2)],
+[sinh(a+b*(c+d*x)^(1/3)),x,5,6*cosh(a+b*(c+d*x)^(1/3))/(b^3*d)+3*(c+d*x)^(2/3)*cosh(a+b*(c+d*x)^(1/3))/(b*d)-6*(c+d*x)^(1/3)*sinh(a+b*(c+d*x)^(1/3))/(b^2*d)],
+[sinh(a+b*(c+d*x)^(1/3))/x,x,13,-cosh(a+b*c^(1/3))*Shi(b*(c^(1/3)-(c+d*x)^(1/3)))-cosh(a+(-1)^(2/3)*b*c^(1/3))*Shi(b*((-1)^(2/3)*c^(1/3)-(c+d*x)^(1/3)))+cosh(a-(-1)^(1/3)*b*c^(1/3))*Shi(b*((-1)^(1/3)*c^(1/3)+(c+d*x)^(1/3)))+Chi(b*(c^(1/3)-(c+d*x)^(1/3)))*sinh(a+b*c^(1/3))+Chi(b*((-1)^(1/3)*c^(1/3)+(c+d*x)^(1/3)))*sinh(a-(-1)^(1/3)*b*c^(1/3))+Chi(-b*((-1)^(2/3)*c^(1/3)-(c+d*x)^(1/3)))*sinh(a+(-1)^(2/3)*b*c^(1/3))],
+[sinh(a+b*(c+d*x)^(1/3))/x^2,x,14,1/3*b*d*Chi(b*(c^(1/3)-(c+d*x)^(1/3)))*cosh(a+b*c^(1/3))/c^(2/3)-1/3*(-1)^(1/3)*b*d*Chi(b*((-1)^(1/3)*c^(1/3)+(c+d*x)^(1/3)))*cosh(a-(-1)^(1/3)*b*c^(1/3))/c^(2/3)+1/3*(-1)^(2/3)*b*d*Chi(-b*((-1)^(2/3)*c^(1/3)-(c+d*x)^(1/3)))*cosh(a+(-1)^(2/3)*b*c^(1/3))/c^(2/3)-1/3*b*d*Shi(b*(c^(1/3)-(c+d*x)^(1/3)))*sinh(a+b*c^(1/3))/c^(2/3)-1/3*(-1)^(1/3)*b*d*Shi(b*((-1)^(1/3)*c^(1/3)+(c+d*x)^(1/3)))*sinh(a-(-1)^(1/3)*b*c^(1/3))/c^(2/3)-1/3*(-1)^(2/3)*b*d*Shi(b*((-1)^(2/3)*c^(1/3)-(c+d*x)^(1/3)))*sinh(a+(-1)^(2/3)*b*c^(1/3))/c^(2/3)-sinh(a+b*(c+d*x)^(1/3))/x]]

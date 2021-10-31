@@ -1,0 +1,211 @@
+-- Axiom integration test file: "4 Trig functions\4.2 Cosine\4.2.7 (d trig)^m (a+b (c cos)^n)^p.input"
+
+lst: '[
+
+-- Integrands of the form Sin[e+f x]^m (a+b Cos[e+f x]^n)^p
+
+-- Integrands of the form Sin[e+f x]^m (a+b Cos[e+f x]^2)^p
+
+-- Integrands of the form Sin[e+f x]^m (a+b Cos[e+f x]^2)^p when a+b=0
+
+-- p>0
+
+-- p<0
+[sin(x)^6/(a-a*cos(x)^2),x,4,3/8*x/a-3/8*cos(x)*sin(x)/a-1/4*cos(x)*sin(x)^3/a],
+[sin(x)^5/(a-a*cos(x)^2),x,3,-cos(x)/a+1/3*cos(x)^3/a],
+[sin(x)^4/(a-a*cos(x)^2),x,3,1/2*x/a-1/2*cos(x)*sin(x)/a],
+[sin(x)^3/(a-a*cos(x)^2),x,2,-cos(x)/a],
+[sin(x)^2/(a-a*cos(x)^2),x,2,x/a],
+[sin(x)/(a-a*cos(x)^2),x,2,-atanh(cos(x))/a],
+[csc(x)/(a-a*cos(x)^2),x,3,-1/2*atanh(cos(x))/a-1/2*cot(x)*csc(x)/a],
+[csc(x)^2/(a-a*cos(x)^2),x,3,-cot(x)/a-1/3*cot(x)^3/a],
+[csc(x)^3/(a-a*cos(x)^2),x,4,-3/8*atanh(cos(x))/a-3/8*cot(x)*csc(x)/a-1/4*cot(x)*csc(x)^3/a],
+
+-- Integrands of the form Sin[e+f x]^m (a+b Cos[e+f x]^2)^p
+
+-- p>0
+
+-- p<0
+[sin(x)^7/(a+b*cos(x)^2),x,4,(a^2+3*a*b+3*b^2)*cos(x)/b^3-1/3*(a+3*b)*cos(x)^3/b^2+1/5*cos(x)^5/b-(a+b)^3*atan(cos(x)*sqrt(b)/sqrt(a))/(b^(7/2)*sqrt(a))],
+[sin(x)^5/(a+b*cos(x)^2),x,4,(a+2*b)*cos(x)/b^2-1/3*cos(x)^3/b-(a+b)^2*atan(cos(x)*sqrt(b)/sqrt(a))/(b^(5/2)*sqrt(a))],
+[sin(x)^3/(a+b*cos(x)^2),x,3,cos(x)/b-(a+b)*atan(cos(x)*sqrt(b)/sqrt(a))/(b^(3/2)*sqrt(a))],
+[sin(x)/(a+b*cos(x)^2),x,2,-atan(cos(x)*sqrt(b)/sqrt(a))/(sqrt(a)*sqrt(b))],
+[csc(x)/(a+b*cos(x)^2),x,4,-atanh(cos(x))/(a+b)-atan(cos(x)*sqrt(b)/sqrt(a))*sqrt(b)/((a+b)*sqrt(a))],
+[csc(x)^3/(a+b*cos(x)^2),x,5,-1/2*(a+3*b)*atanh(cos(x))/(a+b)^2-1/2*cot(x)*csc(x)/(a+b)-b^(3/2)*atan(cos(x)*sqrt(b)/sqrt(a))/((a+b)^2*sqrt(a))],
+[csc(x)^5/(a+b*cos(x)^2),x,6,-1/8*(3*a^2+10*a*b+15*b^2)*atanh(cos(x))/(a+b)^3-1/8*(3*a+7*b)*cot(x)*csc(x)/(a+b)^2-1/4*cot(x)*csc(x)^3/(a+b)-b^(5/2)*atan(cos(x)*sqrt(b)/sqrt(a))/((a+b)^3*sqrt(a))],
+[sin(x)^6/(a+b*cos(x)^2),x,6,-1/8*(8*a^2+20*a*b+15*b^2)*x/b^3+1/8*(4*a+7*b)*cos(x)*sin(x)/b^2+1/4*cos(x)*sin(x)^3/b-(a+b)^(5/2)*atan(cot(x)*sqrt(a+b)/sqrt(a))/(b^3*sqrt(a))],
+[sin(x)^4/(a+b*cos(x)^2),x,5,-1/2*(2*a+3*b)*x/b^2+1/2*cos(x)*sin(x)/b-(a+b)^(3/2)*atan(cot(x)*sqrt(a+b)/sqrt(a))/(b^2*sqrt(a))],
+[sin(x)^2/(a+b*cos(x)^2),x,4,-x/b-atan(cot(x)*sqrt(a+b)/sqrt(a))*sqrt(a+b)/(b*sqrt(a))],
+[1/(a+b*cos(x)^2),x,2,-atan(cot(x)*sqrt(a+b)/sqrt(a))/(sqrt(a)*sqrt(a+b))],
+[csc(x)^2/(a+b*cos(x)^2),x,3,-cot(x)/(a+b)-b*atan(cot(x)*sqrt(a+b)/sqrt(a))/((a+b)^(3/2)*sqrt(a))],
+[csc(x)^4/(a+b*cos(x)^2),x,4,-(a+2*b)*cot(x)/(a+b)^2-1/3*cot(x)^3/(a+b)-b^2*atan(cot(x)*sqrt(a+b)/sqrt(a))/((a+b)^(5/2)*sqrt(a))],
+[csc(x)^6/(a+b*cos(x)^2),x,4,-(a^2+3*a*b+3*b^2)*cot(x)/(a+b)^3-1/3*(2*a+3*b)*cot(x)^3/(a+b)^2-1/5*cot(x)^5/(a+b)-b^3*atan(cot(x)*sqrt(a+b)/sqrt(a))/((a+b)^(7/2)*sqrt(a))],
+
+-- Integrands of the form Sin[e+f x]^m (a+b Cos[e+f x]^3)^p
+
+-- Integrands of the form Sin[e+f x]^m (a+b Cos[e+f x]^3)^p
+
+-- p>0
+
+-- p<0
+[sin(x)/(4-3*cos(x)^3),x,7,-1/2*atan((1+6^(1/3)*cos(x))/sqrt(3))/(2^(1/3)*3^(5/6))+1/6*log(2^(2/3)-3^(1/3)*cos(x))/6^(1/3)-1/12*log(2*2^(1/3)+2^(2/3)*3^(1/3)*cos(x)+3^(2/3)*cos(x)^2)/6^(1/3)],
+
+-- Integrands of the form Sin[e+f x]^m (a+b Cos[e+f x]^4)^p
+
+-- Integrands of the form Sin[e+f x]^m (a+b Cos[e+f x]^n)^p
+
+-- Integrands of the form Cos[e+f x]^m (a+b Cos[e+f x]^n)^p
+
+-- Integrands of the form Cos[e+f x]^m (a+b Cos[e+f x]^2)^p
+
+-- Integrands of the form Cos[e+f x]^m (a+b Cos[e+f x]^2)^p when a+b=0
+
+-- p>0
+
+-- p<0
+[1/(1-cos(x)^2),x,3,-cot(x)],
+[1/(1-cos(x)^2)^2,x,3,-cot(x)-1/3*cot(x)^3],
+[1/(1-cos(x)^2)^3,x,3,-cot(x)-2/3*cot(x)^3-1/5*cot(x)^5],
+
+-- Integrands of the form Cos[e+f x]^m (a+b Cos[e+f x]^2)^p
+
+-- p>0
+
+-- p<0
+[cos(x)^7/(a+b*cos(x)^2),x,4,(a^2-a*b+b^2)*sin(x)/b^3+1/3*(a-2*b)*sin(x)^3/b^2+1/5*sin(x)^5/b-a^3*atanh(sin(x)*sqrt(b)/sqrt(a+b))/(b^(7/2)*sqrt(a+b))],
+[cos(x)^5/(a+b*cos(x)^2),x,4,-(a-b)*sin(x)/b^2-1/3*sin(x)^3/b+a^2*atanh(sin(x)*sqrt(b)/sqrt(a+b))/(b^(5/2)*sqrt(a+b))],
+[cos(x)^3/(a+b*cos(x)^2),x,3,sin(x)/b-a*atanh(sin(x)*sqrt(b)/sqrt(a+b))/(b^(3/2)*sqrt(a+b))],
+[cos(x)/(a+b*cos(x)^2),x,2,atanh(sin(x)*sqrt(b)/sqrt(a+b))/(sqrt(b)*sqrt(a+b))],
+[sec(x)/(a+b*cos(x)^2),x,4,atanh(sin(x))/a-atanh(sin(x)*sqrt(b)/sqrt(a+b))*sqrt(b)/(a*sqrt(a+b))],
+[sec(x)^3/(a+b*cos(x)^2),x,5,1/2*(a-2*b)*atanh(sin(x))/a^2+b^(3/2)*atanh(sin(x)*sqrt(b)/sqrt(a+b))/(a^2*sqrt(a+b))+1/2*sec(x)*tan(x)/a],
+[sec(x)^5/(a+b*cos(x)^2),x,6,1/8*(3*a^2-4*a*b+8*b^2)*atanh(sin(x))/a^3-b^(5/2)*atanh(sin(x)*sqrt(b)/sqrt(a+b))/(a^3*sqrt(a+b))+1/8*(3*a-4*b)*sec(x)*tan(x)/a^2+1/4*sec(x)^3*tan(x)/a],
+[cos(x)^6/(a+b*cos(x)^2),x,6,1/8*(8*a^2-4*a*b+3*b^2)*x/b^3-1/8*(4*a-3*b)*cos(x)*sin(x)/b^2+1/4*cos(x)^3*sin(x)/b+a^(5/2)*atan(cot(x)*sqrt(a+b)/sqrt(a))/(b^3*sqrt(a+b))],
+[cos(x)^4/(a+b*cos(x)^2),x,5,-1/2*(2*a-b)*x/b^2+1/2*cos(x)*sin(x)/b-a^(3/2)*atan(cot(x)*sqrt(a+b)/sqrt(a))/(b^2*sqrt(a+b))],
+[cos(x)^2/(a+b*cos(x)^2),x,3,x/b+atan(cot(x)*sqrt(a+b)/sqrt(a))*sqrt(a)/(b*sqrt(a+b))],
+[1/(a+b*cos(x)^2),x,2,-atan(cot(x)*sqrt(a+b)/sqrt(a))/(sqrt(a)*sqrt(a+b))],
+[sec(x)^2/(a+b*cos(x)^2),x,3,b*atan(cot(x)*sqrt(a+b)/sqrt(a))/(a^(3/2)*sqrt(a+b))+tan(x)/a],
+[sec(x)^4/(a+b*cos(x)^2),x,4,-b^2*atan(cot(x)*sqrt(a+b)/sqrt(a))/(a^(5/2)*sqrt(a+b))+(a-b)*tan(x)/a^2+1/3*tan(x)^3/a],
+[sec(x)^6/(a+b*cos(x)^2),x,4,b^3*atan(cot(x)*sqrt(a+b)/sqrt(a))/(a^(7/2)*sqrt(a+b))+(a^2-a*b+b^2)*tan(x)/a^3+1/3*(2*a-b)*tan(x)^3/a^2+1/5*tan(x)^5/a],
+[1/(a+b*cos(x)^2)^2,x,4,-1/2*(2*a+b)*atan(cot(x)*sqrt(a+b)/sqrt(a))/(a^(3/2)*(a+b)^(3/2))-1/2*b*cos(x)*sin(x)/(a*(a+b)*(a+b*cos(x)^2))],
+[1/(a+b*cos(x)^2)^3,x,5,-1/8*(8*a^2+8*a*b+3*b^2)*atan(cot(x)*sqrt(a+b)/sqrt(a))/(a^(5/2)*(a+b)^(5/2))-1/4*b*cos(x)*sin(x)/(a*(a+b)*(a+b*cos(x)^2)^2)-3/8*b*(2*a+b)*cos(x)*sin(x)/(a^2*(a+b)^2*(a+b*cos(x)^2))],
+[1/(1+cos(x)^2),x,2,x/sqrt(2)-atan(cos(x)*sin(x)/(1+cos(x)^2+sqrt(2)))/sqrt(2)],
+[1/(1+cos(x)^2)^2,x,4,-1/4*cos(x)*sin(x)/(1+cos(x)^2)+3/4*x/sqrt(2)-3/4*atan(cos(x)*sin(x)/(1+cos(x)^2+sqrt(2)))/sqrt(2)],
+[1/(1+cos(x)^2)^3,x,5,-1/8*cos(x)*sin(x)/(1+cos(x)^2)^2-9/32*cos(x)*sin(x)/(1+cos(x)^2)+19/32*x/sqrt(2)-19/32*atan(cos(x)*sin(x)/(1+cos(x)^2+sqrt(2)))/sqrt(2)],
+
+-- Integrands of the form Cos[e+f x]^m (a+b Cos[e+f x]^2)^(p/2) when a+b=0
+
+-- p>0
+[sqrt(1-cos(x)^2),x,3,-cot(x)*sqrt(sin(x)^2)],
+[sqrt(-1+cos(x)^2),x,3,-cot(x)*sqrt(-sin(x)^2)],
+[(1-cos(x)^2)^(3/2),x,4,-1/3*cot(x)*(sin(x)^2)^(3/2)-2/3*cot(x)*sqrt(sin(x)^2)],
+[(-1+cos(x)^2)^(3/2),x,4,-1/3*cot(x)*(-sin(x)^2)^(3/2)+2/3*cot(x)*sqrt(-sin(x)^2)],
+
+-- p<0
+[1/sqrt(1-cos(x)^2),x,3,-atanh(cos(x))*sin(x)/sqrt(sin(x)^2)],
+[1/sqrt(-1+cos(x)^2),x,3,-atanh(cos(x))*sin(x)/sqrt(-sin(x)^2)],
+[1/(1-cos(x)^2)^(3/2),x,4,-1/2*cot(x)/sqrt(sin(x)^2)-1/2*atanh(cos(x))*sin(x)/sqrt(sin(x)^2)],
+[1/(-1+cos(x)^2)^(3/2),x,4,1/2*cot(x)/sqrt(-sin(x)^2)+1/2*atanh(cos(x))*sin(x)/sqrt(-sin(x)^2)],
+
+-- Integrands of the form Cos[e+f x]^m (a+b Cos[e+f x]^2)^(p/2)
+
+-- p>0
+[sqrt(1+cos(x)^2),x,1,elliptic_e(1/2*%pi+x,-1)],
+[sqrt(-1-cos(x)^2),x,2,elliptic_e(1/2*%pi+x,-1)*sqrt(-1-cos(x)^2)/sqrt(1+cos(x)^2)],
+[sqrt(a+b*cos(x)^2),x,2,elliptic_e(1/2*%pi+x,-b/a)*sqrt(a+b*cos(x)^2)/sqrt(1+b*cos(x)^2/a)],
+[(1+cos(x)^2)^(3/2),x,4,2*elliptic_e(1/2*%pi+x,-1)-2/3*elliptic_f(1/2*%pi+x,-1)+1/3*cos(x)*sin(x)*sqrt(1+cos(x)^2)],
+[(-1-cos(x)^2)^(3/2),x,6,-1/3*cos(x)*sin(x)*sqrt(-1-cos(x)^2)-2*elliptic_e(1/2*%pi+x,-1)*sqrt(-1-cos(x)^2)/sqrt(1+cos(x)^2)-2/3*elliptic_f(1/2*%pi+x,-1)*sqrt(1+cos(x)^2)/sqrt(-1-cos(x)^2)],
+[(a+b*cos(x)^2)^(3/2),x,6,1/3*b*cos(x)*sin(x)*sqrt(a+b*cos(x)^2)+2/3*(2*a+b)*elliptic_e(1/2*%pi+x,-b/a)*sqrt(a+b*cos(x)^2)/sqrt(1+b*cos(x)^2/a)-1/3*a*(a+b)*elliptic_f(1/2*%pi+x,-b/a)*sqrt(1+b*cos(x)^2/a)/sqrt(a+b*cos(x)^2)],
+
+-- p<0
+[1/sqrt(1+cos(x)^2),x,1,elliptic_f(1/2*%pi+x,-1)],
+[1/sqrt(-1-cos(x)^2),x,2,elliptic_f(1/2*%pi+x,-1)*sqrt(1+cos(x)^2)/sqrt(-1-cos(x)^2)],
+[1/sqrt(a+b*cos(x)^2),x,2,elliptic_f(1/2*%pi+x,-b/a)*sqrt(1+b*cos(x)^2/a)/sqrt(a+b*cos(x)^2)],
+[1/(1+cos(x)^2)^(3/2),x,3,1/2*elliptic_e(1/2*%pi+x,-1)-1/2*cos(x)*sin(x)/sqrt(1+cos(x)^2)],
+[1/(-1-cos(x)^2)^(3/2),x,4,1/2*cos(x)*sin(x)/sqrt(-1-cos(x)^2)+1/2*elliptic_e(1/2*%pi+x,-1)*sqrt(-1-cos(x)^2)/sqrt(1+cos(x)^2)],
+[1/(a+b*cos(x)^2)^(3/2),x,4,-b*cos(x)*sin(x)/(a*(a+b)*sqrt(a+b*cos(x)^2))+elliptic_e(1/2*%pi+x,-b/a)*sqrt(a+b*cos(x)^2)/(a*(a+b)*sqrt(1+b*cos(x)^2/a))],
+[cos(x)/sqrt(1+cos(x)^2),x,2,asin(sin(x)/sqrt(2))],
+[cos(5+3*x)/sqrt(3+cos(5+3*x)^2),x,2,1/3*asin(1/2*sin(5+3*x))],
+[cos(x)/sqrt(4-cos(x)^2),x,2,asinh(sin(x)/sqrt(3))],
+
+-- Integrands of the form Cos[e+f x]^m (a+b Cos[e+f x]^3)^p
+
+-- Integrands of the form Cos[e+f x]^m (a+b Cos[e+f x]^4)^p
+
+-- Integrands of the form Cos[e+f x]^m (a+b Cos[e+f x]^4)^p
+
+-- p>0
+
+-- p<0
+[1/(a+b*cos(x)^4),x,10,-1/4*log((a+b)^(3/4)*cot(x)^2+(a+b)^(1/4)*sqrt(a)-a^(1/4)*cot(x)*sqrt(2)*sqrt(a+b-sqrt(a)*sqrt(a+b)))*(sqrt(a)-sqrt(a+b))/(a^(3/4)*(a+b)^(1/4)*sqrt(2)*sqrt(a+b-sqrt(a)*sqrt(a+b)))+1/4*log((a+b)^(3/4)*cot(x)^2+(a+b)^(1/4)*sqrt(a)+a^(1/4)*cot(x)*sqrt(2)*sqrt(a+b-sqrt(a)*sqrt(a+b)))*(sqrt(a)-sqrt(a+b))/(a^(3/4)*(a+b)^(1/4)*sqrt(2)*sqrt(a+b-sqrt(a)*sqrt(a+b)))+1/2*atan((-(a+b)^(3/4)*cot(x)*sqrt(2)+a^(1/4)*sqrt(a+b-sqrt(a)*sqrt(a+b)))/(a^(1/4)*sqrt(a+b+sqrt(a)*sqrt(a+b))))*(sqrt(a)+sqrt(a+b))/(a^(3/4)*(a+b)^(1/4)*sqrt(2)*sqrt(a+b+sqrt(a)*sqrt(a+b)))-1/2*atan(((a+b)^(3/4)*cot(x)*sqrt(2)+a^(1/4)*sqrt(a+b-sqrt(a)*sqrt(a+b)))/(a^(1/4)*sqrt(a+b+sqrt(a)*sqrt(a+b))))*(sqrt(a)+sqrt(a+b))/(a^(3/4)*(a+b)^(1/4)*sqrt(2)*sqrt(a+b+sqrt(a)*sqrt(a+b)))],
+[1/(a-b*cos(x)^4),x,4,-1/2*atan(cot(x)*sqrt(sqrt(a)-sqrt(b))/a^(1/4))/(a^(3/4)*sqrt(sqrt(a)-sqrt(b)))-1/2*atan(cot(x)*sqrt(sqrt(a)+sqrt(b))/a^(1/4))/(a^(3/4)*sqrt(sqrt(a)+sqrt(b)))],
+[1/(1+cos(x)^4),x,10,1/2*x/sqrt(-1+sqrt(2))+1/4*atan((cos(x)*sin(x)*(-2+sqrt(2))+(-1+2*sin(x)^2)*sqrt(-1+sqrt(2)))/(2+sin(x)^2*(-2+sqrt(2))-2*cos(x)*sin(x)*sqrt(-1+sqrt(2))+sqrt(1+sqrt(2))))/sqrt(-1+sqrt(2))+1/4*atan((cos(x)*sin(x)*(-2+sqrt(2))+(1-2*sin(x)^2)*sqrt(-1+sqrt(2)))/(2+sin(x)^2*(-2+sqrt(2))+2*cos(x)*sin(x)*sqrt(-1+sqrt(2))+sqrt(1+sqrt(2))))/sqrt(-1+sqrt(2))+1/8*log(2*cot(x)^2+sqrt(2)-2*cot(x)*sqrt(-1+sqrt(2)))*sqrt(-1+sqrt(2))-1/8*log(1+cot(x)^2*sqrt(2)+cot(x)*sqrt(2*(-1+sqrt(2))))*sqrt(-1+sqrt(2))],
+[1/(1-cos(x)^4),x,3,-1/2*cot(x)+1/2*x/sqrt(2)-1/2*atan(cos(x)*sin(x)/(1+cos(x)^2+sqrt(2)))/sqrt(2)],
+
+-- Integrands of the form Cos[e+f x]^m (a+b Cos[e+f x]^n)^p
+[1/(a+b*cos(x)^5),x,12,2/5*atan(sqrt(a^(1/5)-b^(1/5))*tan(1/2*x)/sqrt(a^(1/5)+b^(1/5)))/(a^(4/5)*sqrt(a^(1/5)-b^(1/5))*sqrt(a^(1/5)+b^(1/5)))+2/5*atan(sqrt(a^(1/5)+(-1)^(1/5)*b^(1/5))*tan(1/2*x)/sqrt(a^(1/5)-(-1)^(1/5)*b^(1/5)))/(a^(4/5)*sqrt(a^(1/5)-(-1)^(1/5)*b^(1/5))*sqrt(a^(1/5)+(-1)^(1/5)*b^(1/5)))+2/5*atan(sqrt(a^(1/5)-(-1)^(2/5)*b^(1/5))*tan(1/2*x)/sqrt(a^(1/5)+(-1)^(2/5)*b^(1/5)))/(a^(4/5)*sqrt(a^(1/5)-(-1)^(2/5)*b^(1/5))*sqrt(a^(1/5)+(-1)^(2/5)*b^(1/5)))+2/5*atan(sqrt(a^(1/5)+(-1)^(3/5)*b^(1/5))*tan(1/2*x)/sqrt(a^(1/5)-(-1)^(3/5)*b^(1/5)))/(a^(4/5)*sqrt(a^(1/5)-(-1)^(3/5)*b^(1/5))*sqrt(a^(1/5)+(-1)^(3/5)*b^(1/5)))+2/5*atan(sqrt(a^(1/5)-(-1)^(4/5)*b^(1/5))*tan(1/2*x)/sqrt(a^(1/5)+(-1)^(4/5)*b^(1/5)))/(a^(4/5)*sqrt(a^(1/5)-(-1)^(4/5)*b^(1/5))*sqrt(a^(1/5)+(-1)^(4/5)*b^(1/5)))],
+[1/(a+b*cos(x)^6),x,7,-1/3*atan(cot(x)*sqrt(a^(1/3)+b^(1/3))/a^(1/6))/(a^(5/6)*sqrt(a^(1/3)+b^(1/3)))-1/3*atan(cot(x)*sqrt(a^(1/3)-(-1)^(1/3)*b^(1/3))/a^(1/6))/(a^(5/6)*sqrt(a^(1/3)-(-1)^(1/3)*b^(1/3)))-1/3*atan(cot(x)*sqrt(a^(1/3)+(-1)^(2/3)*b^(1/3))/a^(1/6))/(a^(5/6)*sqrt(a^(1/3)+(-1)^(2/3)*b^(1/3)))],
+[1/(a+b*cos(x)^8),x,9,1/4*atan(cot(x)*sqrt((-a)^(1/4)-b^(1/4))/(-a)^(1/8))/((-a)^(7/8)*sqrt((-a)^(1/4)-b^(1/4)))+1/4*atan(cot(x)*sqrt((-a)^(1/4)-%i*b^(1/4))/(-a)^(1/8))/((-a)^(7/8)*sqrt((-a)^(1/4)-%i*b^(1/4)))+1/4*atan(cot(x)*sqrt((-a)^(1/4)+%i*b^(1/4))/(-a)^(1/8))/((-a)^(7/8)*sqrt((-a)^(1/4)+%i*b^(1/4)))+1/4*atan(cot(x)*sqrt((-a)^(1/4)+b^(1/4))/(-a)^(1/8))/((-a)^(7/8)*sqrt((-a)^(1/4)+b^(1/4)))],
+[1/(a-b*cos(x)^5),x,12,2/5*atan(sqrt(a^(1/5)+b^(1/5))*tan(1/2*x)/sqrt(a^(1/5)-b^(1/5)))/(a^(4/5)*sqrt(a^(1/5)-b^(1/5))*sqrt(a^(1/5)+b^(1/5)))+2/5*atan(sqrt(a^(1/5)-(-1)^(1/5)*b^(1/5))*tan(1/2*x)/sqrt(a^(1/5)+(-1)^(1/5)*b^(1/5)))/(a^(4/5)*sqrt(a^(1/5)-(-1)^(1/5)*b^(1/5))*sqrt(a^(1/5)+(-1)^(1/5)*b^(1/5)))+2/5*atan(sqrt(a^(1/5)+(-1)^(2/5)*b^(1/5))*tan(1/2*x)/sqrt(a^(1/5)-(-1)^(2/5)*b^(1/5)))/(a^(4/5)*sqrt(a^(1/5)-(-1)^(2/5)*b^(1/5))*sqrt(a^(1/5)+(-1)^(2/5)*b^(1/5)))+2/5*atan(sqrt(a^(1/5)-(-1)^(3/5)*b^(1/5))*tan(1/2*x)/sqrt(a^(1/5)+(-1)^(3/5)*b^(1/5)))/(a^(4/5)*sqrt(a^(1/5)-(-1)^(3/5)*b^(1/5))*sqrt(a^(1/5)+(-1)^(3/5)*b^(1/5)))+2/5*atan(sqrt(a^(1/5)+(-1)^(4/5)*b^(1/5))*tan(1/2*x)/sqrt(a^(1/5)-(-1)^(4/5)*b^(1/5)))/(a^(4/5)*sqrt(a^(1/5)-(-1)^(4/5)*b^(1/5))*sqrt(a^(1/5)+(-1)^(4/5)*b^(1/5)))],
+[1/(a-b*cos(x)^6),x,7,-1/3*atan(cot(x)*sqrt(a^(1/3)-b^(1/3))/a^(1/6))/(a^(5/6)*sqrt(a^(1/3)-b^(1/3)))-1/3*atan(cot(x)*sqrt(a^(1/3)+(-1)^(1/3)*b^(1/3))/a^(1/6))/(a^(5/6)*sqrt(a^(1/3)+(-1)^(1/3)*b^(1/3)))-1/3*atan(cot(x)*sqrt(a^(1/3)-(-1)^(2/3)*b^(1/3))/a^(1/6))/(a^(5/6)*sqrt(a^(1/3)-(-1)^(2/3)*b^(1/3)))],
+[1/(a-b*cos(x)^8),x,9,-1/4*atan(cot(x)*sqrt(a^(1/4)-b^(1/4))/a^(1/8))/(a^(7/8)*sqrt(a^(1/4)-b^(1/4)))-1/4*atan(cot(x)*sqrt(a^(1/4)-%i*b^(1/4))/a^(1/8))/(a^(7/8)*sqrt(a^(1/4)-%i*b^(1/4)))-1/4*atan(cot(x)*sqrt(a^(1/4)+%i*b^(1/4))/a^(1/8))/(a^(7/8)*sqrt(a^(1/4)+%i*b^(1/4)))-1/4*atan(cot(x)*sqrt(a^(1/4)+b^(1/4))/a^(1/8))/(a^(7/8)*sqrt(a^(1/4)+b^(1/4)))],
+[1/(1+cos(x)^5),x,11,1/5*sin(x)/(1+cos(x))-2/5*atanh(tan(1/2*x)/sqrt((-1+(-1)^(1/5))/(1+(-1)^(1/5))))/sqrt(-1+(-1)^(2/5))+2/5*atan(sqrt((1-(-1)^(4/5))/(1+(-1)^(4/5)))*tan(1/2*x))/sqrt(1+(-1)^(3/5))-2/5*atanh(sqrt((-1-(-1)^(3/5))/(1-(-1)^(3/5)))*tan(1/2*x))*sqrt((-1-(-1)^(3/5))/(1-(-1)^(3/5)))/(1+(-1)^(3/5))+2/5*atan(sqrt((1-(-1)^(2/5))/(1+(-1)^(2/5)))*tan(1/2*x))/sqrt(1-(-1)^(4/5))],
+[1/(1+cos(x)^6),x,7,1/3*atan(tan(x)/sqrt(2))/sqrt(2)+1/3*atan(tan(x)/sqrt(1-(-1)^(1/3)))/sqrt(1-(-1)^(1/3))+1/3*atan(tan(x)/sqrt(1+(-1)^(2/3)))/sqrt(1+(-1)^(2/3)),1/3*x/sqrt(2)-1/3*atan(cos(x)*sin(x)/(1+cos(x)^2+sqrt(2)))/sqrt(2)-1/3*atan(cot(x)*sqrt(1-(-1)^(1/3)))/sqrt(1-(-1)^(1/3))-1/3*atan(cot(x)*sqrt(1+(-1)^(2/3)))/sqrt(1+(-1)^(2/3))],
+[1/(1+cos(x)^8),x,9,-1/4*atan(cot(x)*sqrt(1-(-1)^(1/4)))/sqrt(1-(-1)^(1/4))-1/4*atan(cot(x)*sqrt(1+(-1)^(1/4)))/sqrt(1+(-1)^(1/4))-1/4*atan(cot(x)*sqrt(1-(-1)^(3/4)))/sqrt(1-(-1)^(3/4))-1/4*atan(cot(x)*sqrt(1+(-1)^(3/4)))/sqrt(1+(-1)^(3/4))],
+[1/(1-cos(x)^5),x,11,-1/5*sin(x)/(1-cos(x))+2/5*atan(sqrt((1-(-1)^(3/5))/(1+(-1)^(3/5)))*tan(1/2*x))/sqrt(1+(-1)^(1/5))+2/5*atan(sqrt((1-(-1)^(1/5))/(1+(-1)^(1/5)))*tan(1/2*x))/sqrt(1-(-1)^(2/5))+2/5*atanh(sqrt((-1-(-1)^(4/5))/(1-(-1)^(4/5)))*tan(1/2*x))/sqrt(-1-(-1)^(3/5))-2/5*atanh(tan(1/2*x)/sqrt((-1+(-1)^(2/5))/(1+(-1)^(2/5))))/sqrt(-1+(-1)^(4/5))],
+[1/(1-cos(x)^6),x,8,-1/3*cot(x)-1/3*atan(cot(x)*sqrt(1+(-1)^(1/3)))/sqrt(1+(-1)^(1/3))-1/3*atan(cot(x)*sqrt(1-(-1)^(2/3)))/sqrt(1-(-1)^(2/3))],
+[1/(1-cos(x)^8),x,10,-1/4*cot(x)-1/4*atan(cot(x)*sqrt(1-%i))/sqrt(1-%i)-1/4*atan(cot(x)*sqrt(1+%i))/sqrt(1+%i)+1/4*x/sqrt(2)-1/4*atan(cos(x)*sin(x)/(1+cos(x)^2+sqrt(2)))/sqrt(2)],
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^n)^p
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^2)^p
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^2)^p
+[tan(x)/(1+cos(x)^2),x,4,-log(cos(x))+1/2*log(1+cos(x)^2)],
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^2)^(p/2)
+
+-- p>0
+[sqrt(a+b*cos(x)^2)*tan(x),x,4,atanh(sqrt(a+b*cos(x)^2)/sqrt(a))*sqrt(a)-sqrt(a+b*cos(x)^2)],
+[sqrt(1-cos(x)^2)*tan(x),x,5,atanh(sqrt(sin(x)^2))-sqrt(sin(x)^2)],
+
+-- p<0
+[tan(x)/sqrt(a+b*cos(x)^2),x,3,atanh(sqrt(a+b*cos(x)^2)/sqrt(a))/sqrt(a)],
+[tan(x)/sqrt(1+cos(x)^2),x,3,atanh(sqrt(1+cos(x)^2))],
+[tan(x)/sqrt(1-cos(x)^2),x,4,atanh(sqrt(sin(x)^2))],
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^3)^p
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^3)^p
+[tan(x)^3/(a+b*cos(x)^3),x,11,log(cos(x))/a+1/3*b^(2/3)*log(a^(1/3)+b^(1/3)*cos(x))/a^(5/3)-1/6*b^(2/3)*log(a^(2/3)-a^(1/3)*b^(1/3)*cos(x)+b^(2/3)*cos(x)^2)/a^(5/3)-1/3*log(a+b*cos(x)^3)/a+1/2*sec(x)^2/a-b^(2/3)*atan((a^(1/3)-2*b^(1/3)*cos(x))/(a^(1/3)*sqrt(3)))/(a^(5/3)*sqrt(3))],
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^3)^(p/2)
+
+-- p>0
+[sqrt(a+b*cos(x)^3)*tan(x),x,5,2/3*atanh(sqrt(a+b*cos(x)^3)/sqrt(a))*sqrt(a)-2/3*sqrt(a+b*cos(x)^3)],
+
+-- p<0
+[tan(x)/sqrt(a+b*cos(x)^3),x,4,2/3*atanh(sqrt(a+b*cos(x)^3)/sqrt(a))/sqrt(a)],
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^4)^p
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^4)^p
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^4)^(p/2)
+
+-- p>0
+[sqrt(a+b*cos(x)^4)*tan(x),x,5,1/2*atanh(sqrt(a+b*cos(x)^4)/sqrt(a))*sqrt(a)-1/2*sqrt(a+b*cos(x)^4)],
+
+-- p<0
+[tan(x)/sqrt(a+b*cos(x)^4),x,4,1/2*atanh(sqrt(a+b*cos(x)^4)/sqrt(a))/sqrt(a)],
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^n)^p
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^n)^p
+
+-- Integrands of the form Tan[e+f x]^m (a+b Cos[e+f x]^n)^(p/2)
+
+-- p>0
+[sqrt(a+b*cos(x)^n)*tan(x),x,5,2*atanh(sqrt(a+b*cos(x)^n)/sqrt(a))*sqrt(a)/n-2*sqrt(a+b*cos(x)^n)/n],
+
+-- p<0
+[tan(x)/sqrt(a+b*cos(x)^n),x,4,2*atanh(sqrt(a+b*cos(x)^n)/sqrt(a))/(n*sqrt(a))]]

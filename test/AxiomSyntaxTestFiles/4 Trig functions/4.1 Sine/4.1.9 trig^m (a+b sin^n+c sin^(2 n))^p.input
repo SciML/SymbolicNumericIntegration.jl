@@ -1,0 +1,46 @@
+-- Axiom integration test file: "4 Trig functions\4.1 Sine\4.1.9 trig^m (a+b sin^n+c sin^(2 n))^p.input"
+
+lst: '[
+
+-- Integrands of the form Trig[d+e x]^m (a+b Sin[d+e x]^n+c Sin[d+e x]^(2 n))^p
+
+-- Integrands of the form Sin[d+e x]^m (a+b Sin[d+e x]^n+c Sin[d+e x]^(2 n))^p
+
+-- Integrands of the form Sin[d+e x]^m (a+b Sin[d+e x]+c Sin[d+e x]^2)^p
+
+-- p>0
+
+-- p<0
+[sin(x)^4/(a+b*sin(x)+c*sin(x)^2),x,12,1/2*x/c+(b^2-a*c)*x/c^3+b*cos(x)/c^2-1/2*cos(x)*sin(x)/c-atan((2*c+(b-sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c))))*sqrt(2)*(b^3-2*a*b*c+(-b^4+4*a*b^2*c-2*a^2*c^2)/sqrt(b^2-4*a*c))/(c^3*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c)))-atan((2*c+(b+sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c))))*sqrt(2)*(b^3-2*a*b*c+(b^4-4*a*b^2*c+2*a^2*c^2)/sqrt(b^2-4*a*c))/(c^3*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c)))],
+[sin(x)^3/(a+b*sin(x)+c*sin(x)^2),x,10,-b*x/c^2-cos(x)/c+b*atan((2*c+(b-sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c))))*sqrt(2)*(b-a*c/b-b^2/sqrt(b^2-4*a*c)+3*a*c/sqrt(b^2-4*a*c))/(c^2*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c)))+b*atan((2*c+(b+sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c))))*sqrt(2)*(b-a*c/b+b^2/sqrt(b^2-4*a*c)-3*a*c/sqrt(b^2-4*a*c))/(c^2*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c)))],
+[sin(x)^2/(a+b*sin(x)+c*sin(x)^2),x,9,x/c-atan((2*c+(b-sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c))))*sqrt(2)*(b+(-b^2+2*a*c)/sqrt(b^2-4*a*c))/(c*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c)))-atan((2*c+(b+sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c))))*sqrt(2)*(b+(b^2-2*a*c)/sqrt(b^2-4*a*c))/(c*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c)))],
+[sin(x)/(a+b*sin(x)+c*sin(x)^2),x,8,atan((2*c+(b-sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c))))*sqrt(2)*(1-b/sqrt(b^2-4*a*c))/sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c))+atan((2*c+(b+sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c))))*sqrt(2)*(1+b/sqrt(b^2-4*a*c))/sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c))],
+[1/(a+b*sin(x)+c*sin(x)^2),x,7,2*c*atan((2*c+(b-sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c))))*sqrt(2)/(sqrt(b^2-4*a*c)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c)))-2*c*atan((2*c+(b+sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c))))*sqrt(2)/(sqrt(b^2-4*a*c)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c)))],
+[csc(x)/(a+b*sin(x)+c*sin(x)^2),x,10,-atanh(cos(x))/a-c*atan((2*c+(b-sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c))))*sqrt(2)*(1+b/sqrt(b^2-4*a*c))/(a*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c)))-c*atan((2*c+(b+sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c))))*sqrt(2)*(1-b/sqrt(b^2-4*a*c))/(a*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c)))],
+[csc(x)^2/(a+b*sin(x)+c*sin(x)^2),x,12,b*atanh(cos(x))/a^2-cot(x)/a+b*c*atan((2*c+(b-sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c))))*sqrt(2)*(1+(b^2-2*a*c)/(b*sqrt(b^2-4*a*c)))/(a^2*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c)))+b*c*atan((2*c+(b+sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c))))*sqrt(2)*(1+(-b^2+2*a*c)/(b*sqrt(b^2-4*a*c)))/(a^2*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c)))],
+[csc(x)^3/(a+b*sin(x)+c*sin(x)^2),x,14,-1/2*atanh(cos(x))/a-(b^2-a*c)*atanh(cos(x))/a^3+b*cot(x)/a^2-1/2*cot(x)*csc(x)/a-c*atan((2*c+(b-sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c))))*sqrt(2)*(b^3-3*a*b*c+(b^2-a*c)*sqrt(b^2-4*a*c))/(a^3*sqrt(b^2-4*a*c)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c)))+c*atan((2*c+(b+sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c))))*sqrt(2)*(b^3-3*a*b*c-(b^2-a*c)*sqrt(b^2-4*a*c))/(a^3*sqrt(b^2-4*a*c)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c)))],
+
+-- Integrands of the form Sin[d+e x]^m (a+b Sin[d+e x]^2+c Sin[d+e x]^4)^p
+
+-- Integrands of the form Cos[d+e x]^m (a+b Sin[d+e x]^n+c Sin[d+e x]^(2 n))^p
+
+-- Integrands of the form Cos[d+e x]^m (a+b Sin[d+e x]+c Sin[d+e x]^2)^p
+
+-- p>0
+
+-- p<0
+[cos(x)^3/(a+b*sin(x)+c*sin(x)^2),x,7,1/2*b*log(a+b*sin(x)+c*sin(x)^2)/c^2-sin(x)/c+(b^2-2*c*(a+c))*atanh((b+2*c*sin(x))/sqrt(b^2-4*a*c))/(c^2*sqrt(b^2-4*a*c))],
+[cos(x)^2/(a+b*sin(x)+c*sin(x)^2),x,9,-x/c-atan((2*c+(b-sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c))))*sqrt(2)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c))/(c*sqrt(b^2-4*a*c))+atan((2*c+(b+sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c))))*sqrt(2)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c))/(c*sqrt(b^2-4*a*c))],
+[cos(x)/(a+b*sin(x)+c*sin(x)^2),x,3,-2*atanh((b+2*c*sin(x))/sqrt(b^2-4*a*c))/sqrt(b^2-4*a*c)],
+[sec(x)/(a+b*sin(x)+c*sin(x)^2),x,9,-1/2*log(1-sin(x))/(a+b+c)+1/2*log(1+sin(x))/(a-b+c)-1/2*b*log(a+b*sin(x)+c*sin(x)^2)/((a-b+c)*(a+b+c))+(b^2-2*a*c-2*c^2)*atanh((b+2*c*sin(x))/sqrt(b^2-4*a*c))/((a-b+c)*(a+b+c)*sqrt(b^2-4*a*c))],
+[sec(x)^2/(a+b*sin(x)+c*sin(x)^2),x,11,1/2*cos(x)/((a+b+c)*(1-sin(x)))-1/2*cos(x)/((a-b+c)*(1+sin(x)))-b*c*atan((2*c+(b-sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c))))*sqrt(2)*(1+(b^2-2*c*(a+c))/(b*sqrt(b^2-4*a*c)))/((a-b+c)*(a+b+c)*sqrt(b^2-2*c*(a+c)-b*sqrt(b^2-4*a*c)))-b*c*atan((2*c+(b+sqrt(b^2-4*a*c))*tan(1/2*x))/(sqrt(2)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c))))*sqrt(2)*(1+(-b^2+2*c*(a+c))/(b*sqrt(b^2-4*a*c)))/((a-b+c)*(a+b+c)*sqrt(b^2-2*c*(a+c)+b*sqrt(b^2-4*a*c)))],
+[sec(x)^3/(a+b*sin(x)+c*sin(x)^2),x,10,-1/4*(a+2*b+3*c)*log(1-sin(x))/(a+b+c)^2+1/4*(a-2*b+3*c)*log(1+sin(x))/(a-b+c)^2+1/2*b*(b^2-2*c*(a+c))*log(a+b*sin(x)+c*sin(x)^2)/(a^2-b^2+2*a*c+c^2)^2-1/2*sec(x)^2*(b-(a+c)*sin(x))/((a-b+c)*(a+b+c))-(b^4+2*c^2*(a+c)^2-2*b^2*c*(2*a+c))*atanh((b+2*c*sin(x))/sqrt(b^2-4*a*c))/((a^2-b^2+2*a*c+c^2)^2*sqrt(b^2-4*a*c))],
+[cos(x)/(-6+sin(x)+sin(x)^2),x,4,1/5*log(2-sin(x))-1/5*log(3+sin(x))],
+[cos(x)/(2-3*sin(x)+sin(x)^2),x,4,-log(1-sin(x))+log(2-sin(x))],
+[cos(x)/(-5+4*sin(x)+sin(x)^2),x,4,1/6*log(1-sin(x))-1/6*log(5+sin(x))],
+[cos(x)/(10-6*sin(x)+sin(x)^2),x,3,-atan(3-sin(x))],
+[cos(x)/(2+2*sin(x)+sin(x)^2),x,3,atan(1+sin(x))]]
+
+-- Integrands of the form Cos[d+e x]^m (a+b Sin[d+e x]^2+c Sin[d+e x]^4)^p
+
+-- Integrands of the form Tan[d+e x]^m (a+b Sin[d+e x]^n+c Sin[d+e x]^(2 n))^p

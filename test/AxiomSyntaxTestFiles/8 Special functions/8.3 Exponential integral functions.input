@@ -1,0 +1,281 @@
+-- Axiom integration test file: "8 Special functions\8.3 Exponential integral functions.input"
+
+lst: '[
+
+-- Integration Problems Involving Exponential Integral Functions
+
+-- Integrands of the form (d x)^m ExpIntegralE[n, b x]
+
+-- Integrands of the form (d x)^m ExpIntegralE[n, b x]
+
+-- n>0
+[x^2*Ei(1,b*x),x,1,-1/3*x^3*Ei(-2,b*x)+1/3*x^3*Ei(1,b*x)],
+[x*Ei(1,b*x),x,1,-1/2*x^2*Ei(-1,b*x)+1/2*x^2*Ei(1,b*x)],
+[Ei(1,b*x),x,1,-Ei(2,b*x)/b],
+[Ei(1,b*x)/x,x,1,b*x*HypergeometricPFQ([1,1,1],[2,2,2],-b*x)-EulerGamma*log(x)-1/2*log(b*x)^2],
+[Ei(1,b*x)/x^2,x,1,-Ei(1,b*x)/x+Ei(2,b*x)/x],
+[Ei(1,b*x)/x^3,x,1,-1/2*Ei(1,b*x)/x^2+1/2*Ei(3,b*x)/x^2],
+[Ei(1,b*x)/x^4,x,1,-1/3*Ei(1,b*x)/x^3+1/3*Ei(4,b*x)/x^3],
+[x^2*Ei(2,b*x),x,1,-1/4*x^3*Ei(-2,b*x)+1/4*x^3*Ei(2,b*x)],
+[x*Ei(2,b*x),x,1,-1/3*x^2*Ei(-1,b*x)+1/3*x^2*Ei(2,b*x)],
+[Ei(2,b*x),x,1,-Ei(3,b*x)/b],
+[Ei(2,b*x)/x,x,1,-Ei(1,b*x)+Ei(2,b*x)],
+[Ei(2,b*x)/x^2,x,2,-Ei(2,b*x)/x-b^2*x*HypergeometricPFQ([1,1,1],[2,2,2],-b*x)+b*EulerGamma*log(x)+1/2*b*log(b*x)^2],
+[Ei(2,b*x)/x^3,x,1,-Ei(2,b*x)/x^2+Ei(3,b*x)/x^2],
+[Ei(2,b*x)/x^4,x,1,-1/2*Ei(2,b*x)/x^3+1/2*Ei(4,b*x)/x^3],
+[Ei(2,b*x)/x^5,x,1,-1/3*Ei(2,b*x)/x^4+1/3*Ei(5,b*x)/x^4],
+[x^2*Ei(3,b*x),x,1,-1/5*x^3*Ei(-2,b*x)+1/5*x^3*Ei(3,b*x)],
+[x*Ei(3,b*x),x,1,-1/4*x^2*Ei(-1,b*x)+1/4*x^2*Ei(3,b*x)],
+[Ei(3,b*x),x,1,-Ei(4,b*x)/b],
+[Ei(3,b*x)/x,x,1,-1/2*Ei(1,b*x)+1/2*Ei(3,b*x)],
+[Ei(3,b*x)/x^2,x,1,-Ei(2,b*x)/x+Ei(3,b*x)/x],
+[Ei(3,b*x)/x^3,x,3,1/2*b*Ei(2,b*x)/x-1/2*Ei(3,b*x)/x^2+1/2*b^3*x*HypergeometricPFQ([1,1,1],[2,2,2],-b*x)-1/2*b^2*EulerGamma*log(x)-1/4*b^2*log(b*x)^2],
+[Ei(3,b*x)/x^4,x,1,-Ei(3,b*x)/x^3+Ei(4,b*x)/x^3],
+[Ei(3,b*x)/x^5,x,1,-1/2*Ei(3,b*x)/x^4+1/2*Ei(5,b*x)/x^4],
+[Ei(3,b*x)/x^6,x,1,-1/3*Ei(3,b*x)/x^5+1/3*Ei(6,b*x)/x^5],
+
+-- n<0
+[x^3*Ei(-1,b*x),x,1,-1/2*x^4*Ei(-3,b*x)+1/2*x^4*Ei(-1,b*x)],
+[x^2*Ei(-1,b*x),x,1,-x^3*Ei(-2,b*x)+x^3*Ei(-1,b*x)],
+[x*Ei(-1,b*x),x,3,(-1)/(%e^(b*x)*b^2)+Ei(-b*x)/b^2],
+[Ei(-1,b*x),x,1,(-1)/(%e^(b*x)*b^2*x)],
+[Ei(-1,b*x)/x,x,1,-1/2*Ei(-1,b*x)+1/2*Ei(1,b*x)],
+[Ei(-1,b*x)/x^2,x,1,-1/3*Ei(-1,b*x)/x+1/3*Ei(2,b*x)/x],
+[Ei(-1,b*x)/x^3,x,1,-1/4*Ei(-1,b*x)/x^2+1/4*Ei(3,b*x)/x^2],
+[x^4*Ei(-2,b*x),x,1,-1/2*x^5*Ei(-4,b*x)+1/2*x^5*Ei(-2,b*x)],
+[x^3*Ei(-2,b*x),x,1,-x^4*Ei(-3,b*x)+x^4*Ei(-2,b*x)],
+[x^2*Ei(-2,b*x),x,4,(-2)/(%e^(b*x)*b^3)+2*Ei(-b*x)/b^3-x^2*Ei(-1,b*x)/b],
+[x*Ei(-2,b*x),x,1,-x^2*Ei(-2,b*x)+x^2*Ei(-1,b*x)],
+[Ei(-1,b*x),x,1,(-1)/(%e^(b*x)*b^2*x)],
+[Ei(-2,b*x)/x,x,1,-1/3*Ei(-2,b*x)+1/3*Ei(1,b*x)],
+[Ei(-2,b*x)/x^2,x,1,-1/4*Ei(-2,b*x)/x+1/4*Ei(2,b*x)/x],
+[Ei(-2,b*x)/x^3,x,1,-1/5*Ei(-2,b*x)/x^2+1/5*Ei(3,b*x)/x^2],
+[x^5*Ei(-3,b*x),x,1,-1/2*x^6*Ei(-5,b*x)+1/2*x^6*Ei(-3,b*x)],
+[x^4*Ei(-3,b*x),x,1,-x^5*Ei(-4,b*x)+x^5*Ei(-3,b*x)],
+[x^3*Ei(-3,b*x),x,5,(-6)/(%e^(b*x)*b^4)+6*Ei(-b*x)/b^4-x^3*Ei(-2,b*x)/b-3*x^2*Ei(-1,b*x)/b^2],
+[x^2*Ei(-3,b*x),x,1,-x^3*Ei(-3,b*x)+x^3*Ei(-2,b*x)],
+[x*Ei(-3,b*x),x,1,-1/2*x^2*Ei(-3,b*x)+1/2*x^2*Ei(-1,b*x)],
+[Ei(-1,b*x),x,1,(-1)/(%e^(b*x)*b^2*x)],
+[Ei(-3,b*x)/x,x,1,-1/4*Ei(-3,b*x)+1/4*Ei(1,b*x)],
+[Ei(-3,b*x)/x^2,x,1,-1/5*Ei(-3,b*x)/x+1/5*Ei(2,b*x)/x],
+[Ei(-3,b*x)/x^3,x,1,-1/6*Ei(-3,b*x)/x^2+1/6*Ei(3,b*x)/x^2],
+[x^3*Ei(-3,b*x),x,5,(-6)/(%e^(b*x)*b^4)+6*Ei(-b*x)/b^4-x^3*Ei(-2,b*x)/b-3*x^2*Ei(-1,b*x)/b^2],
+[x^2*Ei(-2,b*x),x,4,(-2)/(%e^(b*x)*b^3)+2*Ei(-b*x)/b^3-x^2*Ei(-1,b*x)/b],
+[x*Ei(-1,b*x),x,3,(-1)/(%e^(b*x)*b^2)+Ei(-b*x)/b^2],
+[Ei(0,b*x),x,2,Ei(-b*x)/b],
+[Ei(1,b*x)/x,x,1,b*x*HypergeometricPFQ([1,1,1],[2,2,2],-b*x)-EulerGamma*log(x)-1/2*log(b*x)^2],
+[Ei(2,b*x)/x^2,x,2,-Ei(2,b*x)/x-b^2*x*HypergeometricPFQ([1,1,1],[2,2,2],-b*x)+b*EulerGamma*log(x)+1/2*b*log(b*x)^2],
+[Ei(3,b*x)/x^3,x,3,1/2*b*Ei(2,b*x)/x-1/2*Ei(3,b*x)/x^2+1/2*b^3*x*HypergeometricPFQ([1,1,1],[2,2,2],-b*x)-1/2*b^2*EulerGamma*log(x)-1/4*b^2*log(b*x)^2],
+
+-- Integrands of the form (d x)^(m/2) ExpIntegralE[n/2, b x]
+[(d*x)^(3/2)*Ei(-3/2,b*x),x,1,-4/25*(d*x)^(5/2)*HypergeometricPFQ([5/2,5/2],[7/2,7/2],-b*x)/d+3/4*(d*x)^(3/2)*log(x)*sqrt(%pi)/(b*(b*x)^(3/2))],
+[(d*x)^(1/2)*Ei(-1/2,b*x),x,1,-4/9*(d*x)^(3/2)*HypergeometricPFQ([3/2,3/2],[5/2,5/2],-b*x)/d+1/2*log(x)*sqrt(%pi)*sqrt(d*x)/(b*sqrt(b*x))],
+[Ei(1/2,b*x)/(d*x)^(1/2),x,1,log(x)*sqrt(%pi)*sqrt(b*x)/(b*sqrt(d*x))-4*HypergeometricPFQ([1/2,1/2],[3/2,3/2],-b*x)*sqrt(d*x)/d],
+[Ei(3/2,b*x)/(d*x)^(3/2),x,1,-2*(b*x)^(3/2)*log(x)*sqrt(%pi)/(b*(d*x)^(3/2))-4*HypergeometricPFQ([-1/2,-1/2],[1/2,1/2],-b*x)/(d*sqrt(d*x))],
+[Ei(5/2,b*x)/(d*x)^(5/2),x,1,-4/9*HypergeometricPFQ([-3/2,-3/2],[-1/2,-1/2],-b*x)/(d*(d*x)^(3/2))+4/3*(b*x)^(5/2)*log(x)*sqrt(%pi)/(b*(d*x)^(5/2))],
+
+-- Integrands of the form (d x)^m ExpIntegralE[n, b x] with n symbolic
+[x^m*Ei(n,x),x,1,-x^(1+m)*Ei(-m,x)/(m+n)+x^(1+m)*Ei(n,x)/(m+n)],
+[x^m*Ei(n,b*x),x,1,-x^(1+m)*Ei(-m,b*x)/(m+n)+x^(1+m)*Ei(n,b*x)/(m+n)],
+[(d*x)^m*Ei(n,x),x,1,-(d*x)^(1+m)*Ei(-m,x)/(d*(m+n))+(d*x)^(1+m)*Ei(n,x)/(d*(m+n))],
+[(d*x)^m*Ei(n,b*x),x,1,-(d*x)^(1+m)*Ei(-m,b*x)/(d*(m+n))+(d*x)^(1+m)*Ei(n,b*x)/(d*(m+n))],
+[Ei(n,x)/x^n,x,1,-x^(1-n)*HypergeometricPFQ([1-n,1-n],[2-n,2-n],-x)/(1-n)^2+GAMMA(1-n)*log(x)],
+[Ei(n,b*x)/x^n,x,1,-x^(1-n)*HypergeometricPFQ([1-n,1-n],[2-n,2-n],-b*x)/(1-n)^2+(b*x)^n*GAMMA(1-n)*log(x)/(b*x^n)],
+[Ei(n,x)/(d*x)^n,x,1,-(d*x)^(1-n)*HypergeometricPFQ([1-n,1-n],[2-n,2-n],-x)/(d*(1-n)^2)+x^n*GAMMA(1-n)*log(x)/(d*x)^n],
+[Ei(n,b*x)/(d*x)^n,x,1,-(d*x)^(1-n)*HypergeometricPFQ([1-n,1-n],[2-n,2-n],-b*x)/(d*(1-n)^2)+(b*x)^n*GAMMA(1-n)*log(x)/(b*(d*x)^n)],
+[x^2*Ei(n,b*x),x,1,-x^3*Ei(-2,b*x)/(2+n)+x^3*Ei(n,b*x)/(2+n)],
+[x*Ei(n,b*x),x,1,-x^2*Ei(-1,b*x)/(1+n)+x^2*Ei(n,b*x)/(1+n)],
+[Ei(n,b*x),x,1,-Ei(1+n,b*x)/b],
+[Ei(n,b*x)/x,x,1,Ei(1,b*x)/(1-n)-Ei(n,b*x)/(1-n)],
+[Ei(n,b*x)/x^2,x,1,Ei(2,b*x)/((2-n)*x)-Ei(n,b*x)/((2-n)*x)],
+[Ei(n,b*x)/x^3,x,1,Ei(3,b*x)/((3-n)*x^2)-Ei(n,b*x)/((3-n)*x^2)],
+
+-- Integrands of the form (c+d x)^m ExpIntegralE[n, a+b x]
+
+-- Integrands of the form (c+d x)^m ExpIntegralE[n, a+b x]
+
+-- n>0
+[(c+d*x)^3*Ei(1,a+b*x),x,4,-(c+d*x)^3*Ei(2,a+b*x)/b-3*d*(c+d*x)^2*Ei(3,a+b*x)/b^2-6*d^2*(c+d*x)*Ei(4,a+b*x)/b^3-6*d^3*Ei(5,a+b*x)/b^4],
+[(c+d*x)^2*Ei(1,a+b*x),x,3,-(c+d*x)^2*Ei(2,a+b*x)/b-2*d*(c+d*x)*Ei(3,a+b*x)/b^2-2*d^2*Ei(4,a+b*x)/b^3],
+[(c+d*x)*Ei(1,a+b*x),x,2,-(c+d*x)*Ei(2,a+b*x)/b-d*Ei(3,a+b*x)/b^2],
+[Ei(1,a+b*x),x,1,-Ei(2,a+b*x)/b],
+[Ei(1,a+b*x)/(c+d*x),x,0,Unintegrable(Ei(1,a+b*x)/(c+d*x),x)],
+[Ei(1,a+b*x)/(c+d*x)^2,x,5,-b*Ei(-a-b*x)/(d*(b*c-a*d))+%e^(-a+b*c/d)*b*Ei(-b*(c+d*x)/d)/(d*(b*c-a*d))-Ei(1,a+b*x)/(d*(c+d*x))],
+[Ei(1,a+b*x)/(c+d*x)^3,x,7,-1/2*%e^(-a-b*x)*b/(d*(b*c-a*d)*(c+d*x))-1/2*b^2*Ei(-a-b*x)/(d*(b*c-a*d)^2)+1/2*%e^(-a+b*c/d)*b^2*Ei(-b*(c+d*x)/d)/(d*(b*c-a*d)^2)-1/2*%e^(-a+b*c/d)*b^2*Ei(-b*(c+d*x)/d)/(d^2*(b*c-a*d))-1/2*Ei(1,a+b*x)/(d*(c+d*x)^2)],
+[Ei(1,a+b*x)/(c+d*x)^4,x,10,-1/6*%e^(-a-b*x)*b/(d*(b*c-a*d)*(c+d*x)^2)-1/3*%e^(-a-b*x)*b^2/(d*(b*c-a*d)^2*(c+d*x))+1/6*%e^(-a-b*x)*b^2/(d^2*(b*c-a*d)*(c+d*x))-1/3*b^3*Ei(-a-b*x)/(d*(b*c-a*d)^3)+1/3*%e^(-a+b*c/d)*b^3*Ei(-b*(c+d*x)/d)/(d*(b*c-a*d)^3)-1/3*%e^(-a+b*c/d)*b^3*Ei(-b*(c+d*x)/d)/(d^2*(b*c-a*d)^2)+1/6*%e^(-a+b*c/d)*b^3*Ei(-b*(c+d*x)/d)/(d^3*(b*c-a*d))-1/3*Ei(1,a+b*x)/(d*(c+d*x)^3)],
+[(c+d*x)^3*Ei(2,a+b*x),x,4,-(c+d*x)^3*Ei(3,a+b*x)/b-3*d*(c+d*x)^2*Ei(4,a+b*x)/b^2-6*d^2*(c+d*x)*Ei(5,a+b*x)/b^3-6*d^3*Ei(6,a+b*x)/b^4],
+[(c+d*x)^2*Ei(2,a+b*x),x,3,-(c+d*x)^2*Ei(3,a+b*x)/b-2*d*(c+d*x)*Ei(4,a+b*x)/b^2-2*d^2*Ei(5,a+b*x)/b^3],
+[(c+d*x)*Ei(2,a+b*x),x,2,-(c+d*x)*Ei(3,a+b*x)/b-d*Ei(4,a+b*x)/b^2],
+[Ei(2,a+b*x),x,1,-Ei(3,a+b*x)/b],
+[Ei(2,a+b*x)/(c+d*x),x,0,Unintegrable(Ei(2,a+b*x)/(c+d*x),x)],
+[Ei(2,a+b*x)/(c+d*x)^2,x,1,-Ei(2,a+b*x)/(d*(c+d*x))-b*Unintegrable(Ei(1,a+b*x)/(c+d*x),x)/d],
+[Ei(2,a+b*x)/(c+d*x)^3,x,6,1/2*b^2*Ei(-a-b*x)/(d^2*(b*c-a*d))-1/2*%e^(-a+b*c/d)*b^2*Ei(-b*(c+d*x)/d)/(d^2*(b*c-a*d))+1/2*b*Ei(1,a+b*x)/(d^2*(c+d*x))-1/2*Ei(2,a+b*x)/(d*(c+d*x)^2)],
+[Ei(2,a+b*x)/(c+d*x)^4,x,8,1/6*%e^(-a-b*x)*b^2/(d^2*(b*c-a*d)*(c+d*x))+1/6*b^3*Ei(-a-b*x)/(d^2*(b*c-a*d)^2)-1/6*%e^(-a+b*c/d)*b^3*Ei(-b*(c+d*x)/d)/(d^2*(b*c-a*d)^2)+1/6*%e^(-a+b*c/d)*b^3*Ei(-b*(c+d*x)/d)/(d^3*(b*c-a*d))+1/6*b*Ei(1,a+b*x)/(d^2*(c+d*x)^2)-1/3*Ei(2,a+b*x)/(d*(c+d*x)^3)],
+[(c+d*x)^3*Ei(3,a+b*x),x,4,-(c+d*x)^3*Ei(4,a+b*x)/b-3*d*(c+d*x)^2*Ei(5,a+b*x)/b^2-6*d^2*(c+d*x)*Ei(6,a+b*x)/b^3-6*d^3*Ei(7,a+b*x)/b^4],
+[(c+d*x)^2*Ei(3,a+b*x),x,3,-(c+d*x)^2*Ei(4,a+b*x)/b-2*d*(c+d*x)*Ei(5,a+b*x)/b^2-2*d^2*Ei(6,a+b*x)/b^3],
+[(c+d*x)*Ei(3,a+b*x),x,2,-(c+d*x)*Ei(4,a+b*x)/b-d*Ei(5,a+b*x)/b^2],
+[Ei(3,a+b*x),x,1,-Ei(4,a+b*x)/b],
+[Ei(3,a+b*x)/(c+d*x),x,0,Unintegrable(Ei(3,a+b*x)/(c+d*x),x)],
+[Ei(3,a+b*x)/(c+d*x)^2,x,1,-Ei(3,a+b*x)/(d*(c+d*x))-b*Unintegrable(Ei(2,a+b*x)/(c+d*x),x)/d],
+[Ei(3,a+b*x)/(c+d*x)^3,x,2,1/2*b*Ei(2,a+b*x)/(d^2*(c+d*x))-1/2*Ei(3,a+b*x)/(d*(c+d*x)^2)+1/2*b^2*Unintegrable(Ei(1,a+b*x)/(c+d*x),x)/d^2],
+[Ei(3,a+b*x)/(c+d*x)^4,x,7,-1/6*b^3*Ei(-a-b*x)/(d^3*(b*c-a*d))+1/6*%e^(-a+b*c/d)*b^3*Ei(-b*(c+d*x)/d)/(d^3*(b*c-a*d))-1/6*b^2*Ei(1,a+b*x)/(d^3*(c+d*x))+1/6*b*Ei(2,a+b*x)/(d^2*(c+d*x)^2)-1/3*Ei(3,a+b*x)/(d*(c+d*x)^3)],
+
+-- n<0
+[(c+d*x)^4*Ei(-1,a+b*x),x,10,-8*%e^(-a-b*x)*d^4/b^5-4*%e^(-a-b*x)*d^3*(b*c-a*d)/b^5-4*%e^(-a-b*x)*d^2*(b*c-a*d)^2/b^5-8*%e^(-a-b*x)*d^3*(c+d*x)/b^4-4*%e^(-a-b*x)*d^2*(b*c-a*d)*(c+d*x)/b^4-4*%e^(-a-b*x)*d^2*(c+d*x)^2/b^3-%e^(-a-b*x)*(c+d*x)^4/(b*(a+b*x))+4*d*(b*c-a*d)^3*Ei(-a-b*x)/b^5],
+[(c+d*x)^3*Ei(-1,a+b*x),x,7,-3*%e^(-a-b*x)*d^3/b^4-3*%e^(-a-b*x)*d^2*(b*c-a*d)/b^4-3*%e^(-a-b*x)*d^2*(c+d*x)/b^3-%e^(-a-b*x)*(c+d*x)^3/(b*(a+b*x))+3*d*(b*c-a*d)^2*Ei(-a-b*x)/b^4],
+[(c+d*x)^2*Ei(-1,a+b*x),x,5,-2*%e^(-a-b*x)*d^2/b^3-%e^(-a-b*x)*(c+d*x)^2/(b*(a+b*x))+2*d*(b*c-a*d)*Ei(-a-b*x)/b^3],
+[(c+d*x)*Ei(-1,a+b*x),x,2,-%e^(-a-b*x)*(c+d*x)/(b*(a+b*x))+d*Ei(-a-b*x)/b^2],
+[Ei(-1,a+b*x),x,1,-%e^(-a-b*x)/(b*(a+b*x))],
+[Ei(-1,a+b*x)/(c+d*x),x,7,-%e^(-a-b*x)*d/(b*(b*c-a*d)*(c+d*x))-%e^(-a-b*x)/(b*(a+b*x)*(c+d*x))-d*Ei(-a-b*x)/(b*c-a*d)^2+%e^(-a+b*c/d)*d*Ei(-b*(c+d*x)/d)/(b*c-a*d)^2-%e^(-a+b*c/d)*Ei(-b*(c+d*x)/d)/(b*c-a*d)],
+[Ei(-1,a+b*x)/(c+d*x)^2,x,10,-%e^(-a-b*x)*d/(b*(b*c-a*d)*(c+d*x)^2)-%e^(-a-b*x)/(b*(a+b*x)*(c+d*x)^2)-2*%e^(-a-b*x)*d/((b*c-a*d)^2*(c+d*x))+%e^(-a-b*x)/((b*c-a*d)*(c+d*x))-2*b*d*Ei(-a-b*x)/(b*c-a*d)^3+2*%e^(-a+b*c/d)*b*d*Ei(-b*(c+d*x)/d)/(b*c-a*d)^3-2*%e^(-a+b*c/d)*b*Ei(-b*(c+d*x)/d)/(b*c-a*d)^2+%e^(-a+b*c/d)*b*Ei(-b*(c+d*x)/d)/(d*(b*c-a*d))],
+[Ei(-1,a+b*x)/(c+d*x)^3,x,14,-%e^(-a-b*x)*d/(b*(b*c-a*d)*(c+d*x)^3)-%e^(-a-b*x)/(b*(a+b*x)*(c+d*x)^3)-3/2*%e^(-a-b*x)*d/((b*c-a*d)^2*(c+d*x)^2)+1/2*%e^(-a-b*x)/((b*c-a*d)*(c+d*x)^2)-3*%e^(-a-b*x)*b*d/((b*c-a*d)^3*(c+d*x))+3/2*%e^(-a-b*x)*b/((b*c-a*d)^2*(c+d*x))-1/2*%e^(-a-b*x)*b/(d*(b*c-a*d)*(c+d*x))-3*b^2*d*Ei(-a-b*x)/(b*c-a*d)^4+3*%e^(-a+b*c/d)*b^2*d*Ei(-b*(c+d*x)/d)/(b*c-a*d)^4-3*%e^(-a+b*c/d)*b^2*Ei(-b*(c+d*x)/d)/(b*c-a*d)^3+3/2*%e^(-a+b*c/d)*b^2*Ei(-b*(c+d*x)/d)/(d*(b*c-a*d)^2)-1/2*%e^(-a+b*c/d)*b^2*Ei(-b*(c+d*x)/d)/(d^2*(b*c-a*d))],
+[(c+d*x)^4*Ei(-2,a+b*x),x,8,-12*%e^(-a-b*x)*d^4/b^5-12*%e^(-a-b*x)*d^3*(b*c-a*d)/b^5-12*%e^(-a-b*x)*d^3*(c+d*x)/b^4-4*%e^(-a-b*x)*d*(c+d*x)^3/(b^2*(a+b*x))+12*d^2*(b*c-a*d)^2*Ei(-a-b*x)/b^5-(c+d*x)^4*Ei(-1,a+b*x)/b],
+[(c+d*x)^3*Ei(-2,a+b*x),x,6,-6*%e^(-a-b*x)*d^3/b^4-3*%e^(-a-b*x)*d*(c+d*x)^2/(b^2*(a+b*x))+6*d^2*(b*c-a*d)*Ei(-a-b*x)/b^4-(c+d*x)^3*Ei(-1,a+b*x)/b],
+[(c+d*x)^2*Ei(-2,a+b*x),x,3,-2*%e^(-a-b*x)*d*(c+d*x)/(b^2*(a+b*x))+2*d^2*Ei(-a-b*x)/b^3-(c+d*x)^2*Ei(-1,a+b*x)/b],
+[(c+d*x)*Ei(-2,a+b*x),x,2,-%e^(-a-b*x)*d/(b^2*(a+b*x))-(c+d*x)*Ei(-1,a+b*x)/b],
+[Ei(-2,a+b*x),x,1,-Ei(-1,a+b*x)/b],
+[Ei(-2,a+b*x)/(c+d*x),x,11,%e^(-a-b*x)*d^2/(b^2*(b*c-a*d)*(c+d*x)^2)+%e^(-a-b*x)*d/(b^2*(a+b*x)*(c+d*x)^2)+2*%e^(-a-b*x)*d^2/(b*(b*c-a*d)^2*(c+d*x))-%e^(-a-b*x)*d/(b*(b*c-a*d)*(c+d*x))+2*d^2*Ei(-a-b*x)/(b*c-a*d)^3-2*%e^(-a+b*c/d)*d^2*Ei(-b*(c+d*x)/d)/(b*c-a*d)^3+2*%e^(-a+b*c/d)*d*Ei(-b*(c+d*x)/d)/(b*c-a*d)^2-%e^(-a+b*c/d)*Ei(-b*(c+d*x)/d)/(b*c-a*d)-Ei(-1,a+b*x)/(b*(c+d*x))],
+[Ei(-2,a+b*x)/(c+d*x)^2,x,15,2*%e^(-a-b*x)*d^2/(b^2*(b*c-a*d)*(c+d*x)^3)+2*%e^(-a-b*x)*d/(b^2*(a+b*x)*(c+d*x)^3)+3*%e^(-a-b*x)*d^2/(b*(b*c-a*d)^2*(c+d*x)^2)-%e^(-a-b*x)*d/(b*(b*c-a*d)*(c+d*x)^2)+6*%e^(-a-b*x)*d^2/((b*c-a*d)^3*(c+d*x))-3*%e^(-a-b*x)*d/((b*c-a*d)^2*(c+d*x))+%e^(-a-b*x)/((b*c-a*d)*(c+d*x))+6*b*d^2*Ei(-a-b*x)/(b*c-a*d)^4-6*%e^(-a+b*c/d)*b*d^2*Ei(-b*(c+d*x)/d)/(b*c-a*d)^4+6*%e^(-a+b*c/d)*b*d*Ei(-b*(c+d*x)/d)/(b*c-a*d)^3-3*%e^(-a+b*c/d)*b*Ei(-b*(c+d*x)/d)/(b*c-a*d)^2+%e^(-a+b*c/d)*b*Ei(-b*(c+d*x)/d)/(d*(b*c-a*d))-Ei(-1,a+b*x)/(b*(c+d*x)^2)],
+[Ei(-2,a+b*x)/(c+d*x)^3,x,20,3*%e^(-a-b*x)*d^2/(b^2*(b*c-a*d)*(c+d*x)^4)+3*%e^(-a-b*x)*d/(b^2*(a+b*x)*(c+d*x)^4)+4*%e^(-a-b*x)*d^2/(b*(b*c-a*d)^2*(c+d*x)^3)-%e^(-a-b*x)*d/(b*(b*c-a*d)*(c+d*x)^3)+6*%e^(-a-b*x)*d^2/((b*c-a*d)^3*(c+d*x)^2)-2*%e^(-a-b*x)*d/((b*c-a*d)^2*(c+d*x)^2)+1/2*%e^(-a-b*x)/((b*c-a*d)*(c+d*x)^2)+12*%e^(-a-b*x)*b*d^2/((b*c-a*d)^4*(c+d*x))-6*%e^(-a-b*x)*b*d/((b*c-a*d)^3*(c+d*x))+2*%e^(-a-b*x)*b/((b*c-a*d)^2*(c+d*x))-1/2*%e^(-a-b*x)*b/(d*(b*c-a*d)*(c+d*x))+12*b^2*d^2*Ei(-a-b*x)/(b*c-a*d)^5-12*%e^(-a+b*c/d)*b^2*d^2*Ei(-b*(c+d*x)/d)/(b*c-a*d)^5+12*%e^(-a+b*c/d)*b^2*d*Ei(-b*(c+d*x)/d)/(b*c-a*d)^4-6*%e^(-a+b*c/d)*b^2*Ei(-b*(c+d*x)/d)/(b*c-a*d)^3+2*%e^(-a+b*c/d)*b^2*Ei(-b*(c+d*x)/d)/(d*(b*c-a*d)^2)-1/2*%e^(-a+b*c/d)*b^2*Ei(-b*(c+d*x)/d)/(d^2*(b*c-a*d))-Ei(-1,a+b*x)/(b*(c+d*x)^3)],
+[(c+d*x)^4*Ei(-3,a+b*x),x,7,-24*%e^(-a-b*x)*d^4/b^5-12*%e^(-a-b*x)*d^2*(c+d*x)^2/(b^3*(a+b*x))+24*d^3*(b*c-a*d)*Ei(-a-b*x)/b^5-(c+d*x)^4*Ei(-2,a+b*x)/b-4*d*(c+d*x)^3*Ei(-1,a+b*x)/b^2],
+[(c+d*x)^3*Ei(-3,a+b*x),x,4,-6*%e^(-a-b*x)*d^2*(c+d*x)/(b^3*(a+b*x))+6*d^3*Ei(-a-b*x)/b^4-(c+d*x)^3*Ei(-2,a+b*x)/b-3*d*(c+d*x)^2*Ei(-1,a+b*x)/b^2],
+[(c+d*x)^2*Ei(-3,a+b*x),x,3,-2*%e^(-a-b*x)*d^2/(b^3*(a+b*x))-(c+d*x)^2*Ei(-2,a+b*x)/b-2*d*(c+d*x)*Ei(-1,a+b*x)/b^2],
+[(c+d*x)*Ei(-3,a+b*x),x,2,-(c+d*x)*Ei(-2,a+b*x)/b-d*Ei(-1,a+b*x)/b^2],
+[Ei(-3,a+b*x),x,1,-Ei(-2,a+b*x)/b],
+[Ei(-3,a+b*x)/(c+d*x),x,16,-2*%e^(-a-b*x)*d^3/(b^3*(b*c-a*d)*(c+d*x)^3)-2*%e^(-a-b*x)*d^2/(b^3*(a+b*x)*(c+d*x)^3)-3*%e^(-a-b*x)*d^3/(b^2*(b*c-a*d)^2*(c+d*x)^2)+%e^(-a-b*x)*d^2/(b^2*(b*c-a*d)*(c+d*x)^2)-6*%e^(-a-b*x)*d^3/(b*(b*c-a*d)^3*(c+d*x))+3*%e^(-a-b*x)*d^2/(b*(b*c-a*d)^2*(c+d*x))-%e^(-a-b*x)*d/(b*(b*c-a*d)*(c+d*x))-6*d^3*Ei(-a-b*x)/(b*c-a*d)^4+6*%e^(-a+b*c/d)*d^3*Ei(-b*(c+d*x)/d)/(b*c-a*d)^4-6*%e^(-a+b*c/d)*d^2*Ei(-b*(c+d*x)/d)/(b*c-a*d)^3+3*%e^(-a+b*c/d)*d*Ei(-b*(c+d*x)/d)/(b*c-a*d)^2-%e^(-a+b*c/d)*Ei(-b*(c+d*x)/d)/(b*c-a*d)-Ei(-2,a+b*x)/(b*(c+d*x))+d*Ei(-1,a+b*x)/(b^2*(c+d*x)^2)],
+[Ei(-3,a+b*x)/(c+d*x)^2,x,21,-6*%e^(-a-b*x)*d^3/(b^3*(b*c-a*d)*(c+d*x)^4)-6*%e^(-a-b*x)*d^2/(b^3*(a+b*x)*(c+d*x)^4)-8*%e^(-a-b*x)*d^3/(b^2*(b*c-a*d)^2*(c+d*x)^3)+2*%e^(-a-b*x)*d^2/(b^2*(b*c-a*d)*(c+d*x)^3)-12*%e^(-a-b*x)*d^3/(b*(b*c-a*d)^3*(c+d*x)^2)+4*%e^(-a-b*x)*d^2/(b*(b*c-a*d)^2*(c+d*x)^2)-%e^(-a-b*x)*d/(b*(b*c-a*d)*(c+d*x)^2)-24*%e^(-a-b*x)*d^3/((b*c-a*d)^4*(c+d*x))+12*%e^(-a-b*x)*d^2/((b*c-a*d)^3*(c+d*x))-4*%e^(-a-b*x)*d/((b*c-a*d)^2*(c+d*x))+%e^(-a-b*x)/((b*c-a*d)*(c+d*x))-24*b*d^3*Ei(-a-b*x)/(b*c-a*d)^5+24*%e^(-a+b*c/d)*b*d^3*Ei(-b*(c+d*x)/d)/(b*c-a*d)^5-24*%e^(-a+b*c/d)*b*d^2*Ei(-b*(c+d*x)/d)/(b*c-a*d)^4+12*%e^(-a+b*c/d)*b*d*Ei(-b*(c+d*x)/d)/(b*c-a*d)^3-4*%e^(-a+b*c/d)*b*Ei(-b*(c+d*x)/d)/(b*c-a*d)^2+%e^(-a+b*c/d)*b*Ei(-b*(c+d*x)/d)/(d*(b*c-a*d))-Ei(-2,a+b*x)/(b*(c+d*x)^2)+2*d*Ei(-1,a+b*x)/(b^2*(c+d*x)^3)],
+
+-- Integrands of the form (c+d x)^m ExpIntegralE[n, a+b x] when m symbolic
+[(c+d*x)^m*Ei(3,a+b*x),x,3,b^2*(c+d*x)^(3+m)*Ei(1,a+b*x)/(d^3*(3+m)*(2+3*m+m^2))+b*(c+d*x)^(2+m)*Ei(2,a+b*x)/(d^2*(1+m)*(2+m))+(c+d*x)^(1+m)*Ei(3,a+b*x)/(d*(1+m))+b^3*Int(%e^(-a-b*x)*(c+d*x)^(3+m)/(a+b*x),x)/(d^3*(3+m)*(2+3*m+m^2))],
+[(c+d*x)^m*Ei(2,a+b*x),x,2,b^2*CannotIntegrate(%e^(-a-b*x)*(c+d*x)^(2+m)/(a+b*x),x)/(d^2*(1+m)*(2+m))+b*(c+d*x)^(2+m)*Ei(1,a+b*x)/(d^2*(1+m)*(2+m))+(c+d*x)^(1+m)*Ei(2,a+b*x)/(d*(1+m))],
+[(c+d*x)^m*Ei(1,a+b*x),x,1,b*CannotIntegrate(%e^(-a-b*x)*(c+d*x)^(1+m)/(a+b*x),x)/(d*(1+m))+(c+d*x)^(1+m)*Ei(1,a+b*x)/(d*(1+m))],
+[(c+d*x)^m*Ei(-1,a+b*x),x,1,-%e^(-a-b*x)*(c+d*x)^m/(b*(a+b*x))+d*m*CannotIntegrate(%e^(-a-b*x)*(c+d*x)^(-1+m)/(a+b*x),x)/b],
+[(c+d*x)^m*Ei(-2,a+b*x),x,2,-%e^(-a-b*x)*d*m*(c+d*x)^(-1+m)/(b^2*(a+b*x))-d^2*(1-m)*m*CannotIntegrate(%e^(-a-b*x)*(c+d*x)^(-2+m)/(a+b*x),x)/b^2-(c+d*x)^m*Ei(-1,a+b*x)/b],
+[(c+d*x)^m*Ei(-3,a+b*x),x,3,%e^(-a-b*x)*d^2*(1-m)*m*(c+d*x)^(-2+m)/(b^3*(a+b*x))+d^3*(1-m)*(2-m)*m*CannotIntegrate(%e^(-a-b*x)*(c+d*x)^(-3+m)/(a+b*x),x)/b^3-(c+d*x)^m*Ei(-2,a+b*x)/b-d*m*(c+d*x)^(-1+m)*Ei(-1,a+b*x)/b^2],
+
+-- Integrands of the form (c+d x)^m ExpIntegralE[n, a+b x] when n symbolic
+[(c+d*x)^m*Ei(n,a+b*x),x,0,Unintegrable((c+d*x)^m*Ei(n,a+b*x),x)],
+[(c+d*x)^3*Ei(n,a+b*x),x,4,-(c+d*x)^3*Ei(1+n,a+b*x)/b-3*d*(c+d*x)^2*Ei(2+n,a+b*x)/b^2-6*d^2*(c+d*x)*Ei(3+n,a+b*x)/b^3-6*d^3*Ei(4+n,a+b*x)/b^4],
+[(c+d*x)^2*Ei(n,a+b*x),x,3,-(c+d*x)^2*Ei(1+n,a+b*x)/b-2*d*(c+d*x)*Ei(2+n,a+b*x)/b^2-2*d^2*Ei(3+n,a+b*x)/b^3],
+[(c+d*x)*Ei(n,a+b*x),x,2,-(c+d*x)*Ei(1+n,a+b*x)/b-d*Ei(2+n,a+b*x)/b^2],
+[Ei(n,a+b*x),x,1,-Ei(1+n,a+b*x)/b],
+[Ei(n,a+b*x)/(c+d*x),x,0,Unintegrable(Ei(n,a+b*x)/(c+d*x),x)],
+[Ei(n,a+b*x)/(c+d*x)^2,x,0,Unintegrable(Ei(n,a+b*x)/(c+d*x)^2,x)],
+
+-- Integrands of the form (d x)^m ExpIntegralEi[b x]^n
+
+-- Integrands of the form x^m ExpIntegralEi[b x]^n
+
+-- n>0
+[x^3*Ei(b*x),x,6,3/2*%e^(b*x)/b^4-3/2*%e^(b*x)*x/b^3+3/4*%e^(b*x)*x^2/b^2-1/4*%e^(b*x)*x^3/b+1/4*x^4*Ei(b*x)],
+[x^2*Ei(b*x),x,5,-2/3*%e^(b*x)/b^3+2/3*%e^(b*x)*x/b^2-1/3*%e^(b*x)*x^2/b+1/3*x^3*Ei(b*x)],
+[x*Ei(b*x),x,4,1/2*%e^(b*x)/b^2-1/2*%e^(b*x)*x/b+1/2*x^2*Ei(b*x)],
+[Ei(b*x),x,1,-%e^(b*x)/b+x*Ei(b*x)],
+[Ei(b*x)/x,x,2,b*x*HypergeometricPFQ([1,1,1],[2,2,2],b*x)+EulerGamma*log(x)+(Ei(b*x)+Ei(1,-b*x))*log(x)+1/2*log(-b*x)^2],
+[Ei(b*x)/x^2,x,4,-%e^(b*x)/x+b*Ei(b*x)-Ei(b*x)/x],
+[Ei(b*x)/x^3,x,5,-1/4*%e^(b*x)/x^2-1/4*%e^(b*x)*b/x+1/4*b^2*Ei(b*x)-1/2*Ei(b*x)/x^2],
+[Ei(b*x)/x^4,x,6,-1/9*%e^(b*x)/x^3-1/18*%e^(b*x)*b/x^2-1/18*%e^(b*x)*b^2/x+1/18*b^3*Ei(b*x)-1/3*Ei(b*x)/x^3],
+[x^2*Ei(b*x)^2,x,11,-5/6*%e^(2*b*x)/b^3+1/3*%e^(2*b*x)*x/b^2-4/3*%e^(b*x)*Ei(b*x)/b^3+4/3*%e^(b*x)*x*Ei(b*x)/b^2-2/3*%e^(b*x)*x^2*Ei(b*x)/b+1/3*x^3*Ei(b*x)^2+4/3*Ei(2*b*x)/b^3],
+[x*Ei(b*x)^2,x,7,1/2*%e^(2*b*x)/b^2+%e^(b*x)*Ei(b*x)/b^2-%e^(b*x)*x*Ei(b*x)/b+1/2*x^2*Ei(b*x)^2-Ei(2*b*x)/b^2],
+[Ei(b*x)^2,x,4,-2*%e^(b*x)*Ei(b*x)/b+x*Ei(b*x)^2+2*Ei(2*b*x)/b],
+[Ei(b*x)^2/x,x,0,CannotIntegrate(Ei(b*x)^2/x,x)],
+[Ei(b*x)^2/x^2,x,0,CannotIntegrate(Ei(b*x)^2/x^2,x)],
+
+-- n<0
+
+-- Integrands of the form (d x)^m ExpIntegralEi[b x]^n with m symbolic
+[(d*x)^m*Ei(b*x)^3,x,0,CannotIntegrate((d*x)^m*Ei(b*x)^3,x)],
+[(d*x)^m*Ei(b*x)^2,x,0,CannotIntegrate((d*x)^m*Ei(b*x)^2,x)],
+[(d*x)^m*Ei(b*x),x,4,(d*x)^(1+m)*Ei(b*x)/(d*(1+m))-(d*x)^m*GAMMA(1+m,-b*x)/(b*(1+m)*(-b*x)^m)],
+[(d*x)^m/Ei(b*x),x,0,CannotIntegrate((d*x)^m/Ei(b*x),x)],
+[(d*x)^m/Ei(b*x)^2,x,0,CannotIntegrate((d*x)^m/Ei(b*x)^2,x)],
+
+-- Integrands of the form (c+d x)^m ExpIntegralEi[a+b x]^n
+
+-- Integrands of the form (c+d x)^m ExpIntegralEi[a+b x]^n
+
+-- n>0
+[x^3*Ei(a+b*x),x,14,3/2*%e^(a+b*x)/b^4+1/2*%e^(a+b*x)*a/b^4+1/4*%e^(a+b*x)*a^2/b^4+1/4*%e^(a+b*x)*a^3/b^4-3/2*%e^(a+b*x)*x/b^3-1/2*%e^(a+b*x)*a*x/b^3-1/4*%e^(a+b*x)*a^2*x/b^3+3/4*%e^(a+b*x)*x^2/b^2+1/4*%e^(a+b*x)*a*x^2/b^2-1/4*%e^(a+b*x)*x^3/b-1/4*a^4*Ei(a+b*x)/b^4+1/4*x^4*Ei(a+b*x)],
+[x^2*Ei(a+b*x),x,10,-2/3*%e^(a+b*x)/b^3-1/3*%e^(a+b*x)*a/b^3-1/3*%e^(a+b*x)*a^2/b^3+2/3*%e^(a+b*x)*x/b^2+1/3*%e^(a+b*x)*a*x/b^2-1/3*%e^(a+b*x)*x^2/b+1/3*a^3*Ei(a+b*x)/b^3+1/3*x^3*Ei(a+b*x)],
+[x*Ei(a+b*x),x,7,1/2*%e^(a+b*x)/b^2+1/2*%e^(a+b*x)*a/b^2-1/2*%e^(a+b*x)*x/b-1/2*a^2*Ei(a+b*x)/b^2+1/2*x^2*Ei(a+b*x)],
+[Ei(a+b*x),x,1,-%e^(a+b*x)/b+(a+b*x)*Ei(a+b*x)/b],
+[Ei(a+b*x)/x,x,0,Unintegrable(Ei(a+b*x)/x,x)],
+[Ei(a+b*x)/x^2,x,5,%e^a*b*Ei(b*x)/a-b*Ei(a+b*x)/a-Ei(a+b*x)/x],
+[Ei(a+b*x)/x^3,x,7,-1/2*%e^(a+b*x)*b/(a*x)-1/2*%e^a*b^2*Ei(b*x)/a^2+1/2*%e^a*b^2*Ei(b*x)/a+1/2*b^2*Ei(a+b*x)/a^2-1/2*Ei(a+b*x)/x^2],
+
+--  {x^3*ExpIntegralEi[a + b*x]^2, x, 51, (2*E^(2*a + 2*b*x))/b^4 + (3*a*E^(2*a + 2*b*x))/(2*b^4) + (3*a^2*E^(2*a + 2*b*x))/(4*b^4) - (E^(2*a + 2*b*x)*x)/b^3 - (a*E^(2*a + 2*b*x)*x)/(2*b^3) + (E^(2*a + 2*b*x)*x^2)/(4*b^2) + (3*E^(a + b*x)*ExpIntegralEi[a + b*x])/b^4 + (a*E^(a + b*x)*ExpIntegralEi[a + b*x])/b^4 + (a^2*E^(a + b*x)*ExpIntegralEi[a + b*x])/(2*b^4) + (a^3*E^(a + b*x)*ExpIntegralEi[a + b*x])/(2*b^4) - (3*E^(a + b*x)*x*ExpIntegralEi[a + b*x])/b^3 - (a*E^(a + b*x)*x*ExpIntegralEi[a + b*x])/b^3 - (a^2*E^(a + b*x)*x*ExpIntegralEi[a + b*x])/(2*b^3) + (3*E^(a + b*x)*x^2*ExpIntegralEi[a + b*x])/(2*b^2) + (a*E^(a + b*x)*x^2*ExpIntegralEi[a + b*x])/(2*b^2) - (E^(a + b*x)*x^3*ExpIntegralEi[a + b*x])/(2*b) + (a^3*x*ExpIntegralEi[a + b*x]^2)/(4*b^3) + (1/4)*x^4*ExpIntegralEi[a + b*x]^2 - (a^3*(a + b*x)*ExpIntegralEi[a + b*x]^2)/(4*b^4) - (3*ExpIntegralEi[2*a + 2*b*x])/b^4 - (4*a*ExpIntegralEi[2*a + 2*b*x])/b^4 - (3*a^2*ExpIntegralEi[2*a + 2*b*x])/b^4 - (2*a^3*ExpIntegralEi[2*a + 2*b*x])/b^4} 
+[x^2*Ei(a+b*x)^2,x,26,-5/6*%e^(2*a+2*b*x)/b^3-2/3*%e^(2*a+2*b*x)*a/b^3+1/3*%e^(2*a+2*b*x)*x/b^2-4/3*%e^(a+b*x)*Ei(a+b*x)/b^3-2/3*%e^(a+b*x)*a*Ei(a+b*x)/b^3-2/3*%e^(a+b*x)*a^2*Ei(a+b*x)/b^3+4/3*%e^(a+b*x)*x*Ei(a+b*x)/b^2+2/3*%e^(a+b*x)*a*x*Ei(a+b*x)/b^2-2/3*%e^(a+b*x)*x^2*Ei(a+b*x)/b-1/3*a^2*x*Ei(a+b*x)^2/b^2+1/3*x^3*Ei(a+b*x)^2+1/3*a^2*(a+b*x)*Ei(a+b*x)^2/b^3+4/3*Ei(2*(a+b*x))/b^3+2*a*Ei(2*(a+b*x))/b^3+2*a^2*Ei(2*(a+b*x))/b^3],
+[x*Ei(a+b*x)^2,x,11,1/2*%e^(2*a+2*b*x)/b^2+%e^(a+b*x)*Ei(a+b*x)/b^2+%e^(a+b*x)*a*Ei(a+b*x)/b^2-%e^(a+b*x)*x*Ei(a+b*x)/b+1/2*a*x*Ei(a+b*x)^2/b+1/2*x^2*Ei(a+b*x)^2-1/2*a*(a+b*x)*Ei(a+b*x)^2/b^2-Ei(2*(a+b*x))/b^2-2*a*Ei(2*(a+b*x))/b^2],
+[Ei(a+b*x)^2,x,3,-2*%e^(a+b*x)*Ei(a+b*x)/b+(a+b*x)*Ei(a+b*x)^2/b+2*Ei(2*(a+b*x))/b],
+[Ei(a+b*x)^2/x,x,0,CannotIntegrate(Ei(a+b*x)^2/x,x)],
+[Ei(a+b*x)^2/x^2,x,0,CannotIntegrate(Ei(a+b*x)^2/x^2,x)],
+[x^2*Ei(a+b*x)^3,x,0,CannotIntegrate(x^2*Ei(a+b*x)^3,x)],
+[x*Ei(a+b*x)^3,x,0,CannotIntegrate(x*Ei(a+b*x)^3,x)],
+[Ei(a+b*x)^3,x,1,CannotIntegrate(Ei(a+b*x)^3,x)],
+[Ei(a+b*x)^3/x,x,0,CannotIntegrate(Ei(a+b*x)^3/x,x)],
+[Ei(a+b*x)^3/x^2,x,0,CannotIntegrate(Ei(a+b*x)^3/x^2,x)],
+
+-- n<0
+
+-- Integrands of the form (c+d x)^m ExpIntegralEi[a+b x]^n with m symbolic
+[(c+d*x)^m*Ei(a+b*x)^3,x,0,CannotIntegrate((c+d*x)^m*Ei(a+b*x)^3,x)],
+[(c+d*x)^m*Ei(a+b*x)^2,x,0,CannotIntegrate((c+d*x)^m*Ei(a+b*x)^2,x)],
+[(c+d*x)^m*Ei(a+b*x),x,1,-b*CannotIntegrate(%e^(a+b*x)*(c+d*x)^(1+m)/(a+b*x),x)/(d*(1+m))+(c+d*x)^(1+m)*Ei(a+b*x)/(d*(1+m))],
+[(c+d*x)^m/Ei(a+b*x),x,0,CannotIntegrate((c+d*x)^m/Ei(a+b*x),x)],
+[(c+d*x)^m/Ei(a+b*x)^2,x,0,CannotIntegrate((c+d*x)^m/Ei(a+b*x)^2,x)],
+
+-- Integrands of the form (e x)^m ExpIntegralEi[d (a+b Log[c x^n])]
+[x^2*Ei(d*(a+b*log(c*x^n))),x,3,1/3*x^3*Ei(d*(a+b*log(c*x^n)))-1/3*x^3*Ei((3+b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(3*a/(b*n))*(c*x^n)^(3/n))],
+[x*Ei(d*(a+b*log(c*x^n))),x,3,1/2*x^2*Ei(d*(a+b*log(c*x^n)))-1/2*x^2*Ei((2+b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(2*a/(b*n))*(c*x^n)^(2/n))],
+[Ei(d*(a+b*log(c*x^n))),x,4,x*Ei(d*(a+b*log(c*x^n)))-x*Ei((1+b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(a/(b*n))*(c*x^n)^(1/n))],
+[Ei(d*(a+b*log(c*x^n)))/x,x,3,-%e^(a*d)*(c*x^n)^(b*d)/(b*d*n)+Ei(d*(a+b*log(c*x^n)))*(a+b*log(c*x^n))/(b*n)],
+[Ei(d*(a+b*log(c*x^n)))/x^2,x,3,-Ei(d*(a+b*log(c*x^n)))/x+%e^(a/(b*n))*(c*x^n)^(1/n)*Ei(-(1-b*d*n)*(a+b*log(c*x^n))/(b*n))/x],
+[Ei(d*(a+b*log(c*x^n)))/x^3,x,3,-1/2*Ei(d*(a+b*log(c*x^n)))/x^2+1/2*%e^(2*a/(b*n))*(c*x^n)^(2/n)*Ei(-(2-b*d*n)*(a+b*log(c*x^n))/(b*n))/x^2],
+[(e*x)^m*Ei(d*(a+b*log(c*x^n))),x,3,(e*x)^(1+m)*Ei(d*(a+b*log(c*x^n)))/(e*(1+m))-(e*x)^(1+m)*Ei((1+m+b*d*n)*(a+b*log(c*x^n))/(b*n))/(%e^(a*(1+m)/(b*n))*e*(1+m)*(c*x^n)^((1+m)/n))],
+
+-- Integrands of the form x^m E^(a+b x) ExpIntegralEi[c+d x]^n
+
+-- Integrands of the form x^m E^(b x) ExpIntegralEi[b x]^n
+
+--  Integrands of x^m*E^(b*x)*ExpIntegralEi[b*x] where m is an integer 
+[%e^(b*x)*Ei(b*x)/x^3,x,10,-1/4*%e^(2*b*x)/x^2-%e^(2*b*x)*b/x-1/2*%e^(b*x)*Ei(b*x)/x^2-1/2*%e^(b*x)*b*Ei(b*x)/x+1/4*b^2*Ei(b*x)^2+2*b^2*Ei(2*b*x)],
+[%e^(b*x)*Ei(b*x)/x^2,x,5,-%e^(2*b*x)/x-%e^(b*x)*Ei(b*x)/x+1/2*b*Ei(b*x)^2+2*b*Ei(2*b*x)],
+[%e^(b*x)*Ei(b*x)/x,x,1,1/2*Ei(b*x)^2],
+[%e^(b*x)*Ei(b*x),x,3,%e^(b*x)*Ei(b*x)/b-Ei(2*b*x)/b],
+[%e^(b*x)*x*Ei(b*x),x,6,-1/2*%e^(2*b*x)/b^2-%e^(b*x)*Ei(b*x)/b^2+%e^(b*x)*x*Ei(b*x)/b+Ei(2*b*x)/b^2],
+[%e^(b*x)*x^2*Ei(b*x),x,10,5/4*%e^(2*b*x)/b^3-1/2*%e^(2*b*x)*x/b^2+2*%e^(b*x)*Ei(b*x)/b^3-2*%e^(b*x)*x*Ei(b*x)/b^2+%e^(b*x)*x^2*Ei(b*x)/b-2*Ei(2*b*x)/b^3],
+[%e^(b*x)*x^3*Ei(b*x),x,15,-4*%e^(2*b*x)/b^4+2*%e^(2*b*x)*x/b^3-1/2*%e^(2*b*x)*x^2/b^2-6*%e^(b*x)*Ei(b*x)/b^4+6*%e^(b*x)*x*Ei(b*x)/b^3-3*%e^(b*x)*x^2*Ei(b*x)/b^2+%e^(b*x)*x^3*Ei(b*x)/b+6*Ei(2*b*x)/b^4],
+
+-- Integrands of the form x^m E^(a+b x) ExpIntegralEi[c+d x]^n
+[%e^(a+b*x)*x^3*Ei(c+d*x),x,24,-2*%e^(a+c+(b+d)*x)/(b*(b+d)^3)-3*%e^(a+c+(b+d)*x)/(b^2*(b+d)^2)-%e^(a+c+(b+d)*x)*c/(b*d*(b+d)^2)-6*%e^(a+c+(b+d)*x)/(b^3*(b+d))-%e^(a+c+(b+d)*x)*c^2/(b*d^2*(b+d))-3*%e^(a+c+(b+d)*x)*c/(b^2*d*(b+d))+2*%e^(a+c+(b+d)*x)*x/(b*(b+d)^2)+3*%e^(a+c+(b+d)*x)*x/(b^2*(b+d))+%e^(a+c+(b+d)*x)*c*x/(b*d*(b+d))-%e^(a+c+(b+d)*x)*x^2/(b*(b+d))-6*%e^(a+b*x)*Ei(c+d*x)/b^4+6*%e^(a+b*x)*x*Ei(c+d*x)/b^3-3*%e^(a+b*x)*x^2*Ei(c+d*x)/b^2+%e^(a+b*x)*x^3*Ei(c+d*x)/b+6*%e^(a-b*c/d)*Ei((b+d)*(c+d*x)/d)/b^4+%e^(a-b*c/d)*c^3*Ei((b+d)*(c+d*x)/d)/(b*d^3)+3*%e^(a-b*c/d)*c^2*Ei((b+d)*(c+d*x)/d)/(b^2*d^2)+6*%e^(a-b*c/d)*c*Ei((b+d)*(c+d*x)/d)/(b^3*d)],
+[%e^(a+b*x)*x^2*Ei(c+d*x),x,14,%e^(a+c+(b+d)*x)/(b*(b+d)^2)+2*%e^(a+c+(b+d)*x)/(b^2*(b+d))+%e^(a+c+(b+d)*x)*c/(b*d*(b+d))-%e^(a+c+(b+d)*x)*x/(b*(b+d))+2*%e^(a+b*x)*Ei(c+d*x)/b^3-2*%e^(a+b*x)*x*Ei(c+d*x)/b^2+%e^(a+b*x)*x^2*Ei(c+d*x)/b-2*%e^(a-b*c/d)*Ei((b+d)*(c+d*x)/d)/b^3-%e^(a-b*c/d)*c^2*Ei((b+d)*(c+d*x)/d)/(b*d^2)-2*%e^(a-b*c/d)*c*Ei((b+d)*(c+d*x)/d)/(b^2*d)],
+[%e^(a+b*x)*x*Ei(c+d*x),x,7,-%e^(a+c+(b+d)*x)/(b*(b+d))-%e^(a+b*x)*Ei(c+d*x)/b^2+%e^(a+b*x)*x*Ei(c+d*x)/b+%e^(a-b*c/d)*Ei((b+d)*(c+d*x)/d)/b^2+%e^(a-b*c/d)*c*Ei((b+d)*(c+d*x)/d)/(b*d)],
+[%e^(a+b*x)*Ei(c+d*x),x,2,%e^(a+b*x)*Ei(c+d*x)/b-%e^(a-b*c/d)*Ei((b+d)*(c+d*x)/d)/b],
+[%e^(a+b*x)*Ei(c+d*x)/x,x,0,CannotIntegrate(%e^(a+b*x)*Ei(c+d*x)/x,x)],
+[%e^(a+b*x)*Ei(c+d*x)/x^2,x,5,b*CannotIntegrate(%e^(a+b*x)*Ei(c+d*x)/x,x)+%e^(a+c)*d*Ei((b+d)*x)/c-%e^(a+b*x)*Ei(c+d*x)/x-%e^(a-b*c/d)*d*Ei((b+d)*(c+d*x)/d)/c],
+[%e^(a+b*x)*Ei(c+d*x)/x^3,x,12,-1/2*%e^(a+c+(b+d)*x)*d/(c*x)+1/2*b^2*CannotIntegrate(%e^(a+b*x)*Ei(c+d*x)/x,x)+1/2*%e^(a+c)*b*d*Ei((b+d)*x)/c-1/2*%e^(a+c)*d^2*Ei((b+d)*x)/c^2+1/2*%e^(a+c)*d*(b+d)*Ei((b+d)*x)/c-1/2*%e^(a+b*x)*Ei(c+d*x)/x^2-1/2*%e^(a+b*x)*b*Ei(c+d*x)/x-1/2*%e^(a-b*c/d)*b*d*Ei((b+d)*(c+d*x)/d)/c+1/2*%e^(a-b*c/d)*d^2*Ei((b+d)*(c+d*x)/d)/c^2],
+
+-- Integrands of the form (d x)^m LogIntegral[b x]^n
+
+-- Integrands of the form x^m LogIntegral[b x]^n
+[x^2*Li(b*x),x,3,-1/3*Ei(4*log(b*x))/b^3+1/3*x^3*Li(b*x)],
+[x*Li(b*x),x,3,-1/2*Ei(3*log(b*x))/b^2+1/2*x^2*Li(b*x)],
+[Li(b*x),x,1,-Ei(2*log(b*x))/b+x*Li(b*x)],
+[Li(b*x)/x,x,1,-b*x+Li(b*x)*log(b*x)],
+[Li(b*x)/x^2,x,3,-Li(b*x)/x+b*log(log(b*x))],
+[Li(b*x)/x^3,x,3,1/2*b^2*Ei(-log(b*x))-1/2*Li(b*x)/x^2],
+
+-- Integrands of the form (d x)^m LogIntegral[b x]^n with m symbolic
+[(d*x)^m*Li(b*x),x,3,-b*(b*x)^(-2-m)*(d*x)^(2+m)*Ei((2+m)*log(b*x))/(d^2*(1+m))+(d*x)^(1+m)*Li(b*x)/(d*(1+m))],
+
+-- Integrands of the form (c+d x)^m LogIntegral[a+b x]^n
+
+-- Integrands of the form x^m LogIntegral[a+b x]^n
+[x^2*Li(a+b*x),x,14,-a^2*Ei(2*log(a+b*x))/b^3+a*Ei(3*log(a+b*x))/b^3-1/3*Ei(4*log(a+b*x))/b^3+1/3*a^3*Li(a+b*x)/b^3+1/3*x^3*Li(a+b*x)],
+[x*Li(a+b*x),x,11,a*Ei(2*log(a+b*x))/b^2-1/2*Ei(3*log(a+b*x))/b^2-1/2*a^2*Li(a+b*x)/b^2+1/2*x^2*Li(a+b*x)],
+[Li(a+b*x),x,1,-Ei(2*log(a+b*x))/b+(a+b*x)*Li(a+b*x)/b],
+[Li(a+b*x)/x,x,0,Unintegrable(Li(a+b*x)/x,x)],
+[Li(a+b*x)/x^2,x,1,-Li(a+b*x)/x+b*Unintegrable(1/(x*log(a+b*x)),x)],
+
+-- Integrands of the form (d x)^m LogIntegral[a+b x]^n with m symbolic
+[(d*x)^m*Li(a+b*x),x,1,(d*x)^(1+m)*Li(a+b*x)/(d*(1+m))-b*Unintegrable((d*x)^(1+m)/log(a+b*x),x)/(d*(1+m))]]

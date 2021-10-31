@@ -1,0 +1,42 @@
+-- Axiom integration test file: "4 Trig functions\4.4 Cotangent\4.4.1.3 (d cos)^m (a+b cot)^n.input"
+
+lst: '[
+
+-- Integrands of the form (d Cos[e+f x])^m (a+b Cot[e+f x])^n
+
+-- Integrands of the form (d Cos[e+f x])^m (a+b Cot[e+f x])^n with a^2+b^2=0
+
+-- Integrands of the form Cos[e+f x]^m (a+b Cot[e+f x])^n when a^2+b^2=0
+
+-- n>0
+
+-- n<0
+[cos(x)^4/(%i+cot(x)),x,5,-1/16*%i*x+1/32/(%i-cot(x))^2+1/8*%i/(%i-cot(x))+(-1/24*%i)/(%i+cot(x))^3+5/32/(%i+cot(x))^2+3/16*%i/(%i+cot(x))],
+[cos(x)^3/(%i+cot(x)),x,9,-1/5*cos(x)^5-1/3*%i*sin(x)^3+1/5*%i*sin(x)^5],
+[cos(x)^2/(%i+cot(x)),x,5,-1/8*%i*x+1/8*%i/(%i-cot(x))+1/8/(%i+cot(x))^2+1/4*%i/(%i+cot(x))],
+[cos(x)/(%i+cot(x)),x,8,-1/3*cos(x)^3-1/3*%i*sin(x)^3],
+[sec(x)/(%i+cot(x)),x,8,-%i*atanh(sin(x))-cos(x)+%i*sin(x)],
+[sec(x)^2/(%i+cot(x)),x,3,%i*x-log(sin(x))+log(tan(x))-%i*tan(x)],
+[sec(x)^3/(%i+cot(x)),x,8,1/2*%i*atanh(sin(x))+sec(x)-1/2*%i*sec(x)*tan(x)],
+[sec(x)^4/(%i+cot(x)),x,4,1/2*tan(x)^2-1/3*%i*tan(x)^3],
+[sec(x)^5/(%i+cot(x)),x,9,1/8*%i*atanh(sin(x))+1/3*sec(x)^3+1/8*%i*sec(x)*tan(x)-1/4*%i*sec(x)^3*tan(x)],
+[sec(x)^6/(%i+cot(x)),x,4,1/2*tan(x)^2-1/3*%i*tan(x)^3+1/4*tan(x)^4-1/5*%i*tan(x)^5],
+
+-- Integrands of the form (d Cos[e+f x])^m (a+b Cot[e+f x])^n
+
+-- Integrands of the form Cos[e+f x]^m (a+b Cot[e+f x])^n
+
+-- n>0
+
+-- n<0
+[cos(x)^4/(a+b*cot(x)),x,8,1/8*a*(3*a^4-6*a^2*b^2-b^4)*x/(a^2+b^2)^3-a^4*b*log(b*cos(x)+a*sin(x))/(a^2+b^2)^3+1/8*(4*b*(2*a^2+b^2)+a*(5*a^2+b^2)*cot(x))*sin(x)^2/(a^2+b^2)^2-1/4*(b+a*cot(x))*sin(x)^4/(a^2+b^2)],
+[cos(x)^3/(a+b*cot(x)),x,10,a^3*b*atanh((a*cos(x)-b*sin(x))/sqrt(a^2+b^2))/(a^2+b^2)^(5/2)-a^2*b*cos(x)/(a^2+b^2)^2-1/3*b*cos(x)^3/(a^2+b^2)-a*b^2*sin(x)/(a^2+b^2)^2+a*sin(x)/(a^2+b^2)-1/3*a*sin(x)^3/(a^2+b^2)],
+[cos(x)^2/(a+b*cot(x)),x,7,1/2*a*(a^2-b^2)*x/(a^2+b^2)^2-a^2*b*log(b*cos(x)+a*sin(x))/(a^2+b^2)^2+1/2*(b+a*cot(x))*sin(x)^2/(a^2+b^2)],
+[cos(x)/(a+b*cot(x)),x,6,a*b*atanh((a*cos(x)-b*sin(x))/sqrt(a^2+b^2))/(a^2+b^2)^(3/2)-b*cos(x)/(a^2+b^2)+a*sin(x)/(a^2+b^2)],
+[sec(x)/(a+b*cot(x)),x,6,atanh(sin(x))/a+b*atanh((a*cos(x)-b*sin(x))/sqrt(a^2+b^2))/(a*sqrt(a^2+b^2))],
+[sec(x)^2/(a+b*cot(x)),x,3,-b*log(a+b*cot(x))/a^2-b*log(tan(x))/a^2+tan(x)/a],
+[sec(x)^3/(a+b*cot(x)),x,9,1/2*atanh(sin(x))/a+b^2*atanh(sin(x))/a^3-b*sec(x)/a^2+b*atanh((a*cos(x)-b*sin(x))/sqrt(a^2+b^2))*sqrt(a^2+b^2)/a^3+1/2*sec(x)*tan(x)/a],
+[sec(x)^4/(a+b*cot(x)),x,3,-b*(a^2+b^2)*log(a+b*cot(x))/a^4-b*(a^2+b^2)*log(tan(x))/a^4+(a^2+b^2)*tan(x)/a^3-1/2*b*tan(x)^2/a^2+1/3*tan(x)^3/a],
+
+--  Following hangs Mathematica 6 & 7: 
+[sec(x)/(1+2*cot(x)),x,6,atanh(sin(x))+2*atanh((cos(x)-2*sin(x))/sqrt(5))/sqrt(5)]]

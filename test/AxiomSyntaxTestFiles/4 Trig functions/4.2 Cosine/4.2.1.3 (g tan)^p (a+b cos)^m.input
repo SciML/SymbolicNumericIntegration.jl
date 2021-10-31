@@ -1,0 +1,70 @@
+-- Axiom integration test file: "4 Trig functions\4.2 Cosine\4.2.1.3 (g tan)^p (a+b cos)^m.input"
+
+lst: '[
+
+-- Integrands of the form (g Tan[e+f x])^p (a+a Cos[e+f x])^m
+
+-- Integrands of the form (g Tan[e+f x])^p (a+a Cos[e+f x])^m
+
+-- Integrands of the form Tan[e+f x]^p (a+a Cos[e+f x])^m
+[tan(x)^4/(a+a*cos(x)),x,5,1/2*atanh(sin(x))/a-1/2*sec(x)*tan(x)/a+1/3*tan(x)^3/a],
+[tan(x)^3/(a+a*cos(x)),x,5,-sec(x)/a+1/2*sec(x)^2/a],
+[tan(x)^2/(a+a*cos(x)),x,4,-atanh(sin(x))/a+tan(x)/a],
+[tan(x)/(a+a*cos(x)),x,4,-log(cos(x))/a+log(1+cos(x))/a],
+[cot(x)/(a+a*cos(x)),x,5,-1/2*atanh(cos(x))/a+1/2*cot(x)*csc(x)/a-1/2*csc(x)^2/a],
+[cot(x)^2/(a+a*cos(x)),x,5,-1/3*cot(x)^3/a-csc(x)/a+1/3*csc(x)^3/a],
+[cot(x)^3/(a+a*cos(x)),x,6,3/8*atanh(cos(x))/a-1/4*cot(x)^4/a-3/8*cot(x)*csc(x)/a+1/4*cot(x)^3*csc(x)/a],
+[cot(x)^4/(a+a*cos(x)),x,6,-1/5*cot(x)^5/a+csc(x)/a-2/3*csc(x)^3/a+1/5*csc(x)^5/a],
+[tan(3*x)/(1+cos(3*x))^2,x,3,(-1/3)/(1+cos(3*x))-1/3*log(cos(3*x))+1/3*log(1+cos(3*x))],
+
+-- Integrands of the form Tan[e+f x]^p (a+a Cos[e+f x])^(m/2)
+
+-- Integrands of the form (g Tan[e+f x])^(p/2) (a+a Cos[e+f x])^m
+
+-- Integrands of the form (g Tan[e+f x])^(p/2) (a+a Cos[e+f x])^(m/2)
+
+-- Integrands of the form (g Tan[e+f x])^p (a+a Cos[e+f x])^m (A+B Cos[e+f x])
+
+-- Integrands of the form (g Tan[e+f x])^p (a+a Cos[e+f x])^m (A+B Cos[e+f x]+C Cos[e+f x]^2)
+
+-- Integrands of the form (g Tan[e+f x])^p (a+b Cos[e+f x])^m
+
+-- Integrands of the form (g Tan[e+f x])^p (a+b Cos[e+f x])^m
+
+-- Integrands of the form Tan[e+f x]^p (a+b Cos[e+f x])^m
+
+-- m>0
+
+-- m<0
+[tan(x)^4/(a+b*cos(x)),x,6,2*(a-b)^(3/2)*(a+b)^(3/2)*atan(sqrt(a-b)*tan(1/2*x)/sqrt(a+b))/a^4+1/2*b*(3*a^2-2*b^2)*atanh(sin(x))/a^4-1/3*(4*a^2-3*b^2)*tan(x)/a^3-1/2*b*sec(x)*tan(x)/a^2+1/3*sec(x)^2*tan(x)/a],
+[tan(x)^3/(a+b*cos(x)),x,3,(a^2-b^2)*log(cos(x))/a^3-(a^2-b^2)*log(a+b*cos(x))/a^3-b*sec(x)/a^2+1/2*sec(x)^2/a],
+[tan(x)^2/(a+b*cos(x)),x,6,-b*atanh(sin(x))/a^2-2*atan(sqrt(a-b)*tan(1/2*x)/sqrt(a+b))*sqrt(a-b)*sqrt(a+b)/a^2+tan(x)/a],
+[tan(x)/(a+b*cos(x)),x,4,-log(cos(x))/a+log(a+b*cos(x))/a],
+[cot(x)/(a+b*cos(x)),x,3,1/2*log(1-cos(x))/(a+b)+1/2*log(1+cos(x))/(a-b)-a*log(a+b*cos(x))/(a^2-b^2)],
+[cot(x)^2/(a+b*cos(x)),x,7,-2*a^2*atan(sqrt(a-b)*tan(1/2*x)/sqrt(a+b))/((a-b)^(3/2)*(a+b)^(3/2))-a*cot(x)/(a^2-b^2)+b*csc(x)/(a^2-b^2)],
+[cot(x)^3/(a+b*cos(x)),x,4,-1/2*(a-b*cos(x))*csc(x)^2/(a^2-b^2)-1/4*(2*a+b)*log(1-cos(x))/(a+b)^2-1/4*(2*a-b)*log(1+cos(x))/(a-b)^2+a^3*log(a+b*cos(x))/(a^2-b^2)^2],
+[cot(x)^4/(a+b*cos(x)),x,12,2*a^4*atan(sqrt(a-b)*tan(1/2*x)/sqrt(a+b))/((a-b)^(5/2)*(a+b)^(5/2))+a^3*cot(x)/(a^2-b^2)^2-1/3*a*cot(x)^3/(a^2-b^2)-a^2*b*csc(x)/(a^2-b^2)^2-b*csc(x)/(a^2-b^2)+1/3*b*csc(x)^3/(a^2-b^2)],
+
+-- Integrands of the form Tan[e+f x]^p (a+b Cos[e+f x])^(m/2)
+[cot(x)/sqrt(3-cos(x)),x,5,-1/2*atanh(1/2*sqrt(3-cos(x)))-atanh(sqrt(3-cos(x))/sqrt(2))/sqrt(2)],
+[sqrt(a+b*cos(x))*tan(x),x,4,2*atanh(sqrt(a+b*cos(x))/sqrt(a))*sqrt(a)-2*sqrt(a+b*cos(x))],
+[tan(x)/sqrt(a+b*cos(x)),x,3,2*atanh(sqrt(a+b*cos(x))/sqrt(a))/sqrt(a)],
+
+-- Integrands of the form (g Tan[e+f x])^(p/2) (a+b Cos[e+f x])^m
+[sqrt(e*tan(c+d*x))/(a+b*cos(c+d*x)),x,9,-2*elliptic_pi(-sqrt(-a+b)/sqrt(a+b),asin(sqrt(sin(c+d*x))/sqrt(1+cos(c+d*x))),-1)*sqrt(2)*sqrt(cos(c+d*x))*sqrt(e*tan(c+d*x))/(d*sqrt(-a+b)*sqrt(a+b)*sqrt(sin(c+d*x)))+2*elliptic_pi(sqrt(-a+b)/sqrt(a+b),asin(sqrt(sin(c+d*x))/sqrt(1+cos(c+d*x))),-1)*sqrt(2)*sqrt(cos(c+d*x))*sqrt(e*tan(c+d*x))/(d*sqrt(-a+b)*sqrt(a+b)*sqrt(sin(c+d*x)))],
+
+-- Integrands of the form (g Tan[e+f x])^(p/2) (a+b Cos[e+f x])^(m/2)
+
+-- Integrands of the form (g Tan[e+f x])^p (a+b Cos[e+f x])^m with p symbolic
+[(a+b*cos(e+f*x))^m*(g*tan(e+f*x))^p,x,1,(g*cot(e+f*x))^p*(g*tan(e+f*x))^p*Unintegrable((a+b*cos(e+f*x))^m/(g*cot(e+f*x))^p,x)]]
+--  {(g*Tan[e + f*x])^p*(a + b*Cos[e + f*x])^3, x, 0, 0}
+-- {(g*Tan[e + f*x])^p*(a + b*Cos[e + f*x])^2, x, 0, 0}
+-- {(g*Tan[e + f*x])^p*(a + b*Cos[e + f*x])^1, x, 0, 0}
+-- {(g*Tan[e + f*x])^p/(a + b*Cos[e + f*x])^1, x, 0, -((g*AppellF1[1 - p, (1 - p)/2, (1 - p)/2, 2 - p, (a + b)/(b + a*Sec[e + f*x]), (-a + b)/(b + a*Sec[e + f*x])]*(-((a*(1 - Sec[e + f*x]))/(b + a*Sec[e + f*x])))^((1 - p)/2)*((a*(1 + Sec[e + f*x]))/(b + a*Sec[e + f*x]))^((1 - p)/2)*(g*Tan[e + f*x])^(-1 + p)*(-Tan[e + f*x]^2)^((1 - p)/2 + (1/2)*(-1 + p)))/(a*f*(1 - p)))}
+-- {(g*Tan[e + f*x])^p/(a + b*Cos[e + f*x])^2, x, 0, 0}
+
+-- {(g*Tan[e + f*x])^p/(a + b*Cos[e + f*x])^3, x, 0, 0} 
+
+-- Integrands of the form (g Tan[e+f x])^p (a+b Cos[e+f x])^n (A+B Cos[e+f x])
+
+-- Integrands of the form (g Tan[e+f x])^p (a+b Cos[e+f x])^n (A+B Cos[e+f x]+C Cos[e+f x]^2)

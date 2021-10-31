@@ -1,0 +1,43 @@
+-- Axiom integration test file: "4 Trig functions\4.2 Cosine\4.2.13 (d+e x)^m cos(a+b x+c x^2)^n.input"
+
+lst: '[
+
+-- Integrands of the form (d+e x)^m Cos[a+b x+c x^2]^n
+
+-- Integrands of the form x^m Cos[a+b x+c x^2]^n
+[x^2*cos(a+b*x+c*x^2),x,8,-1/4*b*sin(a+b*x+c*x^2)/c^2+1/2*x*sin(a+b*x+c*x^2)/c+1/4*b^2*cos(a-1/4*b^2/c)*FresnelC((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(1/2*%pi)/c^(5/2)-1/2*cos(a-1/4*b^2/c)*FresnelS((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)-1/2*FresnelC((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a-1/4*b^2/c)*sqrt(1/2*%pi)/c^(3/2)-1/4*b^2*FresnelS((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a-1/4*b^2/c)*sqrt(1/2*%pi)/c^(5/2)],
+[x*cos(a+b*x+c*x^2),x,4,1/2*sin(a+b*x+c*x^2)/c-1/2*b*cos(a-1/4*b^2/c)*FresnelC((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)+1/2*b*FresnelS((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a-1/4*b^2/c)*sqrt(1/2*%pi)/c^(3/2)],
+[cos(a+b*x+c*x^2),x,3,cos(a-1/4*b^2/c)*FresnelC((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(1/2*%pi)/sqrt(c)-FresnelS((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a-1/4*b^2/c)*sqrt(1/2*%pi)/sqrt(c)],
+[cos(a+b*x+c*x^2)/x,x,0,Unintegrable(cos(a+b*x+c*x^2)/x,x)],
+[cos(a+b*x+c*x^2)/x^2+b*sin(a+b*x+c*x^2)/x,x,5,-cos(a+b*x+c*x^2)/x-cos(a-1/4*b^2/c)*FresnelS((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(2*%pi)*sqrt(c)-FresnelC((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a-1/4*b^2/c)*sqrt(2*%pi)*sqrt(c)],
+[x^2*cos(a+b*x-c*x^2),x,8,-1/4*b*sin(a+b*x-c*x^2)/c^2-1/2*x*sin(a+b*x-c*x^2)/c-1/4*b^2*cos(a+1/4*b^2/c)*FresnelC((b-2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(1/2*%pi)/c^(5/2)+1/2*cos(a+1/4*b^2/c)*FresnelS((b-2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)-1/2*FresnelC((b-2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a+1/4*b^2/c)*sqrt(1/2*%pi)/c^(3/2)-1/4*b^2*FresnelS((b-2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a+1/4*b^2/c)*sqrt(1/2*%pi)/c^(5/2)],
+[x*cos(a+b*x-c*x^2),x,4,-1/2*sin(a+b*x-c*x^2)/c-1/2*b*cos(a+1/4*b^2/c)*FresnelC((b-2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)-1/2*b*FresnelS((b-2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a+1/4*b^2/c)*sqrt(1/2*%pi)/c^(3/2)],
+[cos(a+b*x-c*x^2),x,3,-cos(a+1/4*b^2/c)*FresnelC((b-2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(1/2*%pi)/sqrt(c)-FresnelS((b-2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a+1/4*b^2/c)*sqrt(1/2*%pi)/sqrt(c)],
+[cos(a+b*x-c*x^2)/x,x,0,Unintegrable(cos(a+b*x-c*x^2)/x,x)],
+[cos(a+b*x-c*x^2)/x^2+b*sin(a+b*x-c*x^2)/x,x,5,-cos(a+b*x-c*x^2)/x+cos(a+1/4*b^2/c)*FresnelS((b-2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(2*%pi)*sqrt(c)-FresnelC((b-2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a+1/4*b^2/c)*sqrt(2*%pi)*sqrt(c)],
+[x^2*cos(1/4+x+x^2),x,6,-1/4*sin(1/4+x+x^2)+1/2*x*sin(1/4+x+x^2)+1/4*FresnelC((1+2*x)/sqrt(2*%pi))*sqrt(1/2*%pi)-1/2*FresnelS((1+2*x)/sqrt(2*%pi))*sqrt(1/2*%pi)],
+[x*cos(1/4+x+x^2),x,3,1/2*sin(1/4+x+x^2)-1/2*FresnelC((1+2*x)/sqrt(2*%pi))*sqrt(1/2*%pi)],
+[cos(1/4+x+x^2),x,2,FresnelC((1+2*x)/sqrt(2*%pi))*sqrt(1/2*%pi)],
+[cos(1/4+x+x^2)/x,x,0,Unintegrable(cos(1/4+x+x^2)/x,x)],
+[cos(1/4+x+x^2)/x^2,x,3,-cos(1/4+x+x^2)/x-FresnelS((1+2*x)/sqrt(2*%pi))*sqrt(2*%pi)-Unintegrable(sin(1/4+x+x^2)/x,x)],
+[x^2*cos(a+b*x+c*x^2)^2,x,10,1/6*x^3-1/16*b*sin(2*a+2*b*x+2*c*x^2)/c^2+1/8*x*sin(2*a+2*b*x+2*c*x^2)/c+1/16*b^2*cos(2*a-1/2*b^2/c)*FresnelC((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sqrt(%pi)/c^(5/2)-1/16*cos(2*a-1/2*b^2/c)*FresnelS((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sqrt(%pi)/c^(3/2)-1/16*FresnelC((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sin(2*a-1/2*b^2/c)*sqrt(%pi)/c^(3/2)-1/16*b^2*FresnelS((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sin(2*a-1/2*b^2/c)*sqrt(%pi)/c^(5/2)],
+[x*cos(a+b*x+c*x^2)^2,x,6,1/4*x^2+1/8*sin(2*a+2*b*x+2*c*x^2)/c-1/8*b*cos(2*a-1/2*b^2/c)*FresnelC((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sqrt(%pi)/c^(3/2)+1/8*b*FresnelS((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sin(2*a-1/2*b^2/c)*sqrt(%pi)/c^(3/2)],
+[cos(a+b*x+c*x^2)^2,x,5,1/2*x+1/4*cos(2*a-1/2*b^2/c)*FresnelC((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sqrt(%pi)/sqrt(c)-1/4*FresnelS((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sin(2*a-1/2*b^2/c)*sqrt(%pi)/sqrt(c)],
+[cos(a+b*x+c*x^2)^2/x,x,2,1/2*log(x)+1/2*Unintegrable(cos(2*a+2*b*x+2*c*x^2)/x,x)],
+[x^2*cos(a+b*x-c*x^2)^2,x,10,1/6*x^3-1/16*b*sin(2*a+2*b*x-2*c*x^2)/c^2-1/8*x*sin(2*a+2*b*x-2*c*x^2)/c-1/16*b^2*cos(2*a+1/2*b^2/c)*FresnelC((b-2*c*x)/(sqrt(%pi)*sqrt(c)))*sqrt(%pi)/c^(5/2)+1/16*cos(2*a+1/2*b^2/c)*FresnelS((b-2*c*x)/(sqrt(%pi)*sqrt(c)))*sqrt(%pi)/c^(3/2)-1/16*FresnelC((b-2*c*x)/(sqrt(%pi)*sqrt(c)))*sin(2*a+1/2*b^2/c)*sqrt(%pi)/c^(3/2)-1/16*b^2*FresnelS((b-2*c*x)/(sqrt(%pi)*sqrt(c)))*sin(2*a+1/2*b^2/c)*sqrt(%pi)/c^(5/2)],
+[x*cos(a+b*x-c*x^2)^2,x,6,1/4*x^2-1/8*sin(2*a+2*b*x-2*c*x^2)/c-1/8*b*cos(2*a+1/2*b^2/c)*FresnelC((b-2*c*x)/(sqrt(%pi)*sqrt(c)))*sqrt(%pi)/c^(3/2)-1/8*b*FresnelS((b-2*c*x)/(sqrt(%pi)*sqrt(c)))*sin(2*a+1/2*b^2/c)*sqrt(%pi)/c^(3/2)],
+[cos(a+b*x-c*x^2)^2,x,5,1/2*x-1/4*cos(2*a+1/2*b^2/c)*FresnelC((b-2*c*x)/(sqrt(%pi)*sqrt(c)))*sqrt(%pi)/sqrt(c)-1/4*FresnelS((b-2*c*x)/(sqrt(%pi)*sqrt(c)))*sin(2*a+1/2*b^2/c)*sqrt(%pi)/sqrt(c)],
+[cos(a+b*x-c*x^2)^2/x,x,2,1/2*log(x)+1/2*Unintegrable(cos(2*a+2*b*x-2*c*x^2)/x,x)],
+[x^2*cos(1/4+x+x^2)^2,x,8,1/6*x^3-1/16*sin(1/2+2*x+2*x^2)+1/8*x*sin(1/2+2*x+2*x^2)+1/16*FresnelC((1+2*x)/sqrt(%pi))*sqrt(%pi)-1/16*FresnelS((1+2*x)/sqrt(%pi))*sqrt(%pi)],
+[x*cos(1/4+x+x^2)^2,x,5,1/4*x^2+1/8*sin(1/2+2*x+2*x^2)-1/8*FresnelC((1+2*x)/sqrt(%pi))*sqrt(%pi)],
+[cos(1/4+x+x^2)^2,x,4,1/2*x+1/4*FresnelC((1+2*x)/sqrt(%pi))*sqrt(%pi)],
+[cos(1/4+x+x^2)^2/x,x,2,1/2*log(x)+1/2*Unintegrable(cos(1/2+2*x+2*x^2)/x,x)],
+[cos(1/4+x+x^2)^2/x^2,x,5,(-1/2)/x-1/2*cos(1/2+2*x+2*x^2)/x-FresnelS((1+2*x)/sqrt(%pi))*sqrt(%pi)-Unintegrable(sin(1/2+2*x+2*x^2)/x,x)],
+
+-- Integrands of the form (d+e x)^m Cos[a+b x+c x^2]^n
+[(d+e*x)^2*cos(a+b*x+c*x^2),x,8,1/4*e*(2*c*d-b*e)*sin(a+b*x+c*x^2)/c^2+1/2*e*(d+e*x)*sin(a+b*x+c*x^2)/c+1/4*(2*c*d-b*e)^2*cos(a-1/4*b^2/c)*FresnelC((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(1/2*%pi)/c^(5/2)-1/2*e^2*cos(a-1/4*b^2/c)*FresnelS((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)-1/2*e^2*FresnelC((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a-1/4*b^2/c)*sqrt(1/2*%pi)/c^(3/2)-1/4*(2*c*d-b*e)^2*FresnelS((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a-1/4*b^2/c)*sqrt(1/2*%pi)/c^(5/2)],
+[(d+e*x)*cos(a+b*x+c*x^2),x,4,1/2*e*sin(a+b*x+c*x^2)/c+1/2*(2*c*d-b*e)*cos(a-1/4*b^2/c)*FresnelC((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sqrt(1/2*%pi)/c^(3/2)-1/2*(2*c*d-b*e)*FresnelS((b+2*c*x)/(sqrt(2*%pi)*sqrt(c)))*sin(a-1/4*b^2/c)*sqrt(1/2*%pi)/c^(3/2)],
+[cos(a+b*x+c*x^2)/(d+e*x),x,0,Unintegrable(cos(a+b*x+c*x^2)/(d+e*x),x)],
+[(d+e*x)^2*cos(a+b*x+c*x^2)^2,x,10,1/6*(d+e*x)^3/e+1/16*e*(2*c*d-b*e)*sin(2*a+2*b*x+2*c*x^2)/c^2+1/8*e*(d+e*x)*sin(2*a+2*b*x+2*c*x^2)/c+1/16*(2*c*d-b*e)^2*cos(2*a-1/2*b^2/c)*FresnelC((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sqrt(%pi)/c^(5/2)-1/16*e^2*cos(2*a-1/2*b^2/c)*FresnelS((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sqrt(%pi)/c^(3/2)-1/16*e^2*FresnelC((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sin(2*a-1/2*b^2/c)*sqrt(%pi)/c^(3/2)-1/16*(2*c*d-b*e)^2*FresnelS((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sin(2*a-1/2*b^2/c)*sqrt(%pi)/c^(5/2)],
+[(d+e*x)*cos(a+b*x+c*x^2)^2,x,6,1/4*(d+e*x)^2/e+1/8*e*sin(2*a+2*b*x+2*c*x^2)/c+1/8*(2*c*d-b*e)*cos(2*a-1/2*b^2/c)*FresnelC((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sqrt(%pi)/c^(3/2)-1/8*(2*c*d-b*e)*FresnelS((b+2*c*x)/(sqrt(%pi)*sqrt(c)))*sin(2*a-1/2*b^2/c)*sqrt(%pi)/c^(3/2)],
+[cos(a+b*x+c*x^2)^2/(d+e*x),x,2,1/2*log(d+e*x)/e+1/2*Unintegrable(cos(2*a+2*b*x+2*c*x^2)/(d+e*x),x)]]

@@ -1,0 +1,29 @@
+-- Axiom integration test file: "6 Hyperbolic functions\6.5 Hyperbolic secant\6.5.1 (c+d x)^m (a+b sech)^n.input"
+
+lst: '[
+
+-- Integrands of the form (c+d x)^m Sech[a+b x]^n
+
+-- Integrands of the form (c+d x)^m Sech[a+b x]^n
+[(c+d*x)^3*sech(a+b*x),x,9,2*(c+d*x)^3*atan(%e^(a+b*x))/b-3*%i*d*(c+d*x)^2*polylog(2,-%i*%e^(a+b*x))/b^2+3*%i*d*(c+d*x)^2*polylog(2,%i*%e^(a+b*x))/b^2+6*%i*d^2*(c+d*x)*polylog(3,-%i*%e^(a+b*x))/b^3-6*%i*d^2*(c+d*x)*polylog(3,%i*%e^(a+b*x))/b^3-6*%i*d^3*polylog(4,-%i*%e^(a+b*x))/b^4+6*%i*d^3*polylog(4,%i*%e^(a+b*x))/b^4],
+[(c+d*x)^2*sech(a+b*x),x,7,2*(c+d*x)^2*atan(%e^(a+b*x))/b-2*%i*d*(c+d*x)*polylog(2,-%i*%e^(a+b*x))/b^2+2*%i*d*(c+d*x)*polylog(2,%i*%e^(a+b*x))/b^2+2*%i*d^2*polylog(3,-%i*%e^(a+b*x))/b^3-2*%i*d^2*polylog(3,%i*%e^(a+b*x))/b^3],
+[(c+d*x)*sech(a+b*x),x,5,2*(c+d*x)*atan(%e^(a+b*x))/b-%i*d*polylog(2,-%i*%e^(a+b*x))/b^2+%i*d*polylog(2,%i*%e^(a+b*x))/b^2],
+[sech(a+b*x)/(c+d*x),x,0,Unintegrable(sech(a+b*x)/(c+d*x),x)],
+[(c+d*x)^3*sech(a+b*x)^2,x,6,(c+d*x)^3/b-3*d*(c+d*x)^2*log(1+%e^(2*(a+b*x)))/b^2-3*d^2*(c+d*x)*polylog(2,-%e^(2*(a+b*x)))/b^3+3/2*d^3*polylog(3,-%e^(2*(a+b*x)))/b^4+(c+d*x)^3*tanh(a+b*x)/b],
+[(c+d*x)^2*sech(a+b*x)^2,x,5,(c+d*x)^2/b-2*d*(c+d*x)*log(1+%e^(2*(a+b*x)))/b^2-d^2*polylog(2,-%e^(2*(a+b*x)))/b^3+(c+d*x)^2*tanh(a+b*x)/b],
+[(c+d*x)*sech(a+b*x)^2,x,2,-d*log(cosh(a+b*x))/b^2+(c+d*x)*tanh(a+b*x)/b],
+[sech(a+b*x)^2/(c+d*x),x,0,Unintegrable(sech(a+b*x)^2/(c+d*x),x)],
+[(c+d*x)^3*sech(a+b*x)^3,x,15,-6*d^2*(c+d*x)*atan(%e^(a+b*x))/b^3+(c+d*x)^3*atan(%e^(a+b*x))/b+3*%i*d^3*polylog(2,-%i*%e^(a+b*x))/b^4-3/2*%i*d*(c+d*x)^2*polylog(2,-%i*%e^(a+b*x))/b^2-3*%i*d^3*polylog(2,%i*%e^(a+b*x))/b^4+3/2*%i*d*(c+d*x)^2*polylog(2,%i*%e^(a+b*x))/b^2+3*%i*d^2*(c+d*x)*polylog(3,-%i*%e^(a+b*x))/b^3-3*%i*d^2*(c+d*x)*polylog(3,%i*%e^(a+b*x))/b^3-3*%i*d^3*polylog(4,-%i*%e^(a+b*x))/b^4+3*%i*d^3*polylog(4,%i*%e^(a+b*x))/b^4+3/2*d*(c+d*x)^2*sech(a+b*x)/b^2+1/2*(c+d*x)^3*sech(a+b*x)*tanh(a+b*x)/b],
+[(c+d*x)^2*sech(a+b*x)^3,x,9,(c+d*x)^2*atan(%e^(a+b*x))/b-d^2*atan(sinh(a+b*x))/b^3-%i*d*(c+d*x)*polylog(2,-%i*%e^(a+b*x))/b^2+%i*d*(c+d*x)*polylog(2,%i*%e^(a+b*x))/b^2+%i*d^2*polylog(3,-%i*%e^(a+b*x))/b^3-%i*d^2*polylog(3,%i*%e^(a+b*x))/b^3+d*(c+d*x)*sech(a+b*x)/b^2+1/2*(c+d*x)^2*sech(a+b*x)*tanh(a+b*x)/b],
+[(c+d*x)*sech(a+b*x)^3,x,6,(c+d*x)*atan(%e^(a+b*x))/b-1/2*%i*d*polylog(2,-%i*%e^(a+b*x))/b^2+1/2*%i*d*polylog(2,%i*%e^(a+b*x))/b^2+1/2*d*sech(a+b*x)/b^2+1/2*(c+d*x)*sech(a+b*x)*tanh(a+b*x)/b],
+[sech(a+b*x)^3/(c+d*x),x,0,Unintegrable(sech(a+b*x)^3/(c+d*x),x)],
+
+-- Integrands of the form (c+d x)^(m/2) Sech[a+b x]^n
+
+-- Integrands of the form (c+d x)^m Sech[a+b x]^(n/2)
+[x/sech(x)^(3/2)-1/3*x*sqrt(sech(x)),x,4,(-4/9)/sech(x)^(3/2)+2/3*x*sinh(x)/sqrt(sech(x))],
+[x/sech(x)^(5/2)-3/5*x/sqrt(sech(x)),x,4,(-4/25)/sech(x)^(5/2)+2/5*x*sinh(x)/sech(x)^(3/2)],
+[x/sech(x)^(7/2)-5/21*x*sqrt(sech(x)),x,5,(-4/49)/sech(x)^(7/2)+(-20/63)/sech(x)^(3/2)+2/7*x*sinh(x)/sech(x)^(5/2)+10/21*x*sinh(x)/sqrt(sech(x))],
+[x^2/sech(x)^(3/2)-1/3*x^2*sqrt(sech(x)),x,7,-8/9*x/sech(x)^(3/2)+16/27*sinh(x)/sqrt(sech(x))+2/3*x^2*sinh(x)/sqrt(sech(x))-16/27*%i*elliptic_f(1/2*%i*x,2)*sqrt(cosh(x))*sqrt(sech(x))]]
+
+-- Integrands of the form (c+d x)^(m/2) Sech[a+b x]^(n/2)

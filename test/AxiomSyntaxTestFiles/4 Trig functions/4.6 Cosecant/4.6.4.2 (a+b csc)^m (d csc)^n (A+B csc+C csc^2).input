@@ -1,0 +1,14 @@
+-- Axiom integration test file: "4 Trig functions\4.6 Cosecant\4.6.4.2 (a+b csc)^m (d csc)^n (A+B csc+C csc^2).input"
+
+lst: '[
+
+-- Integrands of the form (a+b Csc[e+f x])^m (d Csc[e+f x])^n (A+B Csc[e+f x]+C Csc[e+f x]^2)
+
+-- Integrands of the form (d Csc[e+f x])^n (a+b Csc[e+f x])^m (A+C Csc[e+f x]^2)
+
+-- Integrands of the form (d Csc[e+f x])^n (a+b Csc[e+f x])^m (B Csc[e+f x]+C Csc[e+f x]^2)
+
+-- Integrands of the form (d Csc[e+f x])^n (a+b Csc[e+f x])^m (A+B Csc[e+f x]+C Csc[e+f x]^2)
+
+-- Integrands of the form (d Csc[e+f x])^(n/2) (a+b Csc[e+f x])^m (A+B Csc[e+f x]+C Csc[e+f x]^2)
+[(a+b*csc(x))*(A+B*csc(x)+C*csc(x)^2)/csc(x)^(1/2),x,7,-2/3*b*C*cos(x)*csc(x)^(3/2)-2*(b*B+a*C)*cos(x)*sqrt(csc(x))+2*(b*B-a*(A-C))*elliptic_e(1/4*%pi-1/2*x,2)*sqrt(csc(x))*sqrt(sin(x))-2/3*(3*A*b+3*a*B+b*C)*elliptic_f(1/4*%pi-1/2*x,2)*sqrt(csc(x))*sqrt(sin(x))]]

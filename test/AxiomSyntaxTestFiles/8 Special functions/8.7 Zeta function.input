@@ -1,0 +1,23 @@
+-- Axiom integration test file: "8 Special functions\8.7 Zeta function.input"
+
+lst: '[
+
+-- Integration Problems Involving Zeta Functions
+
+-- Integrands of the form x^m Zeta[2, a+b x]
+[x^2*Zeta(2,a+b*x),x,4,-2*x*lnGAMMA(a+b*x)/b^2+2*Psi(-2,a+b*x)/b^3+x^2*Psi(0,a+b*x)/b],
+[x*Zeta(2,a+b*x),x,3,-lnGAMMA(a+b*x)/b^2+x*Psi(0,a+b*x)/b],
+[Zeta(2,a+b*x),x,2,Psi(0,a+b*x)/b],
+[Zeta(2,a+b*x)/x,x,1,Unintegrable(Psi(1,a+b*x)/x,x)],
+[Zeta(2,a+b*x)/x^2,x,2,-Psi(1,a+b*x)/x+b*Unintegrable(Psi(2,a+b*x)/x,x)],
+[Zeta(2,a+b*x)/x^3,x,3,-1/2*Psi(1,a+b*x)/x^2-1/2*b*Psi(2,a+b*x)/x+1/2*b^2*Unintegrable(Psi(3,a+b*x)/x,x)],
+[-b*Psi(2,a+b*x)/x+Zeta(2,a+b*x)/x^2,x,3,-Psi(1,a+b*x)/x],
+
+-- Integrands of the form x^m Zeta[s, a+b x]
+[x^2*Zeta(s,a+b*x),x,3,2*Zeta(-3+s,a+b*x)/(b^3*(1-s)*(6-5*s+s^2))-2*x*Zeta(-2+s,a+b*x)/(b^2*(1-s)*(2-s))+x^2*Zeta(-1+s,a+b*x)/(b*(1-s))],
+[x*Zeta(s,a+b*x),x,2,-Zeta(-2+s,a+b*x)/(b^2*(1-s)*(2-s))+x*Zeta(-1+s,a+b*x)/(b*(1-s))],
+[Zeta(s,a+b*x),x,1,Zeta(-1+s,a+b*x)/(b*(1-s))],
+[Zeta(s,a+b*x)/x,x,0,CannotIntegrate(Zeta(s,a+b*x)/x,x)],
+[Zeta(s,a+b*x)/x^2,x,1,-b*s*CannotIntegrate(Zeta(1+s,a+b*x)/x,x)-Zeta(s,a+b*x)/x],
+[Zeta(s,a+b*x)/x^3,x,2,1/2*b^2*s*(1+s)*CannotIntegrate(Zeta(2+s,a+b*x)/x,x)-1/2*Zeta(s,a+b*x)/x^2+1/2*b*s*Zeta(1+s,a+b*x)/x],
+[Zeta(s,a+b*x)/x^2+b*s*Zeta(1+s,a+b*x)/x,x,2,-Zeta(s,a+b*x)/x]]

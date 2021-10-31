@@ -1,0 +1,8 @@
+-- Axiom integration test file: "4 Trig functions\4.2 Cosine\4.2.2.3 (g cos)^p (a+b cos)^m (c+d cos)^n.input"
+
+lst: '[
+
+-- Integration problems of the form (g Cos[e+f x])^p (a+b Cos[e+f x])^m (c+d Cos[e+f x])^n
+
+-- Integrands of the form (g Cos[e+f x])^p (a+a Cos[e+f x])^m (c-c Cos[e+f x])^n
+[(a+a*cos(e+f*x))^2*sec(e+f*x)^2/(-c+c*cos(e+f*x)),x,6,-3*a^2*atanh(sin(e+f*x))/(c*f)+4*a^2*sin(e+f*x)/(c*f*(1-cos(e+f*x)))-a^2*tan(e+f*x)/(c*f)]]
