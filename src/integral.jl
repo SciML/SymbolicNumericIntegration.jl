@@ -163,8 +163,10 @@ function integrate_term(eq, x, l; kwargs...)
 
     # note that the order of the operations is important!
     # first, collecing hints, then applying transformation rules, and finally finding the basis.
+
     # basis = generate_basis(eq, x)
-    basis = generate_by_parts(eq, x)
+    # basis = generate_by_parts(eq, x)
+    basis = generate_homotopy(eq, x)
 
     if show_basis
         inform(l, "Generating basis (|β| = $(length(basis)))", basis)
@@ -231,6 +233,9 @@ function integrate_term(eq, x, l; kwargs...)
         # if verbose printstyled("rescue\n"; color=:yellow) end
         result(l, "Accepting numeric (rescued)", y₀)
         return y₀, 0, ϵ₀
+    elseif accept_solution(eq, x, y₀, radius; abstol=0.01)
+        result(l, "Possible: ", y₀)
+        return 0, eq, ϵ₀
     else
         result(l, "Unsucessful", eq)
         return 0, eq, ϵ₀

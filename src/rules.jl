@@ -162,7 +162,7 @@ function factor_poly(p)
            ]
 end
 
-function decompose_rational(eq)    
+function decompose_rational(eq)
     if poly_deg(eq) == 1 return inverse(eq) end
     x = var(eq)
     r, s = find_roots(eq, x)
@@ -178,6 +178,8 @@ function decompose_rational(eq)
     end
     F = unique(F)
 
+    println(F)
+
     n = length(F)
     A = zeros(Complex, (n,n))
     b = zeros(Complex, n)
@@ -185,7 +187,7 @@ function decompose_rational(eq)
     for i = 1:n
         x₀ = test_point(false, 1.0)
         d = Dict(x => x₀)
-        b[i] = substitute(eq, d)
+        b[i] = 1 / substitute(eq, d)
         for j = 1:n
             A[i,j] = substitute(F[j], d)
         end

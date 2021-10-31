@@ -8,14 +8,24 @@ function generate_basis(eq, x)
         q = t / coef(t, x)
         f = kernel(q)
         C₁ = closure(f, x) # find_candidates(f, x)
-        C₂ = find_candidates_nonsolvable(q * inverse(f), x)
+        # C₂ = find_candidates_nonsolvable(q * inverse(f), x)
+        C₂ = generate_by_parts(q * inverse(f), x)
+
+        for c₁ in C₁
+            enqueue_expr_ex!(S, c₁, x)
+        end
+
+        for c₂ in C₂
+            enqueue_expr_ex!(S, c₂, x)
+        end
+
         for c₁ in C₁
             for c₂ in C₂
                 enqueue_expr_ex!(S, expand(c₁*c₂), x)
             end
         end
     end
-    return [one(x); [s for s in S]]
+    return unique([one(x); [s for s in S]])
 end
 
 function closure(eq, x; max_terms=50)
