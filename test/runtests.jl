@@ -1,4 +1,4 @@
-using SymbolicNumericIntegration
+# using SymbolicNumericIntegration
 using SymbolicUtils
 using Test
 
@@ -189,7 +189,7 @@ basic_integrals = [
     1/log(x) - 1/log(x)^2,
 ]
 
-function test_integrals(; symbolic=true, verbose=true, bypart=true, prune_basis=false)
+function test_integrals(; kw...)
     bypass = false
     misses = []
     k = 1
@@ -202,7 +202,7 @@ function test_integrals(; symbolic=true, verbose=true, bypart=true, prune_basis=
             printstyled(k, ": "; color=:blue)
             k += 1
             printstyled(eq, " =>\n"; color=:green)
-            solved, unsolved = integrate(eq; bypass, symbolic, verbose, bypart, prune_basis)
+            solved, unsolved = integrate(eq; kw...)
             printstyled('\t', solved; color=:cyan)
             if isequal(unsolved, 0)
                 println()
@@ -221,4 +221,4 @@ function test_integrals(; symbolic=true, verbose=true, bypart=true, prune_basis=
     return true
 end
 
-@testset "integral" begin test_integrals() end
+# @testset "integral" begin test_integrals() end

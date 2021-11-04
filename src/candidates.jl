@@ -1,15 +1,29 @@
 using DataStructures
 
 # this is the main heurisctic used to find the test fragments
-function generate_basis(eq, x)
+function generate_basis(eq, x; homotopy=false)
+    if homotopy
+         return generate_homotopy(eq, x)
+    end
+
     eq = expand(eq)
     S = Set{Any}()
     for t in terms(eq)
         q = t / coef(t, x)
         f = kernel(q)
-        C₁ = closure(f, x) # find_candidates(f, x)
-        C₂ = find_candidates_nonsolvable(q * inverse(f), x)
-        # C₂ = generate_by_parts(q * inverse(f), x)
+
+        C₁ = closure(f, x)
+        p = q * inverse(f)
+
+        if homotopy
+            if isdependent(p, x)
+                C₂ = generate_homotopy2(p, x)
+            else
+                C₂ = 1
+            end
+        else
+            C₂ = find_candidates_nonsolvable(p, x)
+        end
 
         for c₁ in C₁
             enqueue_expr_ex!(S, c₁, x)
@@ -26,6 +40,15 @@ function generate_basis(eq, x)
         end
     end
     return unique([one(x); [s for s in S]])
+end
+
+function expand_basis(basis, x; homotopy=false)
+    if homotopy
+        I, deg = homotopy_integrand(sum(basis), x)
+        return expand_integrand(I, x, deg)
+    else
+        return unique([basis; basis*x])
+    end
 end
 
 function closure(eq, x; max_terms=50)

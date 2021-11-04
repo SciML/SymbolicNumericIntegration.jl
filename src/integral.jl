@@ -22,9 +22,9 @@ Base.signbit(z::Complex{T}) where T<:Number = signbit(real(z))
     a pair of expressions, solved is the solved integral and unsolved is the residual unsolved
     portion of the input
 """
-function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius=1.0,
+function integrate(eq, x=nothing; abstol=1e-6, num_steps=3, num_trials=5, radius=1.0,
                    show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
-                   symbolic=true, bypart=true, max_basis=110,
+                   symbolic=true, bypart=true, max_basis=100,
                    verbose=false, complex_plane=true, prune_basis=false, homotopy=false)
     eq = expand(eq)
     eq = apply_div_rule(eq)
@@ -111,7 +111,7 @@ function integrate_sum(eq, x, l; bypass=false, kwargs...)
         end
     end
 
-    return solved, unsolved, ϵ₀
+    return expand(solved), unsolved, ϵ₀
 end
 
 function integrate_sum_fast(eq, x, l; kwargs...)
@@ -135,15 +135,15 @@ function test_point(complex_plane, radius)
     end
 end
 
-function accept_solution(eq, x, sol, radius; abstol=1e-6)
+function accept_solution(eq, x, sol, radius)
     try
         x₀ = test_point(true, radius)
         Δ = substitute(expand_derivatives(Differential(x)(sol)-eq), Dict(x => x₀))
-        return abs(Δ) < abstol
+        return abs(Δ)
     catch e
         #
     end
-    return false
+    return Inf
 end
 
 function integrate_term(eq, x, l; kwargs...)
@@ -164,12 +164,7 @@ function integrate_term(eq, x, l; kwargs...)
     # note that the order of the operations is important!
     # first, collecing hints, then applying transformation rules, and finally finding the basis.
 
-    if homotopy
-        basis = generate_homotopy(eq, x)
-    else
-        basis = generate_basis(eq, x)
-    end
-    # basis = generate_by_parts(eq, x)    
+    basis = generate_basis(eq, x; homotopy)
 
     if show_basis
         inform(l, "Generating basis (|β| = $(length(basis)))", basis)
@@ -191,16 +186,19 @@ function integrate_term(eq, x, l; kwargs...)
     ϵ₀ = Inf
     y₀ = 0
 
-    for i = 1:num_steps
-        Δbasis = [expand_derivatives(D(f)) for f in basis]
+    # rescue
+    ϵᵣ = Inf
+    yᵣ = 0
 
-        # if show_basis println(basis) end
+    for i = 1:num_steps
+        if length(basis) > max_basis break end
+
+        Δbasis = [expand_derivatives(D(f)) for f in basis]
 
         if symbolic
             y, ϵ = try_symbolic(Float64, eq, x, basis, Δbasis; kwargs...)
 
-            if !isequal(y, 0) && accept_solution(eq, x, y, radius; abstol)
-                # if verbose printstyled("$i, symbolic\n"; color=:yellow) end
+            if !isequal(y, 0) && accept_solution(eq, x, y, radius) < abstol
                 result(l, "Successful symbolic", y)
                 return y, 0, 0
             else
@@ -209,36 +207,32 @@ function integrate_term(eq, x, l; kwargs...)
         end
 
         for j = 1:num_trials
-            r = radius*sqrt(2)^j
+            r = radius #*sqrt(2)^j
             y, ϵ = try_integrate(Float64, eq, x, basis, Δbasis, r; kwargs...)
 
-            if ϵ < abstol && accept_solution(eq, x, y, r; abstol)
-                # if verbose printstyled("$i, $j\n"; color=:yellow) end
+            ϵ = accept_solution(eq, x, y, r)
+            if ϵ < abstol
                 result(l, "Successful numeric (attempt $j out of $num_trials)", y)
                 return y, 0, ϵ
-            else
-                ϵ₀ = min(ϵ, ϵ₀)
-                y₀ = y
+            elseif ϵ < ϵᵣ
+                ϵᵣ = ϵ
+                yᵣ = y
             end
         end
 
         inform(l, "Failed numeric")
 
         if i < num_steps
-            basis = unique([basis; basis*x])
+            basis = expand_basis(basis, x; homotopy=false)
             if show_basis
                 inform(l, "Expanding the basis (|β| = $(length(basis)))", basis)
             end
         end
     end
 
-    if accept_solution(eq, x, y₀, radius; abstol=abstol*10)
-        # if verbose printstyled("rescue\n"; color=:yellow) end
-        result(l, "Accepting numeric (rescued)", y₀)
-        return y₀, 0, ϵ₀
-    elseif accept_solution(eq, x, y₀, radius; abstol=0.01)
-        result(l, "Possible: ", y₀)
-        return 0, eq, ϵ₀
+    if ϵᵣ < abstol * 10
+        result(l, "Accepting numeric (rescued)", yᵣ)
+        return yᵣ, 0, ϵᵣ
     else
         result(l, "Unsucessful", eq)
         return 0, eq, ϵ₀
