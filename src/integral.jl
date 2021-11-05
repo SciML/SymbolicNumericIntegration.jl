@@ -22,7 +22,7 @@ Base.signbit(z::Complex{T}) where T<:Number = signbit(real(z))
     a pair of expressions, solved is the solved integral and unsolved is the residual unsolved
     portion of the input
 """
-function integrate(eq, x=nothing; abstol=1e-6, num_steps=3, num_trials=5, radius=1.0,
+function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius=1.0,
                    show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
                    symbolic=true, bypart=true, max_basis=100,
                    verbose=false, complex_plane=true, prune_basis=false, homotopy=false)
@@ -51,6 +51,8 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=3, num_trials=5, radius
     # if q != nothing
     #     eq = q
     # end
+
+    homotopy = homotopy && !bypass
 
     s₁, u₁, ϵ = integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
                               radius, show_basis, opt, symbolic,

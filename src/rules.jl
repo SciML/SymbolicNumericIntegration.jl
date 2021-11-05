@@ -178,8 +178,6 @@ function decompose_rational(eq)
     end
     F = unique(F)
 
-    println(F)
-
     n = length(F)
     A = zeros(Complex, (n,n))
     b = zeros(Complex, n)

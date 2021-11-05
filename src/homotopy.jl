@@ -22,9 +22,15 @@ transformer(eq::SymbolicUtils.Div, f) = transformer(arguments(eq)[1],f) * transf
 function transformer(eq::SymbolicUtils.Pow, f)
     y, k = arguments(eq)
 
-    r = nice_parameter(k)
-    if r isa Rational || isinteger(r)
-        a, b = numerator(r), denominator(r)
+    # if is_poly(y)
+    #     return next_variable!(f, y)^k
+    # end
+
+    # r = nice_parameter(k)
+    # if r isa Rational || isinteger(r)
+    if isinteger(k)
+        a, b = k, 1
+        # a, b = numerator(r), denominator(r)
         if k < 0
             y = inv(y)
         end
@@ -32,7 +38,7 @@ function transformer(eq::SymbolicUtils.Pow, f)
         μ = next_variable!(f, b == 1 ?  y : y ^(1/b))
         return μ ^ abs(a)
     else
-        return next_variable!(f, y ^ k)
+        return next_variable!(f, y^k)
     end
 end
 
@@ -48,7 +54,11 @@ end
 function transform(eq, x)
     eq = substitute(eq, Dict(x => 𝑥))
     f = Transform(1, Dict(), 1, false)
-    return transformer(eq, f), f.sub, f.deg
+    p = transformer(eq, f)
+    if !any(is_poly, values(f.sub))
+        p *= next_variable!(f, 1)
+    end
+    return p, f.sub, f.deg
 end
 
 function homotopy_integrand(eq, x)
@@ -68,30 +78,30 @@ function homotopy_integrand(eq, x)
 end
 
 function expand_integrand(I, x, deg)
-    E = sum((Differential(x)^i)(I) for i=1:deg-1; init=I) #* (1+x)
-    S = Set{Any}()
-    enqueue_expr_ex!(S, expand(expand_derivatives(E)), x)
-    return [one(x); [s for s in S]]
-
+    # E = sum((Differential(x)^i)(I) for i=1:deg-1; init=I) #* (1+x)
     # S = Set{Any}()
-    # # T = Set{Any}()
-    # Q₁ = Queue{Any}()
-    #
-    # enqueue_expr_ex!(S, Q₁, expand(I), x)
-    #
-    # D = Differential(x)
-    #
-    # for i = 1:deg
-    #     Q₂ = Queue{Any}()
-    #     while !isempty(Q₁) # && length(S) < max_terms
-    #         y = dequeue!(Q₁)
-    #         E = expand(expand_derivatives(D(y)))
-    #         enqueue_expr_ex!(S, Q₂, E, x)
-    #     end
-    #     Q₁ = Q₂
-    # end
-    #
+    # enqueue_expr_ex!(S, expand(expand_derivatives(E)), x)
     # return [one(x); [s for s in S]]
+
+    S = Set{Any}()
+    # T = Set{Any}()
+    Q₁ = Queue{Any}()
+
+    enqueue_expr_ex!(S, Q₁, expand(I), x)
+
+    D = Differential(x)
+
+    for i = 1:deg
+        Q₂ = Queue{Any}()
+        while !isempty(Q₁) # && length(S) < max_terms
+            y = dequeue!(Q₁)
+            E = expand(expand_derivatives(D(y)))
+            enqueue_expr_ex!(S, Q₂, E, x)
+        end
+        Q₁ = Q₂
+    end
+
+    return [one(x); [s for s in S]]
 end
 
 function expand_integrand(I, x, deg)
@@ -113,7 +123,8 @@ function substitute_x(eq, x, sub)
 end
 
 function generate_homotopy2(eq, x)
-    q, sub, deg = transform(eq, x)
+    q, sub = transform(eq, x)
+    d = degree(q)
     n = length(sub)
 
     S = Set{Any}()
@@ -126,17 +137,17 @@ function generate_homotopy2(eq, x)
         h₁ = substitute_x(h₁, x, sub)
         h₂ = substitute_x(h₂, x, sub)
 
-        H = sum((Differential(x)^i)(h₁ * h₂) for i=1:deg-1; init=h₁*h₂)
-        I = expand(expand_derivatives(H))
+        H = sum((Differential(x)^i)(h₂) for i=1:d-1; init=(1 + h₂))
+        I = expand(expand_derivatives((1 + h₁) * H))
         enqueue_expr_ex!(S, I, x)
     end
 
-    H = sum((Differential(x)^i)(eq) for i=1:deg-1; init=eq)
-    I = expand((1+x) * expand_derivatives(H))
+    # H = sum((Differential(x)^i)(eq) for i=1:deg-1; init=eq)
+    # I = expand((1+x) * expand_derivatives(H))
     # enqueue_expr_ex!(S, I, x)
 
     # return [one(x); [s for s in S]]
-    return [[x^i for i=0:deg]; [s for s in S]]
+    return [one(x); [s for s in S]]
 end
 
 ##############################################################################

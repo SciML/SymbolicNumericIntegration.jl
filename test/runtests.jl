@@ -190,7 +190,7 @@ basic_integrals = [
 ]
 
 function test_integrals(; kw...)
-    bypass = false
+    args = Dict(kw)
     misses = []
     k = 1
 
@@ -198,11 +198,12 @@ function test_integrals(; kw...)
         if isequal(eq, β)
             printstyled("**** bypass on ****\n"; color=:red)
             bypass = true
+            args[:bypass] = true
         else
             printstyled(k, ": "; color=:blue)
             k += 1
             printstyled(eq, " =>\n"; color=:green)
-            solved, unsolved = integrate(eq; kw...)
+            solved, unsolved = integrate(eq; args...)
             printstyled('\t', solved; color=:cyan)
             if isequal(unsolved, 0)
                 println()
