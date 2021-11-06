@@ -5,34 +5,52 @@ using SymbolicUtils.Rewriters
 using PyCall
 sympy = pyimport("sympy")
 
-@syms x t 𝐞
-
-r1 = @rule ^(𝐞, ~k) => exp(~k)
-r2 = @rule 𝐞 => MathConstants.e
-
 function convert_axiom(name::AbstractString)
-    f = open(name, "r")
-    r = r"\[.*\]"
+    @syms 𝐞 a b c d e f g h i j k l m n o p q r s t u v w x y z
+
+    axion_rules = [
+        @rule ^(𝐞, ~k) => exp(~k)
+        @rule 𝐞 => MathConstants.e
+    ]
+
+    fd = open(name, "r")
+    re = r"\[.*\]"
     L = []
 
-    for l in readlines(f)
-        l = strip(l)
-        m = match(r, l)
-        if m != nothing
-            l = replace(m.match, "%e" => 𝐞)
-            l = replace(m.match, "%i" => im)
+    D = Dict{Any,Int}()
+
+    for (lineno,line) in enumerate(readlines(fd))
+        line = strip(line)
+        ma = match(re, line)
+        if ma != nothing
+            line = replace(ma.match, "%e" => 𝐞)
+            line  = replace(ma.match, "%i" => im)
+
             try
-                expr = Meta.parse(l)
-                p = eval(expr)
-                p[1] = Prewalk(PassThrough(Chain([r1,r2])))(p[1])
-                p[4] = Prewalk(PassThrough(Chain([r1,r2])))(p[4])
-                push!(L, p)
-            catch e
+                expr = Meta.parse(line)
+                P = eval(expr)
+
+                print(lineno, ": ", P[1], " => ")
+                P[1] = Prewalk(PassThrough(Chain(axion_rules)))(P[1])
+                P[4] = Prewalk(PassThrough(Chain(axion_rules)))(P[4])
+
+                for ν in get_variables(P[1])
+                    if !isequal(ν, x) && !haskey(D, ν)
+                        D[ν] = length(D) + 1
+                    end
+                end
+
+                P[1] = substitute(P[1], D)
+                P[4] = substitute(P[4], D)
+
+                println(P[1])
+                push!(L, P)
+            catch err
             end
         end
     end
 
-    close(f)
+    close(fd)
     return L
 end
 

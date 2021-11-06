@@ -170,7 +170,7 @@ function decompose_rational(eq)
     r = nice_parameter.(r)
     s = nice_parameter.(s)
 
-    F = [(x^2 - 2*real(u)*x + abs2(u))^-1 for u in s] ∪
+    F = Any[(x^2 - 2*real(u)*x + abs2(u))^-1 for u in s] ∪
         [x*(x^2 - 2*real(u)*x + abs2(u))^-1 for u in s]
     for i in eachindex(r)
         μ = sum(r[1:i] .== r[i])

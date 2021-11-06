@@ -351,8 +351,7 @@ function try_integrate(T, eq, x, basis, Δbasis, radius; kwargs...)
 end
 
 function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abstol=1e-6)
-    n = size(A, 1)
-    # X = zeros(Complex{T}, n)
+    n = size(A, 1)    
     k = 1
     i = 1
 
@@ -372,7 +371,7 @@ function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abst
                 end
             end
         catch e
-            println(e)
+            println("Error from init_basis_matrix!: ", e)
         end
     end
 end
@@ -408,7 +407,7 @@ function sparse_fit(T, A, x, basis, Δbasis, opt; abstol=1e-6)
         q = nice_parameter.(q₀)
         return sum(q[i]*basis[i] for i = 1:length(basis) if q[i] != 0; init=zero(x)), abs(ϵ)
     catch e
-        println(e)
+        println("Error from spart_fit", e)
         return nothing, Inf
     end
 end

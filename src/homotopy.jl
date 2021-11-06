@@ -138,25 +138,37 @@ function generate_homotopy2(eq, x)
         h₂ = substitute_x(h₂, x, sub)
 
         H = sum((Differential(x)^i)(h₂) for i=1:d-1; init=(1 + h₂))
-        I = expand(expand_derivatives((1 + h₁) * H))
+        I = expand(expand_derivatives((1 + h₁) * H))        
+        # H = sum((Differential(x)^i)(h₁*h₂) for i=1:d-1; init=(h₁ + h₂ + h₁*h₂))
+        # I = expand(expand_derivatives(H))
         enqueue_expr_ex!(S, I, x)
     end
 
-    # H = sum((Differential(x)^i)(eq) for i=1:deg-1; init=eq)
-    # I = expand((1+x) * expand_derivatives(H))
-    # enqueue_expr_ex!(S, I, x)
-
-    # return [one(x); [s for s in S]]
     return [one(x); [s for s in S]]
 end
 
 ##############################################################################
 
 ∂(x) = expand_derivatives(Differential(𝑥)(x))
+cabs(x) = sqrt(x * conj(x))
 
 H_rules = [
     # @rule 𝛷(+(~~xs)) => sum(map(𝛷, ~~xs))
     # @rule 𝛷(*(~~xs)) => prod(map(𝛷, ~~xs))
+
+    @rule 𝛷(^(sin(~x), ~k::is_neg)) => 𝛷(^(csc(~x), -~k))
+    @rule 𝛷(^(cos(~x), ~k::is_neg)) => 𝛷(^(sec(~x), -~k))
+    @rule 𝛷(^(tan(~x), ~k::is_neg)) => 𝛷(^(cot(~x), -~k))
+    @rule 𝛷(^(csc(~x), ~k::is_neg)) => 𝛷(^(sin(~x), -~k))
+    @rule 𝛷(^(sec(~x), ~k::is_neg)) => 𝛷(^(cos(~x), -~k))
+    @rule 𝛷(^(cot(~x), ~k::is_neg)) => 𝛷(^(tan(~x), -~k))
+
+    @rule 𝛷(^(sinh(~x), ~k::is_neg)) => 𝛷(^(csch(~x), -~k))
+    @rule 𝛷(^(cosh(~x), ~k::is_neg)) => 𝛷(^(sech(~x), -~k))
+    @rule 𝛷(^(tanh(~x), ~k::is_neg)) => 𝛷(^(coth(~x), -~k))
+    @rule 𝛷(^(csch(~x), ~k::is_neg)) => 𝛷(^(sinh(~x), -~k))
+    @rule 𝛷(^(sech(~x), ~k::is_neg)) => 𝛷(^(cosh(~x), -~k))
+    @rule 𝛷(^(coth(~x), ~k::is_neg)) => 𝛷(^(tanh(~x), -~k))
 
     @rule 𝛷(sin(~x)) => cos(~x) * ∂(~x)^-1
     @rule 𝛷(cos(~x)) => sin(~x) * ∂(~x)^-1
@@ -175,8 +187,8 @@ H_rules = [
     @rule 𝛷(asin(~x)) => (~x*asin(~x) + sqrt(1 - ~x*~x)) * ∂(~x)^-1
     @rule 𝛷(acos(~x)) => (~x*acos(~x) + sqrt(1 - ~x*~x)) * ∂(~x)^-1
     @rule 𝛷(atan(~x)) => (~x*atan(~x) + log(~x*~x + 1)) * ∂(~x)^-1
-    @rule 𝛷(acsc(~x)) => acsc(~x) * ∂(~x)^-1
-    @rule 𝛷(asec(~x)) => asec(~x) * ∂(~x)^-1
+    @rule 𝛷(acsc(~x)) => (~x*acsc(~x) + acosh(cabs(~x))) * ∂(~x)^-1
+    @rule 𝛷(asec(~x)) => (~x*asec(~x) + acosh(cabs(~x))) * ∂(~x)^-1
     @rule 𝛷(acot(~x)) => (~x*acot(~x) + log(~x*~x + 1)) * ∂(~x)^-1
 
     @rule 𝛷(asinh(~x)) => (~x*asinh(~x) + sqrt(~x*~x + 1)) * ∂(~x)^-1

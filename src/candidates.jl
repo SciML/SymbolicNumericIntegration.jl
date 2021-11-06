@@ -2,6 +2,7 @@ using DataStructures
 
 # this is the main heurisctic used to find the test fragments
 function generate_basis(eq, x; homotopy=false)
+    # if homotopy return generate_homotopy2(eq, x) end
     eq = expand(eq)
     S = Set{Any}()
     for t in terms(eq)
