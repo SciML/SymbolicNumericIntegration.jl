@@ -15,27 +15,35 @@ is_abs_half(x) = is_proper(x) && (x ≈ 0.5 || x ≈ -0.5)
 terms(eq::SymbolicUtils.Add) = [t for t in arguments(eq)]
 terms(eq) = [eq]
 
-hints(eq::SymbolicUtils.Add, x, k) = map(t->hints(t,x,k), arguments(eq))
-hints(eq::SymbolicUtils.Mul, x, k) = map(t->hints(t,x,k), arguments(eq))
-hints(eq::SymbolicUtils.Pow, x, k) = hints(arguments(eq)[1],x,k)
+factors(eq, x) = isdependent(eq, x) ? [one(x), eq] : [one(x)]
 
-function hints(eq::SymbolicUtils.Term, x, k)
-    s = Symbol(operation(xq))
-    u = arguments(eq)[1]
+function factors(eq::SymbolicUtils.Pow, x)
+    p, k = arguments(eq)
+    [p^(i*sign(k)) for i=0:abs(k)]
+end
 
-    if !isequal(u, x)
-        _, _, islinear = Symbolics.linear_expansion(u, x)
-        if islinear
-            push!(k, u)
+function factors(eq::SymbolicUtils.Mul, x)
+    terms = [factors(q,x) for q in arguments(eq)]
+    n = length(terms)
+
+    l = Any[one(x)]
+
+    for j = 1:n
+        m = length(l)
+        for t in terms[j]
+            for k = 1:m
+                push!(l, l[k]*t)
+            end
         end
     end
+
+    unique(l)
 end
 
-function collect_hints(eq, x)
-    k = []  # kernels
-    hints(eq, x, k)
-    k
-end
+extract_power(eq::SymbolicUtils.Pow) = [arguments(eq)[2]]
+extract_power(eq::SymbolicUtils.Term) = [1]
+extract_power(eq::SymbolicUtils.Mul) = union([extract_power(t) for t in arguments(eq)]...)
+extract_power(eq) = []
 
 ###############################################################################
 

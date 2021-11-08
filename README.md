@@ -63,10 +63,11 @@ julia> integrate(exp(x^2))
 * `abstol` (default `1e-6`): the error tolerance to accept a solution.
 * `symbolic` (default `true`): if true, pure symbolic integration is attempted first.
 * `bypass` (default `false`): if true, the whole expression is considered at once and not per term.
-* `bypart` (default `true`): if true, integration by parts is tried.
+* `bypart` (default `false`, turned off in version 0.7.0): if true, integration by parts is tried.
 * `num_steps` (default `2`): one plus the number of expanded basis to check (if `num_steps` is 1, only the main basis is checked).
 * `num_trials` (default `5`): the number of attempts to solve the integration numerically for each basis set.
 * `show_basis` (default `false`): print the basis set, useful for debugging. Only works if `verbose` is also set.
+* `homotopy` (default: `true` as of version 0.7.0): uses the continuous Homotopy operators to generate the integration candidates.
 * `verbose` (default `false`): if true, prints extra (and voluminous!) debugging information.
 * `radius` (default `1.0`): the starting radius to generate random test points.
 * `opt` (default `STLSQ(exp.(-10:1:0))`): the optimizer passed to `sparse_regression!`.
@@ -84,8 +85,8 @@ Additionally, 12 test suites from the *Rule-based Integrator* ([Rubi](https://ru
   using SymbolicNumericIntegration
   include("test/axiom.jl")  # note, you may need to use the correct path
 
-  L = convert_axiom(:Apostle)   # can also use L = convert_axiom(1)
-  test_axiom(L, false; bypart=true, bypass=false, verbose=true)
+  L = convert_axiom(:Apostle)   # can also use L = convert_axiom(1)  
+  test_axiom(L, false; bypart=false, bypass=false, verbose=false, homotopy=true)
 ```
 
 The test suites description based on the header of the files in the Rubi directory are

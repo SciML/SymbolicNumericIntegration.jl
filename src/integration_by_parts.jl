@@ -38,28 +38,3 @@ function try_integration_by_parts(eq, x, l; kwargs...)
 
     return zero(x), eq, ϵ₀
 end
-
-factors(eq, x) = isdependent(eq, x) ? [one(x), eq] : [one(x)]
-
-function factors(eq::SymbolicUtils.Pow, x)
-    p, k = arguments(eq)
-    [p^(i*sign(k)) for i=0:abs(k)]
-end
-
-function factors(eq::SymbolicUtils.Mul, x)
-    terms = [factors(q,x) for q in arguments(eq)]
-    n = length(terms)
-
-    l = Any[one(x)]
-
-    for j = 1:n
-        m = length(l)
-        for t in terms[j]
-            for k = 1:m
-                push!(l, l[k]*t)
-            end
-        end
-    end
-
-    unique(l)
-end

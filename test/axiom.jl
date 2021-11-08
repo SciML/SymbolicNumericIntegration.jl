@@ -1,18 +1,19 @@
 using SymbolicUtils
 using SymbolicUtils.Rewriters
+using Symbolics
 # using SymbolicNumericIntegration
 
 using PyCall
 sympy = pyimport("sympy")
 
+@syms 𝐞 a b c d e p
+
+axion_rules = [
+    @rule ^(𝐞, ~k) => exp(~k)
+    @rule 𝐞 => MathConstants.e
+]
+
 function convert_axiom(name::AbstractString)
-    @syms 𝐞 a b c d e f g h i j k l m n o p q r s t u v w x y z
-
-    axion_rules = [
-        @rule ^(𝐞, ~k) => exp(~k)
-        @rule 𝐞 => MathConstants.e
-    ]
-
     fd = open(name, "r")
     re = r"\[.*\]"
     L = []
@@ -21,7 +22,9 @@ function convert_axiom(name::AbstractString)
 
     for (lineno,line) in enumerate(readlines(fd))
         line = strip(line)
+        if length(line) < 3 || line[1:2] == "--" continue end
         ma = match(re, line)
+
         if ma != nothing
             line = replace(ma.match, "%e" => 𝐞)
             line  = replace(ma.match, "%i" => im)
@@ -34,9 +37,9 @@ function convert_axiom(name::AbstractString)
                 P[1] = Prewalk(PassThrough(Chain(axion_rules)))(P[1])
                 P[4] = Prewalk(PassThrough(Chain(axion_rules)))(P[4])
 
-                for ν in get_variables(P[1])
+                for ν in Symbolics.get_variables(P[1])
                     if !isequal(ν, x) && !haskey(D, ν)
-                        D[ν] = length(D) + 1
+                        D[ν] = length(D) + 2
                     end
                 end
 

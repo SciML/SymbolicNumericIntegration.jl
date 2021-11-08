@@ -24,8 +24,8 @@ Base.signbit(z::Complex{T}) where T<:Number = signbit(real(z))
 """
 function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius=1.0,
                    show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
-                   symbolic=true, bypart=true, max_basis=100,
-                   verbose=false, complex_plane=true, prune_basis=false, homotopy=false)
+                   symbolic=true, bypart=false, max_basis=100,
+                   verbose=false, complex_plane=true, prune_basis=false, homotopy=true)
     eq = expand(eq)
     eq = apply_div_rule(eq)
 
@@ -162,9 +162,6 @@ function integrate_term(eq, x, l; kwargs...)
         result(l, "Successful", y)
         return y, 0, 0
     end
-
-    # note that the order of the operations is important!
-    # first, collecing hints, then applying transformation rules, and finally finding the basis.
 
     basis = generate_basis(eq, x; homotopy)
 
@@ -351,7 +348,7 @@ function try_integrate(T, eq, x, basis, Δbasis, radius; kwargs...)
 end
 
 function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abstol=1e-6)
-    n = size(A, 1)    
+    n = size(A, 1)
     k = 1
     i = 1
 
@@ -405,6 +402,7 @@ function sparse_fit(T, A, x, basis, Δbasis, opt; abstol=1e-6)
         @views Optimize.sparse_regression!(q₀, A, permutedims(b)', opt, maxiter = 1000)
         ϵ = rms(A * q₀ - b)
         q = nice_parameter.(q₀)
+        if sum(iscomplex.(q)) > 2 return nothing, Inf end   # eliminating complex coefficients
         return sum(q[i]*basis[i] for i = 1:length(basis) if q[i] != 0; init=zero(x)), abs(ϵ)
     catch e
         println("Error from spart_fit", e)
