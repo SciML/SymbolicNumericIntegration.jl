@@ -93,7 +93,7 @@ function integrate_sum(eq, x, l; bypass=false, kwargs...)
         eq = apply_q_rules(apply_integration_rules(unsolved))
 
         if !isequal(eq, unsolved)
-            # eq = expand(eq)
+            eq = expand(eq)
             unsolved = 0
             ϵ₀ = 0
             ts = bypass ? [eq] : terms(eq)
@@ -169,7 +169,7 @@ function integrate_term(eq, x, l; kwargs...)
         inform(l, "Generating basis (|β| = $(length(basis)))", basis)
     end
 
-    if prune_basis || length(basis) > max_basis
+    if prune_basis # || length(basis) > max_basis
         basis, ok = prune(basis, eq, x)
         if ok && show_basis
             inform(l, "Prunning the basis (|β| = $(length(basis)))", basis)

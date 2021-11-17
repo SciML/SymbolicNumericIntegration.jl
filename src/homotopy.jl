@@ -20,9 +20,12 @@ transformer(eq::SymbolicUtils.Div, f) = transformer(arguments(eq)[1],f) * transf
 function transformer(eq::SymbolicUtils.Pow, f)
     y, k = arguments(eq)
 
-    if isinteger(k)
-        μ = next_variable!(f, k < 0 ? inv(y) : y)
-        return μ ^ abs(k)
+    if is_pos_int(k)
+        μ = next_variable!(f, y)
+        return μ ^ k
+    elseif is_neg_int(k)
+        μ = next_variable!(f, inv(y))
+        return μ ^ -k
     else
         return next_variable!(f, y^k)
     end
@@ -54,13 +57,10 @@ function substitute_x(eq, x, sub)
 end
 
 function generate_homotopy(eq, x)
-    q, sub = transform(eq, x)
-    d = degree(q)
-    n = length(sub)
+    q, sub = transform(eq, x)    
+    S = 0
 
-    S = Set{Any}()
-
-    for i = 1:n
+    for i = 1:length(sub)
         μ = u[i]
         h₁, ∂h₁ = apply_partial_int_rules(sub[μ])
         h₂ = expand_derivatives(Differential(μ)(q))
@@ -68,18 +68,18 @@ function generate_homotopy(eq, x)
         h₁ = substitute_x(h₁, x, sub)
         h₂ = substitute_x(h₂ * ∂h₁^-1, x, sub)
 
-        H = sum((Differential(x)^i)(h₂) for i=1:d-1; init=(1 + h₂))
-        I = expand(expand_derivatives((1 + h₁) * H))
-        enqueue_expr!(S, I, x)
+        S += expand((1 + h₁) * (1 + h₂))
     end
 
-    return [one(x); [s for s in S]]
+    unique([one(x); [equivalent(t,x) for t in terms(S)]])
 end
 
 ##############################################################################
 
-∂(x) = expand_derivatives(Differential(𝑥)(x))
-cabs(x) = sqrt(x * conj(x))
+function ∂(x)
+    d = expand_derivatives(Differential(𝑥)(x))
+    return isequal(d, 0) ? 1 : d
+end
 
 partial_int_rules = [
     @rule 𝛷(^(sin(~x), ~k::is_neg)) => 𝛷(^(csc(~x), -~k))
@@ -130,7 +130,6 @@ partial_int_rules = [
     @rule 𝛷(^(~x::is_poly, ~k::is_neg)) => (sum(candidate_pow_minus(~x, ~k); init=one(~x)), 1)
     @rule 𝛷(sqrt(~x)) => (sum(candidate_sqrt(~x,0.5); init=one(~x)), 1)
     @rule 𝛷(^(sqrt(~x),-1)) => 𝛷(^(~x,-0.5))
-
 
     @rule 𝛷(^(~x, -1)) => (log(~x), ∂(~x))
     @rule 𝛷(1 / ~x) => 𝛷(^(~x, -1))

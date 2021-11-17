@@ -33,7 +33,7 @@ function find_roots(T, p, x; abstol=1e-8, num_roots=0)
     s = Complex{T}[]
 
     while !isequal(p, 0)
-        q = expand(p / x)
+        q = expand(p * x^-1)
         if !is_poly(q) break end
         push!(r, 0)
         p = q
@@ -45,7 +45,7 @@ function find_roots(T, p, x; abstol=1e-8, num_roots=0)
     ∂p = expand_derivatives(Differential(x)(p))
 
     while length(zs) < n
-        z = solve_newton(Complex{T}, p, ∂p, x, cis(2π*rand()), zs; abstol)        
+        z = solve_newton(Complex{T}, p, ∂p, x, cis(2π*rand()), zs; abstol)
         if z != nothing
             if abs(imag(z)) < abstol
                 push!(zs, Complex(real(z)))

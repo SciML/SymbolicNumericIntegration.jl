@@ -6,7 +6,7 @@ using Symbolics
 using PyCall
 sympy = pyimport("sympy")
 
-@syms 𝐞 a b c d e p
+@syms x 𝐞 a b c d e p t m n z
 
 axion_rules = [
     @rule ^(𝐞, ~k) => exp(~k)
@@ -26,8 +26,10 @@ function convert_axiom(name::AbstractString)
         ma = match(re, line)
 
         if ma != nothing
-            line = replace(ma.match, "%e" => 𝐞)
-            line  = replace(ma.match, "%i" => im)
+            line = ma.match
+            println(line)
+            line = replace(line, "%e" => 𝐞)
+            line  = replace(line, "%i" => im)
 
             try
                 expr = Meta.parse(line)
@@ -49,6 +51,8 @@ function convert_axiom(name::AbstractString)
                 println(P[1])
                 push!(L, P)
             catch err
+                printstyled(lineno, ": ", err, '\n'; color=:red)
+                printstyled('\t', line, '\n'; color=:red)
             end
         end
     end
@@ -117,8 +121,9 @@ function test_axiom(L, try_sympy=true; kwargs...)
     n_diff = 0
     n_catch = 0
 
-    for p in L
+    for (i,p) in enumerate(L)
         try
+            printstyled(i, ": "; color=:yellow)
             eq = p[1]
             x = p[2]
             ans = p[4]
@@ -145,7 +150,7 @@ function test_axiom(L, try_sympy=true; kwargs...)
 
             printstyled("\tAnswer: \t", ans, '\n'; color=:blue)
         catch e
-            printstyled(e, '\n'; color=:red)
+            printstyled(i, ": ", e, '\n'; color=:red)
             n_catch += 1
         end
     end

@@ -4,9 +4,9 @@ using DataStructures
 function generate_basis(eq, x; homotopy=false)
     # if homotopy return generate_homotopy2(eq, x) end
     eq = expand(eq)
-    S = Set{Any}()
+    S = 0 #Set{Any}()
     for t in terms(eq)
-        q = t / coef(t, x)
+        q = equivalent(t, x)
         f = kernel(q)
 
         C₁ = closure(f, x)
@@ -22,30 +22,18 @@ function generate_basis(eq, x; homotopy=false)
             C₂ = find_candidates(p, x)
         end
 
-        for c₁ in C₁
-            enqueue_expr!(S, c₁, x)
-        end
-
-        for c₂ in C₂
-            enqueue_expr!(S, c₂, x)
-        end
-
-        for c₁ in C₁
-            for c₂ in C₂
-                enqueue_expr!(S, expand(c₁*c₂), x)
-            end
-        end
+        S += sum(c₁*c₂ for c₁ in C₁ for c₂ in C₂)
     end
-    return unique([one(x); [s for s in S]])
+    return unique([one(x); [equivalent(t,x) for t in terms(S)]])
 end
 
 function expand_basis(basis, x; homotopy=false)
-    if homotopy
-        I, deg = homotopy_integrand(sum(basis), x)
-        return expand_integrand(I, x, deg)
-    else
-        return unique([basis; basis*x])
-    end
+    b = sum(basis)
+    eq = (1 + x) * (b + Differential(x)(b))
+    eq = expand(expand_derivatives(eq))
+    S = Set{Any}()
+    enqueue_expr!(S, eq, x)
+    return [one(x); [s for s in S]]
 end
 
 function closure(eq, x; max_terms=50)
@@ -84,7 +72,12 @@ function candidate_pow_minus(p, k; abstol=1e-8)
     end
 
     x = var(p)
-    r, s = find_roots(p, x)
+    d = poly_deg(p)
+
+    for j = 1:10  # will try 10 times to find the roots
+        r, s = find_roots(p, x)
+        if length(r) + length(s) >= d break end
+    end
     s = s[1:2:end]
     r = nice_parameter.(r)
     s = nice_parameter.(s)

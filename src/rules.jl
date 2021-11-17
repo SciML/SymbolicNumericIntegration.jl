@@ -73,6 +73,7 @@ is_linear_poly(eq) = poly_deg(eq) == 1
 s_rules = [
     @rule Ω(+(~~xs)) => sum(map(Ω, ~~xs))
     @rule Ω(*(~~xs)) => prod(map(Ω, ~~xs))
+    @rule Ω(~x / ~y) => Ω(~x) * Ω(^(~y,-1))
     @rule Ω(^(~x::is_linear_poly, ~k::is_pos_int)) => ^(~x, ~k)
     @rule Ω(~x::is_var) => ~x
     @rule Ω(~x::is_linear_poly) => ~x
@@ -95,7 +96,9 @@ kernel(eq) = Prewalk(Chain(s_rules))(Ω(value(eq)))
 
 coef(eq::SymbolicUtils.Mul, x) = prod(t for t in arguments(eq) if !isdependent(t,x); init=1)
 coef(eq::SymbolicUtils.Add, x) = minimum(abs(coef(t,x)) for t in arguments(eq))
-coef(eq, x) = 1
+coef(eq, x) = is_number(eq) ? eq : 1
+
+equivalent(eq, x) = eq / coef(eq, x)
 
 ########################## Transformation Rules ###############################
 
@@ -173,7 +176,14 @@ end
 function decompose_rational(eq)
     if poly_deg(eq) == 1 return inverse(eq) end
     x = var(eq)
-    r, s = find_roots(eq, x)
+
+    d = poly_deg(eq)
+
+    for j = 1:10  # will try 10 times to find the roots
+        r, s = find_roots(eq, x)
+        if length(r) + length(s) >= d break end
+    end
+
     s = s[1:2:end]
     r = nice_parameter.(r)
     s = nice_parameter.(s)
