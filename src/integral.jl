@@ -9,23 +9,32 @@ Base.signbit(z::Complex{T}) where T<:Number = signbit(real(z))
     input:
     ------
     eq: a Symbolics expression to integrate
+    x: the independent variable (optional)
+
     abstol: the desired tolerance
     num_steps: the number of different steps with expanding basis to be tried
     num_trials: the number of trials in each step (no changes to the basis)
-    lo and hi: the range used to generate random values of x (the independent variable)
-    show_basis: if true, the basis is printed
+    radius: the radius of the disk in the complex plane to generate random test points
+    show_basis: if true, the basis (list of candidate terms) is printed
+    opt: the sparse regression optimizer
+    bypass: if true, do not integrate terms separately but consider all at once
+    symbolic: try symbolic integration first
+    max_basis: the maximum number of candidate terms to consider
+    verbose: print a detailed report
+    complex_plane: generate random test points on the complex plane (if false, the points will be on real axis)
+    homotomy: use the homotopy algorithm to generat the basis
 
     output:
     -------
-    solved, unsolved
+    solved, unsolved, err
 
-    a pair of expressions, solved is the solved integral and unsolved is the residual unsolved
-    portion of the input
+    solved is the solved integral and unsolved is the residual unsolved portion of the input
+    err is the numerical error in reaching the solution
 """
 function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius=1.0,
                    show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
-                   symbolic=true, bypart=false, max_basis=100,
-                   verbose=false, complex_plane=true, prune_basis=false, homotopy=true)
+                   symbolic=true, max_basis=100, verbose=false, complex_plane=true,
+                   homotopy=true)
     eq = expand(eq)
     eq = apply_div_rule(eq)
 
@@ -44,33 +53,21 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius
         return x * eq, 0, 0
     end
 
-    # check if eq is a rational function
-    # if so, we perform a partial-fraction decomposition first (the first part of the Hermite's method)
+    # homotopy = homotopy && !bypass
 
-    # q = to_rational(eq, x)
-    # if q != nothing
-    #     eq = q
-    # end
-
-    homotopy = homotopy && !bypass
-
-    s₁, u₁, ϵ = integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
+    return integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
                               radius, show_basis, opt, symbolic,
-                              max_basis, verbose, complex_plane, prune_basis, homotopy)
-
-    if isequal(u₁, 0) || !bypart
-        return s₁, u₁, ϵ
-    else
-        s₂, u₂, ϵ = try_integration_by_parts(u₁, x, l; abstol, num_trials, num_steps,
-                                             radius, show_basis, opt, symbolic,
-                                             max_basis, verbose, complex_plane,
-                                             prune_basis, homotopy)
-        return s₁ + s₂, u₂, ϵ
-    end
+                              max_basis, verbose, complex_plane, homotopy)
 end
 
 """
-    ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
+    integrate_sum applies the integral summation rule ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
+
+    eq: the integrand
+    x: the indepedent variable
+    l: a logger
+
+    output is the same as integrate
 """
 function integrate_sum(eq, x, l; bypass=false, kwargs...)
     solved = 0
@@ -90,7 +87,7 @@ function integrate_sum(eq, x, l; bypass=false, kwargs...)
     end
 
     if !isequal(unsolved, 0)
-        eq = apply_q_rules(apply_integration_rules(unsolved))
+        eq = factor_rational(simplify_trigs(unsolved))
 
         if !isequal(eq, unsolved)
             eq = expand(eq)
@@ -109,6 +106,11 @@ function integrate_sum(eq, x, l; bypass=false, kwargs...)
                 solved += s
                 unsolved += u
                 ϵ₀ = max(ϵ₀, ϵ)
+
+                if !isequal(u, 0)   # premature termination on the first failure
+                    return 0, eq, ϵ₀
+                end
+
             end
         end
     end
@@ -116,44 +118,22 @@ function integrate_sum(eq, x, l; bypass=false, kwargs...)
     return expand(solved), unsolved, ϵ₀
 end
 
-function integrate_sum_fast(eq, x, l; kwargs...)
-    solved = 0
-    ϵ₀ = 0
+"""
+    integrate_term is the central part of the code that tries different
+    methods to integrate eq
 
-    for p in terms(eq)
-        s, u, ϵ = integrate_term(p, x, l; kwargs...)
-        if !isequal(u, 0) return 0, eq, ϵ end
-        solved += s
-        ϵ₀ = max(ϵ₀, ϵ)
-    end
-    return solved, 0, ϵ₀
-end
+    eq: the integrand
+    x: the indepedent variable
+    l: a logger
 
-function test_point(complex_plane, radius)
-    if complex_plane
-        return radius * sqrt(rand()) * cis(2π*rand())
-    else
-        return Complex(radius * (2*rand() - 1))
-    end
-end
-
-function accept_solution(eq, x, sol, radius)
-    try
-        x₀ = test_point(true, radius)
-        Δ = substitute(expand_derivatives(Differential(x)(sol)-eq), Dict(x => x₀))
-        return abs(Δ)
-    catch e
-        #
-    end
-    return Inf
-end
-
+    output is the same as integrate
+"""
 function integrate_term(eq, x, l; kwargs...)
     args = Dict(kwargs)
     abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
-        radius, prune_basis, homotopy = args[:abstol], args[:num_steps],
+        radius, homotopy = args[:abstol], args[:num_steps],
         args[:num_trials], args[:show_basis], args[:symbolic], args[:verbose],
-        args[:max_basis], args[:radius], args[:prune_basis], args[:homotopy]
+        args[:max_basis], args[:radius], args[:homotopy]
 
     attempt(l, "Integrating term", eq)
 
@@ -167,13 +147,6 @@ function integrate_term(eq, x, l; kwargs...)
 
     if show_basis
         inform(l, "Generating basis (|β| = $(length(basis)))", basis)
-    end
-
-    if prune_basis # || length(basis) > max_basis
-        basis, ok = prune(basis, eq, x)
-        if ok && show_basis
-            inform(l, "Prunning the basis (|β| = $(length(basis)))", basis)
-        end
     end
 
     if length(basis) > max_basis
@@ -222,9 +195,11 @@ function integrate_term(eq, x, l; kwargs...)
         inform(l, "Failed numeric")
 
         if i < num_steps
-            basis = expand_basis(basis, x; homotopy=false)
+            basis = expand_basis(basis, x)
             if show_basis
                 inform(l, "Expanding the basis (|β| = $(length(basis)))", basis)
+            elseif verbose
+                inform(l, "Expanding the basis (|β| = $(length(basis)))")
             end
         end
     end
@@ -236,59 +211,6 @@ function integrate_term(eq, x, l; kwargs...)
         result(l, "Unsucessful", eq)
         return 0, eq, ϵ₀
     end
-end
-
-rms(x) = sqrt(sum(x.^2) / length(x))
-
-"""
-    returns a list of the indices of a linearly independent subset of the columns of A
-"""
-function find_independent_subset(A; abstol=1e-3)
-    Q, R = qr(A)
-    abs.(diag(R)) .> abstol
-end
-
-"""
-    converts float to int or small rational numbers
-"""
-function nice_parameters(p; abstol=1e-3)
-    c = lcm(collect(1:10)...)
-    n = length(p)
-    q = Array{Any}(undef, n)
-    for i = 1:n
-        den = 1
-        while den < 10
-            if abs(round(p[i]*den) - p[i]*den) < abstol
-                a = round(Int, p[i]*den) // den
-                q[i] = (denominator(a) == 1 ? numerator(a) : a)
-                den = 10
-            else
-                q[i] = Float64(p[i])
-            end
-            den += 1
-        end
-    end
-    q
-end
-
-function nice_parameter(u::T; abstol=1e-3, M=10) where T<:Real
-    c = lcm(collect(1:M)...)
-    for den = 1:M
-        try
-            if abs(round(u*den) - u*den) < abstol
-                a = round(Int, u*den) // den
-                return (denominator(a) == 1 ? numerator(a) : a)
-            end
-        catch e
-        end
-    end
-    return u
-end
-
-function nice_parameter(u::Complex{T}; abstol=1e-3, M=10) where T<:Real
-    α = nice_parameter(real(u))
-    β = nice_parameter(imag(u))
-    return β ≈ 0 ? α : Complex(α, β)
 end
 
 ###############################################################################
@@ -328,19 +250,19 @@ function try_integrate(T, eq, x, basis, Δbasis, radius; kwargs...)
         return y₂, ϵ₂
     end
 
-    if n < 8    # 8 is arbitrary here and signifies a small basis
+    if n < 8    # here, 8 is arbitrary and signifies a small basis
         y₃, ϵ₃ = find_dense(T, A, basis; abstol)
         if ϵ₃ < abstol
             return y₃, ϵ₃
         end
     end
 
+    # moving toward the poles
     ∂eq = expand_derivatives(Differential(x)(eq))
     modify_basis_matrix!(T, A, X, x, eq, ∂eq, Δbasis, radius; abstol)
     y₄, ϵ₄ = sparse_fit(T, A, x, basis, Δbasis, opt; abstol)
 
     if ϵ₄ < abstol || ϵ₄ < ϵ₁
-        # if verbose printstyled("improvement after moving toward poles\n"; color=:blue) end
         return y₄, ϵ₄
     else
         return y₁, ϵ₁
@@ -379,6 +301,8 @@ function modify_basis_matrix!(T, A, X, x, eq, ∂eq, Δbasis, radius; abstol=1e-
     for k = 1:n
         d = Dict(x => X[k])
         # One Newton iteration toward the poles
+        # note the + sign instead of the usual - in Newton-Raphson's method. This is
+        # because we are moving toward the poles and not zeros.
         x₀ = X[k] + Complex{T}(substitute(eq, d)) / Complex{T}(substitute(∂eq, d))
         X[k] = x₀
         d = Dict(x => x₀)
@@ -405,7 +329,7 @@ function sparse_fit(T, A, x, basis, Δbasis, opt; abstol=1e-6)
         if sum(iscomplex.(q)) > 2 return nothing, Inf end   # eliminating complex coefficients
         return sum(q[i]*basis[i] for i = 1:length(basis) if q[i] != 0; init=zero(x)), abs(ϵ)
     catch e
-        println("Error from spart_fit", e)
+        println("Error from sparse_fit", e)
         return nothing, Inf
     end
 end

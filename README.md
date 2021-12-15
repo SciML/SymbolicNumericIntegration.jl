@@ -2,9 +2,10 @@
 
 **SymbolicNumericIntegration.jl** is a hybrid symbolic/numerical integration package that works on the [Julia Symbolics](https://github.com/JuliaSymbolics/Symbolics.jl) expressions.
 
-Function `integrate` returns the integral of a univariate expression with *constant* coefficients. It uses a randomized algorithm based on a hybrid of the *method of undetermined coefficients* and *sparse regression* and is able to solve a large subset of basic standard integrals (polynomials, exponential/logarithmic, trigonometric and hyperbolic, inverse trigonometric and hyperbolic, rational and square root).
+**SymbolicNumericIntegration.jl** uses a randomized algorithm based on a hybrid of the *method of undetermined coefficients* and *sparse regression* and is able to solve a large subset of basic standard integrals (polynomials, exponential/logarithmic, trigonometric and hyperbolic, inverse trigonometric and hyperbolic, rational and square root).
+The basis of how it works and the theory of integration using the Symbolic-Numeric methods refer to [Basis of Symbolic-Numeric Integration](docs/theory.ipynb).
 
-`integrate` returns a tuple with three values. The first one is the solved integral, the second one is the sum of the unsolved terms, and the third value is the residual error. If `integrate` is successful, the unsolved portion is reported as 0.
+Function `integrate` returns the integral of a univariate expression with *constant* real or complex coefficients. `integrate` returns a tuple with three values. The first one is the solved integral, the second one is the sum of the unsolved terms, and the third value is the residual error. If `integrate` is successful, the unsolved portion is reported as 0.
 
 ```julia
 using SymbolicUtils
@@ -63,7 +64,6 @@ julia> integrate(exp(x^2))
 * `abstol` (default `1e-6`): the error tolerance to accept a solution.
 * `symbolic` (default `true`): if true, pure symbolic integration is attempted first.
 * `bypass` (default `false`): if true, the whole expression is considered at once and not per term.
-* `bypart` (default `false`, turned off in version 0.7.0): if true, integration by parts is tried.
 * `num_steps` (default `2`): one plus the number of expanded basis to check (if `num_steps` is 1, only the main basis is checked).
 * `num_trials` (default `5`): the number of attempts to solve the integration numerically for each basis set.
 * `show_basis` (default `false`): print the basis set, useful for debugging. Only works if `verbose` is also set.
@@ -73,7 +73,6 @@ julia> integrate(exp(x^2))
 * `opt` (default `STLSQ(exp.(-10:1:0))`): the optimizer passed to `sparse_regression!`.
 * `max_basis` (default `110`): the maximum number of expression in the basis.
 * `complex_plane` (default `true`): random test points are generated on the complex plane (only over the real axis if `complex_plane` is `false`).
-* `prune_basis` (**experimental**; default `false`); prunes the candidate list to improve performance. The current implementation sometimes prunes too much and cannot be use for all cases.
 
 ## Testing
 
@@ -86,7 +85,7 @@ Additionally, 12 test suites from the *Rule-based Integrator* ([Rubi](https://ru
   include("test/axiom.jl")  # note, you may need to use the correct path
 
   L = convert_axiom(:Apostle)   # can also use L = convert_axiom(1)  
-  test_axiom(L, false; bypart=false, bypass=false, verbose=false, homotopy=true)
+  test_axiom(L, false; bypass=false, verbose=false, homotopy=true)
 ```
 
 The test suites description based on the header of the files in the Rubi directory are

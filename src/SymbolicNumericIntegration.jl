@@ -17,14 +17,12 @@ include("rules.jl")
 include("candidates.jl")
 include("homotopy.jl")
 
+include("numeric_utils.jl")
 include("integral.jl")
 
 export integrate, generate_basis
 
 include("symbolic.jl")
-include("integration_by_parts.jl")
-
 include("logger.jl")
-include("prune.jl")
 
 end # module

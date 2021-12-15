@@ -57,7 +57,7 @@ function substitute_x(eq, x, sub)
 end
 
 function generate_homotopy(eq, x)
-    q, sub = transform(eq, x)    
+    q, sub = transform(eq, x)
     S = 0
 
     for i = 1:length(sub)

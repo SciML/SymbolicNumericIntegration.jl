@@ -223,6 +223,5 @@ function test_integrals(; kw...)
 end
 
 @testset "integral" begin test_integrals(;
-    symbolic=false, bypart=false, prune_basis=false, verbose=false,
-    homotopy=true, num_steps=2, num_trials=10)
+    symbolic=false, verbose=false, homotopy=true, num_steps=2, num_trials=10)
 end

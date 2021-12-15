@@ -102,7 +102,7 @@ equivalent(eq, x) = eq / coef(eq, x)
 
 ########################## Transformation Rules ###############################
 
-int_rules = [
+trigs_rules = [
     @rule tan(~x) => sin(~x) * cos(~x)^-1
     @rule sec(~x) => one(~x) * cos(~x)^-1
     @rule csc(~x) => one(~x) * sin(~x)^-1
@@ -158,7 +158,7 @@ int_rules = [
     @acrule exp(~x) * exp(~y) => exp(~x + ~y)
 ]
 
-apply_integration_rules(eq) = expand(Fixpoint(Prewalk(PassThrough(Chain(int_rules))))(value(eq)))
+simplify_trigs(eq) = expand(Fixpoint(Prewalk(PassThrough(Chain(trigs_rules))))(value(eq)))
 
 ##############################################################################
 
@@ -215,7 +215,7 @@ function decompose_rational(eq)
     return p
 end
 
-q_rules = [
+rational_rules = [
     @rule Ω(+(~~xs)) => sum(map(Ω, ~~xs))
     @rule Ω(*(~~xs)) => prod(map(Ω, ~~xs))
     @rule Ω(^(~x::is_poly, ~k::is_neg_int)) => expand(^(decompose_rational(~x), -~k))
@@ -227,7 +227,7 @@ q_rules = [
     @rule Ω(~x) => ~x
 ]
 
-apply_q_rules(eq) = Prewalk(PassThrough(Chain(q_rules)))(Ω(value(eq)))
+factor_rational(eq) = Prewalk(PassThrough(Chain(rational_rules)))(Ω(value(eq)))
 
 ###############################################################################
 

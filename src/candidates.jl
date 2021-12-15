@@ -1,8 +1,8 @@
 using DataStructures
 
 # this is the main heurisctic used to find the test fragments
-function generate_basis(eq, x; homotopy=false)
-    # if homotopy return generate_homotopy2(eq, x) end
+function generate_basis(eq, x; homotopy=true)
+    # if homotopy return generate_homotopy(eq, x) end
     eq = expand(eq)
     S = 0 #Set{Any}()
     for t in terms(eq)
@@ -27,7 +27,7 @@ function generate_basis(eq, x; homotopy=false)
     return unique([one(x); [equivalent(t,x) for t in terms(S)]])
 end
 
-function expand_basis(basis, x; homotopy=false)
+function expand_basis(basis, x)
     b = sum(basis)
     eq = (1 + x) * (b + Differential(x)(b))
     eq = expand(expand_derivatives(eq))
