@@ -11,7 +11,7 @@ Function `integrate` returns the integral of a univariate expression with *const
 using SymbolicUtils
 using SymbolicNumericIntegration
 
-@syms x
+@variables x
 
 julia> integrate(3x^3 + 2x - 5)
 (x^2 + (3//4)*(x^4) - (5x), 0, 0)
@@ -104,3 +104,18 @@ The test suites description based on the header of the files in the Rubi directo
 |:Timofeev    | 10 | A. F. Timofeev - Integration of Functions (1948) |
 |:Welz        | 11 | Martin Welz - posts on Sci.Math.Symbolic |
 |:Webster     | 12 | Michael Wester |
+
+## Citation
+
+If you use **SymbolicNumericIntegration.jl**, please cite [Symbolic-Numeric Integration of Univariate Expressions based on Sparse Regression](https://arxiv.org/abs/2201.12468):
+
+```
+@article{Iravanian2022,   
+   author = {Shahriar Iravanian and Carl Julius Martensen and Alessandro Cheli and Shashi Gowda and Anand Jain and Julia Computing and Yingbo Ma and Chris Rackauckas},
+   doi = {10.48550/arxiv.2201.12468},
+   month = {1},
+   title = {Symbolic-Numeric Integration of Univariate Expressions based on Sparse Regression},
+   url = {https://arxiv.org/abs/2201.12468v2},
+   year = {2022},
+}
+```

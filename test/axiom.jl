@@ -6,7 +6,8 @@ using Symbolics
 using PyCall
 sympy = pyimport("sympy")
 
-@syms x 𝐞 a b c d e p t m n z
+# @syms x 𝐞 a b c d e p t m n z
+@variables x 𝐞 a b c d e p t m n z
 
 axion_rules = [
     @rule ^(𝐞, ~k) => exp(~k)
@@ -122,7 +123,7 @@ function test_axiom(L, try_sympy=true; kwargs...)
     n_catch = 0
 
     for (i,p) in enumerate(L)
-        try
+        # try
             printstyled(i, ": "; color=:yellow)
             eq = p[1]
             x = p[2]
@@ -130,6 +131,8 @@ function test_axiom(L, try_sympy=true; kwargs...)
 
             printstyled(eq, '\n'; color=:green)
             sol = integrate(eq, x; kwargs...)[1]
+
+            println(">>>>", sol)
 
             if isequal(sol, 0)
                 printstyled("\tFailure\n"; color=:red)
@@ -149,10 +152,10 @@ function test_axiom(L, try_sympy=true; kwargs...)
             end
 
             printstyled("\tAnswer: \t", ans, '\n'; color=:blue)
-        catch e
-            printstyled(i, ": ", e, '\n'; color=:red)
-            n_catch += 1
-        end
+        # catch e
+        #    printstyled(i, ": ", e, '\n'; color=:red)
+        #    n_catch += 1
+        #end
     end
 
     println()
