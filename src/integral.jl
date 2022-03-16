@@ -44,6 +44,8 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius
             @syms 𝑥
             x = 𝑥
         end
+    else
+        x = value(x)    # needed for the transition from @syms to @variables
     end
 
     l = Logger(verbose)

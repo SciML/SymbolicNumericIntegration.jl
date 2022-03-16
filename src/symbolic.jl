@@ -1,8 +1,10 @@
 function try_symbolic(T, eq, x, basis, Δbasis; kwargs...)
+    eq isa Num || return 0, 0    
     n = length(basis)
-    @syms θ[1:n]
+    # @syms θ[1:n]
+    @variables θ[1:n]
 
-    Δeq = sum(θ[j]*Δbasis[j] for j=1:n) - eq    
+    Δeq = sum(θ[j]*Δbasis[j] for j=1:n) - eq
     Δeq = expand(Δeq)
 
     terms = collect_terms(Δeq, x)
@@ -85,6 +87,7 @@ function solve_symbolic(eqs)
 end
 
 function collect_terms(eq::SymbolicUtils.Add, x)
+    println(eq)
     d = Dict{Any,Any}(1 => 0)
     for t in arguments(eq)
         if isdependent(t, x)

@@ -6,7 +6,8 @@ include("axiom.jl")
 
 ##############################################################################
 
-@syms x β
+# @syms x β
+@variables x β
 
 """
     a list of basic standard integral tests
