@@ -6,13 +6,7 @@ using Symbolics
 using PyCall
 sympy = pyimport("sympy")
 
-# @syms x 𝐞 a b c d e p t m n z
-@variables x 𝐞 a b c d e p t m n z
-
-axion_rules = [
-    @rule ^(𝐞, ~k) => exp(~k)
-    @rule 𝐞 => MathConstants.e
-]
+@variables x a b c d e p t m n z
 
 function convert_axiom(name::AbstractString)
     fd = open(name, "r")
@@ -29,7 +23,7 @@ function convert_axiom(name::AbstractString)
         if ma != nothing
             line = ma.match
             println(line)
-            line = replace(line, "%e" => 𝐞)
+            line = replace(line, "%e" => MathConstants.e)
             line  = replace(line, "%i" => im)
 
             try
@@ -37,8 +31,6 @@ function convert_axiom(name::AbstractString)
                 P = eval(expr)
 
                 print(lineno, ": ", P[1], " => ")
-                P[1] = Prewalk(PassThrough(Chain(axion_rules)))(P[1])
-                P[4] = Prewalk(PassThrough(Chain(axion_rules)))(P[4])
 
                 for ν in Symbolics.get_variables(P[1])
                     if !isequal(ν, x) && !haskey(D, ν)
@@ -49,6 +41,7 @@ function convert_axiom(name::AbstractString)
                 P[1] = substitute(P[1], D)
                 P[4] = substitute(P[4], D)
 
+                printstyled(length(L)+1, ": "; color=:red)
                 println(P[1])
                 push!(L, P)
             catch err
@@ -108,10 +101,11 @@ function accept_integral(sol, ans, x; radius=1.0, abstol=1e-3, n=5)
         ϵ = zeros(n)
         for i = 1:n
             x₀ = test_point(true, radius)
-            ϵ[i] = abs(substitute(sol - ans, Dict(x => x₀)))
+            ϵ[i] = value(abs(substitute(sol - ans, Dict(x => x₀))))
         end
-        return maximum(ϵ) - minimum(ϵ) < abstol
+        return maximum(ϵ) - minimum(ϵ) <= abstol
     catch e
+        println(e)
     end
     return false
 end
@@ -137,7 +131,7 @@ function test_axiom(L, try_sympy=true; kwargs...)
             if isequal(sol, 0)
                 printstyled("\tFailure\n"; color=:red)
                 n_fail += 1
-            elseif accept_integral(sol, ans, x)
+            elseif accept_integral(value(sol), value(ans), x)
                 printstyled("\tSuccess:\t", sol, '\n'; color=:cyan)
                 n_ok += 1
             else
