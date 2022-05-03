@@ -326,8 +326,8 @@ function sparse_fit(T, A, x, basis, Δbasis, opt; abstol=1e-6)
     try
         b = ones(n)
         # q₀ = A \ b
-        q₀ = Optimize.init(opt, A, b)
-        @views Optimize.sparse_regression!(q₀, A, permutedims(b)', opt, maxiter = 1000)
+        q₀ = DataDrivenDiffEq.init(opt, A, b)
+        @views sparse_regression!(q₀, A, permutedims(b)', opt, maxiter = 1000)
         ϵ = rms(A * q₀ - b)
         q = nice_parameter.(q₀)
         if sum(iscomplex.(q)) > 2 return nothing, Inf end   # eliminating complex coefficients

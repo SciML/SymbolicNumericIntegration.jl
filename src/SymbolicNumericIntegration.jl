@@ -6,7 +6,7 @@ using Symbolics: value, get_variables, expand_derivatives
 using SymbolicUtils.Rewriters
 using Symbolics
 
-using DataDrivenDiffEq.Optimize
+using DataDrivenDiffEq
 
 include("utils.jl")
 include("roots.jl")

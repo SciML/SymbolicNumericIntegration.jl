@@ -8,7 +8,7 @@ The basis of how it works and the theory of integration using the Symbolic-Numer
 Function `integrate` returns the integral of a univariate expression with *constant* real or complex coefficients. `integrate` returns a tuple with three values. The first one is the solved integral, the second one is the sum of the unsolved terms, and the third value is the residual error. If `integrate` is successful, the unsolved portion is reported as 0.
 
 ```julia
-using SymbolicUtils
+using Symbolics
 using SymbolicNumericIntegration
 
 @variables x
