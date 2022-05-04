@@ -1,12 +1,11 @@
-# using SymbolicNumericIntegration
-using SymbolicUtils
+using SymbolicNumericIntegration
+using Symbolics
 using Test
 
 include("axiom.jl")
 
 ##############################################################################
 
-# @syms x β
 @variables x β
 
 """
@@ -220,9 +219,10 @@ function test_integrals(; kw...)
     for eq in misses
         printstyled(eq, '\n'; color=:red)
     end
-    return true
+    return n
 end
 
-@testset "integral" begin test_integrals(;
-    symbolic=false, verbose=false, homotopy=true, num_steps=2, num_trials=10)
+@testset "integral" begin 
+    n = test_integrals(;symbolic=false, verbose=false, homotopy=true, num_steps=2, num_trials=10)
+    @test n==11
 end
