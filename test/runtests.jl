@@ -5,9 +5,10 @@ using SymbolicUtils
 using SymbolicUtils.Rewriters
 
 using Test
-using PyCall, Conda
-Conda.pip_interop(true)
-Conda.pip("install", "sympy")
+using PyCall # , Conda
+# Conda.pip_interop(true)
+# Conda.pip("install", "sympy")
+# ENV["PYTHON"]=""
 using SymPy
 
 
