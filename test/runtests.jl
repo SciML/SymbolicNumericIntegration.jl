@@ -6,6 +6,7 @@ using SymbolicUtils.Rewriters
 
 using Test
 using PyCall, Conda
+Conda.pip_interop(true; [env::Environment = ROOTENV])
 Conda.pip("install", "sympy")
 using SymPy
 
