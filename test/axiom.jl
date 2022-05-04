@@ -4,7 +4,7 @@ using Symbolics
 # using SymbolicNumericIntegration
 
 using PyCall
-sympy = pyimport("sympy")
+sympy = pyimport_conda("sympy","sympy")
 
 @variables x a b c d e p t m n z
 
