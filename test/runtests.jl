@@ -5,11 +5,7 @@ using SymbolicUtils
 using SymbolicUtils.Rewriters
 
 using Test
-using PyCall # , Conda
-# Conda.pip_interop(true)
-# Conda.pip("install", "sympy")
-# ENV["PYTHON"]=""
-using SymPy
+using PyCall, SymPy
 
 
 include("axiom.jl")
@@ -236,5 +232,5 @@ end
 
 @testset "integral" begin
     n = test_integrals(; symbolic=false, verbose=false, homotopy=true, num_steps=2, num_trials=10)
-    @test n == 10 
+    @test n == 11
 end

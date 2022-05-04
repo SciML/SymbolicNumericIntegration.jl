@@ -12,7 +12,6 @@ SymbolicUtils = "d1185830-fcd6-423d-90d6-eec64667417b"
 Symbolics = "0c5d862f-8b57-4792-8d23-62f2024744c7"
 
 [compat]
-Conda = "1"
 DataDrivenDiffEq = "0.8"
 DataStructures = "0.18"
 PyCall = "1"
@@ -22,10 +21,9 @@ SymPy = "1"
 julia = "1.6"
 
 [extras]
-Conda = "8f4d0f93-b110-5947-807f-2305c1781a2d"
 PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
 SymPy = "24249f21-da20-56a4-8eb1-6a02cf4ae2e6"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Conda", "PyCall", "SymPy", "Test"]
+test = ["PyCall", "SymPy", "Test"]
