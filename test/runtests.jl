@@ -5,7 +5,10 @@ using SymbolicUtils
 using SymbolicUtils.Rewriters
 
 using Test
-using PyCall, Conda, SymPy
+using PyCall, Conda
+Conda.pip("install", "sympy")
+using SymPy
+
 
 include("axiom.jl")
 
