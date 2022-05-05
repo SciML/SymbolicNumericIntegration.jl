@@ -16,6 +16,9 @@ jobs:
         version:
           - '1'
           - '1.6'
+    env:
+      PYTHON: python3
+
     steps:
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
@@ -31,6 +34,9 @@ jobs:
             ${{ runner.os }}-test-${{ env.cache-name }}-
             ${{ runner.os }}-test-
             ${{ runner.os }}-
+      - run: >
+          sudo apt-get install --no-install-recommends python3-setuptools python3-wheel
+          && pip3 install sympy
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1

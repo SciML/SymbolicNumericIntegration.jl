@@ -1,10 +1,4 @@
-using SymbolicUtils
-using SymbolicUtils.Rewriters
-using Symbolics
-# using SymbolicNumericIntegration
 
-using PyCall
-sympy = pyimport("sympy")
 
 @variables x a b c d e p t m n z
 
@@ -15,16 +9,18 @@ function convert_axiom(name::AbstractString)
 
     D = Dict{Any,Int}()
 
-    for (lineno,line) in enumerate(readlines(fd))
+    for (lineno, line) in enumerate(readlines(fd))
         line = strip(line)
-        if length(line) < 3 || line[1:2] == "--" continue end
+        if length(line) < 3 || line[1:2] == "--"
+            continue
+        end
         ma = match(re, line)
 
         if ma != nothing
             line = ma.match
             println(line)
             line = replace(line, "%e" => MathConstants.e)
-            line  = replace(line, "%i" => im)
+            line = replace(line, "%i" => im)
 
             try
                 expr = Meta.parse(line)
@@ -41,7 +37,7 @@ function convert_axiom(name::AbstractString)
                 P[1] = substitute(P[1], D)
                 P[4] = substitute(P[4], D)
 
-                printstyled(length(L)+1, ": "; color=:red)
+                printstyled(length(L) + 1, ": "; color=:red)
                 println(P[1])
                 push!(L, P)
             catch err
@@ -83,16 +79,16 @@ function convert_axiom(sym)
             "Wester Problems.input"
         end
 
-        name = joinpath("test/0", name)
-        println(name)
-        return convert_axiom(name)
+    name = joinpath("test/0", name)
+    println(name)
+    return convert_axiom(name)
 end
 
 function test_point(complex_plane, radius)
     if complex_plane
-        return radius * sqrt(rand()) * cis(2π*rand())
+        return radius * sqrt(rand()) * cis(2π * rand())
     else
-        return Complex(radius * (2*rand() - 1))
+        return Complex(radius * (2 * rand() - 1))
     end
 end
 
@@ -116,36 +112,37 @@ function test_axiom(L, try_sympy=true; kwargs...)
     n_diff = 0
     n_catch = 0
 
-    for (i,p) in enumerate(L)
+    for (i, p) in enumerate(L)
         # try
-            printstyled(i, ": "; color=:yellow)
-            eq = p[1]
-            x = p[2]
-            ans = p[4]
+        printstyled(i, ": "; color=:yellow)
+        eq = p[1]
+        x = p[2]
+        ans = p[4]
 
-            printstyled(eq, '\n'; color=:green)
-            sol = integrate(eq, x; kwargs...)[1]
+        printstyled(eq, '\n'; color=:green)
+        sol = integrate(eq, x; kwargs...)[1]
 
-            println(">>>>", sol)
+        println(">>>>", sol)
 
-            if isequal(sol, 0)
-                printstyled("\tFailure\n"; color=:red)
-                n_fail += 1
-            elseif accept_integral(value(sol), value(ans), x)
-                printstyled("\tSuccess:\t", sol, '\n'; color=:cyan)
-                n_ok += 1
-            else
-                printstyled("\tDiscrepancy:\t", sol, '\n'; color=:yellow)
-                n_diff += 1
-            end
+        if isequal(sol, 0)
+            printstyled("\tFailure\n"; color=:red)
+            n_fail += 1
+        elseif accept_integral(value(sol), value(ans), x)
+            printstyled("\tSuccess:\t", sol, '\n'; color=:cyan)
+            n_ok += 1
+        else
+            printstyled("\tDiscrepancy:\t", sol, '\n'; color=:yellow)
+            n_diff += 1
+        end
 
-            if try_sympy
-                s = pythonize(eq)
-                py = sympy.integrate(s, sympy.Symbol(string(x)))
-                printstyled("\tSymPy      :\t", string(py)[10:end], '\n'; color=:magenta)
-            end
+        if try_sympy
+            s = Symbolics.symbolics_to_sympy(s)
+            s_x = Symbolics.symbolics_to_sympy(x)
+            py = SymPy.integrate(s, s_x)
+            printstyled("\tSymPy      :\t", string(py)[10:end], '\n'; color=:magenta)
+        end
 
-            printstyled("\tAnswer: \t", ans, '\n'; color=:blue)
+        printstyled("\tAnswer: \t", ans, '\n'; color=:blue)
         # catch e
         #    printstyled(i, ": ", e, '\n'; color=:red)
         #    n_catch += 1
@@ -157,23 +154,4 @@ function test_axiom(L, try_sympy=true; kwargs...)
     printstyled("Failure     = ", n_fail, '\n'; color=:red)
     printstyled("Discrepancy = ", n_diff, '\n'; color=:yellow)
     printstyled("Exception   = ", n_catch, '\n'; color=:cyan)
-end
-
-#############################################################################
-
-pythonize(eq::SymbolicUtils.Add) = "(" * join(pythonize.(arguments(eq)), ")+(") * ")"
-pythonize(eq::SymbolicUtils.Mul) = "(" * join(pythonize.(arguments(eq)), ")*(") * ")"
-
-function pythonize(eq::SymbolicUtils.Pow)
-    a = pythonize.(arguments(eq))
-    "(" * a[1] * ")**(" * a[2] * ")"
-end
-
-pythonize(eq::SymbolicUtils.Term) = string(operation(eq)) * '(' * pythonize(arguments(eq)[1]) * ')'
-
-function pythonize(eq)
-    s = string(eq)
-    s = replace(s, "π" => "pi")
-    s = replace(s, "im" => "j")
-    s
 end
