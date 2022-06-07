@@ -5,8 +5,7 @@ using SymbolicUtils
 using SymbolicUtils.Rewriters
 
 using Test
-using PyCall
-import SymPy
+using PyCall, SymPy
 
 
 include("axiom.jl")

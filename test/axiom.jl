@@ -97,7 +97,7 @@ function accept_integral(sol, ans, x; radius=1.0, abstol=1e-3, n=5)
         ϵ = zeros(n)
         for i = 1:n
             x₀ = test_point(true, radius)
-            ϵ[i] = Symbolics.value(abs(substitute(sol - ans, Dict(x => x₀))))
+            ϵ[i] = value(abs(substitute(sol - ans, Dict(x => x₀))))
         end
         return maximum(ϵ) - minimum(ϵ) <= abstol
     catch e
@@ -127,7 +127,7 @@ function test_axiom(L, try_sympy=true; kwargs...)
         if isequal(sol, 0)
             printstyled("\tFailure\n"; color=:red)
             n_fail += 1
-        elseif accept_integral(Symbolics.value(sol), Symbolics.value(ans), x)
+        elseif accept_integral(value(sol), value(ans), x)
             printstyled("\tSuccess:\t", sol, '\n'; color=:cyan)
             n_ok += 1
         else
