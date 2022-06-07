@@ -1,16 +1,19 @@
-using Documenter
-using SymbolicNumericIntegration
+using Documenter, SymbolicNumericIntegration
+
+include("pages.jl")
 
 makedocs(
-    sitename="SymbolicNumericIntegration",
-    format=Documenter.HTML(),
-    modules=[SymbolicNumericIntegration]
+    sitename="SymbolicNumericIntegration.jl",
+    authors="Shahriar Iravanian",
+    modules=[SymbolicNumericIntegration],
+    clean=true,doctest=false,
+    format = Documenter.HTML(analytics = "UA-90474609-3",
+                             assets = ["assets/favicon.ico"],
+                             canonical="https://symbolicnumericintegration.sciml.ai/stable/"),
+    pages=pages
 )
 
-# Documenter can also automatically deploy documentation to gh-pages.
-# See "Hosting Documentation" and deploydocs() in the Documenter manual
-# for more information.
 deploydocs(
-    repo="https://github.com/SciML/SymbolicNumericIntegration.jl";
-    push_preview=true
+   repo = "github.com/SciML/SymbolicNumericIntegration.jl.git";
+   push_preview = true
 )
