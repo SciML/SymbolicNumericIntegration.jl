@@ -1,9 +1,8 @@
 using LinearAlgebra
 using Statistics: mean, std
 
-Base.signbit(z::Complex{T}) where T<:Number = signbit(real(z))
+Base.signbit(z::Complex{T}) where {T <: Number} = signbit(real(z))
 Base.signbit(x::SymbolicUtils.Sym{Number, Nothing}) = false
-
 
 """
     integrate is the main entry point
@@ -33,10 +32,11 @@ Base.signbit(x::SymbolicUtils.Sym{Number, Nothing}) = false
     solved is the solved integral and unsolved is the residual unsolved portion of the input
     err is the numerical error in reaching the solution
 """
-function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius=1.0,
-                   show_basis=false, opt = STLSQ(exp.(-10:1:0)), bypass=false,
-                   symbolic=true, max_basis=100, verbose=false, complex_plane=true,
-                   homotopy=true)
+function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 5,
+                   radius = 1.0,
+                   show_basis = false, opt = STLSQ(exp.(-10:1:0)), bypass = false,
+                   symbolic = true, max_basis = 100, verbose = false, complex_plane = true,
+                   homotopy = true)
     eq = expand(eq)
     eq = apply_div_rule(eq)
 
@@ -60,8 +60,8 @@ function integrate(eq, x=nothing; abstol=1e-6, num_steps=2, num_trials=5, radius
     # homotopy = homotopy && !bypass
 
     return integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
-                              radius, show_basis, opt, symbolic,
-                              max_basis, verbose, complex_plane, homotopy)
+                         radius, show_basis, opt, symbolic,
+                         max_basis, verbose, complex_plane, homotopy)
 end
 
 """
@@ -73,7 +73,7 @@ end
 
     output is the same as integrate
 """
-function integrate_sum(eq, x, l; bypass=false, kwargs...)
+function integrate_sum(eq, x, l; bypass = false, kwargs...)
     solved = 0
     unsolved = 0
     ϵ₀ = 0
@@ -114,7 +114,6 @@ function integrate_sum(eq, x, l; bypass=false, kwargs...)
                 if !isequal(u, 0)   # premature termination on the first failure
                     return 0, eq, ϵ₀
                 end
-
             end
         end
     end
@@ -135,9 +134,10 @@ end
 function integrate_term(eq, x, l; kwargs...)
     args = Dict(kwargs)
     abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
-        radius, homotopy = args[:abstol], args[:num_steps],
-        args[:num_trials], args[:show_basis], args[:symbolic], args[:verbose],
-        args[:max_basis], args[:radius], args[:homotopy]
+    radius, homotopy = args[:abstol], args[:num_steps],
+                       args[:num_trials], args[:show_basis], args[:symbolic],
+                       args[:verbose],
+                       args[:max_basis], args[:radius], args[:homotopy]
 
     attempt(l, "Integrating term", eq)
 
@@ -166,8 +166,10 @@ function integrate_term(eq, x, l; kwargs...)
     ϵᵣ = Inf
     yᵣ = 0
 
-    for i = 1:num_steps
-        if length(basis) > max_basis break end
+    for i in 1:num_steps
+        if length(basis) > max_basis
+            break
+        end
 
         Δbasis = [expand_derivatives(D(f)) for f in basis]
 
@@ -182,7 +184,7 @@ function integrate_term(eq, x, l; kwargs...)
             end
         end
 
-        for j = 1:num_trials
+        for j in 1:num_trials
             r = radius #*sqrt(2)^j
             y, ϵ = try_integrate(Float64, eq, x, basis, Δbasis, r; kwargs...)
 
@@ -231,8 +233,8 @@ end
 """
 function try_integrate(T, eq, x, basis, Δbasis, radius; kwargs...)
     args = Dict(kwargs)
-    abstol, opt, complex_plane, verbose =
-        args[:abstol], args[:opt], args[:complex_plane], args[:verbose]
+    abstol, opt, complex_plane, verbose = args[:abstol], args[:opt], args[:complex_plane],
+                                          args[:verbose]
 
     basis = basis[2:end]    # remove 1 from the beginning
     Δbasis = Δbasis[2:end]
@@ -273,7 +275,7 @@ function try_integrate(T, eq, x, basis, Δbasis, radius; kwargs...)
     end
 end
 
-function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abstol=1e-6)
+function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abstol = 1e-6)
     n = size(A, 1)
     k = 1
     i = 1
@@ -286,10 +288,10 @@ function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abst
 
             b₀ = Complex{T}(substitute(eq, d))
             if is_proper(b₀)
-                for j = 1:n
-                    A[k,j] = Complex{T}(substitute(Δbasis[j], d)) / b₀
+                for j in 1:n
+                    A[k, j] = Complex{T}(substitute(Δbasis[j], d)) / b₀
                 end
-                if all(is_proper, A[k,:])
+                if all(is_proper, A[k, :])
                     k += 1
                 end
             end
@@ -299,10 +301,10 @@ function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abst
     end
 end
 
-function modify_basis_matrix!(T, A, X, x, eq, ∂eq, Δbasis, radius; abstol=1e-6)
+function modify_basis_matrix!(T, A, X, x, eq, ∂eq, Δbasis, radius; abstol = 1e-6)
     n = size(A, 1)
     k = 1
-    for k = 1:n
+    for k in 1:n
         d = Dict(x => X[k])
         # One Newton iteration toward the poles
         # note the + sign instead of the usual - in Newton-Raphson's method. This is
@@ -311,17 +313,17 @@ function modify_basis_matrix!(T, A, X, x, eq, ∂eq, Δbasis, radius; abstol=1e-
         X[k] = x₀
         d = Dict(x => x₀)
         b₀ = Complex{T}(substitute(eq, d))
-        for j = 1:n
-            A[k,j] = Complex{T}(substitute(Δbasis[j], d)) / b₀
+        for j in 1:n
+            A[k, j] = Complex{T}(substitute(Δbasis[j], d)) / b₀
         end
     end
 end
 
-function sparse_fit(T, A, x, basis, Δbasis, opt; abstol=1e-6)
+function sparse_fit(T, A, x, basis, Δbasis, opt; abstol = 1e-6)
     n = length(basis)
     # find a linearly independent subset of the basis
     l = find_independent_subset(A; abstol)
-    A, basis, Δbasis, n = A[l,l], basis[l], Δbasis[l], sum(l)
+    A, basis, Δbasis, n = A[l, l], basis[l], Δbasis[l], sum(l)
 
     try
         b = ones(n)
@@ -330,8 +332,11 @@ function sparse_fit(T, A, x, basis, Δbasis, opt; abstol=1e-6)
         @views sparse_regression!(q₀, A, permutedims(b)', opt, maxiter = 1000)
         ϵ = rms(A * q₀ - b)
         q = nice_parameter.(q₀)
-        if sum(iscomplex.(q)) > 2 return nothing, Inf end   # eliminating complex coefficients
-        return sum(q[i]*basis[i] for i = 1:length(basis) if q[i] != 0; init=zero(x)), abs(ϵ)
+        if sum(iscomplex.(q)) > 2
+            return nothing, Inf
+        end   # eliminating complex coefficients
+        return sum(q[i] * basis[i] for i = 1:length(basis) if q[i] != 0; init = zero(x)),
+               abs(ϵ)
     catch e
         println("Error from sparse_fit", e)
         return nothing, Inf
@@ -339,25 +344,25 @@ function sparse_fit(T, A, x, basis, Δbasis, opt; abstol=1e-6)
 end
 
 function find_singlet(T, A, basis; abstol)
-    σ = vec(std(A; dims=1))
-    μ = vec(mean(A; dims=1))
+    σ = vec(std(A; dims = 1))
+    μ = vec(mean(A; dims = 1))
     l = (σ .< abstol) .* (abs.(μ) .> abstol)
     if sum(l) == 1
         k = findfirst(l)
-        return nice_parameter(1/μ[k]) * basis[k], σ[k]
+        return nice_parameter(1 / μ[k]) * basis[k], σ[k]
     else
         return nothing, Inf
     end
 end
 
-function find_dense(T, A, basis; abstol=1e-6)
+function find_dense(T, A, basis; abstol = 1e-6)
     n = size(A, 1)
     b = ones(T, n)
 
     try
         q = A \ b
         if minimum(abs.(q)) > abstol
-            ϵ = maximum(abs.(A*q .- b))
+            ϵ = maximum(abs.(A * q .- b))
             if ϵ < abstol
                 y = sum(nice_parameter.(q) .* basis)
                 return y, ϵ
