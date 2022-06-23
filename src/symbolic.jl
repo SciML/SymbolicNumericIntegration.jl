@@ -1,10 +1,10 @@
 function try_symbolic(T, eq, x, basis, Δbasis; kwargs...)
-    eq isa Num || return 0, 0    
+    eq isa Num || return 0, 0
     n = length(basis)
     # @syms θ[1:n]
     @variables θ[1:n]
 
-    Δeq = sum(θ[j]*Δbasis[j] for j=1:n) - eq
+    Δeq = sum(θ[j] * Δbasis[j] for j in 1:n) - eq
     Δeq = expand(Δeq)
 
     terms = collect_terms(Δeq, x)
@@ -13,19 +13,19 @@ function try_symbolic(T, eq, x, basis, Δbasis; kwargs...)
 
     sol = solve_symbolic(eqs)
 
-    for i = 1:n
+    for i in 1:n
         if !haskey(sol, θ[i])
             sol[θ[i]] = 0
         end
     end
 
-    p = substitute(expand(sum(θ[j]*basis[j] for j=1:n)), sol)
-    p, 0
+    p = substitute(expand(sum(θ[j] * basis[j] for j in 1:n)), sol)
+    return p, 0
 end
 
 mutable struct Fragment
-    eq
-    lhs
+    eq::Any
+    lhs::Any
 end
 
 function solve_symbolic(eqs)
@@ -75,7 +75,7 @@ function solve_symbolic(eqs)
         try
             vals = nice_parameters.(Symbolics.solve_for(sys .~ 0, vars))
             # vals = Symbolics.solve_for(sys .~ 0, vars)
-            for (v,u) in zip(vars, vals)
+            for (v, u) in zip(vars, vals)
                 sol[v] = u
             end
         catch e
@@ -83,7 +83,7 @@ function solve_symbolic(eqs)
         end
     end
 
-    sol
+    return sol
 end
 
 function collect_terms(eq::SymbolicUtils.Add, x)
@@ -103,10 +103,10 @@ function collect_terms(eq::SymbolicUtils.Add, x)
             d[1] += t
         end
     end
-    d
+    return d
 end
 
 function collect_terms(eq, x)
     c = coef(eq, x)
-    return Dict(eq/c => c)
+    return Dict(eq / c => c)
 end

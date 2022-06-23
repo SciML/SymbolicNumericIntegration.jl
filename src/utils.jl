@@ -6,10 +6,10 @@ isdependent(eq, x) = !isequal(expand_derivatives(Differential(x)(eq)), 0)
 """
     is_number(x) returns true if x is a concrete numerical type
 """
-is_number(x::T) where T<:Integer = true
-is_number(x::T) where T<:Real = true
-is_number(x::T) where T<:Complex = true
-is_number(x::T) where T<:Rational = true
+is_number(x::T) where {T<:Integer} = true
+is_number(x::T) where {T<:Real} = true
+is_number(x::T) where {T<:Complex} = true
+is_number(x::T) where {T<:Rational} = true
 is_number(x) = false
 
 is_proper(x) = is_number(x) && !isnan(x) && !isinf(x)
@@ -31,24 +31,28 @@ function leading(eq, x)
     l = 0
     k₀ = -1
 
-    for (k,coef) in collect_powers(value(eq), x)
-        if !is_number(coef) return 0 end
+    for (k, coef) in collect_powers(value(eq), x)
+        if !is_number(coef)
+            return 0
+        end
         if k > k₀
             k₀ = k
             l = coef
         end
     end
-    l
+    return l
 end
 
 """
     deg(p) returns the degree of p if p is a polynomial
 """
-deg(p::SymbolicUtils.Add, x) = maximum(deg(t,x) for t in arguments(p))
-deg(p::SymbolicUtils.Mul, x) = sum(deg(t,x) for t in arguments(p); init=0)
+deg(p::SymbolicUtils.Add, x) = maximum(deg(t, x) for t in arguments(p))
+deg(p::SymbolicUtils.Mul, x) = sum(deg(t, x) for t in arguments(p); init = 0)
 
 function deg(p::SymbolicUtils.Pow, x)
-    if !isequal(arguments(p)[1], x) return 0 end
+    if !isequal(arguments(p)[1], x)
+        return 0
+    end
     return arguments(p)[2]
 end
 
@@ -76,23 +80,23 @@ end
 # pox(k,n) means k*x^n
 @syms pox(k, n)
 
-is_pox(x) = istree(x) && operation(x)==pox
+is_pox(x) = istree(x) && operation(x) == pox
 is_not_pox(x) = !is_pox(x)
 
 get_coef(p) = is_pox(p) ? arguments(p)[1] : p
 get_power(p) = is_pox(p) ? arguments(p)[2] : 0
 
-replace_x(eq, x) = substitute(eq, Dict(x => pox(1,1)))
+replace_x(eq, x) = substitute(eq, Dict(x => pox(1, 1)))
 
 function restore_x(eq, x)
-    r = @rule pox(~k, ~n) => ~k*x^~n
-    Prewalk(PassThrough(r))(eq)
+    r = @rule pox(~k, ~n) => ~k * x^~n
+    return Prewalk(PassThrough(r))(eq)
 end
-
 
 iscomplex(x) = x isa Complex
 
-count_rule1 = @rule ^(pox(~k, ~n1), ~n2) => isequal(~k,1) ? pox(1, ~n1 * ~n2) : pox(^(~k,~n2), ~n1 * ~n2)
+count_rule1 = @rule ^(pox(~k, ~n1), ~n2) => isequal(~k, 1) ? pox(1, ~n1 * ~n2) :
+                                            pox(^(~k, ~n2), ~n1 * ~n2)
 count_rule2 = @rule pox(~k1, ~n1) * pox(~k2, ~n2) => pox(~k1 * ~k2, ~n1 + ~n2)
 count_rule3 = @acrule pox(~k, ~n) * ~u::is_not_pox => pox(~k * ~u, ~n)
 
@@ -107,11 +111,11 @@ function collect_powers(eq, x)
     eq = Fixpoint(Prewalk(PassThrough(Chain([count_rule1, count_rule2, count_rule3]))))(eq)
 
     if !istree(eq)
-        return Dict{Any, Any}(0 => eq)
+        return Dict{Any,Any}(0 => eq)
     elseif is_pox(eq)
-        return Dict{Any, Any}(get_power(eq) => get_coef(eq))
+        return Dict{Any,Any}(get_power(eq) => get_coef(eq))
     else
-        eqs = Dict{Any, Any}()
+        eqs = Dict{Any,Any}()
         for term in arguments(eq)
             n = get_power(term)
             if haskey(eqs, n)
@@ -129,6 +133,6 @@ end
 
 function fibonacci_spiral(n, i)
     ϕ = (1 + sqrt(5)) / 2
-    θ, r = mod((i-1)/ϕ, 1), (i-1)/n
-    sqrt(r)*cis(2π*θ)
+    θ, r = mod((i - 1) / ϕ, 1), (i - 1) / n
+    return sqrt(r) * cis(2π * θ)
 end
