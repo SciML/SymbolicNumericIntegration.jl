@@ -7,7 +7,6 @@ using SymbolicUtils.Rewriters
 using Test
 using PyCall, SymPy
 
-
 include("axiom.jl")
 
 ##############################################################################
@@ -202,19 +201,19 @@ function test_integrals(; kw...)
 
     for eq in basic_integrals
         if isequal(eq, β)
-            printstyled("**** bypass on ****\n"; color=:red)
+            printstyled("**** bypass on ****\n"; color = :red)
             bypass = true
             args[:bypass] = true
         else
-            printstyled(k, ": "; color=:blue)
+            printstyled(k, ": "; color = :blue)
             k += 1
-            printstyled(eq, " =>\n"; color=:green)
+            printstyled(eq, " =>\n"; color = :green)
             solved, unsolved = SymbolicNumericIntegration.integrate(eq; args...)
-            printstyled('\t', solved; color=:cyan)
+            printstyled('\t', solved; color = :cyan)
             if isequal(unsolved, 0)
                 println()
             else
-                printstyled(" + ∫ ", unsolved, '\n'; color=:red)
+                printstyled(" + ∫ ", unsolved, '\n'; color = :red)
                 push!(misses, eq)
             end
         end
@@ -225,12 +224,13 @@ function test_integrals(; kw...)
         println("**** missess (n=$n) *****")
     end
     for eq in misses
-        printstyled(eq, '\n'; color=:red)
+        printstyled(eq, '\n'; color = :red)
     end
     return n
 end
 
 @testset "integral" begin
-    n = test_integrals(; symbolic=false, verbose=false, homotopy=true, num_steps=2, num_trials=10)
+    n = test_integrals(; symbolic = false, verbose = false, homotopy = true, num_steps = 2,
+                       num_trials = 10)
     @test n > 0
 end
