@@ -30,3 +30,16 @@ using SymbolicNumericIntegration
 julia> integrate(3x^3 + 2x - 5)
 (x^2 + (3//4)*(x^4) - (5x), 0, 0)
 ```
+
+# Citation
+If you use SymbolicNumericIntegration.jl in your research, please cite [this paper](https://arxiv.org/abs/2201.12468):
+```
+@article{Iravanian2022,   
+   author = {Shahriar Iravanian and Carl Julius Martensen and Alessandro Cheli and Shashi Gowda and Anand Jain and Julia Computing and Yingbo Ma and Chris Rackauckas},
+   doi = {10.48550/arxiv.2201.12468},
+   month = {1},
+   title = {Symbolic-Numeric Integration of Univariate Expressions based on Sparse Regression},
+   url = {https://arxiv.org/abs/2201.12468v2},
+   year = {2022},
+}
+```
