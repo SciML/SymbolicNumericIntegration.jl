@@ -1,5 +1,5 @@
 # SymbolicNumericIntegration.jl
-**SymbolicNumericIntegration.jl** is a hybrid symbolic/numerical integration package that works on the [Julia Symbolics](https://github.com/JuliaSymbolics/Symbolics.jl) expressions.
+**SymbolicNumericIntegration.jl** is a hybrid symbolic/numerical integration package that works on the [Julia Symbolics](https://docs.sciml.ai/Symbolics/stable/) expressions.
 
 **SymbolicNumericIntegration.jl** uses a randomized algorithm based on a hybrid of the *method of undetermined coefficients* and *sparse regression* and is able to solve a large subset of basic standard integrals (polynomials, exponential/logarithmic, trigonometric and hyperbolic, inverse trigonometric and hyperbolic, rational and square root).
 The basis of how it works and the theory of integration using the Symbolic-Numeric methods refer to [Basis of Symbolic-Numeric Integration](docs/theory.ipynb).
