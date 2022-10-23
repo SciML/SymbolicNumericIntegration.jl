@@ -15,7 +15,7 @@
 
 For information on using the package,
 [see the stable documentation](https://docs.sciml.ai/SymbolicNumericIntegration/stable/). Use the
-[in-development documentation](https://symbolicnumericintegration.sciml.ai/dev/) for the version of
+[in-development documentation](https://docs.sciml.ai/SymbolicNumericIntegration/dev/) for the version of
 the documentation, which contains the unreleased features.
 
 ## Example
