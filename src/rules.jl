@@ -220,7 +220,7 @@ function decompose_rational(eq)
 
     q₀ = A \ b
     q = nice_parameter.(q₀)
-    p = sum(F[i] * q[i] for i = 1:n if q[i] != 0; init = zero(x))
+    p = sum(F[i] * q[i] for i in 1:n if q[i] != 0; init = zero(x))
     return p
 end
 
