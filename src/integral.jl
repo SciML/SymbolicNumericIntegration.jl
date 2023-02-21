@@ -23,7 +23,7 @@ Base.signbit(x::SymbolicUtils.Sym{Number, Nothing}) = false
     max_basis: the maximum number of candidate terms to consider
     verbose: print a detailed report
     complex_plane: generate random test points on the complex plane (if false, the points will be on real axis)
-    homotomy: use the homotopy algorithm to generat the basis
+    homotopy: use the homotopy algorithm to generate the basis
 
     output:
     -------
@@ -335,7 +335,7 @@ function sparse_fit(T, A, x, basis, Δbasis, opt; abstol = 1e-6)
         if sum(iscomplex.(q)) > 2
             return nothing, Inf
         end   # eliminating complex coefficients
-        return sum(q[i] * basis[i] for i = 1:length(basis) if q[i] != 0; init = zero(x)),
+        return sum(q[i] * basis[i] for i in 1:length(basis) if q[i] != 0; init = zero(x)),
                abs(ϵ)
     catch e
         println("Error from sparse_fit", e)
