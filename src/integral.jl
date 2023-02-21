@@ -23,7 +23,7 @@ Base.signbit(x::SymbolicUtils.Sym{Number, Nothing}) = false
     max_basis: the maximum number of candidate terms to consider
     verbose: print a detailed report
     complex_plane: generate random test points on the complex plane (if false, the points will be on real axis)
-    homotomy: use the homotopy algorithm to generat the basis
+    homotopy: use the homotopy algorithm to generate the basis
 
     output:
     -------
