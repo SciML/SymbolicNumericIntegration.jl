@@ -32,17 +32,17 @@ end
     converts float to int or small rational numbers
 """
 
-function nice_parameter(u::Complex{T}; abstol=1e-6) where {T <: Real}
+function nice_parameter(u::Complex{T}; abstol = 1e-6) where {T <: Real}
     α = nice_parameter(real(u); abstol)
     β = nice_parameter(imag(u); abstol)
     return β ≈ 0 ? α : Complex(α, β)
 end
 
-nice_parameter(x; abstol=1e-6) = small_rational(x; abstol)
+nice_parameter(x; abstol = 1e-6) = small_rational(x; abstol)
 
-nice_parameters(p; abstol=1e-6) = nice_parameter.(p; abstol)
+nice_parameters(p; abstol = 1e-6) = nice_parameter.(p; abstol)
 
-function small_rational(x::T; abstol=1e-6, M=20) where {T <: Real}
+function small_rational(x::T; abstol = 1e-6, M = 20) where {T <: Real}
     a = floor(Int, x)
     r = x - a
     for den in 2:M
