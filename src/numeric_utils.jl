@@ -31,42 +31,33 @@ end
 """
     converts float to int or small rational numbers
 """
-function nice_parameters(p; abstol = 1e-3)
-    c = lcm(collect(1:10)...)
-    n = length(p)
-    q = Array{Any}(undef, n)
-    for i in 1:n
-        den = 1
-        while den < 10
-            if abs(round(p[i] * den) - p[i] * den) < abstol
-                a = round(Int, p[i] * den) // den
-                q[i] = (denominator(a) == 1 ? numerator(a) : a)
-                den = 10
-            else
-                q[i] = Float64(p[i])
-            end
-            den += 1
-        end
-    end
-    q
-end
-
-function nice_parameter(u::T; abstol = 1e-3, M = 10) where {T <: Real}
-    c = lcm(collect(1:M)...)
-    for den in 1:M
-        try
-            if abs(round(u * den) - u * den) < abstol
-                a = round(Int, u * den) // den
-                return (denominator(a) == 1 ? numerator(a) : a)
-            end
-        catch e
-        end
-    end
-    return u
-end
 
 function nice_parameter(u::Complex{T}; abstol = 1e-3, M = 10) where {T <: Real}
     α = nice_parameter(real(u))
     β = nice_parameter(imag(u))
     return β ≈ 0 ? α : Complex(α, β)
 end
+
+nice_parameter(x; abstol=1e-7) = small_rational(x; abstol)
+
+nice_parameters(p; abstol = 1e-3) = nice_parameter.(p)
+
+function small_rational(x::T; abstol=1e-6, M=20) where {T <: Real}
+    # c = lcm(collect(1:M)...)
+   	a = floor(Int, x)
+	r = x - a
+    for den in 2:M
+        try
+            if abs(round(r * den) - r * den) < abstol
+                s = a + round(Int, r * den) // den
+                return (denominator(s) == 1 ? numerator(s) : s)
+            end
+        catch e
+        end
+    end
+    return x
+end
+
+
+
+

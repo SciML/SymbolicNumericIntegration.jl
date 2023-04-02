@@ -279,17 +279,18 @@ function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abst
     n = size(A, 1)
     k = 1
     i = 1
+    
+    eq_fun = build_function(eq, x; expression=false)
+    Δbasis_fun = build_function.(Δbasis, x; expression=false)
 
     while k <= n
-        try
-            x₀ = test_point(complex_plane, radius)
-            X[k] = x₀
-            d = Dict(x => x₀)
-
-            b₀ = Complex{T}(substitute(eq, d))
+        try            
+            X[k] = test_point(complex_plane, radius)
+            b₀ = eq_fun(X[k])
+            
             if is_proper(b₀)
-                for j in 1:n
-                    A[k, j] = Complex{T}(substitute(Δbasis[j], d)) / b₀
+                for j in 1:n            
+                    A[k, j] = Δbasis_fun[j](X[k]) / b₀
                 end
                 if all(is_proper, A[k, :])
                     k += 1
@@ -304,17 +305,21 @@ end
 function modify_basis_matrix!(T, A, X, x, eq, ∂eq, Δbasis, radius; abstol = 1e-6)
     n = size(A, 1)
     k = 1
+    
+    eq_fun = build_function(eq, x; expression=false)
+    ∂eq_fun = build_function(∂eq, x; expression=false)
+    Δbasis_fun = build_function.(Δbasis, x; expression=false)
+    
     for k in 1:n
-        d = Dict(x => X[k])
         # One Newton iteration toward the poles
         # note the + sign instead of the usual - in Newton-Raphson's method. This is
         # because we are moving toward the poles and not zeros.
-        x₀ = X[k] + Complex{T}(substitute(eq, d)) / Complex{T}(substitute(∂eq, d))
+
+        x₀ = X[k] + eq_fun(X[k]) / ∂eq_fun(X[k])
         X[k] = x₀
-        d = Dict(x => x₀)
-        b₀ = Complex{T}(substitute(eq, d))
+        b₀ = eq_fun(X[k])
         for j in 1:n
-            A[k, j] = Complex{T}(substitute(Δbasis[j], d)) / b₀
+            A[k, j] = Δbasis_fun[j](X[k]) / b₀
         end
     end
 end
