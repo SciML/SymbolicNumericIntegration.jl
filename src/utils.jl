@@ -1,7 +1,12 @@
 """
     isdependent returns true if eq is dependent on x
 """
-isdependent(eq, x) = !isequal(expand_derivatives(Differential(x)(eq)), 0)
+#isdependent(eq, x) = !isequal(expand_derivatives(Differential(x)(eq)), 0)
+
+function isdependent(eq, x)
+    vars = get_variables(eq)
+    return length(vars) == 1 && isequal(x, vars[1])
+end
 
 """
     is_number(x) returns true if x is a concrete numerical type

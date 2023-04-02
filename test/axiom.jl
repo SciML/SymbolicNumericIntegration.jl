@@ -1,4 +1,3 @@
-
 @variables x a b c d e p t m n z
 
 function convert_axiom(name::AbstractString)
@@ -104,7 +103,7 @@ function accept_integral(sol, ans, x; radius = 1.0, abstol = 1e-3, n = 5)
     return false
 end
 
-function test_axiom(L, try_sympy = true; kwargs...)
+function test_axiom(L; kwargs...)
     n_ok = 0
     n_fail = 0
     n_diff = 0
@@ -120,7 +119,7 @@ function test_axiom(L, try_sympy = true; kwargs...)
         printstyled(eq, '\n'; color = :green)
         sol = integrate(eq, x; kwargs...)[1]
 
-        println(">>>>", sol)
+        println(">>>>\t", sol)
 
         if isequal(sol, 0)
             printstyled("\tFailure\n"; color = :red)
@@ -131,13 +130,6 @@ function test_axiom(L, try_sympy = true; kwargs...)
         else
             printstyled("\tDiscrepancy:\t", sol, '\n'; color = :yellow)
             n_diff += 1
-        end
-
-        if try_sympy
-            s = Symbolics.symbolics_to_sympy(s)
-            s_x = Symbolics.symbolics_to_sympy(x)
-            py = SymPy.integrate(s, s_x)
-            printstyled("\tSymPy      :\t", string(py)[10:end], '\n'; color = :magenta)
         end
 
         printstyled("\tAnswer: \t", ans, '\n'; color = :blue)
