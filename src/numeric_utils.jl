@@ -32,20 +32,19 @@ end
     converts float to int or small rational numbers
 """
 
-function nice_parameter(u::Complex{T}; abstol = 1e-3, M = 10) where {T <: Real}
-    α = nice_parameter(real(u))
-    β = nice_parameter(imag(u))
+function nice_parameter(u::Complex{T}; abstol=1e-6) where {T <: Real}
+    α = nice_parameter(real(u); abstol)
+    β = nice_parameter(imag(u); abstol)
     return β ≈ 0 ? α : Complex(α, β)
 end
 
-nice_parameter(x; abstol=1e-7) = small_rational(x; abstol)
+nice_parameter(x; abstol=1e-6) = small_rational(x; abstol)
 
-nice_parameters(p; abstol = 1e-3) = nice_parameter.(p)
+nice_parameters(p; abstol=1e-6) = nice_parameter.(p; abstol)
 
 function small_rational(x::T; abstol=1e-6, M=20) where {T <: Real}
-    # c = lcm(collect(1:M)...)
-   	a = floor(Int, x)
-	r = x - a
+    a = floor(Int, x)
+    r = x - a
     for den in 2:M
         try
             if abs(round(r * den) - r * den) < abstol
@@ -57,7 +56,3 @@ function small_rational(x::T; abstol=1e-6, M=20) where {T <: Real}
     end
     return x
 end
-
-
-
-
