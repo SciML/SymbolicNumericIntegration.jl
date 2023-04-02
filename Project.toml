@@ -1,7 +1,7 @@
 name = "SymbolicNumericIntegration"
 uuid = "78aadeae-fbc0-11eb-17b6-c7ec0477ba9e"
 authors = ["Shahriar Iravanian <siravan@svtsim.com>"]
-version = "0.8.6"
+version = "0.9.0"
 
 [deps]
 DataDrivenDiffEq = "2445eb08-9709-466a-b3fc-47e12bd697a2"
@@ -14,16 +14,12 @@ Symbolics = "0c5d862f-8b57-4792-8d23-62f2024744c7"
 [compat]
 DataDrivenDiffEq = "0.8"
 DataStructures = "0.18"
-PyCall = "1"
 SymbolicUtils = "0.19"
 Symbolics = "4"
-SymPy = "1"
 julia = "1.6"
 
 [extras]
-PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
-SymPy = "24249f21-da20-56a4-8eb1-6a02cf4ae2e6"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["PyCall", "SymPy", "Test"]
+test = ["Test"]

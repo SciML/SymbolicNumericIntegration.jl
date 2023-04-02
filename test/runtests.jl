@@ -1,11 +1,11 @@
 using SymbolicNumericIntegration
+using SymbolicNumericIntegration: value
 using Symbolics
 
 using SymbolicUtils
 using SymbolicUtils.Rewriters
 
 using Test
-using PyCall, SymPy
 
 include("axiom.jl")
 
