@@ -2,7 +2,7 @@
 
 julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "9e4e8ce58f385b9e032689425090cdf7085cf7de"
+project_hash = "f335e30ccaa28b01fd6eefc071da0031a40c57f6"
 
 [[deps.ANSIColoredPrinters]]
 git-tree-sha1 = "574baf8110975760d391c710b6341da1afa48d8c"
@@ -986,7 +986,7 @@ version = "0.2.2"
 deps = ["DataDrivenDiffEq", "DataStructures", "LinearAlgebra", "Statistics", "SymbolicUtils", "Symbolics"]
 path = "/home/runner/work/SymbolicNumericIntegration.jl/SymbolicNumericIntegration.jl"
 uuid = "78aadeae-fbc0-11eb-17b6-c7ec0477ba9e"
-version = "0.9.1"
+version = "1.0.0"
 
 [[deps.SymbolicUtils]]
 deps = ["AbstractTrees", "Bijections", "ChainRulesCore", "Combinatorics", "ConstructionBase", "DataStructures", "DocStringExtensions", "DynamicPolynomials", "IfElse", "LabelledArrays", "LinearAlgebra", "Metatheory", "MultivariatePolynomials", "NaNMath", "Setfield", "SparseArrays", "SpecialFunctions", "StaticArrays", "TermInterface", "TimerOutputs"]
