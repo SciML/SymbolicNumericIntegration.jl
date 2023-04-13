@@ -17,6 +17,8 @@ function test_point(complex_plane, radius)
     end
 end
 
+accept_solution(eq::ExprCache, x, sol, radius) = accept_solution(expr(eq), x, sol, radius)
+
 function accept_solution(eq, x, sol, radius)
     try
         x₀ = test_point(true, radius)
@@ -55,4 +57,12 @@ function small_rational(x::T; abstol = 1e-6, M = 20) where {T <: Real}
         end
     end
     return x
+end
+
+###############################################################################
+
+function fibonacci_spiral(n, i)
+    ϕ = (1 + sqrt(5)) / 2
+    θ, r = mod((i - 1) / ϕ, 1), (i - 1) / n
+    sqrt(r) * cis(2π * θ)
 end

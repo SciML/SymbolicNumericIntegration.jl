@@ -59,9 +59,10 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 5
 
     # homotopy = homotopy && !bypass
 
-    return integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
-                         radius, show_basis, opt, symbolic,
-                         max_basis, verbose, complex_plane, homotopy)
+    s, u, ϵ = integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
+                            radius, show_basis, opt, symbolic,
+                            max_basis, verbose, complex_plane, homotopy)
+    return simplify(s), u, ϵ
 end
 
 """
@@ -147,6 +148,7 @@ function integrate_term(eq, x, l; kwargs...)
         return y, 0, 0
     end
 
+    eq = cache(eq)
     basis = generate_basis(eq, x; homotopy)
 
     if show_basis
@@ -155,10 +157,10 @@ function integrate_term(eq, x, l; kwargs...)
 
     if length(basis) > max_basis
         result(l, "|β| = $(length(basis)) is too large")
-        return 0, eq, Inf
+        return 0, expr(eq), Inf
     end
 
-    D = Differential(x)
+    # D = Differential(x)
     ϵ₀ = Inf
     y₀ = 0
 
@@ -171,10 +173,9 @@ function integrate_term(eq, x, l; kwargs...)
             break
         end
 
-        Δbasis = [expand_derivatives(D(f)) for f in basis]
-
         if symbolic
-            y, ϵ = try_symbolic(Float64, eq, x, basis, Δbasis; kwargs...)
+            y, ϵ = try_symbolic(Float64, expr(eq), x, expr.(basis), deriv!.(basis, x);
+                                kwargs...)
 
             if !isequal(y, 0) && accept_solution(eq, x, y, radius) < abstol
                 result(l, "Successful symbolic", y)
@@ -186,7 +187,7 @@ function integrate_term(eq, x, l; kwargs...)
 
         for j in 1:num_trials
             r = radius #*sqrt(2)^j
-            y, ϵ = try_integrate(Float64, eq, x, basis, Δbasis, r; kwargs...)
+            y, ϵ = try_integrate(Float64, eq, x, basis, r; kwargs...)
 
             ϵ = accept_solution(eq, x, y, r)
             if ϵ < abstol
@@ -202,6 +203,7 @@ function integrate_term(eq, x, l; kwargs...)
 
         if i < num_steps
             basis = expand_basis(basis, x)
+
             if show_basis
                 inform(l, "Expanding the basis (|β| = $(length(basis)))", basis)
             elseif verbose
@@ -215,7 +217,7 @@ function integrate_term(eq, x, l; kwargs...)
         return yᵣ, 0, ϵᵣ
     else
         result(l, "Unsucessful", eq)
-        return 0, eq, ϵ₀
+        return 0, expr(eq), ϵ₀
     end
 end
 
@@ -231,22 +233,21 @@ end
     -------
     integral, error
 """
-function try_integrate(T, eq, x, basis, Δbasis, radius; kwargs...)
+function try_integrate(T, eq, x, basis, radius; kwargs...)
     args = Dict(kwargs)
     abstol, opt, complex_plane, verbose = args[:abstol], args[:opt], args[:complex_plane],
                                           args[:verbose]
 
     basis = basis[2:end]    # remove 1 from the beginning
-    Δbasis = Δbasis[2:end]
     n = length(basis)
 
     # A is an nxn matrix holding the values of the fragments at n random points
     A = zeros(Complex{T}, (n, n))
     X = zeros(Complex{T}, n)
 
-    init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abstol)
+    init_basis_matrix!(T, A, X, x, eq, basis, radius, complex_plane; abstol)
 
-    y₁, ϵ₁ = sparse_fit(T, A, x, basis, Δbasis, opt; abstol)
+    y₁, ϵ₁ = sparse_fit(T, A, x, basis, opt; abstol)
     if ϵ₁ < abstol
         return y₁, ϵ₁
     end
@@ -264,9 +265,8 @@ function try_integrate(T, eq, x, basis, Δbasis, radius; kwargs...)
     end
 
     # moving toward the poles
-    ∂eq = expand_derivatives(Differential(x)(eq))
-    modify_basis_matrix!(T, A, X, x, eq, ∂eq, Δbasis, radius; abstol)
-    y₄, ϵ₄ = sparse_fit(T, A, x, basis, Δbasis, opt; abstol)
+    modify_basis_matrix!(T, A, X, x, eq, basis, radius; abstol)
+    y₄, ϵ₄ = sparse_fit(T, A, x, basis, opt; abstol)
 
     if ϵ₄ < abstol || ϵ₄ < ϵ₁
         return y₄, ϵ₄
@@ -275,17 +275,18 @@ function try_integrate(T, eq, x, basis, Δbasis, radius; kwargs...)
     end
 end
 
-function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abstol = 1e-6)
+function init_basis_matrix!(T, A, X, x, eq, basis, radius, complex_plane; abstol = 1e-6)
     n = size(A, 1)
     k = 1
     i = 1
 
-    eq_fun = build_function(eq, x; expression = false)
-    Δbasis_fun = build_function.(Δbasis, x; expression = false)
+    eq_fun = fun!(eq, x)
+    Δbasis_fun = deriv_fun!.(basis, x)
 
     while k <= n
         try
-            X[k] = test_point(complex_plane, radius)
+            x₀ = test_point(complex_plane, radius)
+            X[k] = x₀ # move_toward_roots_poles(x₀, x, eq)
             b₀ = eq_fun(X[k])
 
             if is_proper(b₀)
@@ -302,21 +303,37 @@ function init_basis_matrix!(T, A, X, x, eq, Δbasis, radius, complex_plane; abst
     end
 end
 
-function modify_basis_matrix!(T, A, X, x, eq, ∂eq, Δbasis, radius; abstol = 1e-6)
-    n = size(A, 1)
-    k = 1
+function move_toward_roots_poles(z, x, eq; n = 1, max_r = 100.0)
+    eq_fun = fun!(eq, x)
+    Δeq_fun = deriv_fun!(eq, x)
+    is_root = rand() < 0.5
+    z₀ = z
+    for i in 1:n
+        dz = eq_fun(z) / Δeq_fun(z)
+        if is_root
+            z -= dz
+        else
+            z += dz
+        end
+        if abs(z) > max_r
+            return z₀
+        end
+    end
+    return z
+end
 
-    eq_fun = build_function(eq, x; expression = false)
-    ∂eq_fun = build_function(∂eq, x; expression = false)
-    Δbasis_fun = build_function.(Δbasis, x; expression = false)
+function modify_basis_matrix!(T, A, X, x, eq, basis, radius; abstol = 1e-6)
+    n = size(A, 1)
+    eq_fun = fun!(eq, x)
+    Δeq_fun = deriv_fun!(eq, x)
+    Δbasis_fun = deriv_fun!.(basis, x)
 
     for k in 1:n
         # One Newton iteration toward the poles
         # note the + sign instead of the usual - in Newton-Raphson's method. This is
         # because we are moving toward the poles and not zeros.
 
-        x₀ = X[k] + eq_fun(X[k]) / ∂eq_fun(X[k])
-        X[k] = x₀
+        X[k] += eq_fun(X[k]) / Δeq_fun(X[k])
         b₀ = eq_fun(X[k])
         for j in 1:n
             A[k, j] = Δbasis_fun[j](X[k]) / b₀
@@ -324,11 +341,11 @@ function modify_basis_matrix!(T, A, X, x, eq, ∂eq, Δbasis, radius; abstol = 1
     end
 end
 
-function sparse_fit(T, A, x, basis, Δbasis, opt; abstol = 1e-6)
+function sparse_fit(T, A, x, basis, opt; abstol = 1e-6)
     n = length(basis)
     # find a linearly independent subset of the basis
     l = find_independent_subset(A; abstol)
-    A, basis, Δbasis, n = A[l, l], basis[l], Δbasis[l], sum(l)
+    A, basis, n = A[l, l], basis[l], sum(l)
 
     try
         b = ones(n)
@@ -340,7 +357,8 @@ function sparse_fit(T, A, x, basis, Δbasis, opt; abstol = 1e-6)
         if sum(iscomplex.(q)) > 2
             return nothing, Inf
         end   # eliminating complex coefficients
-        return sum(q[i] * basis[i] for i in 1:length(basis) if q[i] != 0; init = zero(x)),
+        return sum(q[i] * expr(basis[i]) for i in 1:length(basis) if q[i] != 0;
+                   init = zero(x)),
                abs(ϵ)
     catch e
         println("Error from sparse_fit", e)
@@ -354,7 +372,7 @@ function find_singlet(T, A, basis; abstol)
     l = (σ .< abstol) .* (abs.(μ) .> abstol)
     if sum(l) == 1
         k = findfirst(l)
-        return nice_parameter(1 / μ[k]) * basis[k], σ[k]
+        return nice_parameter(1 / μ[k]) * expr(basis[k]), σ[k]
     else
         return nothing, Inf
     end
@@ -369,7 +387,7 @@ function find_dense(T, A, basis; abstol = 1e-6)
         if minimum(abs.(q)) > abstol
             ϵ = maximum(abs.(A * q .- b))
             if ϵ < abstol
-                y = sum(nice_parameter.(q) .* basis)
+                y = sum(nice_parameter.(q) .* expr.(basis))
                 return y, ϵ
             end
         end

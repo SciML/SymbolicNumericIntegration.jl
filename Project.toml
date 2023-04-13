@@ -1,7 +1,7 @@
 name = "SymbolicNumericIntegration"
 uuid = "78aadeae-fbc0-11eb-17b6-c7ec0477ba9e"
 authors = ["Shahriar Iravanian <siravan@svtsim.com>"]
-version = "1.0.0"
+version = "1.0.1"
 
 [deps]
 DataDrivenDiffEq = "2445eb08-9709-466a-b3fc-47e12bd697a2"
@@ -27,3 +27,4 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
 test = ["PyCall", "SymPy", "Test"]
+
