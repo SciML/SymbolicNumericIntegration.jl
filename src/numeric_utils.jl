@@ -66,4 +66,3 @@ function fibonacci_spiral(n, i)
     θ, r = mod((i - 1) / ϕ, 1), (i - 1) / n
     sqrt(r) * cis(2π * θ)
 end
-

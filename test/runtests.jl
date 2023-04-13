@@ -115,7 +115,7 @@ basic_integrals = [
     tan(x),
     tan(7x),
     tan(x)^2,
-    tan(x)^3,    
+    tan(x)^3,
     sec(x),
     sec(x) * tan(x),
     sec(x)^2 * tan(x),

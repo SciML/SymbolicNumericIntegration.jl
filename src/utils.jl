@@ -133,6 +133,3 @@ function collect_powers(eq, x)
         return eqs
     end
 end
-
-
-

@@ -60,8 +60,8 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 5
     # homotopy = homotopy && !bypass
 
     s, u, ϵ = integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
-                         radius, show_basis, opt, symbolic,
-                         max_basis, verbose, complex_plane, homotopy)
+                            radius, show_basis, opt, symbolic,
+                            max_basis, verbose, complex_plane, homotopy)
     return simplify(s), u, ϵ
 end
 
@@ -77,7 +77,7 @@ end
 function integrate_sum(eq, x, l; bypass = false, kwargs...)
     solved = 0
     unsolved = 0
-    	ϵ₀ = 0
+    ϵ₀ = 0
     ts = bypass ? [eq] : terms(eq)
 
     if length(ts) > 1
@@ -88,16 +88,16 @@ function integrate_sum(eq, x, l; bypass = false, kwargs...)
         s, u, ϵ = integrate_term(p, x, l; kwargs...)
         solved += s
         unsolved += u
-        	ϵ₀ = max(ϵ₀, ϵ)
+        ϵ₀ = max(ϵ₀, ϵ)
     end
 
     if !isequal(unsolved, 0)
-		eq = factor_rational(simplify_trigs(unsolved))		
+        eq = factor_rational(simplify_trigs(unsolved))
 
         if !isequal(eq, unsolved)
             eq = expand(eq)
             unsolved = 0
-            	ϵ₀ = 0
+            ϵ₀ = 0
             ts = bypass ? [eq] : terms(eq)
 
             if length(ts) > 1
@@ -110,7 +110,7 @@ function integrate_sum(eq, x, l; bypass = false, kwargs...)
                 s, u, ϵ = integrate_term(p, x, l; kwargs...)
                 solved += s
                 unsolved += u
-				ϵ₀ = max(ϵ₀, ϵ)
+                ϵ₀ = max(ϵ₀, ϵ)
 
                 if !isequal(u, 0)   # premature termination on the first failure
                     return 0, eq, ϵ₀
@@ -147,7 +147,7 @@ function integrate_term(eq, x, l; kwargs...)
         result(l, "Successful", y)
         return y, 0, 0
     end
-    
+
     eq = cache(eq)
     basis = generate_basis(eq, x; homotopy)
 
@@ -161,12 +161,12 @@ function integrate_term(eq, x, l; kwargs...)
     end
 
     # D = Differential(x)
-    	ϵ₀ = Inf
+    ϵ₀ = Inf
     y₀ = 0
 
     # rescue
-    	ϵᵣ = Inf
-    yᵣ = 0      
+    ϵᵣ = Inf
+    yᵣ = 0
 
     for i in 1:num_steps
         if length(basis) > max_basis
@@ -174,7 +174,8 @@ function integrate_term(eq, x, l; kwargs...)
         end
 
         if symbolic
-            y, ϵ = try_symbolic(Float64, expr(eq), x, expr.(basis), deriv!.(basis, x); kwargs...)
+            y, ϵ = try_symbolic(Float64, expr(eq), x, expr.(basis), deriv!.(basis, x);
+                                kwargs...)
 
             if !isequal(y, 0) && accept_solution(eq, x, y, radius) < abstol
                 result(l, "Successful symbolic", y)
@@ -188,12 +189,12 @@ function integrate_term(eq, x, l; kwargs...)
             r = radius #*sqrt(2)^j
             y, ϵ = try_integrate(Float64, eq, x, basis, r; kwargs...)
 
-            	ϵ = accept_solution(eq, x, y, r)
+            ϵ = accept_solution(eq, x, y, r)
             if ϵ < abstol
                 result(l, "Successful numeric (attempt $j out of $num_trials)", y)
                 return y, 0, ϵ
             elseif ϵ < ϵᵣ
-                	ϵᵣ = ϵ
+                ϵᵣ = ϵ
                 yᵣ = y
             end
         end
@@ -202,7 +203,7 @@ function integrate_term(eq, x, l; kwargs...)
 
         if i < num_steps
             basis = expand_basis(basis, x)
-            
+
             if show_basis
                 inform(l, "Expanding the basis (|β| = $(length(basis)))", basis)
             elseif verbose
@@ -302,27 +303,27 @@ function init_basis_matrix!(T, A, X, x, eq, basis, radius, complex_plane; abstol
     end
 end
 
-function move_toward_roots_poles(z, x, eq; n=1, max_r=100.0)
-	eq_fun = fun!(eq, x)
+function move_toward_roots_poles(z, x, eq; n = 1, max_r = 100.0)
+    eq_fun = fun!(eq, x)
     Δeq_fun = deriv_fun!(eq, x)
     is_root = rand() < 0.5
     z₀ = z
-    for i = 1:n
-    	dz = eq_fun(z) / Δeq_fun(z)
-    	if is_root
-    		z -= dz
-    	else
-    		z += dz
-    	end
-    	if abs(z) > max_r
-    		return z₀
-    	end
-    end	
+    for i in 1:n
+        dz = eq_fun(z) / Δeq_fun(z)
+        if is_root
+            z -= dz
+        else
+            z += dz
+        end
+        if abs(z) > max_r
+            return z₀
+        end
+    end
     return z
 end
 
 function modify_basis_matrix!(T, A, X, x, eq, basis, radius; abstol = 1e-6)
-    n = size(A, 1)    
+    n = size(A, 1)
     eq_fun = fun!(eq, x)
     Δeq_fun = deriv_fun!(eq, x)
     Δbasis_fun = deriv_fun!.(basis, x)
@@ -331,7 +332,7 @@ function modify_basis_matrix!(T, A, X, x, eq, basis, radius; abstol = 1e-6)
         # One Newton iteration toward the poles
         # note the + sign instead of the usual - in Newton-Raphson's method. This is
         # because we are moving toward the poles and not zeros.
-        
+
         X[k] += eq_fun(X[k]) / Δeq_fun(X[k])
         b₀ = eq_fun(X[k])
         for j in 1:n
@@ -351,12 +352,13 @@ function sparse_fit(T, A, x, basis, opt; abstol = 1e-6)
         # q₀ = A \ b
         q₀ = DataDrivenDiffEq.init(opt, A, b)
         @views sparse_regression!(q₀, A, permutedims(b)', opt, maxiter = 1000)
-        	ϵ = rms(A * q₀ - b)
+        ϵ = rms(A * q₀ - b)
         q = nice_parameter.(q₀)
         if sum(iscomplex.(q)) > 2
             return nothing, Inf
         end   # eliminating complex coefficients
-        return sum(q[i] * expr(basis[i]) for i in 1:length(basis) if q[i] != 0; init = zero(x)),
+        return sum(q[i] * expr(basis[i]) for i in 1:length(basis) if q[i] != 0;
+                   init = zero(x)),
                abs(ϵ)
     catch e
         println("Error from sparse_fit", e)
@@ -394,4 +396,3 @@ function find_dense(T, A, basis; abstol = 1e-6)
     end
     return nothing, Inf
 end
-
