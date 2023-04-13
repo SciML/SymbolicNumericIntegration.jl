@@ -2,16 +2,15 @@ module SymbolicNumericIntegration
 
 using SymbolicUtils
 using SymbolicUtils: istree, operation, arguments
+using Symbolics
 using Symbolics: value, get_variables, expand_derivatives
 using SymbolicUtils.Rewriters
-using Symbolics
 
 using DataDrivenDiffEq
 
 include("utils.jl")
+include("cache.jl")
 include("roots.jl")
-
-export find_roots
 
 include("rules.jl")
 include("candidates.jl")

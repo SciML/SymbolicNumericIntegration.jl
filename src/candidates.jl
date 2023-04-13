@@ -3,7 +3,7 @@ using DataStructures
 # this is the main heurisctic used to find the test fragments
 function generate_basis(eq, x; homotopy = true)
     # if homotopy return generate_homotopy(eq, x) end
-    eq = expand(eq)
+    eq = expand(expr(eq))
     S = 0 #Set{Any}()
     for t in terms(eq)
         q = equivalent(t, x)
@@ -24,16 +24,17 @@ function generate_basis(eq, x; homotopy = true)
 
         S += sum(c₁ * c₂ for c₁ in C₁ for c₂ in C₂)
     end
-    return unique([one(x); [equivalent(t, x) for t in terms(S)]])
+    return cache.(unique([one(x); [equivalent(t, x) for t in terms(S)]]))
 end
 
 function expand_basis(basis, x)
-    b = sum(basis)
-    eq = (1 + x) * (b + Differential(x)(b))
-    eq = expand(expand_derivatives(eq))
+    b = sum(expr.(basis))
+    δb = sum(deriv!.(basis, x))
+    eq = (1 + x) * (b + δb)
+    eq = expand(eq)
     S = Set{Any}()
     enqueue_expr!(S, eq, x)
-    return [one(x); [s for s in S]]
+    return cache.([one(x); [s for s in S]])
 end
 
 function closure(eq, x; max_terms = 50)

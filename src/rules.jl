@@ -103,7 +103,8 @@ equivalent(eq, x) = eq / coef(eq, x)
 trigs_rules = [@rule tan(~x) => sin(~x) * cos(~x)^-1
                @rule sec(~x) => one(~x) * cos(~x)^-1
                @rule csc(~x) => one(~x) * sin(~x)^-1
-               @rule cot(~x) => cos(~x) * sin(~x)^-1
+               @rule cot(~x) => cos(~x) * sin(~x)^-1               
+               
                @rule sin(~n::is_int_gt_one * ~x) => sin((~n - 1) * ~x) * cos(~x) +
                                                     cos((~n - 1) * ~x) * sin(~x)
                @rule cos(~n::is_int_gt_one * ~x) => cos((~n - 1) * ~x) * cos(~x) -

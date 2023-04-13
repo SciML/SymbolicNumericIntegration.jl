@@ -134,10 +134,5 @@ function collect_powers(eq, x)
     end
 end
 
-###############################################################################
 
-function fibonacci_spiral(n, i)
-    ϕ = (1 + sqrt(5)) / 2
-    θ, r = mod((i - 1) / ϕ, 1), (i - 1) / n
-    sqrt(r) * cis(2π * θ)
-end
+

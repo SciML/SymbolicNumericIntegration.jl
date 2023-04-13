@@ -115,3 +115,32 @@ function find_poles(T, p, x; abstol = 1e-10)
 end
 
 find_poles(p, x; abstol = 1e-10) = find_poles(Float64, p, x; abstol)
+
+#########################################################################
+
+function find_complex_roots(eq::ExprCache, x, n; abstol=1e-6, maxiter=50, α=0.5)
+	roots = Complex{Float64}[]
+	f = fun!(eq, x)
+	df = deriv_fun!(eq, x)
+	
+	for i = 1:n
+		x₀ = cis(2π * rand())
+		xₙ = x₀
+		for j = 1:maxiter
+			ρ = sum(1 / (xₙ - x) for x in roots; init = 0)
+			y = f(xₙ)
+			dy = df(xₙ)
+			xₙ₊₁ = xₙ - y / (dy - ρ * y) * α
+
+        	if abs(xₙ₊₁ - xₙ) < abstol
+            	push!(roots, xₙ₊₁)
+            	break
+	        else
+    	        xₙ = xₙ₊₁
+        	end
+		end
+	end
+	
+	return roots
+end
+

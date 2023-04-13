@@ -14,13 +14,13 @@ function next_variable!(f, eq)
 end
 
 function transformer(eq::SymbolicUtils.Add, f)
-    sum(transformer(t, f) for t in arguments(eq); init = 0)
+    return sum(transformer(t, f) for t in arguments(eq); init = 0)
 end
 function transformer(eq::SymbolicUtils.Mul, f)
-    prod(transformer(t, f) for t in arguments(eq); init = 1)
+    return prod(transformer(t, f) for t in arguments(eq); init = 1)
 end
 function transformer(eq::SymbolicUtils.Div, f)
-    transformer(arguments(eq)[1], f) * transformer(inv(arguments(eq)[2]), f)
+    return transformer(arguments(eq)[1], f) * transformer(arguments(eq)[2] ^ -1, f)
 end
 
 function transformer(eq::SymbolicUtils.Pow, f)
@@ -63,6 +63,7 @@ function substitute_x(eq, x, sub)
 end
 
 function generate_homotopy(eq, x)
+	eq = eq isa Num ? eq.val : eq
     q, sub = transform(eq, x)
     S = 0
 
@@ -87,42 +88,63 @@ function ∂(x)
     return isequal(d, 0) ? 1 : d
 end
 
-partial_int_rules = [@rule 𝛷(^(sin(~x), ~k::is_neg)) => 𝛷(^(csc(~x), -~k))
-                     @rule 𝛷(^(cos(~x), ~k::is_neg)) => 𝛷(^(sec(~x), -~k))
-                     @rule 𝛷(^(tan(~x), ~k::is_neg)) => 𝛷(^(cot(~x), -~k))
-                     @rule 𝛷(^(csc(~x), ~k::is_neg)) => 𝛷(^(sin(~x), -~k))
-                     @rule 𝛷(^(sec(~x), ~k::is_neg)) => 𝛷(^(cos(~x), -~k))
-                     @rule 𝛷(^(cot(~x), ~k::is_neg)) => 𝛷(^(tan(~x), -~k))
-                     @rule 𝛷(^(sinh(~x), ~k::is_neg)) => 𝛷(^(csch(~x), -~k))
-                     @rule 𝛷(^(cosh(~x), ~k::is_neg)) => 𝛷(^(sech(~x), -~k))
-                     @rule 𝛷(^(tanh(~x), ~k::is_neg)) => 𝛷(^(coth(~x), -~k))
-                     @rule 𝛷(^(csch(~x), ~k::is_neg)) => 𝛷(^(sinh(~x), -~k))
-                     @rule 𝛷(^(sech(~x), ~k::is_neg)) => 𝛷(^(cosh(~x), -~k))
-                     @rule 𝛷(^(coth(~x), ~k::is_neg)) => 𝛷(^(tanh(~x), -~k))
+partial_int_rules = [
                      @rule 𝛷(sin(~x)) => (cos(~x), ∂(~x))
                      @rule 𝛷(cos(~x)) => (sin(~x), ∂(~x))
                      @rule 𝛷(tan(~x)) => (log(cos(~x)), ∂(~x))
-                     @rule 𝛷(csc(~x)) => (log(sin(~x)^-1 - cos(~x) * sin(~x)^-1), ∂(~x))
-                     @rule 𝛷(sec(~x)) => (log(cos(~x)^-1 + sin(~x) * cos(~x)^-1), ∂(~x))
+                     @rule 𝛷(csc(~x)) => (log(csc(~x) + cot(~x)), ∂(~x))
+                     @rule 𝛷(sec(~x)) => (log(sec(~x) + tan(~x)), ∂(~x))
                      @rule 𝛷(cot(~x)) => (log(sin(~x)), ∂(~x))
+                     
                      @rule 𝛷(sinh(~x)) => (cosh(~x), ∂(~x))
                      @rule 𝛷(cosh(~x)) => (sinh(~x), ∂(~x))
                      @rule 𝛷(tanh(~x)) => (log(cosh(~x)), ∂(~x))
-                     @rule 𝛷(csch(~x)) => (log(sinh(~x)^-1 + cosh(~x) * sinh(~x)^-1), ∂(~x))
-                     @rule 𝛷(sech(~x)) => (log(cosh(~x)^-1 + sinh(~x) * cosh(~x)^-1), ∂(~x))
+                     @rule 𝛷(csch(~x)) => (log(tanh(~x / 2)), ∂(~x))
+                     @rule 𝛷(sech(~x)) => (atan(sinh(~x)), ∂(~x))
                      @rule 𝛷(coth(~x)) => (log(sinh(~x)), ∂(~x))
+
+					 @rule 𝛷(^(sin(~x), -1)) => (log(csc(~x) + cot(~x)), ∂(~x))
+                     @rule 𝛷(^(cos(~x), -1)) => (log(sec(~x) + tan(~x)), ∂(~x))
+                     @rule 𝛷(^(tan(~x), -1)) => (log(sin(~x)), ∂(~x))
+                     @rule 𝛷(^(csc(~x), -1)) => (cos(~x), ∂(~x))
+                     @rule 𝛷(^(sec(~x), -1)) => (sin(~x), ∂(~x))
+                     @rule 𝛷(^(cot(~x), -1)) => (log(cos(~x)), ∂(~x))
+                     
+                     @rule 𝛷(^(sinh(~x), -1)) => (log(tanh(~x / 2)), ∂(~x))
+                     @rule 𝛷(^(cosh(~x), -1)) => (atan(sinh(~x)), ∂(~x))
+                     @rule 𝛷(^(tanh(~x), -1)) => (log(sinh(~x)), ∂(~x))
+                     @rule 𝛷(^(csch(~x), -1)) => (cosh(~x), ∂(~x))
+                     @rule 𝛷(^(sech(~x), -1)) => (sinh(~x), ∂(~x))
+                     @rule 𝛷(^(coth(~x), -1)) => (log(cosh(~x)), ∂(~x))
+                     
+					 # @rule 𝛷(^(sin(~x), ~k::is_neg)) => 𝛷(^(csc(~x), -~k))
+                     # @rule 𝛷(^(cos(~x), ~k::is_neg)) => 𝛷(^(sec(~x), -~k))                     
+                     # @rule 𝛷(^(tan(~x), ~k::is_neg)) => 𝛷(^(cot(~x), -~k))
+                     # @rule 𝛷(^(csc(~x), ~k::is_neg)) => 𝛷(^(sin(~x), -~k))
+                     # @rule 𝛷(^(sec(~x), ~k::is_neg)) => 𝛷(^(cos(~x), -~k))
+                     # @rule 𝛷(^(cot(~x), ~k::is_neg)) => 𝛷(^(tan(~x), -~k))
+                     # @rule 𝛷(^(sinh(~x), ~k::is_neg)) => 𝛷(^(csch(~x), -~k))
+                     # @rule 𝛷(^(cosh(~x), ~k::is_neg)) => 𝛷(^(sech(~x), -~k))
+                     # @rule 𝛷(^(tanh(~x), ~k::is_neg)) => 𝛷(^(coth(~x), -~k))
+                     # @rule 𝛷(^(csch(~x), ~k::is_neg)) => 𝛷(^(sinh(~x), -~k))
+                     # @rule 𝛷(^(sech(~x), ~k::is_neg)) => 𝛷(^(cosh(~x), -~k))
+                     # @rule 𝛷(^(coth(~x), ~k::is_neg)) => 𝛷(^(tanh(~x), -~k))
+                     
+                     
                      @rule 𝛷(asin(~x)) => (~x * asin(~x) + sqrt(1 - ~x * ~x), ∂(~x))
                      @rule 𝛷(acos(~x)) => (~x * acos(~x) + sqrt(1 - ~x * ~x), ∂(~x))
                      @rule 𝛷(atan(~x)) => (~x * atan(~x) + log(~x * ~x + 1), ∂(~x))
                      @rule 𝛷(acsc(~x)) => (~x * acsc(~x) + acosh(~x), ∂(~x))     # needs an abs inside acosh
                      @rule 𝛷(asec(~x)) => (~x * asec(~x) + acosh(~x), ∂(~x))     # needs an abs inside acosh
                      @rule 𝛷(acot(~x)) => (~x * acot(~x) + log(~x * ~x + 1), ∂(~x))
+                     
                      @rule 𝛷(asinh(~x)) => (~x * asinh(~x) + sqrt(~x * ~x + 1), ∂(~x))
                      @rule 𝛷(acosh(~x)) => (~x * acosh(~x) + sqrt(~x * ~x - 1), ∂(~x))
                      @rule 𝛷(atanh(~x)) => (~x * atanh(~x) + log(~x + 1), ∂(~x))
                      @rule 𝛷(acsch(~x)) => (acsch(~x), ∂(~x))
                      @rule 𝛷(asech(~x)) => (asech(~x), ∂(~x))
                      @rule 𝛷(acoth(~x)) => (~x * acot(~x) + log(~x + 1), ∂(~x))
+                     
                      @rule 𝛷(log(~x)) => (~x + ~x * log(~x), ∂(~x))
                      @rule 𝛷(^(~x, ~k::is_abs_half)) => (sum(candidate_sqrt(~x, ~k);
                                                              init = one(~x)), 1);
@@ -132,6 +154,7 @@ partial_int_rules = [@rule 𝛷(^(sin(~x), ~k::is_neg)) => 𝛷(^(csc(~x), -~k))
                      @rule 𝛷(sqrt(~x)) => (sum(candidate_sqrt(~x, 0.5); init = one(~x)), 1);
                      @rule 𝛷(^(sqrt(~x), -1)) => 𝛷(^(~x, -0.5))
                      @rule 𝛷(^(~x, -1)) => (log(~x), ∂(~x))
+                     @rule 𝛷(^(~x, ~k::is_neg_int)) => (sum(^(~x, i) for i=~k+1:-1), ∂(~x))
                      @rule 𝛷(1 / ~x) => 𝛷(^(~x, -1))
                      @rule 𝛷(^(~x, ~k)) => (^(~x, ~k + 1), ∂(~x))
                      @rule 𝛷(exp(~x)) => (exp(~x), ∂(~x))
