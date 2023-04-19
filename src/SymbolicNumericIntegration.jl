@@ -18,6 +18,7 @@ include("homotopy.jl")
 
 include("numeric_utils.jl")
 include("sparse.jl")
+include("optim.jl")
 include("integral.jl")
 
 export integrate, generate_basis

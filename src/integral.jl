@@ -36,7 +36,7 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 5
                    radius = 1.0,
                    show_basis = false, opt = STLSQ(exp.(-10:1:0)), bypass = false,
                    symbolic = true, max_basis = 100, verbose = false, complex_plane = true,
-                   homotopy = true)
+                   homotopy = true, use_optim=false)
     eq = expand(eq)
     eq = apply_div_rule(eq)
 
@@ -61,7 +61,7 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 5
 
     s, u, ϵ = integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
                             radius, show_basis, opt, symbolic,
-                            max_basis, verbose, complex_plane, homotopy)
+                            max_basis, verbose, complex_plane, homotopy, use_optim)
     return simplify(s), u, ϵ
 end
 
@@ -234,7 +234,14 @@ end
     integral, error
 """
 function try_integrate(T, eq, x, basis, radius; kwargs...)
+    args = Dict(kwargs)
+	use_optim = args[:use_optim]
     basis = basis[2:end]    # remove 1 from the beginning
-	return solve_sparse(T, eq, x, basis, radius; kwargs...)
+	
+	if use_optim
+		return solve_optim(T, eq, x, basis, radius; kwargs...)
+	else
+		return solve_sparse(T, eq, x, basis, radius; kwargs...)
+	end
 end
 
