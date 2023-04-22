@@ -84,6 +84,7 @@ julia> integrate(exp(x^2))
   - `opt` (default `STLSQ(exp.(-10:1:0))`): the optimizer passed to `sparse_regression!`.
   - `max_basis` (default `110`): the maximum number of expression in the basis.
   - `complex_plane` (default `true`): random test points are generated on the complex plane (only over the real axis if `complex_plane` is `false`).
+  - `use_optim` (default `false`): use Optim.jl `minimize` function instead of the STLSQ algorithm (**experimental**)
 
 ## Testing
 
