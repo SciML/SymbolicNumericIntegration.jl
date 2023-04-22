@@ -1,5 +1,4 @@
 
-
 function solve_sparse(T, eq, x, basis, radius; kwargs...)
     args = Dict(kwargs)
     abstol, opt, complex_plane, verbose = args[:abstol], args[:opt], args[:complex_plane],
@@ -107,7 +106,6 @@ function modify_basis_matrix!(T, A, X, x, eq, basis, radius; abstol = 1e-6)
     end
 end
 
-
 function sparse_fit(T, A, x, basis, opt; abstol = 1e-6)
     # find a linearly independent subset of the basis
     l = find_independent_subset(A; abstol)
@@ -115,11 +113,11 @@ function sparse_fit(T, A, x, basis, opt; abstol = 1e-6)
     n, m = size(A)
 
     try
-        b = ones((n,1))        
+        b = ones((n, 1))
         q₀ = DataDrivenDiffEq.init(opt, A, b)
         # @views sparse_regression!(q₀, A, permutedims(b)', opt, maxiter = 1000)
         @views sparse_regression!(q₀, A, b, opt, maxiter = 1000)
-        	ϵ = rms(A * q₀ .- b)
+        ϵ = rms(A * q₀ .- b)
         q = nice_parameter.(q₀)
         if sum(iscomplex.(q)) > 2
             return nothing, Inf
