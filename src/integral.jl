@@ -24,6 +24,7 @@ Base.signbit(x::SymbolicUtils.Sym{Number, Nothing}) = false
     verbose: print a detailed report
     complex_plane: generate random test points on the complex plane (if false, the points will be on real axis)
     homotopy: use the homotopy algorithm to generate the basis
+    use_optim: use Optim.jl `minimize` function instead of the STLSQ algorithm (**experimental**)
 
     output:
     -------
