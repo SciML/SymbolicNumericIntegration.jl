@@ -9,12 +9,16 @@ using SymbolicUtils.Rewriters
 using DataDrivenDiffEq
 
 include("utils.jl")
+include("special.jl")
+
 include("cache.jl")
 include("roots.jl")
 
 include("rules.jl")
 include("candidates.jl")
 include("homotopy.jl")
+
+export Ei, Si, Ci, Li
 
 include("numeric_utils.jl")
 include("sparse.jl")

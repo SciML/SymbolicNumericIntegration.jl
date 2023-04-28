@@ -41,7 +41,7 @@ function deriv_fun!(c::ExprCache, xs...)
 end
 
 function deriv_fun!(c, xs...)
-    return build_function(deriv!(c, xs), xs...; expression = false)
+    return build_function(deriv!(c, xs...), xs...; expression = false)
 end
 
 Base.show(io::IO, c::ExprCache) = show(expr(c))

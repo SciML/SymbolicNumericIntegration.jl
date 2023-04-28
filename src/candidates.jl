@@ -1,10 +1,15 @@
 using DataStructures
 
 # this is the main heurisctic used to find the test fragments
-function generate_basis(eq, x; homotopy = true)
-    # if homotopy return generate_homotopy(eq, x) end
+function generate_basis(eq, x, try_kernel = true; homotopy = true)
+    if homotopy && !try_kernel
+        S = sum(generate_homotopy(expr(eq), x))
+        return cache.(unique([one(x); [equivalent(t, x) for t in terms(S)]]))
+    end
+
+    S = 0
     eq = expand(expr(eq))
-    S = 0 #Set{Any}()
+
     for t in terms(eq)
         q = equivalent(t, x)
         f = kernel(q)
