@@ -186,6 +186,17 @@ basic_integrals = [
     x / (x^4 - 4),
     x^3 / (x^4 + 1),
     1 / (x^4 + 1),
+    # exponential/trigonometric/logarithmic integral functions
+    exp(2x) / x,
+    exp(x + 1) / (x + 1),
+    x * exp(2x^2 + 1) / (2x^2 + 1),
+    sin(3x) / x,
+    sin(x + 1) / (x + 1),
+    cos(5x) / x,
+    x * cos(x^2 - 1) / (x^2 - 1),
+    1 / log(3x - 1),
+    1 / (x * log(log(x))),
+    x / log(x^2),
     # bypass = true
     β,      # turn of bypass = true
     (log(x - 1) + (x - 1)^-1) * log(x),

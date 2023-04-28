@@ -33,11 +33,11 @@ Base.signbit(x::SymbolicUtils.Sym{Number, Nothing}) = false
     solved is the solved integral and unsolved is the residual unsolved portion of the input
     err is the numerical error in reaching the solution
 """
-function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 5,
+function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 10,
                    radius = 1.0,
                    show_basis = false, opt = STLSQ(exp.(-10:1:0)), bypass = false,
                    symbolic = true, max_basis = 100, verbose = false, complex_plane = true,
-                   homotopy = true, use_optim=false)
+                   homotopy = true, use_optim = false)
     eq = expand(eq)
     eq = apply_div_rule(eq)
 
@@ -150,13 +150,14 @@ function integrate_term(eq, x, l; kwargs...)
     end
 
     eq = cache(eq)
-    basis = generate_basis(eq, x; homotopy)
+    basis1 = generate_basis(eq, x, true; homotopy)
+    basis2 = generate_basis(eq, x, false; homotopy)
 
     if show_basis
-        inform(l, "Generating basis (|β| = $(length(basis)))", basis)
+        inform(l, "Generating basis (|β| = $(length(basis)))", basis1)
     end
 
-    if length(basis) > max_basis
+    if length(basis1) > max_basis
         result(l, "|β| = $(length(basis)) is too large")
         return 0, expr(eq), Inf
     end
@@ -170,12 +171,12 @@ function integrate_term(eq, x, l; kwargs...)
     yᵣ = 0
 
     for i in 1:num_steps
-        if length(basis) > max_basis
+        if length(basis1) > max_basis
             break
         end
 
         if symbolic
-            y, ϵ = try_symbolic(Float64, expr(eq), x, expr.(basis), deriv!.(basis, x);
+            y, ϵ = try_symbolic(Float64, expr(eq), x, expr.(basis1), deriv!.(basis1, x);
                                 kwargs...)
 
             if !isequal(y, 0) && accept_solution(eq, x, y, radius) < abstol
@@ -187,6 +188,7 @@ function integrate_term(eq, x, l; kwargs...)
         end
 
         for j in 1:num_trials
+            basis = isodd(j) ? basis1 : basis2
             r = radius #*sqrt(2)^j
             y, ϵ = try_integrate(Float64, eq, x, basis, r; kwargs...)
 
@@ -203,10 +205,11 @@ function integrate_term(eq, x, l; kwargs...)
         inform(l, "Failed numeric")
 
         if i < num_steps
-            basis = expand_basis(basis, x)
+            basis1 = expand_basis(basis1, x)
+            basis2 = expand_basis(basis2, x)
 
             if show_basis
-                inform(l, "Expanding the basis (|β| = $(length(basis)))", basis)
+                inform(l, "Expanding the basis (|β| = $(length(basis)))", basis1)
             elseif verbose
                 inform(l, "Expanding the basis (|β| = $(length(basis)))")
             end
@@ -236,13 +239,12 @@ end
 """
 function try_integrate(T, eq, x, basis, radius; kwargs...)
     args = Dict(kwargs)
-	use_optim = args[:use_optim]
+    use_optim = args[:use_optim]
     basis = basis[2:end]    # remove 1 from the beginning
-	
-	if use_optim
-		return solve_optim(T, eq, x, basis, radius; kwargs...)
-	else
-		return solve_sparse(T, eq, x, basis, radius; kwargs...)
-	end
-end
 
+    if use_optim
+        return solve_optim(T, eq, x, basis, radius; kwargs...)
+    else
+        return solve_sparse(T, eq, x, basis, radius; kwargs...)
+    end
+end

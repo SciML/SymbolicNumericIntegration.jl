@@ -70,6 +70,26 @@ julia> integrate(exp(x^2))
 (0, exp(x^2), Inf)    # as expected!
 ```
 
+SymbolicNumericIntegration.jl exports some special integral functions (defined over Complex numbers) and uses them in solving integrals:
+
+  - `Ei`: exponential integral (define as ∫ exp(x) / x dx)
+  - `Si`: sine integral (define as ∫ sin(x) / x dx)
+  - `Ci`: cosine integral (define as ∫ cos(x) / x dx)
+  - `Li`: logarithmic integral (define as ∫ 1 / log(x) dx)
+
+For examples:
+
+```
+julia> integrate(exp(x + 1) / (x + 1))
+(SymbolicNumericIntegration.Ei(1 + x), 0, 1.1796119636642288e-16)
+
+julia> integrate(x * cos(x^2 - 1) / (x^2 - 1))
+((1//2)*SymbolicNumericIntegration.Ci(x^2 - 1), 0, 2.7755575615628914e-17)
+
+julia> integrate(1 / (x*log(log(x))))
+(SymbolicNumericIntegration.Li(log(x)), 0, 1.1102230246251565e-16)
+```
+
 `integrate` has the form `integrate(y; kw...)` or `integrate(y, x; kw...)`, where `y` is the integrand and the optional `x` is the variable of integration. The keyword parameters are:
 
   - `abstol` (default `1e-6`): the error tolerance to accept a solution.
