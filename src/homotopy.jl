@@ -57,6 +57,20 @@ end
 
 ##############################################################################
 
+Symbolics.@register_symbolic Ei(z)
+Symbolics.@register_symbolic Si(z)
+Symbolics.@register_symbolic Ci(z)
+Symbolics.@register_symbolic Li(z)
+
+Symbolics.derivative(::typeof(Ei), args::NTuple{1, Any}, ::Val{1}) = exp(args[1]) / args[1]
+Symbolics.derivative(::typeof(Si), args::NTuple{1, Any}, ::Val{1}) = sin(args[1]) / args[1]
+Symbolics.derivative(::typeof(Ci), args::NTuple{1, Any}, ::Val{1}) = cos(args[1]) / args[1]
+Symbolics.derivative(::typeof(Li), args::NTuple{1, Any}, ::Val{1}) = 1 / log(args[1])
+
+@syms si(𝑥) ci(𝑥) ei(𝑥) li(𝑥)
+
+##############################################################################
+
 function substitute_x(eq, x, sub)
     eq = substitute(eq, sub)
     substitute(eq, Dict(𝑥 => x))
@@ -64,12 +78,15 @@ end
 
 function generate_homotopy(eq, x)
     eq = eq isa Num ? eq.val : eq
+    x = x isa Num ? x.val : x
+
     q, sub = transform(eq, x)
     S = 0
 
     for i in 1:length(sub)
         μ = u[i]
         h₁, ∂h₁ = apply_partial_int_rules(sub[μ])
+        h₁ = substitute(h₁, Dict(si => Si, ci => Ci, ei => Ei, li => Li))
         h₂ = expand_derivatives(Differential(μ)(q))
 
         h₁ = substitute_x(h₁, x, sub)
@@ -77,8 +94,6 @@ function generate_homotopy(eq, x)
 
         S += expand((1 + h₁) * (1 + h₂))
     end
-
-    S = simplify(S)
 
     unique([one(x); [equivalent(t, x) for t in terms(S)]])
 end
@@ -92,8 +107,8 @@ end
 
 partial_int_rules = [
                      # trigonometric functions
-                     @rule 𝛷(sin(~x)) => (cos(~x), ∂(~x))
-                     @rule 𝛷(cos(~x)) => (sin(~x), ∂(~x))
+                     @rule 𝛷(sin(~x)) => (cos(~x) + si(~x), ∂(~x))
+                     @rule 𝛷(cos(~x)) => (sin(~x) + ci(~x), ∂(~x))
                      @rule 𝛷(tan(~x)) => (log(cos(~x)), ∂(~x))
                      @rule 𝛷(csc(~x)) => (log(csc(~x) + cot(~x)), ∂(~x))
                      @rule 𝛷(sec(~x)) => (log(sec(~x) + tan(~x)), ∂(~x))
@@ -137,7 +152,8 @@ partial_int_rules = [
                      @rule 𝛷(log(~x)) => (~x + ~x * log(~x) +
                                           sum(candidate_pow_minus(~x, -1); init = one(~x)),
                                           ∂(~x))
-                     @rule 𝛷(exp(~x)) => (exp(~x), ∂(~x))
+                     @rule 𝛷(^(log(~x), -1)) => (log(log(~x)) + li(~x), ∂(~x))
+                     @rule 𝛷(exp(~x)) => (exp(~x) + ei(~x), ∂(~x))
                      @rule 𝛷(^(exp(~x), ~k::is_neg)) => (^(exp(-~x), -~k), ∂(~x))
                      # square-root functions
                      @rule 𝛷(^(~x, ~k::is_abs_half)) => (sum(candidate_sqrt(~x, ~k);
