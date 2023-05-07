@@ -5,8 +5,9 @@ using SymbolicUtils: istree, operation, arguments
 using Symbolics
 using Symbolics: value, get_variables, expand_derivatives
 using SymbolicUtils.Rewriters
+using SymbolicUtils: exprtype, BasicSymbolic
 
-using DataDrivenDiffEq
+using DataDrivenDiffEq, DataDrivenSparse
 
 include("utils.jl")
 include("special.jl")
