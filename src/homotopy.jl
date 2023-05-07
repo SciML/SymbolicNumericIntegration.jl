@@ -112,6 +112,8 @@ function ∂(x)
     return isequal(d, 0) ? 1 : d
 end
 
+@syms 𝛷(x)
+
 partial_int_rules = [
                      # trigonometric functions
                      @rule 𝛷(sin(~x)) => (cos(~x) + si(~x), ∂(~x))
@@ -128,19 +130,19 @@ partial_int_rules = [
                      @rule 𝛷(sech(~x)) => (atan(sinh(~x)), ∂(~x))
                      @rule 𝛷(coth(~x)) => (log(sinh(~x)), ∂(~x))
                      # 1/trigonometric functions
-                     @rule 𝛷(1 / sin(~x)) => (log(csc(~x) + cot(~x)), ∂(~x))
-                     @rule 𝛷(1 / cos(~x)) => (log(sec(~x) + tan(~x)), ∂(~x))
-                     @rule 𝛷(1 / tan(~x)) => (log(sin(~x)), ∂(~x))
-                     @rule 𝛷(1 / csc(~x)) => (cos(~x), ∂(~x))
-                     @rule 𝛷(1 / sec(~x)) => (sin(~x), ∂(~x))
-                     @rule 𝛷(1 / cot(~x)) => (log(cos(~x)), ∂(~x))
+                     @rule 𝛷(1 / sin(~x)) => (log(csc(~x) + cot(~x)) + log(sin(~x)), ∂(~x))
+                     @rule 𝛷(1 / cos(~x)) => (log(sec(~x) + tan(~x)) + log(cos(~x)), ∂(~x))
+                     @rule 𝛷(1 / tan(~x)) => (log(sin(~x)) + log(tan(~x)), ∂(~x))
+                     @rule 𝛷(1 / csc(~x)) => (cos(~x) + log(csc(~x)), ∂(~x))
+                     @rule 𝛷(1 / sec(~x)) => (sin(~x) + log(sec(~x)), ∂(~x))
+                     @rule 𝛷(1 / cot(~x)) => (log(cos(~x)) + log(cot(~x)), ∂(~x))
                      # 1/hyperbolic functions
-                     @rule 𝛷(1 / sinh(~x)) => (log(tanh(~x / 2)), ∂(~x))
-                     @rule 𝛷(1 / cosh(~x)) => (atan(sinh(~x)), ∂(~x))
-                     @rule 𝛷(1 / tanh(~x)) => (log(sinh(~x)), ∂(~x))
-                     @rule 𝛷(1 / csch(~x)) => (cosh(~x), ∂(~x))
-                     @rule 𝛷(1 / sech(~x)) => (sinh(~x), ∂(~x))
-                     @rule 𝛷(1 / coth(~x)) => (log(cosh(~x)), ∂(~x))
+                     @rule 𝛷(1 / sinh(~x)) => (log(tanh(~x / 2)) + log(sinh(~x)), ∂(~x))
+                     @rule 𝛷(1 / cosh(~x)) => (atan(sinh(~x)) + log(cosh(~x)), ∂(~x))
+                     @rule 𝛷(1 / tanh(~x)) => (log(sinh(~x)) + log(tanh(~x)), ∂(~x))
+                     @rule 𝛷(1 / csch(~x)) => (cosh(~x) + log(csch(~x)), ∂(~x))
+                     @rule 𝛷(1 / sech(~x)) => (sinh(~x) + log(sech(~x)), ∂(~x))
+                     @rule 𝛷(1 / coth(~x)) => (log(cosh(~x)) + log(coth(~x)), ∂(~x))
                      # inverse trigonometric functions
                      @rule 𝛷(asin(~x)) => (~x * asin(~x) + sqrt(1 - ~x * ~x), ∂(~x))
                      @rule 𝛷(acos(~x)) => (~x * acos(~x) + sqrt(1 - ~x * ~x), ∂(~x))
@@ -168,7 +170,7 @@ partial_int_rules = [
                      @rule 𝛷(sqrt(~x)) => (sum(candidate_sqrt(~x, 0.5); init = one(~x)), ∂(~x));
                      @rule 𝛷(1 / sqrt(~x)) => (sum(candidate_sqrt(~x, -0.5); init = one(~x)), ∂(~x));
                      # rational functions                                                              
-                     @rule 𝛷(1 / ^(~x::is_poly, ~k)) => (sum(candidate_pow_minus(~x, -~k);
+                     @rule 𝛷(1 / ^(~x::is_poly, ~k::is_pos_int)) => (sum(candidate_pow_minus(~x, -~k);
                                                                  init = one(~x)), 1)
                      @rule 𝛷(1 / ~x::is_poly) => (sum(candidate_pow_minus(~x, -1);
                                                                  init = one(~x)), 1)
@@ -176,7 +178,7 @@ partial_int_rules = [
                      @rule 𝛷(^(~x, ~k::is_neg_int)) => (sum(^(~x, i) for i in (~k + 1):-1),
                                                         ∂(~x))
                      @rule 𝛷(1 / ~x) => (log(~x), ∂(~x))
-                     @rule 𝛷(^(~x, ~k)) => (sum(^(~x, i+1) for i=1:~k+1), ∂(~x))
+                     @rule 𝛷(^(~x, ~k::is_pos_int)) => (sum(^(~x, i+1) for i=1:~k+1), ∂(~x))
                      @rule 𝛷(1) => (𝑥, 1)
                      @rule 𝛷(~x) => ((~x + ^(~x, 2)), ∂(~x))]
 

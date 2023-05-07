@@ -204,8 +204,12 @@ function integrate_term(eq, x, l; kwargs...)
         inform(l, "Failed numeric")
 
         if i < num_steps
-            basis1 = expand_basis(basis1, x)
-            basis2 = expand_basis(basis2, x)
+            basis1, ok1 = expand_basis(basis1, x)
+            basis2, ok2 = expand_basis(basis2, x)
+            
+            if !ok1 && ~ok2            	
+            	break
+            end
 
             if show_basis
                 inform(l, "Expanding the basis (|β| = $(length(basis)))", basis1)

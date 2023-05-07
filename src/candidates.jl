@@ -28,14 +28,20 @@ function generate_basis(eq, x, try_kernel = true)
     return cache.(unique([one(x); [equivalent(t, x) for t in terms(S)]]))
 end
 
-function expand_basis(basis, x)
-    b = sum(expr.(basis))
-    δb = sum(deriv!.(basis, x))
+function expand_basis(basis, x; Kmax=1000)
+    b = sum(expr.(basis))    
+
+    Kb = complexity(b)		# Kolmogorov complexity
+	if Kb > Kmax
+		return basis, false
+	end
+	
+    δb = sum(deriv!.(basis, x))	    
     eq = (1 + x) * (b + δb)
     eq = expand(eq)
     S = Set{Any}()
     enqueue_expr!(S, eq, x)
-    return cache.([one(x); [s for s in S]])
+    return cache.([one(x); [s for s in S]]), true
 end
 
 function closure(eq, x; max_terms = 50)

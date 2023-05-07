@@ -258,4 +258,24 @@ inv_rules = [@rule Ω(1 / ~x) => ~x
 
 inverse(eq) = Prewalk(PassThrough(Chain(inv_rules)))(Ω(value(eq)))
 
+###############################################################################
+
+is_sym(x) = first(ops(x)) isa Sym
+
+h_rules = [
+			@rule +(~~xs) => 1 + sum(~~xs)
+			@rule *(~~xs) => 1 + sum(~~xs)
+			@rule ~x / ~y => 1 + ~x + ~y
+			@rule ^(~x, ~y) => 1 + ~x + ~y
+			@rule log(~x) => 1 + ~x
+			@rule (~f)(~x) => 1 + ~x
+			@rule ~x::is_sym => 1
+		  ]			
+
+# complexity returns a measure of the complexity of an equation
+# it is roughly similar ro kolmogorov complexity
+function complexity(eq)
+	_, eq = ops(eq)	
+	return Prewalk(PassThrough(Chain(h_rules)))(eq)
+end
 
