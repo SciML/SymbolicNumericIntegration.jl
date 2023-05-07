@@ -1,58 +1,60 @@
 @syms 𝑥
 @syms u[20]
 
-mutable struct Transform
-    k::Int
-    sub::Dict
+transformer(eq) = transformer(ops(eq)...)
+
+function transformer(::Mul, eq)
+    return vcat([transformer(t) for t in arguments(eq)]...)
 end
 
-function next_variable!(f, eq)
-    μ = u[f.k]
-    f.k += 1
-    f.sub[μ] = eq
-    return μ
+function transformer(::Div, eq)
+	a = transformer(arguments(eq)[1])
+	b = transformer(arguments(eq)[2])
+	b = [(1/q, k) for (q, k) in b]
+    return [a; b]
 end
 
-function transformer(eq::SymbolicUtils.Add, f)
-    return sum(transformer(t, f) for t in arguments(eq); init = 0)
-end
-function transformer(eq::SymbolicUtils.Mul, f)
-    return prod(transformer(t, f) for t in arguments(eq); init = 1)
-end
-function transformer(eq::SymbolicUtils.Div, f)
-    return transformer(arguments(eq)[1], f) * transformer(arguments(eq)[2]^-1, f)
-end
-
-function transformer(eq::SymbolicUtils.Pow, f)
+function transformer(::Pow, eq)
     y, k = arguments(eq)
-
-    if is_pos_int(k)
-        μ = next_variable!(f, y)
-        return μ^k
-    elseif is_neg_int(k)
-        μ = next_variable!(f, inv(y))
-        return μ^-k
+    if is_number(k)
+    	r = nice_parameter(k)
+    	if denominator(r) == 1
+	    	return [(y, k)]
+	    else
+	    	return [(y^(1/denominator(r)), numerator(r))]
+	    end
     else
-        return next_variable!(f, y^k)
-    end
+    	return [(eq, 1)]
+	end
 end
 
-function transformer(eq, f)
-    if isdependent(eq, 𝑥)
-        return next_variable!(f, eq)
-    else
-        return 1
-    end
+function transformer(::Any, eq)
+    return [(eq, 1)]    
 end
 
 function transform(eq, x)
     eq = substitute(eq, Dict(x => 𝑥))
-    f = Transform(1, Dict())
-    q = transformer(eq, f)
-    if !any(is_poly, values(f.sub))
-        q *= next_variable!(f, 1)
-    end
-    return q, f.sub
+    p = transformer(eq)
+    p = p[isdependent.(first.(p),  𝑥)]
+    
+    return p
+end
+
+function rename_factors(p)
+	n = length(p)
+
+	q = 1
+	sub = Dict()
+	ks = Int[]
+	
+	for (i,(y,k)) in enumerate(p)
+		μ = u[i]
+		q *= μ ^ k
+		sub[μ] = y
+		push!(ks, k)
+	end
+	
+	return q, sub, ks
 end
 
 ##############################################################################
@@ -73,29 +75,34 @@ Symbolics.derivative(::typeof(Li), args::NTuple{1, Any}, ::Val{1}) = 1 / log(arg
 
 function substitute_x(eq, x, sub)
     eq = substitute(eq, sub)
-    substitute(eq, Dict(𝑥 => x))
+    return substitute(eq, Dict(𝑥 => x))
 end
+
+guard_zero(x) = isequal(x, 0) ? one(x) : x
 
 function generate_homotopy(eq, x)
     eq = eq isa Num ? eq.val : eq
     x = x isa Num ? x.val : x
 
-    q, sub = transform(eq, x)
+	p = transform(eq, x)
+    q, sub, ks = rename_factors(p)
     S = 0
 
     for i in 1:length(sub)
-        μ = u[i]
-        h₁, ∂h₁ = apply_partial_int_rules(sub[μ])
-        h₁ = substitute(h₁, Dict(si => Si, ci => Ci, ei => Ei, li => Li))
-        h₂ = expand_derivatives(Differential(μ)(q))
-
-        h₁ = substitute_x(h₁, x, sub)
-        h₂ = substitute_x(h₂ * ∂h₁^-1, x, sub)
-
-        S += expand((1 + h₁) * (1 + h₂))
-    end
-
-    unique([one(x); [equivalent(t, x) for t in terms(S)]])
+		μ = u[i]
+		h₁, ∂h₁ = apply_partial_int_rules(sub[μ])
+		h₁ = substitute(h₁, Dict(si => Si, ci => Ci, ei => Ei, li => Li))		    
+	    h₁ = substitute_x(h₁, x, sub)
+		
+    	for j = 1:ks[i]
+		    h₂ = substitute_x((q / μ^j) / ∂h₁, x, sub)
+		    S += expand((1 + h₁) * guard_zero(1 + h₂))
+		end
+    end    
+    
+    ζ = [x^k for k=1:maximum(ks)+1]
+    
+    unique([one(x); ζ; [equivalent(t, x) for t in terms(S)]])
 end
 
 ##############################################################################
@@ -121,19 +128,19 @@ partial_int_rules = [
                      @rule 𝛷(sech(~x)) => (atan(sinh(~x)), ∂(~x))
                      @rule 𝛷(coth(~x)) => (log(sinh(~x)), ∂(~x))
                      # 1/trigonometric functions
-                     @rule 𝛷(^(sin(~x), -1)) => (log(csc(~x) + cot(~x)), ∂(~x))
-                     @rule 𝛷(^(cos(~x), -1)) => (log(sec(~x) + tan(~x)), ∂(~x))
-                     @rule 𝛷(^(tan(~x), -1)) => (log(sin(~x)), ∂(~x))
-                     @rule 𝛷(^(csc(~x), -1)) => (cos(~x), ∂(~x))
-                     @rule 𝛷(^(sec(~x), -1)) => (sin(~x), ∂(~x))
-                     @rule 𝛷(^(cot(~x), -1)) => (log(cos(~x)), ∂(~x))
+                     @rule 𝛷(1 / sin(~x)) => (log(csc(~x) + cot(~x)), ∂(~x))
+                     @rule 𝛷(1 / cos(~x)) => (log(sec(~x) + tan(~x)), ∂(~x))
+                     @rule 𝛷(1 / tan(~x)) => (log(sin(~x)), ∂(~x))
+                     @rule 𝛷(1 / csc(~x)) => (cos(~x), ∂(~x))
+                     @rule 𝛷(1 / sec(~x)) => (sin(~x), ∂(~x))
+                     @rule 𝛷(1 / cot(~x)) => (log(cos(~x)), ∂(~x))
                      # 1/hyperbolic functions
-                     @rule 𝛷(^(sinh(~x), -1)) => (log(tanh(~x / 2)), ∂(~x))
-                     @rule 𝛷(^(cosh(~x), -1)) => (atan(sinh(~x)), ∂(~x))
-                     @rule 𝛷(^(tanh(~x), -1)) => (log(sinh(~x)), ∂(~x))
-                     @rule 𝛷(^(csch(~x), -1)) => (cosh(~x), ∂(~x))
-                     @rule 𝛷(^(sech(~x), -1)) => (sinh(~x), ∂(~x))
-                     @rule 𝛷(^(coth(~x), -1)) => (log(cosh(~x)), ∂(~x))
+                     @rule 𝛷(1 / sinh(~x)) => (log(tanh(~x / 2)), ∂(~x))
+                     @rule 𝛷(1 / cosh(~x)) => (atan(sinh(~x)), ∂(~x))
+                     @rule 𝛷(1 / tanh(~x)) => (log(sinh(~x)), ∂(~x))
+                     @rule 𝛷(1 / csch(~x)) => (cosh(~x), ∂(~x))
+                     @rule 𝛷(1 / sech(~x)) => (sinh(~x), ∂(~x))
+                     @rule 𝛷(1 / coth(~x)) => (log(cosh(~x)), ∂(~x))
                      # inverse trigonometric functions
                      @rule 𝛷(asin(~x)) => (~x * asin(~x) + sqrt(1 - ~x * ~x), ∂(~x))
                      @rule 𝛷(acos(~x)) => (~x * acos(~x) + sqrt(1 - ~x * ~x), ∂(~x))
@@ -152,23 +159,24 @@ partial_int_rules = [
                      @rule 𝛷(log(~x)) => (~x + ~x * log(~x) +
                                           sum(candidate_pow_minus(~x, -1); init = one(~x)),
                                           ∂(~x))
-                     @rule 𝛷(^(log(~x), -1)) => (log(log(~x)) + li(~x), ∂(~x))
+                     @rule 𝛷(1 / log(~x)) => (log(log(~x)) + li(~x), ∂(~x))
                      @rule 𝛷(exp(~x)) => (exp(~x) + ei(~x), ∂(~x))
                      @rule 𝛷(^(exp(~x), ~k::is_neg)) => (^(exp(-~x), -~k), ∂(~x))
                      # square-root functions
                      @rule 𝛷(^(~x, ~k::is_abs_half)) => (sum(candidate_sqrt(~x, ~k);
                                                              init = one(~x)), 1);
-                     @rule 𝛷(sqrt(~x)) => (sum(candidate_sqrt(~x, 0.5); init = one(~x)), 1);
-                     @rule 𝛷(^(sqrt(~x), -1)) => 𝛷(^(~x, -0.5))
+                     @rule 𝛷(sqrt(~x)) => (sum(candidate_sqrt(~x, 0.5); init = one(~x)), ∂(~x));
+                     @rule 𝛷(1 / sqrt(~x)) => (sum(candidate_sqrt(~x, -0.5); init = one(~x)), ∂(~x));
                      # rational functions                                                              
-                     @rule 𝛷(^(~x::is_poly, ~k::is_neg)) => (sum(candidate_pow_minus(~x,
-                                                                                     ~k);
+                     @rule 𝛷(1 / ^(~x::is_poly, ~k)) => (sum(candidate_pow_minus(~x, -~k);
+                                                                 init = one(~x)), 1)
+                     @rule 𝛷(1 / ~x::is_poly) => (sum(candidate_pow_minus(~x, -1);
                                                                  init = one(~x)), 1)
                      @rule 𝛷(^(~x, -1)) => (log(~x), ∂(~x))
                      @rule 𝛷(^(~x, ~k::is_neg_int)) => (sum(^(~x, i) for i in (~k + 1):-1),
                                                         ∂(~x))
-                     @rule 𝛷(1 / ~x) => 𝛷(^(~x, -1))
-                     @rule 𝛷(^(~x, ~k)) => (^(~x, ~k + 1), ∂(~x))
+                     @rule 𝛷(1 / ~x) => (log(~x), ∂(~x))
+                     @rule 𝛷(^(~x, ~k)) => (sum(^(~x, i+1) for i=1:~k+1), ∂(~x))
                      @rule 𝛷(1) => (𝑥, 1)
                      @rule 𝛷(~x) => ((~x + ^(~x, 2)), ∂(~x))]
 

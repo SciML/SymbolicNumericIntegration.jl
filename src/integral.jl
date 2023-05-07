@@ -2,7 +2,7 @@ using LinearAlgebra
 using Statistics: mean, std
 
 Base.signbit(z::Complex{T}) where {T <: Number} = signbit(real(z))
-Base.signbit(x::SymbolicUtils.Sym{Number, Nothing}) = false
+Base.signbit(x::SymbolicUtils.Sym{Number}) = false
 
 """
     integrate is the main entry point
@@ -23,7 +23,7 @@ Base.signbit(x::SymbolicUtils.Sym{Number, Nothing}) = false
     max_basis: the maximum number of candidate terms to consider
     verbose: print a detailed report
     complex_plane: generate random test points on the complex plane (if false, the points will be on real axis)
-    homotopy: use the homotopy algorithm to generate the basis
+    homotopy: use the homotopy algorithm to generate the basis (deprecated)
     use_optim: use Optim.jl `minimize` function instead of the STLSQ algorithm (**experimental**)
 
     output:
@@ -58,12 +58,11 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
         return x * eq, 0, 0
     end
 
-    # homotopy = homotopy && !bypass
-
     s, u, ϵ = integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
                             radius, show_basis, opt, symbolic,
-                            max_basis, verbose, complex_plane, homotopy, use_optim)
-    return simplify(s), u, ϵ
+                            max_basis, verbose, complex_plane, use_optim)
+    # return simplify(s), u, ϵ
+    return s, u, ϵ
 end
 
 """
@@ -136,10 +135,10 @@ end
 function integrate_term(eq, x, l; kwargs...)
     args = Dict(kwargs)
     abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
-    radius, homotopy = args[:abstol], args[:num_steps],
+    radius = args[:abstol], args[:num_steps],
                        args[:num_trials], args[:show_basis], args[:symbolic],
                        args[:verbose],
-                       args[:max_basis], args[:radius], args[:homotopy]
+                       args[:max_basis], args[:radius]
 
     attempt(l, "Integrating term", eq)
 
@@ -150,15 +149,15 @@ function integrate_term(eq, x, l; kwargs...)
     end
 
     eq = cache(eq)
-    basis1 = generate_basis(eq, x, true; homotopy)
-    basis2 = generate_basis(eq, x, false; homotopy)
+    basis1 = generate_basis(eq, x, true)
+    basis2 = generate_basis(eq, x, false)
 
     if show_basis
-        inform(l, "Generating basis (|β| = $(length(basis)))", basis1)
+        inform(l, "Generating basis (|β| = $(length(basis1)))", basis1)
     end
 
     if length(basis1) > max_basis
-        result(l, "|β| = $(length(basis)) is too large")
+        result(l, "|β| = $(length(basis1)) is too large")
         return 0, expr(eq), Inf
     end
 
@@ -248,3 +247,18 @@ function try_integrate(T, eq, x, basis, radius; kwargs...)
         return solve_sparse(T, eq, x, basis, radius; kwargs...)
     end
 end
+
+#################################################################################
+
+function integrate_basis(eq, x = var(eq); abstol = 1e-6, radius = 1.0, complex_plane = true)	
+    eq = expand(eq)
+    eq = apply_div_rule(eq)
+	eq = cache(eq)
+    basis = generate_basis(eq, x, false)
+    n = length(basis)
+    A = zeros(Complex{Float64}, (n, n))
+    X = zeros(Complex{Float64}, n)
+	init_basis_matrix!(Float64, A, X, x, eq, basis, radius, complex_plane; abstol)
+	return basis, A, X
+end
+

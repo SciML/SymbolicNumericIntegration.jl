@@ -11,22 +11,28 @@ function solve_sparse(T, eq, x, basis, radius; kwargs...)
     X = zeros(Complex{T}, n)
 
     init_basis_matrix!(T, A, X, x, eq, basis, radius, complex_plane; abstol)
+    
+    # find a linearly independent subset of the basis
+    l = find_independent_subset(A; abstol)
+    A, basis = A[l, l], basis[l]
 
     y₁, ϵ₁ = sparse_fit(T, A, x, basis, opt; abstol)
     if ϵ₁ < abstol
         return y₁, ϵ₁
     end
 
-    y₂, ϵ₂ = find_singlet(T, A, basis; abstol)
-    if ϵ₂ < abstol
-        return y₂, ϵ₂
-    end
-
-    if n < 8    # here, 8 is arbitrary and signifies a small basis
+    rank = sum(l)
+    
+    if rank == 1   
+    	y₂, ϵ₂ = find_singlet(T, A, basis; abstol)
+    	if ϵ₂ < abstol
+        	return y₂, ϵ₂
+    	end
+    elseif rank < 8
         y₃, ϵ₃ = find_dense(T, A, basis; abstol)
         if ϵ₃ < abstol
             return y₃, ϵ₃
-        end
+        end        
     end
 
     # moving toward the poles
@@ -47,6 +53,8 @@ function init_basis_matrix!(T, A, X, x, eq, basis, radius, complex_plane; abstol
 
     eq_fun = fun!(eq, x)
     Δbasis_fun = deriv_fun!.(basis, x)
+    
+    l = 10*n	# max attempt
 
     while k <= n
         try
@@ -65,6 +73,10 @@ function init_basis_matrix!(T, A, X, x, eq, basis, radius, complex_plane; abstol
         catch e
             println("Error from init_basis_matrix!: ", e)
         end
+        if l == 0
+        	return
+        end
+        l -= 1
     end
 end
 
@@ -106,18 +118,23 @@ function modify_basis_matrix!(T, A, X, x, eq, basis, radius; abstol = 1e-6)
     end
 end
 
+DataDrivenSparse.active_set!(idx::BitMatrix, p::SoftThreshold, x::Matrix{ComplexF64}, λ::Float64) = 
+               DataDrivenSparse.active_set!(idx, p, abs.(x), λ)
+
+
 function sparse_fit(T, A, x, basis, opt; abstol = 1e-6)
-    # find a linearly independent subset of the basis
-    l = find_independent_subset(A; abstol)
-    A, basis = A[l, l], basis[l]
     n, m = size(A)
 
-    try
-        b = ones((n, 1))
-        q₀ = DataDrivenDiffEq.init(opt, A, b)
+	try
+        b = ones((1, n))        
+        # q₀ = DataDrivenDiffEq.init(opt, A, b)
         # @views sparse_regression!(q₀, A, permutedims(b)', opt, maxiter = 1000)
-        @views sparse_regression!(q₀, A, b, opt, maxiter = 1000)
-        ϵ = rms(A * q₀ .- b)
+        # @views sparse_regression!(q₀, A, b, opt, maxiter = 1000)
+        solver = SparseLinearSolver(opt, options = DataDrivenCommonOptions(verbose=false, maxiters=1000))
+        res, _... = solver(A', b)
+        q₀ = DataDrivenSparse.coef(first(res))
+
+        	ϵ = rms(A * q₀' .- 1)
         q = nice_parameter.(q₀)
         if sum(iscomplex.(q)) > 2
             return nothing, Inf
@@ -126,8 +143,8 @@ function sparse_fit(T, A, x, basis, opt; abstol = 1e-6)
                    init = zero(x)),
                abs(ϵ)
     catch e
-        println("Error from sparse_fit", e)
-        return nothing, Inf
+       	println("Error from sparse_fit", e)
+    	return nothing, Inf
     end
 end
 
@@ -150,7 +167,7 @@ function find_dense(T, A, basis; abstol = 1e-6)
     try
         q = A \ b
         if minimum(abs.(q)) > abstol
-            ϵ = maximum(abs.(A * q .- b))
+            	ϵ = maximum(abs.(A * q .- b))
             if ϵ < abstol
                 y = sum(nice_parameter.(q) .* expr.(basis))
                 return y, ϵ
