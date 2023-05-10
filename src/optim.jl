@@ -1,32 +1,17 @@
 using Optim
 
-function solve_optim(T, eq, x, basis, radius, rounds = 2; kwargs...)
+function solve_optim(eq, x, basis, radius; kwargs...)
     args = Dict(kwargs)
     abstol, complex_plane, verbose = args[:abstol], args[:complex_plane], args[:verbose]
 
     n = length(basis)
     λ = 1e-9
 
-    A = zeros(Complex{T}, (2n, n))
-    X = zeros(Complex{T}, 2n)
-    init_basis_matrix!(T, A, X, x, eq, basis, radius, complex_plane; abstol)
-    # modify_basis_matrix!(T, A, X, x, eq, basis, radius; abstol)
+    A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
 
     l = find_independent_subset(A; abstol)
     A, basis, n = A[:, l], basis[l], sum(l)
     p = rank_basis(A, basis)
-
-    # q, ϵ = find_minimizer(A, λ)
-
-    # if ϵ > abstol
-    # 	return 0, ϵ
-    # end
-
-    # qa = q
-    # μ = maximum(abs.(qa))
-
-    # for ρ in exp10.(-1:-1:-8)    
-    # 	l = abs.(qa) .> ρ * μ	    
 
     qm = zeros(n)
     ϵm = 1e6

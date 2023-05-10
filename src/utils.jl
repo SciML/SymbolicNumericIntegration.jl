@@ -1,3 +1,38 @@
+
+abstract type Op end
+
+struct Add <: Op end
+struct Mul <: Op end
+struct Div <: Op end
+struct Pow <: Op end
+struct Sym <: Op end
+struct Term <: Op end
+
+ops(eq) = nothing, eq
+ops(eq::Num) = ops(eq.val)
+
+function ops(eq::BasicSymbolic)
+    op = exprtype(eq)
+
+    if op == SymbolicUtils.ADD
+        return Add(), eq
+    elseif op == SymbolicUtils.MUL
+        return Mul(), eq
+    elseif op == SymbolicUtils.DIV
+        return Div(), eq
+    elseif op == SymbolicUtils.POW
+        return Pow(), eq
+    elseif op == SymbolicUtils.SYM
+        return Sym(), eq
+    elseif op == SymbolicUtils.TERM
+        return Term(), eq
+    else
+        return nothing, eq
+    end
+end
+
+############################################################################
+
 """
     isdependent returns true if eq is dependent on x
 """
@@ -12,7 +47,9 @@ end
     is_number(x) returns true if x is a concrete numerical type
 """
 is_number(x::T) where {T <: Integer} = true
-is_number(x::T) where {T <: Real} = true
+# is_number(x::T) where {T <: Real} = true
+is_number(x::T) where {T <: Float32} = true
+is_number(x::T) where {T <: Float64} = true
 is_number(x::T) where {T <: Complex} = true
 is_number(x::T) where {T <: Rational} = true
 is_number(x) = false
@@ -51,19 +88,21 @@ end
 """
     deg(p) returns the degree of p if p is a polynomial
 """
-deg(p::SymbolicUtils.Add, x) = maximum(deg(t, x) for t in arguments(p))
-deg(p::SymbolicUtils.Mul, x) = sum(deg(t, x) for t in arguments(p); init = 0)
+deg(::Add, p, x) = maximum(deg(t, x) for t in arguments(p))
+deg(::Mul, p, x) = sum(deg(t, x) for t in arguments(p); init = 0)
 
-function deg(p::SymbolicUtils.Pow, x)
+function deg(::Pow, p, x)
     if !isequal(arguments(p)[1], x)
         return 0
     end
     return arguments(p)[2]
 end
 
-deg(p::SymbolicUtils.Sym, x) = isequal(p, x) ? 1 : 0
-deg(p::SymbolicUtils.Term, x) = 0
-deg(p, x) = 0
+deg(::Sym, p, x) = isequal(p, x) ? 1 : 0
+deg(::Term, p, x) = 0
+deg(::Any, p, x) = 0
+
+deg(p, x) = deg(ops(p)..., x)
 
 """
     var(p) returns the unique variable of an expression (is exists)

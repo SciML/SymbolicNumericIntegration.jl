@@ -2,7 +2,7 @@ using LinearAlgebra
 using Statistics: mean, std
 
 Base.signbit(z::Complex{T}) where {T <: Number} = signbit(real(z))
-Base.signbit(x::SymbolicUtils.Sym{Number, Nothing}) = false
+Base.signbit(x::SymbolicUtils.Sym{Number}) = false
 
 """
     integrate is the main entry point
@@ -23,7 +23,7 @@ Base.signbit(x::SymbolicUtils.Sym{Number, Nothing}) = false
     max_basis: the maximum number of candidate terms to consider
     verbose: print a detailed report
     complex_plane: generate random test points on the complex plane (if false, the points will be on real axis)
-    homotopy: use the homotopy algorithm to generate the basis
+    homotopy: use the homotopy algorithm to generate the basis (deprecated)
     use_optim: use Optim.jl `minimize` function instead of the STLSQ algorithm (**experimental**)
 
     output:
@@ -39,7 +39,6 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
                    symbolic = true, max_basis = 100, verbose = false, complex_plane = true,
                    homotopy = true, use_optim = false)
     eq = expand(eq)
-    eq = apply_div_rule(eq)
 
     if x == nothing
         x = var(eq)
@@ -58,12 +57,11 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
         return x * eq, 0, 0
     end
 
-    # homotopy = homotopy && !bypass
-
     s, u, ϵ = integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
                             radius, show_basis, opt, symbolic,
-                            max_basis, verbose, complex_plane, homotopy, use_optim)
-    return simplify(s), u, ϵ
+                            max_basis, verbose, complex_plane, use_optim)
+    # return simplify(s), u, ϵ
+    return s, u, ϵ
 end
 
 """
@@ -136,10 +134,10 @@ end
 function integrate_term(eq, x, l; kwargs...)
     args = Dict(kwargs)
     abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
-    radius, homotopy = args[:abstol], args[:num_steps],
-                       args[:num_trials], args[:show_basis], args[:symbolic],
-                       args[:verbose],
-                       args[:max_basis], args[:radius], args[:homotopy]
+    radius = args[:abstol], args[:num_steps],
+             args[:num_trials], args[:show_basis], args[:symbolic],
+             args[:verbose],
+             args[:max_basis], args[:radius]
 
     attempt(l, "Integrating term", eq)
 
@@ -150,15 +148,15 @@ function integrate_term(eq, x, l; kwargs...)
     end
 
     eq = cache(eq)
-    basis1 = generate_basis(eq, x, true; homotopy)
-    basis2 = generate_basis(eq, x, false; homotopy)
+    basis1 = generate_basis(eq, x, true)
+    basis2 = generate_basis(eq, x, false)
 
     if show_basis
-        inform(l, "Generating basis (|β| = $(length(basis)))", basis1)
+        inform(l, "Generating basis (|β| = $(length(basis1)))", basis1)
     end
 
     if length(basis1) > max_basis
-        result(l, "|β| = $(length(basis)) is too large")
+        result(l, "|β| = $(length(basis1)) is too large")
         return 0, expr(eq), Inf
     end
 
@@ -190,7 +188,7 @@ function integrate_term(eq, x, l; kwargs...)
         for j in 1:num_trials
             basis = isodd(j) ? basis1 : basis2
             r = radius #*sqrt(2)^j
-            y, ϵ = try_integrate(Float64, eq, x, basis, r; kwargs...)
+            y, ϵ = try_integrate(eq, x, basis, r; kwargs...)
 
             ϵ = accept_solution(eq, x, y, r)
             if ϵ < abstol
@@ -205,8 +203,12 @@ function integrate_term(eq, x, l; kwargs...)
         inform(l, "Failed numeric")
 
         if i < num_steps
-            basis1 = expand_basis(basis1, x)
-            basis2 = expand_basis(basis2, x)
+            basis1, ok1 = expand_basis(prune_basis(eq, x, basis1, radius; kwargs...), x)
+            basis2, ok2 = expand_basis(prune_basis(eq, x, basis2, radius; kwargs...), x)
+
+            if !ok1 && ~ok2
+                break
+            end
 
             if show_basis
                 inform(l, "Expanding the basis (|β| = $(length(basis)))", basis1)
@@ -228,8 +230,7 @@ end
 ###############################################################################
 
 """
-    the core of the randomized parameter-fitting algorithm
-
+	1try_integrate` is the main dispatch point to call different sparse solvers	
     `try_integrate` tries to find a linear combination of the basis, whose
     derivative is equal to eq
 
@@ -237,14 +238,30 @@ end
     -------
     integral, error
 """
-function try_integrate(T, eq, x, basis, radius; kwargs...)
+function try_integrate(eq, x, basis, radius; kwargs...)
     args = Dict(kwargs)
     use_optim = args[:use_optim]
-    basis = basis[2:end]    # remove 1 from the beginning
+
+    if isempty(basis)
+        return 0, Inf
+    end
 
     if use_optim
-        return solve_optim(T, eq, x, basis, radius; kwargs...)
+        return solve_optim(eq, x, basis, radius; kwargs...)
     else
-        return solve_sparse(T, eq, x, basis, radius; kwargs...)
+        return solve_sparse(eq, x, basis, radius; kwargs...)
     end
+end
+
+#################################################################################
+
+"""
+	integrate_basis is used for debugging and should not be called in the course of normal execution
+"""
+function integrate_basis(eq, x = var(eq); abstol = 1e-6, radius = 1.0, complex_plane = true)
+    eq = cache(expand(eq))
+    basis = generate_basis(eq, x, false)
+    n = length(basis)
+    A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
+    return basis, A, X
 end

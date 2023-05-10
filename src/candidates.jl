@@ -1,10 +1,10 @@
 using DataStructures
 
 # this is the main heurisctic used to find the test fragments
-function generate_basis(eq, x, try_kernel = true; homotopy = true)
-    if homotopy && !try_kernel
+function generate_basis(eq, x, try_kernel = true)
+    if !try_kernel
         S = sum(generate_homotopy(expr(eq), x))
-        return cache.(unique([one(x); [equivalent(t, x) for t in terms(S)]]))
+        return cache.(unique([equivalent(t, x) for t in terms(S)]))
     end
 
     S = 0
@@ -13,33 +13,39 @@ function generate_basis(eq, x, try_kernel = true; homotopy = true)
     for t in terms(eq)
         q = equivalent(t, x)
         f = kernel(q)
+        p = q / f
+
+        if isdependent(p, x)
+            C₂ = generate_homotopy(p, x)
+        else
+            C₂ = 1
+        end
 
         C₁ = closure(f, x)
-        p = q * inverse(f)
-
-        if homotopy
-            if isdependent(p, x)
-                C₂ = generate_homotopy(p, x)
-            else
-                C₂ = 1
-            end
-        else
-            C₂ = find_candidates(p, x)
-        end
 
         S += sum(c₁ * c₂ for c₁ in C₁ for c₂ in C₂)
     end
-    return cache.(unique([one(x); [equivalent(t, x) for t in terms(S)]]))
+    return cache.(unique([equivalent(t, x) for t in terms(S)]))
 end
 
-function expand_basis(basis, x)
+function expand_basis(basis, x; Kmax = 1000)
+    if isempty(basis)
+        return basis, false
+    end
+
     b = sum(expr.(basis))
+
+    Kb = complexity(b)# Kolmogorov complexity
+    if is_proper(Kb) && Kb > Kmax
+        return basis, false
+    end
+
     δb = sum(deriv!.(basis, x))
     eq = (1 + x) * (b + δb)
     eq = expand(eq)
     S = Set{Any}()
     enqueue_expr!(S, eq, x)
-    return cache.([one(x); [s for s in S]])
+    return cache.([s for s in S]), true
 end
 
 function closure(eq, x; max_terms = 50)
@@ -55,23 +61,7 @@ function closure(eq, x; max_terms = 50)
         y = dequeue!(q)
         enqueue_expr!(S, q, expand_derivatives(D(y)), x)
     end
-    unique([one(x); [s for s in S]; [s * x for s in S]])
-end
-
-function find_candidates(eq, x)
-    eq = apply_d_rules(eq)
-    D = Differential(x)
-
-    S = Set{Any}()
-    q = Queue{Any}()
-    enqueue_expr!(S, q, eq, x)
-
-    for y in q
-        ∂y = expand_derivatives(D(y))
-        enqueue_expr!(S, ∂y, x)
-    end
-
-    return unique([one(x); [s for s in S]])
+    unique([[s for s in S]; [s * x for s in S]])
 end
 
 function candidate_pow_minus(p, k; abstol = 1e-8)
@@ -142,13 +132,15 @@ end
 
 ###############################################################################
 
-function enqueue_expr!(S, q, eq::SymbolicUtils.Add, x)
+enqueue_expr!(S, q, eq, x) = enqueue_expr!!(S, q, ops(eq)..., x)
+
+function enqueue_expr!!(S, q, ::Add, eq, x)
     for t in arguments(eq)
         enqueue_expr!(S, q, t, x)
     end
 end
 
-function enqueue_expr!(S, q, eq, x)
+function enqueue_expr!!(S, q, ::Any, eq, x)
     y = eq / coef(eq, x)
     if y ∉ S && isdependent(y, x)
         enqueue!(q, y)
@@ -156,13 +148,15 @@ function enqueue_expr!(S, q, eq, x)
     end
 end
 
-function enqueue_expr!(S, eq::SymbolicUtils.Add, x)
+enqueue_expr!(S, eq, x) = enqueue_expr!!(S, ops(eq)..., x)
+
+function enqueue_expr!!(S, ::Add, eq, x)
     for t in arguments(eq)
         enqueue_expr!(S, t, x)
     end
 end
 
-function enqueue_expr!(S, eq, x)
+function enqueue_expr!!(S, ::Any, eq, x)
     y = eq / coef(eq, x)
     if y ∉ S && isdependent(y, x)
         push!(S, y)
