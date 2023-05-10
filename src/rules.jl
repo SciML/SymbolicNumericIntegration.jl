@@ -25,7 +25,7 @@ function factors(::Pow, eq, x)
 end
 
 function factors(::Mul, eq, x)
-	terms = [factors(q, x) for q in arguments(eq)]
+    terms = [factors(q, x) for q in arguments(eq)]
     n = length(terms)
 
     l = Any[one(x)]
@@ -47,7 +47,6 @@ extract_power(::Term, eq) = [1]
 extract_power(::Mul, eq) = union([extract_power(t) for t in arguments(eq)]...)
 extract_power(::Any, eq) = []
 extract_power(eq) = extract_power(ops(eq)...)
-
 
 ###############################################################################
 
@@ -113,38 +112,45 @@ trigs_rules = [@rule tan(~x) => sin(~x) / cos(~x)
                                                     cos((~n - 1) * ~x) * sin(~x)
                @rule cos(~n::is_int_gt_one * ~x) => cos((~n - 1) * ~x) * cos(~x) -
                                                     sin((~n - 1) * ~x) * sin(~x)
-               @rule tan(~n::is_int_gt_one * ~x) => (tan((~n - 1) * ~x) + tan(~x)) / (1 - tan((~n - 1) * ~x) * tan(~x))
+               @rule tan(~n::is_int_gt_one * ~x) => (tan((~n - 1) * ~x) + tan(~x)) /
+                                                    (1 - tan((~n - 1) * ~x) * tan(~x))
                @rule csc(~n::is_int_gt_one * ~x) => sec((~n - 1) * ~x) * sec(~x) *
-                                                    csc((~n - 1) * ~x) * csc(~x) / (sec((~n - 1) * ~x) * csc(~x) + csc((~n - 1) * ~x) * sec(~x))
+                                                    csc((~n - 1) * ~x) * csc(~x) /
+                                                    (sec((~n - 1) * ~x) * csc(~x) +
+                                                     csc((~n - 1) * ~x) * sec(~x))
                @rule sec(~n::is_int_gt_one * ~x) => sec((~n - 1) * ~x) * sec(~x) *
-                                                    csc((~n - 1) * ~x) * csc(~x) / (csc((~n - 1) * ~x) * csc(~x) - sec((~n - 1) * ~x) * sec(~x))
-               @rule cot(~n::is_int_gt_one * ~x) => (cot((~n - 1) * ~x) * cot(~x) - 1) / (cot((~n - 1) * ~x) + cot(~x))
-
+                                                    csc((~n - 1) * ~x) * csc(~x) /
+                                                    (csc((~n - 1) * ~x) * csc(~x) -
+                                                     sec((~n - 1) * ~x) * sec(~x))
+               @rule cot(~n::is_int_gt_one * ~x) => (cot((~n - 1) * ~x) * cot(~x) - 1) /
+                                                    (cot((~n - 1) * ~x) + cot(~x))
                @rule 1 / sin(~x) => csc(~x)
                @rule 1 / cos(~x) => sec(~x)
                @rule 1 / tan(~x) => cot(~x)
                @rule 1 / csc(~x) => sin(~x)
                @rule 1 / sec(~x) => cos(~x)
                @rule 1 / cot(~x) => tan(~x)
-
                @rule 1 / ^(sin(~x), ~k) => ^(csc(~x), ~k)
                @rule 1 / ^(cos(~x), ~k) => ^(sec(~x), ~k)
                @rule 1 / ^(tan(~x), ~k) => ^(cot(~x), ~k)
                @rule 1 / ^(csc(~x), ~k) => ^(sin(~x), ~k)
                @rule 1 / ^(sec(~x), ~k) => ^(cos(~x), ~k)
                @rule 1 / ^(cot(~x), ~k) => ^(tan(~x), ~k)
-               
                @rule sin(~x + ~y) => sin(~x) * cos(~y) + cos(~x) * sin(~y)
                @rule cos(~x + ~y) => cos(~x) * cos(~y) - sin(~x) * sin(~y)
                @rule tan(~x + ~y) => (tan(~x) + tan(~y)) / (1 - tan(~x) * tan(~y))
-               @rule csc(~x + ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) / (sec(~x) * csc(~y) + csc(~x) * sec(~y))
-               @rule sec(~x + ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) / (csc(~x) * csc(~y) - sec(~x) * sec(~y))
+               @rule csc(~x + ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) /
+                                     (sec(~x) * csc(~y) + csc(~x) * sec(~y))
+               @rule sec(~x + ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) /
+                                     (csc(~x) * csc(~y) - sec(~x) * sec(~y))
                @rule cot(~x + ~y) => (cot(~x) * cot(~y) - 1) / (cot(~x) + cot(~y))
                @rule sin(~x - ~y) => sin(~x) * cos(~y) - cos(~x) * sin(~y)
                @rule cos(~x - ~y) => cos(~x) * cos(~y) + sin(~x) * sin(~y)
                @rule tan(~x - ~y) => (tan(~x) - tan(~y)) / (1 + tan(~x) * tan(~y))
-               @rule csc(~x - ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) / (sec(~x) * csc(~y) - csc(~x) * sec(~y))
-               @rule sec(~x - ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) / (csc(~x) * csc(~y) + sec(~x) * sec(~y))
+               @rule csc(~x - ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) /
+                                     (sec(~x) * csc(~y) - csc(~x) * sec(~y))
+               @rule sec(~x - ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) /
+                                     (csc(~x) * csc(~y) + sec(~x) * sec(~y))
                @rule cot(~x - ~y) => (cot(~x) * cot(~y) + 1) / (cot(~x) - cot(~y))
 
                # @rule sin(2*~x) => 2*sin(~x)*cos(~x)
@@ -258,20 +264,17 @@ inverse(eq) = Prewalk(PassThrough(Chain(inv_rules)))(Ω(value(eq)))
 
 is_sym(x) = first(ops(x)) isa Sym
 
-h_rules = [
-			@rule +(~~xs) => ω + sum(~~xs)
-			@rule *(~~xs) => ω + sum(~~xs)
-			@rule ~x / ~y => ω + ~x + ~y
-			@rule ^(~x, ~y) => ω + ~x + ~y
-			@rule (~f)(~x) => ω + ~x
-			@rule ~x::is_sym => ω
-		  ]			
+h_rules = [@rule +(~~xs) => ω + sum(~~xs)
+           @rule *(~~xs) => ω + sum(~~xs)
+           @rule ~x / ~y => ω + ~x + ~y
+           @rule ^(~x, ~y) => ω + ~x + ~y
+           @rule (~f)(~x) => ω + ~x
+           @rule ~x::is_sym => ω]
 
 # complexity returns a measure of the complexity of an equation
 # it is roughly similar ro kolmogorov complexity
 function complexity(eq)
-	_, eq = ops(eq)	
-	h = Prewalk(PassThrough(Chain(h_rules)))(eq)
-	return substitute(h, Dict(ω => 1))
+    _, eq = ops(eq)
+    h = Prewalk(PassThrough(Chain(h_rules)))(eq)
+    return substitute(h, Dict(ω => 1))
 end
-

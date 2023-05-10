@@ -135,9 +135,9 @@ function integrate_term(eq, x, l; kwargs...)
     args = Dict(kwargs)
     abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
     radius = args[:abstol], args[:num_steps],
-                       args[:num_trials], args[:show_basis], args[:symbolic],
-                       args[:verbose],
-                       args[:max_basis], args[:radius]
+             args[:num_trials], args[:show_basis], args[:symbolic],
+             args[:verbose],
+             args[:max_basis], args[:radius]
 
     attempt(l, "Integrating term", eq)
 
@@ -203,11 +203,11 @@ function integrate_term(eq, x, l; kwargs...)
         inform(l, "Failed numeric")
 
         if i < num_steps
-            basis1, ok1 = expand_basis(basis1, x)
-            basis2, ok2 = expand_basis(basis2, x)
-            
-            if !ok1 && ~ok2            	
-            	break
+            basis1, ok1 = expand_basis(prune_basis(eq, x, basis1, radius; kwargs...), x)
+            basis2, ok2 = expand_basis(prune_basis(eq, x, basis2, radius; kwargs...), x)
+
+            if !ok1 && ~ok2
+                break
             end
 
             if show_basis
@@ -230,8 +230,7 @@ end
 ###############################################################################
 
 """
-    the core of the randomized parameter-fitting algorithm
-
+	1try_integrate` is the main dispatch point to call different sparse solvers	
     `try_integrate` tries to find a linear combination of the basis, whose
     derivative is equal to eq
 
@@ -242,7 +241,10 @@ end
 function try_integrate(eq, x, basis, radius; kwargs...)
     args = Dict(kwargs)
     use_optim = args[:use_optim]
-    basis = basis[2:end]    # remove 1 from the beginning
+
+    if isempty(basis)
+        return 0, Inf
+    end
 
     if use_optim
         return solve_optim(eq, x, basis, radius; kwargs...)
@@ -253,12 +255,13 @@ end
 
 #################################################################################
 
-# integrate_basis is used for debugging and should not be called in the course of normal execution
-function integrate_basis(eq, x = var(eq); abstol = 1e-6, radius = 1.0, complex_plane = true)	
+"""
+	integrate_basis is used for debugging and should not be called in the course of normal execution
+"""
+function integrate_basis(eq, x = var(eq); abstol = 1e-6, radius = 1.0, complex_plane = true)
     eq = cache(expand(eq))
     basis = generate_basis(eq, x, false)
     n = length(basis)
-	A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
-	return basis, A, X
+    A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
+    return basis, A, X
 end
-

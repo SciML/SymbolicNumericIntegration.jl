@@ -12,27 +12,26 @@ ops(eq) = nothing, eq
 ops(eq::Num) = ops(eq.val)
 
 function ops(eq::BasicSymbolic)
-	op = exprtype(eq)
-	
-	if op == SymbolicUtils.ADD
-		return Add(), eq
-	elseif op == SymbolicUtils.MUL
-		return Mul(), eq
-	elseif op == SymbolicUtils.DIV
-		return Div(), eq
-	elseif op == SymbolicUtils.POW
-		return Pow(), eq
-	elseif op == SymbolicUtils.SYM
-		return Sym(), eq
-	elseif op == SymbolicUtils.TERM
-		return Term(), eq
-	else
-		return nothing, eq
-	end
+    op = exprtype(eq)
+
+    if op == SymbolicUtils.ADD
+        return Add(), eq
+    elseif op == SymbolicUtils.MUL
+        return Mul(), eq
+    elseif op == SymbolicUtils.DIV
+        return Div(), eq
+    elseif op == SymbolicUtils.POW
+        return Pow(), eq
+    elseif op == SymbolicUtils.SYM
+        return Sym(), eq
+    elseif op == SymbolicUtils.TERM
+        return Term(), eq
+    else
+        return nothing, eq
+    end
 end
 
 ############################################################################
-
 
 """
     isdependent returns true if eq is dependent on x

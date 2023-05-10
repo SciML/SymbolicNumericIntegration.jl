@@ -4,7 +4,7 @@ using DataStructures
 function generate_basis(eq, x, try_kernel = true)
     if !try_kernel
         S = sum(generate_homotopy(expr(eq), x))
-        return cache.(unique([one(x); [equivalent(t, x) for t in terms(S)]]))
+        return cache.(unique([equivalent(t, x) for t in terms(S)]))
     end
 
     S = 0
@@ -16,32 +16,36 @@ function generate_basis(eq, x, try_kernel = true)
         p = q / f
 
         if isdependent(p, x)
-			C₂ = generate_homotopy(p, x)
+            C₂ = generate_homotopy(p, x)
         else
-        	C₂ = 1
+            C₂ = 1
         end
-        
+
         C₁ = closure(f, x)
-        
+
         S += sum(c₁ * c₂ for c₁ in C₁ for c₂ in C₂)
     end
-    return cache.(unique([one(x); [equivalent(t, x) for t in terms(S)]]))
+    return cache.(unique([equivalent(t, x) for t in terms(S)]))
 end
 
-function expand_basis(basis, x; Kmax=1000)
-    b = sum(expr.(basis))    
+function expand_basis(basis, x; Kmax = 1000)
+    if isempty(basis)
+        return basis, false
+    end
 
-    Kb = complexity(b)		# Kolmogorov complexity
-	if is_proper(Kb) && Kb > Kmax
-		return basis, false
-	end
-	
-    δb = sum(deriv!.(basis, x))	    
+    b = sum(expr.(basis))
+
+    Kb = complexity(b)# Kolmogorov complexity
+    if is_proper(Kb) && Kb > Kmax
+        return basis, false
+    end
+
+    δb = sum(deriv!.(basis, x))
     eq = (1 + x) * (b + δb)
     eq = expand(eq)
     S = Set{Any}()
     enqueue_expr!(S, eq, x)
-    return cache.([one(x); [s for s in S]]), true
+    return cache.([s for s in S]), true
 end
 
 function closure(eq, x; max_terms = 50)
@@ -57,7 +61,7 @@ function closure(eq, x; max_terms = 50)
         y = dequeue!(q)
         enqueue_expr!(S, q, expand_derivatives(D(y)), x)
     end
-    unique([one(x); [s for s in S]; [s * x for s in S]])
+    unique([[s for s in S]; [s * x for s in S]])
 end
 
 function candidate_pow_minus(p, k; abstol = 1e-8)

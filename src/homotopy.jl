@@ -5,56 +5,57 @@ function transformer(::Mul, eq)
 end
 
 function transformer(::Div, eq)
-	a = transformer(arguments(eq)[1])
-	b = transformer(arguments(eq)[2])
-	b = [(1/q, k) for (q, k) in b]
+    a = transformer(arguments(eq)[1])
+    b = transformer(arguments(eq)[2])
+    b = [(1 / q, k) for (q, k) in b]
     return [a; b]
 end
 
 function transformer(::Pow, eq)
     y, k = arguments(eq)
     if is_number(k)
-    	r = nice_parameter(k)
-    	if denominator(r) == 1
-	    	return [(y, k)]
-	    else
-	    	return [(y^(1/denominator(r)), numerator(r))]
-	    end
-    else
-    	return [(eq, 1)]
-	end
+        r = nice_parameter(k)
+        if r isa Integer || r isa Rational
+            if denominator(r) == 1
+                return [(y, k)]
+            else
+                return [(y^(1 / denominator(r)), numerator(r))]
+            end
+        end
+    end
+    return [(eq, 1)]
 end
 
 function transformer(::Any, eq)
-    return [(eq, 1)]    
+    return [(eq, 1)]
 end
 
 function transform(eq, x)
     p = transformer(eq)
-    p = p[isdependent.(first.(p), x)]    
+    p = p[isdependent.(first.(p), x)]
     return p
 end
 
 @syms u[20]
 
-function rename_factors(p, ab)
-	n = length(p)
-	q = 1
-	ks = Int[]
-	sub = Dict()
+function rename_factors(p, ab = ())
+    n = length(p)
+    q = 1
+    ks = Int[]
+    sub = Dict()
 
-	for (a,b) in ab
-		sub[a] = b
-	end
-	
-	for (i,(y,k)) in enumerate(p)
-		μ = u[i]
-		q *= μ ^ k
-		sub[μ] = y
-		push!(ks, k)
-	end
-	
-	return q, sub, ks
+    for (a, b) in ab
+        sub[a] = b
+    end
+
+    for (i, (y, k)) in enumerate(p)
+        μ = u[i]
+        q *= μ^k
+        sub[μ] = y
+        push!(ks, k)
+    end
+
+    return q, sub, ks
 end
 
 ##############################################################################
@@ -79,29 +80,26 @@ function generate_homotopy(eq, x)
     eq = eq isa Num ? eq.val : eq
     x = x isa Num ? x.val : x
 
-	p = transform(eq, x)
+    p = transform(eq, x)
     q, sub, ks = rename_factors(p, (si => Si, ci => Ci, ei => Ei, li => Li))
     S = 0
 
     for i in 1:length(ks)
-		μ = u[i]
-		h₁, ∂h₁ = apply_partial_int_rules(sub[μ], x)
-	    h₁ = substitute(h₁, sub)
-		
-    	for j = 1:ks[i]
-		    h₂ = substitute((q / μ^j) / ∂h₁, sub)
-		    S += expand((ω + h₁) * (ω + h₂))
-		end
-    end    
-    
+        μ = u[i]
+        h₁, ∂h₁ = apply_partial_int_rules(sub[μ], x)
+        h₁ = substitute(h₁, sub)
+
+        for j in 1:ks[i]
+            h₂ = substitute((q / μ^j) / ∂h₁, sub)
+            S += expand((ω + h₁) * (ω + h₂))
+        end
+    end
+
     S = substitute(S, Dict(ω => 1))
-    
-    ζ = [x^k for k=1:maximum(ks)+1]
-    
-    unique([one(x); ζ; [equivalent(t, x) for t in terms(S)]])
+    unique([x; [equivalent(t, x) for t in terms(S)]])
 end
 
-##############################################################################
+########################## Main Integration Rules ##################################
 
 @syms 𝛷(x)
 
@@ -159,17 +157,22 @@ partial_int_rules = [
                      @rule 𝛷(^(~x, ~k::is_abs_half)) => (sum(candidate_sqrt(~x, ~k);
                                                              init = one(~x)), ~x);
                      @rule 𝛷(sqrt(~x)) => (sum(candidate_sqrt(~x, 0.5); init = one(~x)), ~x);
-                     @rule 𝛷(1 / sqrt(~x)) => (sum(candidate_sqrt(~x, -0.5); init = one(~x)), ~x);
+                     @rule 𝛷(1 / sqrt(~x)) => (sum(candidate_sqrt(~x, -0.5);
+                                                   init = one(~x)), ~x);
                      # rational functions                                                              
-                     @rule 𝛷(1 / ^(~x::is_poly, ~k::is_pos_int)) => (sum(candidate_pow_minus(~x, -~k);
-                                                                 init = one(~x)), ~x)
+                     @rule 𝛷(1 / ^(~x::is_poly, ~k::is_pos_int)) => (sum(candidate_pow_minus(~x,
+                                                                                             -~k);
+                                                                         init = one(~x)),
+                                                                     ~x)
                      @rule 𝛷(1 / ~x::is_poly) => (sum(candidate_pow_minus(~x, -1);
-                                                                 init = one(~x)), ~x)
+                                                      init = one(~x)), ~x);
                      @rule 𝛷(^(~x, -1)) => (log(~x), ~x)
                      @rule 𝛷(^(~x, ~k::is_neg_int)) => (sum(^(~x, i) for i in (~k + 1):-1),
                                                         ~x)
                      @rule 𝛷(1 / ~x) => (log(~x), ~x)
-                     @rule 𝛷(^(~x, ~k::is_pos_int)) => (sum(^(~x, i+1) for i=1:~k+1), ~x)
+                     @rule 𝛷(^(~x, ~k::is_pos_int)) => (sum(^(~x, i + 1)
+                                                            for i in 1:(~k + 1)),
+                                                        ~x)
                      @rule 𝛷(1) => (𝑥, 1)
                      @rule 𝛷(~x) => ((~x + ^(~x, 2)), ~x)]
 
@@ -178,5 +181,3 @@ function apply_partial_int_rules(eq, x)
     D = Differential(x)
     return y, guard_zero(expand_derivatives(D(dy)))
 end
-    
-
