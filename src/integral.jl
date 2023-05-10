@@ -189,7 +189,7 @@ function integrate_term(eq, x, l; kwargs...)
         for j in 1:num_trials
             basis = isodd(j) ? basis1 : basis2
             r = radius #*sqrt(2)^j
-            y, ϵ = try_integrate(Float64, eq, x, basis, r; kwargs...)
+            y, ϵ = try_integrate(eq, x, basis, r; kwargs...)
 
             ϵ = accept_solution(eq, x, y, r)
             if ϵ < abstol
@@ -240,29 +240,28 @@ end
     -------
     integral, error
 """
-function try_integrate(T, eq, x, basis, radius; kwargs...)
+function try_integrate(eq, x, basis, radius; kwargs...)
     args = Dict(kwargs)
     use_optim = args[:use_optim]
     basis = basis[2:end]    # remove 1 from the beginning
 
     if use_optim
-        return solve_optim(T, eq, x, basis, radius; kwargs...)
+        return solve_optim(eq, x, basis, radius; kwargs...)
     else
-        return solve_sparse(T, eq, x, basis, radius; kwargs...)
+        return solve_sparse(eq, x, basis, radius; kwargs...)
     end
 end
 
 #################################################################################
 
+# integrate_basis is used for debugging and should not be called in the course of normal execution
 function integrate_basis(eq, x = var(eq); abstol = 1e-6, radius = 1.0, complex_plane = true)	
     eq = expand(eq)
     eq = apply_div_rule(eq)
 	eq = cache(eq)
     basis = generate_basis(eq, x, false)
     n = length(basis)
-    A = zeros(Complex{Float64}, (n, n))
-    X = zeros(Complex{Float64}, n)
-	init_basis_matrix!(Float64, A, X, x, eq, basis, radius, complex_plane; abstol)
+	A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
 	return basis, A, X
 end
 

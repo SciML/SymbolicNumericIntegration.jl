@@ -1,22 +1,16 @@
 
-function solve_sparse(T, eq, x, basis, radius; kwargs...)
+function solve_sparse(eq, x, basis, radius; kwargs...)
     args = Dict(kwargs)
     abstol, opt, complex_plane, verbose = args[:abstol], args[:opt], args[:complex_plane],
                                           args[:verbose]
 
-    n = length(basis)
-
-    # A is an nxn matrix holding the values of the fragments at n random points
-    A = zeros(Complex{T}, (n, n))
-    X = zeros(Complex{T}, n)
-
-    init_basis_matrix!(T, A, X, x, eq, basis, radius, complex_plane; abstol)
+    A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
     
     # find a linearly independent subset of the basis
     l = find_independent_subset(A; abstol)
     A, basis = A[l, l], basis[l]
 
-    y₁, ϵ₁ = sparse_fit(T, A, x, basis, opt; abstol)
+    y₁, ϵ₁ = sparse_fit(A, basis, opt; abstol)
     if ϵ₁ < abstol
         return y₁, ϵ₁
     end
@@ -24,20 +18,20 @@ function solve_sparse(T, eq, x, basis, radius; kwargs...)
     rank = sum(l)
     
     if rank == 1   
-    	y₂, ϵ₂ = find_singlet(T, A, basis; abstol)
+    	y₂, ϵ₂ = find_singlet(A, basis; abstol)
     	if ϵ₂ < abstol
         	return y₂, ϵ₂
     	end
     elseif rank < 8
-        y₃, ϵ₃ = find_dense(T, A, basis; abstol)
+        y₃, ϵ₃ = find_dense(A, basis; abstol)
         if ϵ₃ < abstol
             return y₃, ϵ₃
         end        
     end
 
     # moving toward the poles
-    modify_basis_matrix!(T, A, X, x, eq, basis, radius; abstol)
-    y₄, ϵ₄ = sparse_fit(T, A, x, basis, opt; abstol)
+    modify_basis_matrix!(A, X, eq, x, basis, radius; abstol)
+    y₄, ϵ₄ = sparse_fit(A, basis, opt; abstol)
 
     if ϵ₄ < abstol || ϵ₄ < ϵ₁
         return y₄, ϵ₄
@@ -46,24 +40,27 @@ function solve_sparse(T, eq, x, basis, radius; kwargs...)
     end
 end
 
-function init_basis_matrix!(T, A, X, x, eq, basis, radius, complex_plane; abstol = 1e-6)
-    n, m = size(A)
-    k = 1
-    i = 1
+function init_basis_matrix(eq, x, basis, radius, complex_plane; abstol = 1e-6)
+    n = length(basis)
+
+    # A is an nxn matrix holding the values of the fragments at n random points
+    A = zeros(Complex{Float64}, (n, n))
+    X = zeros(Complex{Float64}, n)
 
     eq_fun = fun!(eq, x)
     Δbasis_fun = deriv_fun!.(basis, x)
     
+    k = 1
     l = 10*n	# max attempt
 
-    while k <= n
+    while k <= n && l > 0
         try
             x₀ = test_point(complex_plane, radius)
-            X[k] = x₀ # move_toward_roots_poles(x₀, x, eq)
+            X[k] = x₀ 
             b₀ = eq_fun(X[k])
 
             if is_proper(b₀)
-                for j in 1:m
+                for j in 1:n
                     A[k, j] = Δbasis_fun[j](X[k]) / b₀
                 end
                 if all(is_proper, A[k, :])
@@ -73,33 +70,13 @@ function init_basis_matrix!(T, A, X, x, eq, basis, radius, complex_plane; abstol
         catch e
             println("Error from init_basis_matrix!: ", e)
         end
-        if l == 0
-        	return
-        end
         l -= 1
     end
+    
+    return A, X
 end
 
-function move_toward_roots_poles(z, x, eq; n = 1, max_r = 100.0)
-    eq_fun = fun!(eq, x)
-    Δeq_fun = deriv_fun!(eq, x)
-    is_root = rand() < 0.5
-    z₀ = z
-    for i in 1:n
-        dz = eq_fun(z) / Δeq_fun(z)
-        if is_root
-            z -= dz
-        else
-            z += dz
-        end
-        if abs(z) > max_r
-            return z₀
-        end
-    end
-    return z
-end
-
-function modify_basis_matrix!(T, A, X, x, eq, basis, radius; abstol = 1e-6)
+function modify_basis_matrix!(A, X, eq, x, basis, radius; abstol = 1e-6)
     n, m = size(A)
     eq_fun = fun!(eq, x)
     Δeq_fun = deriv_fun!(eq, x)
@@ -122,14 +99,11 @@ DataDrivenSparse.active_set!(idx::BitMatrix, p::SoftThreshold, x::Matrix{Complex
                DataDrivenSparse.active_set!(idx, p, abs.(x), λ)
 
 
-function sparse_fit(T, A, x, basis, opt; abstol = 1e-6)
+function sparse_fit(A, basis, opt; abstol = 1e-6)
     n, m = size(A)
 
 	try
         b = ones((1, n))        
-        # q₀ = DataDrivenDiffEq.init(opt, A, b)
-        # @views sparse_regression!(q₀, A, permutedims(b)', opt, maxiter = 1000)
-        # @views sparse_regression!(q₀, A, b, opt, maxiter = 1000)
         solver = SparseLinearSolver(opt, options = DataDrivenCommonOptions(verbose=false, maxiters=1000))
         res, _... = solver(A', b)
         q₀ = DataDrivenSparse.coef(first(res))
@@ -140,7 +114,7 @@ function sparse_fit(T, A, x, basis, opt; abstol = 1e-6)
             return nothing, Inf
         end   # eliminating complex coefficients
         return sum(q[i] * expr(basis[i]) for i in 1:length(basis) if q[i] != 0;
-                   init = zero(x)),
+                   init = 0),
                abs(ϵ)
     catch e
        	println("Error from sparse_fit", e)
@@ -148,7 +122,7 @@ function sparse_fit(T, A, x, basis, opt; abstol = 1e-6)
     end
 end
 
-function find_singlet(T, A, basis; abstol)
+function find_singlet(A, basis; abstol)
     σ = vec(std(A; dims = 1))
     μ = vec(mean(A; dims = 1))
     l = (σ .< abstol) .* (abs.(μ) .> abstol)
@@ -160,9 +134,9 @@ function find_singlet(T, A, basis; abstol)
     end
 end
 
-function find_dense(T, A, basis; abstol = 1e-6)
+function find_dense(A, basis; abstol = 1e-6)
     n = size(A, 1)
-    b = ones(T, n)
+    b = ones(n)
 
     try
         q = A \ b
