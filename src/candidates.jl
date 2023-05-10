@@ -32,7 +32,7 @@ function expand_basis(basis, x; Kmax=1000)
     b = sum(expr.(basis))    
 
     Kb = complexity(b)		# Kolmogorov complexity
-	if Kb > Kmax
+	if is_proper(Kb) && Kb > Kmax
 		return basis, false
 	end
 	

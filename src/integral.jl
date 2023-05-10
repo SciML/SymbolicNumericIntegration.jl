@@ -39,7 +39,6 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
                    symbolic = true, max_basis = 100, verbose = false, complex_plane = true,
                    homotopy = true, use_optim = false)
     eq = expand(eq)
-    eq = apply_div_rule(eq)
 
     if x == nothing
         x = var(eq)
@@ -256,9 +255,7 @@ end
 
 # integrate_basis is used for debugging and should not be called in the course of normal execution
 function integrate_basis(eq, x = var(eq); abstol = 1e-6, radius = 1.0, complex_plane = true)	
-    eq = expand(eq)
-    eq = apply_div_rule(eq)
-	eq = cache(eq)
+    eq = cache(expand(eq))
     basis = generate_basis(eq, x, false)
     n = length(basis)
 	A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)

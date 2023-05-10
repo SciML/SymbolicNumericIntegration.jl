@@ -244,38 +244,34 @@ factor_rational(eq) = Prewalk(PassThrough(Chain(rational_rules)))(Ω(value(eq)))
 
 ###############################################################################
 
-div_rule = @rule ~x / ~y => ~x * ^(~y, -1)
-
-apply_div_rule(eq) = Prewalk(PassThrough(div_rule))(value(eq))
-
-###############################################################################
-
 inv_rules = [@rule Ω(1 / ~x) => ~x
              @rule Ω(~x / ~y) => Ω(~x) * ~y
              @rule Ω(^(~x, -1)) => ~x
              @rule Ω(^(~x, ~k)) => ^(Ω(~x), ~k)
-             @rule Ω(~x) => ^(~x, -1)]
+             @rule Ω(~x) => 1 / ~x]
 
 inverse(eq) = Prewalk(PassThrough(Chain(inv_rules)))(Ω(value(eq)))
 
 ###############################################################################
 
+@syms ω
+
 is_sym(x) = first(ops(x)) isa Sym
 
 h_rules = [
-			@rule +(~~xs) => 1 + sum(~~xs)
-			@rule *(~~xs) => 1 + sum(~~xs)
-			@rule ~x / ~y => 1 + ~x + ~y
-			@rule ^(~x, ~y) => 1 + ~x + ~y
-			@rule log(~x) => 1 + ~x
-			@rule (~f)(~x) => 1 + ~x
-			@rule ~x::is_sym => 1
+			@rule +(~~xs) => ω + sum(~~xs)
+			@rule *(~~xs) => ω + sum(~~xs)
+			@rule ~x / ~y => ω + ~x + ~y
+			@rule ^(~x, ~y) => ω + ~x + ~y
+			@rule (~f)(~x) => ω + ~x
+			@rule ~x::is_sym => ω
 		  ]			
 
 # complexity returns a measure of the complexity of an equation
 # it is roughly similar ro kolmogorov complexity
 function complexity(eq)
 	_, eq = ops(eq)	
-	return Prewalk(PassThrough(Chain(h_rules)))(eq)
+	h = Prewalk(PassThrough(Chain(h_rules)))(eq)
+	return substitute(h, Dict(ω => 1))
 end
 
