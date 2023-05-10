@@ -16,6 +16,8 @@ using Pkg
 Pkg.add("SymbolicNumericIntegration")
 ```
 
+Examples:
+
 ```julia
 using Symbolics
 using SymbolicNumericIntegration
@@ -90,21 +92,9 @@ julia> integrate(1 / (x*log(log(x))))
 (SymbolicNumericIntegration.Li(log(x)), 0, 1.1102230246251565e-16)
 ```
 
-`integrate` has the form `integrate(y; kw...)` or `integrate(y, x; kw...)`, where `y` is the integrand and the optional `x` is the variable of integration. The keyword parameters are:
-
-  - `abstol` (default `1e-6`): the error tolerance to accept a solution.
-  - `symbolic` (default `true`): if true, pure symbolic integration is attempted first.
-  - `bypass` (default `false`): if true, the whole expression is considered at once and not per term.
-  - `num_steps` (default `2`): one plus the number of expanded basis to check (if `num_steps` is 1, only the main basis is checked).
-  - `num_trials` (default `5`): the number of attempts to solve the integration numerically for each basis set.
-  - `show_basis` (default `false`): print the basis set, useful for debugging. Only works if `verbose` is also set.
-  - `homotopy` (default: `true` as of version 0.7.0): uses the continuous Homotopy operators to generate the integration candidates.
-  - `verbose` (default `false`): if true, prints extra (and voluminous!) debugging information.
-  - `radius` (default `1.0`): the starting radius to generate random test points.
-  - `opt` (default `STLSQ(exp.(-10:1:0))`): the optimizer passed to `sparse_regression!`.
-  - `max_basis` (default `110`): the maximum number of expression in the basis.
-  - `complex_plane` (default `true`): random test points are generated on the complex plane (only over the real axis if `complex_plane` is `false`).
-  - `use_optim` (default `false`): use Optim.jl `minimize` function instead of the STLSQ algorithm (**experimental**)
+```@docs
+integrate(eq, x; kwargs...)
+```
 
 ## Testing
 

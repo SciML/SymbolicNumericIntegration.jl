@@ -11,7 +11,7 @@ makedocs(sitename = "SymbolicNumericIntegration.jl",
          clean = true, doctest = false, linkcheck = true,
          strict = [
              :doctest,
-             # :linkcheck,
+             :linkcheck,
              :parse_error,
              :example_block,
              # Other available options are
