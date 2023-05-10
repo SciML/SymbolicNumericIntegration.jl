@@ -1,7 +1,7 @@
 name = "SymbolicNumericIntegration"
 uuid = "78aadeae-fbc0-11eb-17b6-c7ec0477ba9e"
 authors = ["Shahriar Iravanian <siravan@svtsim.com>"]
-version = "1.2.0"
+version = "1.2.1"
 
 [deps]
 DataDrivenDiffEq = "2445eb08-9709-466a-b3fc-47e12bd697a2"
@@ -20,6 +20,7 @@ DataStructures = "0.18"
 Optim = "1"
 SymbolicUtils = "1"
 Symbolics = "5"
+SpecialFunctions = "2"
 julia = "1.6"
 
 [extras]

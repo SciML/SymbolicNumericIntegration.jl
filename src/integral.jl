@@ -5,33 +5,39 @@ Base.signbit(z::Complex{T}) where {T <: Number} = signbit(real(z))
 Base.signbit(x::SymbolicUtils.Sym{Number}) = false
 
 """
-    integrate is the main entry point
+    integrate(eq, x; kwargs...)
+   
+is the main entry point to integrate a univariate expression `eq` with respect to `x' (optional). 
 
-    input:
-    ------
-    eq: a Symbolics expression to integrate
-    x: the independent variable (optional)
+```julia
+integrate(x * sin(2x))
 
-    abstol: the desired tolerance
-    num_steps: the number of different steps with expanding basis to be tried
-    num_trials: the number of trials in each step (no changes to the basis)
-    radius: the radius of the disk in the complex plane to generate random test points
-    show_basis: if true, the basis (list of candidate terms) is printed
-    opt: the sparse regression optimizer
-    bypass: if true, do not integrate terms separately but consider all at once
-    symbolic: try symbolic integration first
-    max_basis: the maximum number of candidate terms to consider
-    verbose: print a detailed report
-    complex_plane: generate random test points on the complex plane (if false, the points will be on real axis)
-    homotopy: use the homotopy algorithm to generate the basis (deprecated)
-    use_optim: use Optim.jl `minimize` function instead of the STLSQ algorithm (**experimental**)
+# output
 
-    output:
-    -------
-    solved, unsolved, err
+((1//4)*sin(2x) - (1//2)*x*cos(2x), 0, 0)
+```
 
-    solved is the solved integral and unsolved is the residual unsolved portion of the input
-    err is the numerical error in reaching the solution
+kwards:
+-------
+abstol: the desired tolerance
+num_steps: the number of different steps with expanding basis to be tried
+num_trials: the number of trials in each step (no changes to the basis)
+radius: the radius of the disk in the complex plane to generate random test points
+show_basis: if true, the basis (list of candidate terms) is printed
+opt: the sparse regression optimizer (from DataDrivenSparse)
+bypass: if true do not integrate terms separately but consider all at once
+symbolic: try symbolic integration first
+max_basis: the maximum number of candidate terms to consider
+verbose: print a detailed report
+complex_plane: generate random test points on the complex plane (if false, the points will be on real axis)
+homotopy: use the homotopy algorithm to generate the basis (deprecated, will be removed in a future version)
+use_optim: use Optim.jl `minimize` function instead of the STLSQ algorithm (**experimental**)
+
+output:
+-------
+solved: the solved integral 
+unsolved: the residual unsolved portion of the input
+err: the numerical error in reaching the solution
 """
 function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 10,
                    radius = 1.0,
@@ -65,13 +71,17 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
 end
 
 """
-    integrate_sum applies the integral summation rule ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
+    integrate_sum(eq, x, l; kwargs...) 
 
-    eq: the integrand
-    x: the indepedent variable
-    l: a logger
+applies the integral summation rule ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
 
-    output is the same as integrate
+inputs:
+------
+eq: the integrand
+x: the indepedent variable
+l: a logger
+
+output is the same as `integrate`
 """
 function integrate_sum(eq, x, l; bypass = false, kwargs...)
     solved = 0
@@ -122,14 +132,18 @@ function integrate_sum(eq, x, l; bypass = false, kwargs...)
 end
 
 """
-    integrate_term is the central part of the code that tries different
-    methods to integrate eq
+    integrate_term(eq, x, l; kwargs...) 
+    
+is the central part of the code that tries different methods to integrate `eq`,
+which is assume to be a single term.
 
-    eq: the integrand
-    x: the indepedent variable
-    l: a logger
+inputs:
+-------
+eq: the integrand
+x: the indepedent variable
+l: a logger
 
-    output is the same as integrate
+output is the same as `integrate`
 """
 function integrate_term(eq, x, l; kwargs...)
     args = Dict(kwargs)
@@ -230,13 +244,15 @@ end
 ###############################################################################
 
 """
-	1try_integrate` is the main dispatch point to call different sparse solvers	
-    `try_integrate` tries to find a linear combination of the basis, whose
-    derivative is equal to eq
+	try_integrate(eq, x, basis, radius; kwargs...) 
+	
+is the main dispatch point to call different sparse solvers. It tries to 
+find a linear combination of the basis, whose derivative is equal to eq
 
-    output
-    -------
-    integral, error
+output:
+-------
+solved: the solved integration problem or 0 otherwise
+err: the numerical error in reaching the solution
 """
 function try_integrate(eq, x, basis, radius; kwargs...)
     args = Dict(kwargs)
@@ -256,7 +272,9 @@ end
 #################################################################################
 
 """
-	integrate_basis is used for debugging and should not be called in the course of normal execution
+	integrate_basis(eq, x; kwargs...)
+	
+is used for debugging and should not be called in the course of normal execution
 """
 function integrate_basis(eq, x = var(eq); abstol = 1e-6, radius = 1.0, complex_plane = true)
     eq = cache(expand(eq))
