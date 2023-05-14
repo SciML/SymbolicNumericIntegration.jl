@@ -17,27 +17,32 @@ integrate(x * sin(2x))
 ((1//4)*sin(2x) - (1//2)*x*cos(2x), 0, 0)
 ```
 
-kwards:
--------
-abstol: the desired tolerance
-num_steps: the number of different steps with expanding basis to be tried
-num_trials: the number of trials in each step (no changes to the basis)
-radius: the radius of the disk in the complex plane to generate random test points
-show_basis: if true, the basis (list of candidate terms) is printed
-opt: the sparse regression optimizer (from DataDrivenSparse)
-bypass: if true do not integrate terms separately but consider all at once
-symbolic: try symbolic integration first
-max_basis: the maximum number of candidate terms to consider
-verbose: print a detailed report
-complex_plane: generate random test points on the complex plane (if false, the points will be on real axis)
-homotopy: use the homotopy algorithm to generate the basis (deprecated, will be removed in a future version)
-use_optim: use Optim.jl `minimize` function instead of the STLSQ algorithm (**experimental**)
+Arguments:
+----------
+- `eq`: a univariate expression
+- `x`: the independent variable (optional)
 
-output:
+Keyword Arguments:
+------------------
+- `abstol` (default: `1e-6`): the desired tolerance
+- `num_steps` (default: `2`): the number of different steps with expanding basis to be tried
+- `num_trials` (default: `10`): the number of trials in each step (no changes to the basis)
+- `show_basis` (default: `false`): if true, the basis (list of candidate terms) is printed
+- `bypass` (default: `false`): if true do not integrate terms separately but consider all at once
+- `symbolic` (default: `false`): try symbolic integration first
+- `max_basis` (default: `100`): the maximum number of candidate terms to consider
+- `verbose` (default: `false`): print a detailed report
+- `complex_plane` (default: `true`): generate random test points on the complex plane (if false, the points will be on real axis)
+- `radius` (default: `1.0`): the radius of the disk in the complex plane to generate random test points
+- `opt` (default: `STLSQ(exp.(-10:1:0))`): the sparse regression optimizer (from DataDrivenSparse)
+- `homotopy` (default: `true`): use the homotopy algorithm to generate the basis (*deprecated*, will be removed in a future version)
+- `use_optim` (default: `false`): use Optim.jl `minimize` function instead of the STLSQ algorithm (*experimental*)
+
+Output:
 -------
-solved: the solved integral 
-unsolved: the residual unsolved portion of the input
-err: the numerical error in reaching the solution
+- `solved`: the solved integral 
+- `unsolved`: the residual unsolved portion of the input
+- `err`: the numerical error in reaching the solution
 """
 function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 10,
                    radius = 1.0,
@@ -77,11 +82,11 @@ applies the integral summation rule ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
 
 inputs:
 ------
-eq: the integrand
-x: the indepedent variable
-l: a logger
+- eq: the integrand
+- x: the indepedent variable
+- l: a logger
 
-output is the same as `integrate`
+The output is the same as `integrate`
 """
 function integrate_sum(eq, x, l; bypass = false, kwargs...)
     solved = 0
@@ -139,11 +144,11 @@ which is assume to be a single term.
 
 inputs:
 -------
-eq: the integrand
-x: the indepedent variable
-l: a logger
+- eq: the integrand
+- x: the indepedent variable
+- l: a logger
 
-output is the same as `integrate`
+The output is the same as `integrate`
 """
 function integrate_term(eq, x, l; kwargs...)
     args = Dict(kwargs)
@@ -251,8 +256,8 @@ find a linear combination of the basis, whose derivative is equal to eq
 
 output:
 -------
-solved: the solved integration problem or 0 otherwise
-err: the numerical error in reaching the solution
+- solved: the solved integration problem or 0 otherwise
+- err: the numerical error in reaching the solution
 """
 function try_integrate(eq, x, basis, radius; kwargs...)
     args = Dict(kwargs)

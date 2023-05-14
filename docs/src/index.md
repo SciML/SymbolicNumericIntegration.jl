@@ -98,9 +98,9 @@ integrate(eq, x; kwargs...)
 
 ## Testing
 
-`test/runtests.jl` contains a test suite of 160 easy to moderate test integrals (can be run by calling `test_integrals`). Currently, **SymbolicNumericIntegration.jl** solves more than 90% of its test suite.
+`test/runtests.jl` contains a test suite of 170 easy to moderate test integrals (can be run by calling `test_integrals`). Currently, **SymbolicNumericIntegration.jl** solves more than 95% of its test suite.
 
-Additionally, 12 test suites from the *Rule-based Integrator* ([Rubi](https://rulebasedintegration.org/)) are included in the `/test` directory. For example, we can test the first one as below ([Axiom](http://www.axiom-developer.org/) refers to the format of the test files)
+Additionally, 12 test suites from the *Rule-based Integrator* ([Rubi](https://rulebasedintegration.org/)) are included in the `/test` directory. For example, we can test the first one as below. *Axiom* refers to the format of the test files)
 
 ```julia
 using SymbolicNumericIntegration
