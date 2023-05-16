@@ -16,7 +16,7 @@ Symbolics = "0c5d862f-8b57-4792-8d23-62f2024744c7"
 
 [compat]
 DataDrivenDiffEq = "1.0"
-DataDrivenSparse = "1.0"
+DataDrivenSparse = "0.1.2"
 DataStructures = "0.18"
 Optim = "1"
 SymbolicUtils = "1"
