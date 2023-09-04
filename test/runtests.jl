@@ -240,8 +240,27 @@ function test_integrals(; kw...)
     return n
 end
 
+function test_definite_integrals()
+    miss_count = 0
+    eqn = x
+    val = SymbolicNumericIntegration.integrate( eqn, x, [ 0, 1 ] )[1]
+    miss_count += ( isapprox( val, 0.5 ) ) && ( typeof( val ) == typeof( 1 ) )
+    val = SymbolicNumericIntegration.integrate( eqn, x, [ 0.0, 1.0 ] )[1]
+    miss_count += ( isapprox( val, 0.5 ) ) && ( typeof( val ) == typeof( 1.0 ) )
+    val = SymbolicNumericIntegration.integrate( eqn, x, [ 0//1, 1//1 ] )[1]
+    miss_count += ( isapprox( val, 0.5 ) ) && ( typeof( val ) == typeof( 1//1 ) )
+    val = SymbolicNumericIntegration.integrate( eqn, x, [ Num(π), Num(2π) ] )[1]
+    miss_count += ( isequal( val, 3*Num(π)^2/2 ) ) && ( typeof( val ) == typeof( Num(π) ) )
+    return miss_count
+end
+
 @testset "integral" begin
     n = test_integrals(; symbolic = false, verbose = false, homotopy = true, num_steps = 2,
                        num_trials = 10)
     @test n > 0
+end
+
+@testset "definite_integral" begin
+    n = test_definite_integrals()
+    @test n == 0
 end

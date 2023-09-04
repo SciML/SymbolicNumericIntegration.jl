@@ -1,5 +1,6 @@
 using LinearAlgebra
 using Statistics: mean, std
+using Symbolics
 
 Base.signbit(z::Complex{T}) where {T <: Number} = signbit(real(z))
 Base.signbit(x::SymbolicUtils.Sym{Number}) = false
@@ -21,6 +22,7 @@ Arguments:
 ----------
 - `eq`: a univariate expression
 - `x`: the independent variable (optional)
+- `domain`: the domain upon which to evaluate a definite integral (optional)
 
 Keyword Arguments:
 ------------------
@@ -44,7 +46,7 @@ Output:
 - `unsolved`: the residual unsolved portion of the input
 - `err`: the numerical error in reaching the solution
 """
-function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 10,
+function integrate(eq, x = nothing, domain::Vector{<:Number} = [NaN]; abstol = 1e-6, num_steps = 2, num_trials = 10,
                    radius = 1.0,
                    show_basis = false, opt = STLSQ(exp.(-10:1:0)), bypass = false,
                    symbolic = true, max_basis = 100, verbose = false, complex_plane = true,
@@ -71,6 +73,9 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
     s, u, ϵ = integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
                             radius, show_basis, opt, symbolic,
                             max_basis, verbose, complex_plane, use_optim)
+    if !all( domain .=== NaN )
+        s = substitute( s, Dict( [ x=>domain[1] ] ) ) - substitute( s, Dict( [ x=>domain[2] ] ) )
+    end
     # return simplify(s), u, ϵ
     return s, u, ϵ
 end
