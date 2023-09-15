@@ -3,5 +3,5 @@ Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 SymbolicNumericIntegration = "78aadeae-fbc0-11eb-17b6-c7ec0477ba9e"
 
 [compat]
-Documenter = "0.27"
+Documenter = "0.27, 1"
 SymbolicNumericIntegration = "1"
