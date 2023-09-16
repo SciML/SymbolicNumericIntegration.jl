@@ -64,11 +64,14 @@ Symbolics.@register_symbolic Ei(z)
 Symbolics.@register_symbolic Si(z)
 Symbolics.@register_symbolic Ci(z)
 Symbolics.@register_symbolic Li(z)
+Symbolics.@register_symbolic erfi(z)
+
 
 Symbolics.derivative(::typeof(Ei), args::NTuple{1, Any}, ::Val{1}) = exp(args[1]) / args[1]
 Symbolics.derivative(::typeof(Si), args::NTuple{1, Any}, ::Val{1}) = sin(args[1]) / args[1]
 Symbolics.derivative(::typeof(Ci), args::NTuple{1, Any}, ::Val{1}) = cos(args[1]) / args[1]
 Symbolics.derivative(::typeof(Li), args::NTuple{1, Any}, ::Val{1}) = 1 / log(args[1])
+Symbolics.derivative(::typeof(erfi), args::NTuple{1, Any}, ::Val{1}) = 2 / sqrt(2) * exp(args[1]^2)
 
 @syms 𝑥 si(𝑥) ci(𝑥) ei(𝑥) li(𝑥)
 
@@ -77,8 +80,12 @@ Symbolics.derivative(::typeof(Li), args::NTuple{1, Any}, ::Val{1}) = 1 / log(arg
 guard_zero(x) = isequal(x, 0) ? one(x) : x
 
 function generate_homotopy(eq, x)
-    eq = eq isa Num ? eq.val : eq
-    x = x isa Num ? x.val : x
+    eq = value(eq)
+    x = value(x)
+    
+    if is_add(eq)
+        return unique(union([generate_homotopy(t,x) for t in args(eq)]...))
+    end
 
     p = transform(eq, x)
     q, sub, ks = rename_factors(p, (si => Si, ci => Ci, ei => Ei, li => Li))
@@ -107,7 +114,7 @@ partial_int_rules = [
                      # trigonometric functions
                      @rule 𝛷(sin(~x)) => (cos(~x) + si(~x), ~x)
                      @rule 𝛷(cos(~x)) => (sin(~x) + ci(~x), ~x)
-                     @rule 𝛷(tan(~x)) => (log(cos(~x)), ~x)
+                     @rule 𝛷(tan(~x)) => (log(cos(~x)) + ~x*tan(~x), ~x)
                      @rule 𝛷(csc(~x)) => (log(csc(~x) + cot(~x)) + log(sin(~x)), ~x)
                      @rule 𝛷(sec(~x)) => (log(sec(~x) + tan(~x)) + log(cos(~x)), ~x)
                      @rule 𝛷(cot(~x)) => (log(sin(~x)), ~x)

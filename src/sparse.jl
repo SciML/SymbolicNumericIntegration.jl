@@ -2,7 +2,7 @@
 function solve_sparse(eq, x, basis, radius; kwargs...)
     args = Dict(kwargs)
     abstol, opt, complex_plane = args[:abstol], args[:opt], args[:complex_plane]
-
+    
     A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
 
     # find a linearly independent subset of the basis
@@ -52,8 +52,14 @@ function init_basis_matrix(eq, x, basis, radius, complex_plane; abstol = 1e-6)
 
     # A is an nxn matrix holding the values of the fragments at n random points
     A = zeros(Complex{Float64}, (n, n))
-    X = zeros(Complex{Float64}, n)
-
+    X = zeros(Complex{Float64}, n)    
+    
+    S = subs_symbols(eq, x)
+    if !isempty(S)
+        eq = substitute(eq, S)
+        basis = [substitute(y, S) for y in basis]
+    end
+    
     eq_fun = fun!(eq, x)
     Δbasis_fun = deriv_fun!.(basis, x)
 
@@ -162,3 +168,54 @@ function find_dense(A, basis; abstol = 1e-6)
     end
     return nothing, Inf
 end
+
+
+###############################################################################
+
+
+function hints(eq, x, basis; radius=5.0, abstol=1e-6, opt=STLSQ(exp.(-10:1:0)), complex_plane=true)
+    A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
+
+    # find a linearly independent subset of the basis
+    l = find_independent_subset(A; abstol)
+    A, basis = A[l, l], basis[l]
+    
+    n, m = size(A)
+
+    try
+        b = ones((1, n))
+        solver = SparseLinearSolver(opt,
+                                    options = DataDrivenCommonOptions(verbose = false,
+                                                                      maxiters = 1000))
+        res, _... = solver(A', b)
+        q = DataDrivenSparse.coef(first(res))
+        err = abs(rms(A * q' .- 1)) 
+        if err < abstol
+            sel = abs.(q) .> abstol
+            h = [basis[i] for i in 1:length(basis) if sel[i]]
+        else 
+            h = []
+        end
+        return h, err
+    catch e
+        println("Error from hints", e)        
+    end
+    
+    return 0, Inf
+end
+
+
+function best_hints(eq, x, basis; radius=5.0, abstol=1e-6, opt=STLSQ(exp.(-10:1:0)), complex_plane=true, num_trials=10)        
+    H = []
+    L = Int[]
+    
+    for _ in 1:num_trials
+        h, err = hints(eq, x, basis; radius, abstol, opt, complex_plane)
+        push!(H, h)
+        push!(L, err < abstol ? length(h) : length(basis))
+    end
+    
+    _, idx = findmin(L)
+    return H[idx]
+end
+

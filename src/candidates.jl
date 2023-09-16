@@ -65,7 +65,7 @@ function closure(eq, x; max_terms = 50)
 end
 
 function candidate_pow_minus(p, k; abstol = 1e-8)
-    if isnan(poly_deg(p))
+    if !is_univar_poly(p)
         return [p^k, p^(k + 1), log(p)]
     end
 
@@ -104,10 +104,14 @@ function candidate_pow_minus(p, k; abstol = 1e-8)
 end
 
 function candidate_sqrt(p, k)
-    x = var(p)
-
     h = Any[p^k, p^(k + 1)]
-
+    
+    if !is_univar_poly(p)
+        return h
+    end    
+    
+    x = var(p)
+    
     if poly_deg(p) == 2
         r, s = find_roots(p, x)
         l = leading(p, x)

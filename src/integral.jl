@@ -29,7 +29,7 @@ Keyword Arguments:
 - `num_trials` (default: `10`): the number of trials in each step (no changes to the basis)
 - `show_basis` (default: `false`): if true, the basis (list of candidate terms) is printed
 - `bypass` (default: `false`): if true do not integrate terms separately but consider all at once
-- `symbolic` (default: `false`): try symbolic integration first
+- `symbolic` (default: `false`): try symbolic integration first (will be forced if `eq` has constant parameters)
 - `max_basis` (default: `100`): the maximum number of candidate terms to consider
 - `verbose` (default: `false`): print a detailed report
 - `complex_plane` (default: `true`): generate random test points on the complex plane (if false, the points will be on real axis)
@@ -47,7 +47,7 @@ Output:
 function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 10,
                    radius = 1.0,
                    show_basis = false, opt = STLSQ(exp.(-10:1:0)), bypass = false,
-                   symbolic = true, max_basis = 100, verbose = false, complex_plane = true,
+                   symbolic = false, max_basis = 100, verbose = false, complex_plane = true,
                    homotopy = true, use_optim = false)
     eq = expand(eq)
 
@@ -165,6 +165,25 @@ function integrate_term(eq, x, l; kwargs...)
         result(l, "Successful", y)
         return y, 0, 0
     end
+    
+    params = const_params(eq, x)
+    
+    if !isempty(params) && !symbolic
+        @warn("The input expression has constant parameters: [$(join(params, ", "))], forcing `symbolic = true`")
+        symbolic = true
+    end
+    
+    if symbolic
+        y = integrate_symbolic(eq, x; abstol, radius)
+        if y == nothing
+            if !isempty(params)
+                @warn("Symbolic integration failed. Try changing constant parameters ([$(join(params, ", "))]) to numerical values.")
+                return 0, eq, Inf
+            end
+        else
+            return y, 0, 0
+        end
+    end
 
     eq = cache(eq)
     basis1 = generate_basis(eq, x, true)
@@ -190,19 +209,7 @@ function integrate_term(eq, x, l; kwargs...)
     for i in 1:num_steps
         if length(basis1) > max_basis
             break
-        end
-
-        if symbolic
-            y, ϵ = try_symbolic(Float64, expr(eq), x, expr.(basis1), deriv!.(basis1, x);
-                                kwargs...)
-
-            if !isequal(y, 0) && accept_solution(eq, x, y, radius) < abstol
-                result(l, "Successful symbolic", y)
-                return y, 0, 0
-            else
-                inform(l, "Failed symbolic")
-            end
-        end
+        end        
 
         for j in 1:num_trials
             basis = isodd(j) ? basis1 : basis2
