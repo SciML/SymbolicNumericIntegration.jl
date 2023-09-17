@@ -10,6 +10,7 @@ using SymbolicUtils: exprtype, BasicSymbolic
 using DataDrivenDiffEq, DataDrivenSparse
 
 include("utils.jl")
+include("tree.jl")
 include("special.jl")
 
 include("cache.jl")
@@ -29,6 +30,5 @@ include("integral.jl")
 export integrate, generate_basis
 
 include("symbolic.jl")
-include("logger.jl")
 
 end # module

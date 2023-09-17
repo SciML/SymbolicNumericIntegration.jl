@@ -205,27 +205,35 @@ basic_integrals = [
     1 / log(x) - 1 / log(x)^2,
 ]
 
-function test_integrals(; kw...)
-    args = Dict(kw)
+function test_integrals(subs=nothing, rng=nothing;  kw...)
+    args = isempty(kw) ? Dict() : Dict(kw)
+    args[:detailed] = false
     misses = []
-    k = 1
+    k = 1        
 
-    for eq in basic_integrals
+    for (i, eq) in enumerate(basic_integrals)
+        if rng != nothing && !(i in rng)
+            continue
+        end
+        
         if isequal(eq, β)
             printstyled("**** bypass on ****\n"; color = :red)
             bypass = true
             args[:bypass] = true
         else
+            if subs != nothing
+                eq = substitute(eq, subs)
+            end
+            
             printstyled(k, ": "; color = :blue)
             k += 1
             printstyled(eq, " =>\n"; color = :green)
-            solved, unsolved = SymbolicNumericIntegration.integrate(eq; args...)
-            printstyled('\t', solved; color = :cyan)
-            if isequal(unsolved, 0)
-                println()
-            else
-                printstyled(" + ∫ ", unsolved, '\n'; color = :red)
+            sol = SymbolicNumericIntegration.integrate(eq, x; args...)
+            if sol == nothing
+                printstyled("\t<no solution>\n"; color = :red)
                 push!(misses, eq)
+            else
+                printstyled('\t', sol, '\n'; color = :cyan)
             end
         end
     end

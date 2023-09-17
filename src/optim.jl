@@ -14,27 +14,27 @@ function solve_optim(eq, x, basis, radius; kwargs...)
     p = rank_basis(A, basis)
 
     qm = zeros(n)
-    ϵm = 1e6
+    εm = 1e6
     lm = qm .> 0
 
     for i in 1:n
         l = (1:n .<= i)
-        q, ϵ = find_minimizer(A[:, l], λ)
+        q, ε = find_minimizer(A[:, l], λ)
         nz = sum(abs.(q) .> abstol)
 
-        # println(i, '\t', ϵ, '\t', nz)
+        # println(i, '\t', ε, '\t', nz)
 
-        if ϵ * nz < ϵm
-            ϵm = ϵ * nz
+        if ε * nz < εm
+            εm = ε * nz
             qm = q
             lm = l
         end
     end
 
-    if ϵm < abstol
-        return reconstruct(qm, basis[lm]), ϵm
+    if εm < abstol
+        return reconstruct(qm, basis[lm]), εm
     else
-        return 0, ϵm
+        return 0, εm
     end
 end
 
@@ -74,7 +74,7 @@ function find_minimizer(A, λ)
     q0 = A \ ones(n) # randn(m)	
     res = Optim.optimize(f, g!, q0, LBFGS())
     q = Optim.minimizer(res)
-    ϵ = Optim.minimum(res)
+    ε = Optim.minimum(res)
 
-    return q, ϵ
+    return q, ε
 end

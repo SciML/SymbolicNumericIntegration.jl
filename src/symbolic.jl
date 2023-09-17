@@ -1,66 +1,3 @@
-# utility functions inspired from sympy
-
-function is_add(eq) 
-    y = value(eq)
-    return istree(y) && exprtype(y) == SymbolicUtils.ADD
-end
-
-
-function is_mul(eq) 
-    y = value(eq)
-    return istree(y) && exprtype(y) == SymbolicUtils.MUL
-end
-
-
-function is_pow(eq) 
-    y = value(eq)
-    return istree(y) && exprtype(y) == SymbolicUtils.POW
-end
-
-
-function is_div(eq) 
-    y = value(eq)
-    return istree(y) && exprtype(y) == SymbolicUtils.DIV
-end
-
-
-is_term(eq) = SymbolicUtils.isterm(value(eq))
-# is_sym(eq) = SymbolicUtils.issym(value(eq))
-
-
-function args(eq)
-    eq = value(eq)
-    return istree(eq) ? arguments(eq) : []
-end
-
-
-diff(eq, x) = expand_derivatives(Differential(x)(eq))
-
-
-numer(eq) = args(eq)[1]
-denom(eq) = args(eq)[2]
-
-
-function is_polynomial(p, x)
-    if is_add(p) || is_mul(p)
-        return all(is_polynomial(t, x) for t in args(p))
-    elseif is_pow(p)
-        q = args(p)[1]
-        k = args(p)[2]
-        return is_polynomial(q, x) && k isa Integer && k > 0
-    else
-        return !isdependent(p, x) || isequal(p, x) 
-    end
-end
-
-
-function is_univar_poly(p)
-    p = value(p)
-    vars = get_variables(p)
-    return length(vars) == 1 && is_polynomial(p, vars[1])
-end
-
-
 function extract_real(y)
     if istree(y)
         if is_add(y)
@@ -82,17 +19,17 @@ function extract_real(y)
 end
 
 
-function beautify(coef, x)
+function beautify(coef)
     if is_add(coef)
-        return sum(beautify(t, x) for t in args(coef))
+        return sum(beautify(t) for t in args(coef))
     elseif is_mul(coef)
-        return prod(beautify(t, x) for t in args(coef))
+        return prod(beautify(t) for t in args(coef))
     elseif is_pow(coef)
         p = args(coef)[1]
         k = args(coef)[2]
-        return beautify(p, x) ^ k
+        return beautify(p) ^ k
     elseif is_div(coef)
-        return beautify(numer(coef), x) / beautify(denom(coef), x)
+        return beautify(numer(coef)) / beautify(denom(coef))
     elseif is_number(coef)
         return nice_parameter(coef)
     else
@@ -102,26 +39,8 @@ end
 
 ###################################################################
 
-function expand_fraction(eq, x)
-    if is_add(eq)
-        return sum(expand_fraction(t, x) for t in args(eq))
-    elseif is_div(eq)
-        n = numer(eq)
-        d = denom(eq)
-        
-        if is_add(n) && !isdependent(d, x)
-            return sum(simplify(equiv(u, x)/d) for u in args(n))
-        else
-            return eq
-        end
-    else
-        return eq
-    end
-end
-
-
 """
-    removes numerical coefficients from terms
+    Removes numerical coefficients from terms
 """
 function equiv(y, x)
     y = expand(value(y))
@@ -141,7 +60,7 @@ end
 
 
 """
-    splits an expression into a list of terms
+    Splits an expression into a list of terms
 """
 function split_terms(eq, x)
     eq = value(eq)
@@ -154,7 +73,7 @@ end
 
 
 """
-    checks whether y is a holonomic function, i.e., is closed 
+    Checks whether y is a holonomic function, i.e., is closed 
     under differentiation w.r.t. x
     
     For our purpose, we define a holonomic function as one composed
@@ -197,7 +116,7 @@ end
 
 
 """
-    generates a list of ansatzes based on repetative differentiation. 
+    Generates a list of ansatzes based on repetative differentiation. 
     It works for holonomic functions, which are closed under differentiation.
 """
 function blender(y, x; n=3)
@@ -274,6 +193,31 @@ function atomize(eq, x)
 end
 
 
+function atomize(eq)
+    eq = value(eq)
+    
+    if is_mul(eq)
+        coef = 1
+        atom = 1
+        for t in args(eq)
+            c, a = atomize(t)
+            coef *= c
+            atom *= a
+        end
+        return (coef, atom)            
+    elseif is_div(eq)
+        c1, a1 = atomize(numer(eq))
+        c2, a2 = atomize(denom(eq))
+        return (c1/c2, a1/a2)
+    elseif is_number(eq)
+        return (eq, 1)
+    else
+        return (1, eq)
+    end   
+end
+
+
+
 ############################## Numerical Utils ##############################
 
 @variables θ[1:30]
@@ -313,7 +257,7 @@ end
     make_Ab transforms the output of make_eqs to a linear
     system.
     
-    Inputs:
+    Args:
     --------
         eqs: a list of n linear equations in θs
         vars: the list of variables, i.e., θ[1], θ[2],...
@@ -365,16 +309,30 @@ end
 
 
 """
-    
+    Generates the final integral based on the list of coefficients and
+    a list of ansatzes (ker).
 """
 function apply_coefs(q, ker, x)
     s = 0
     for (coef, expr) in zip(q, ker)
-        s += beautify(coef, x) * expr
+        s += beautify(coef) * expr
     end    
-    return simplify(s)
+    s = simplify(s)
+    c, a = atomize(s)
+    return beautify(c) * a
 end
 
+
+"""
+    The main entry point for symbolic integration.
+    
+    Argu:
+        eq: the expression to integrate
+        x: independent variable
+        
+    Returns:
+        the integral or nothing if no solution
+"""
 function integrate_symbolic(eq, x; abstol=1e-6, radius=1.0)    
     eq = expand(eq)
     
@@ -386,6 +344,12 @@ function integrate_symbolic(eq, x; abstol=1e-6, radius=1.0)
 
     ker = best_hints(eq, x, basis)
     
+    if ker == nothing
+        return nothing
+    end
+    
+    ker = [atomize(y, x)[2] for y in ker]
+    
     eqs, vars, frags = make_eqs(eq, x, ker)
     
     try
@@ -395,8 +359,9 @@ function integrate_symbolic(eq, x; abstol=1e-6, radius=1.0)
         A, b = make_Ab(eqs, vars)        
         q = A \ b
         q = value.(q)        
-        sol = apply_coefs(q, ker, x)        
+        sol = apply_coefs(q, ker, x)
 
+        # test if sol is the correct integral of eq
         S = subs_symbols(eq, x; include_x=true, radius)
         err = substitute(diff(sol, x) - eq, S)
         
@@ -413,9 +378,6 @@ function integrate_symbolic(eq, x; abstol=1e-6, radius=1.0)
 end
 
 
-function const_params(eq, x)  
-    return [v for v in get_variables(eq) if !isequal(v, x)]
-end
 
 
 

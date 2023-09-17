@@ -64,16 +64,16 @@ Symbolics.@register_symbolic Ei(z)
 Symbolics.@register_symbolic Si(z)
 Symbolics.@register_symbolic Ci(z)
 Symbolics.@register_symbolic Li(z)
-Symbolics.@register_symbolic erfi(z)
+Symbolics.@register_symbolic Erfi(z)
 
 
 Symbolics.derivative(::typeof(Ei), args::NTuple{1, Any}, ::Val{1}) = exp(args[1]) / args[1]
 Symbolics.derivative(::typeof(Si), args::NTuple{1, Any}, ::Val{1}) = sin(args[1]) / args[1]
 Symbolics.derivative(::typeof(Ci), args::NTuple{1, Any}, ::Val{1}) = cos(args[1]) / args[1]
 Symbolics.derivative(::typeof(Li), args::NTuple{1, Any}, ::Val{1}) = 1 / log(args[1])
-Symbolics.derivative(::typeof(erfi), args::NTuple{1, Any}, ::Val{1}) = 2 / sqrt(2) * exp(args[1]^2)
+Symbolics.derivative(::typeof(Erfi), args::NTuple{1, Any}, ::Val{1}) = 2 / sqrt(2) * exp(args[1]^2)
 
-@syms 𝑥 si(𝑥) ci(𝑥) ei(𝑥) li(𝑥)
+@syms 𝑥 si(𝑥) ci(𝑥) ei(𝑥) li(𝑥) erfi_(𝑥)
 
 ##############################################################################
 
@@ -88,7 +88,7 @@ function generate_homotopy(eq, x)
     end
 
     p = transform(eq, x)
-    q, sub, ks = rename_factors(p, (si => Si, ci => Ci, ei => Ei, li => Li))
+    q, sub, ks = rename_factors(p, (si => Si, ci => Ci, ei => Ei, li => Li, erfi_ => Erfi))
     S = 0
 
     for i in 1:length(ks)
@@ -114,7 +114,7 @@ partial_int_rules = [
                      # trigonometric functions
                      @rule 𝛷(sin(~x)) => (cos(~x) + si(~x), ~x)
                      @rule 𝛷(cos(~x)) => (sin(~x) + ci(~x), ~x)
-                     @rule 𝛷(tan(~x)) => (log(cos(~x)) + ~x*tan(~x), ~x)
+                     @rule 𝛷(tan(~x)) => (log(cos(~x)), ~x)
                      @rule 𝛷(csc(~x)) => (log(csc(~x) + cot(~x)) + log(sin(~x)), ~x)
                      @rule 𝛷(sec(~x)) => (log(sec(~x) + tan(~x)) + log(cos(~x)), ~x)
                      @rule 𝛷(cot(~x)) => (log(sin(~x)), ~x)
@@ -154,37 +154,105 @@ partial_int_rules = [
                      @rule 𝛷(asech(~x)) => (asech(~x), ~x)
                      @rule 𝛷(acoth(~x)) => (~x * acot(~x) + log(~x + 1), ~x)
                      # logarithmic and exponential functions
-                     @rule 𝛷(log(~x)) => (~x + ~x * log(~x) +
-                                          sum(candidate_pow_minus(~x, -1); init = one(~x)),
-                                          ~x)
+                     @rule 𝛷(log(~x)) => (~x + ~x * log(~x) + sum(pow_minus_rule(~x, -1); init = one(~x)), ~x)
                      @rule 𝛷(1 / log(~x)) => (log(log(~x)) + li(~x), ~x)
-                     @rule 𝛷(exp(~x)) => (exp(~x) + ei(~x), ~x)
+                     @rule 𝛷(exp(~x)) => (exp(~x) + ei(~x) + erfi_rule(~x), ~x)
                      @rule 𝛷(^(exp(~x), ~k::is_neg)) => (^(exp(-~x), -~k), ~x)
                      # square-root functions
-                     @rule 𝛷(^(~x, ~k::is_abs_half)) => (sum(candidate_sqrt(~x, ~k);
-                                                             init = one(~x)), ~x);
-                     @rule 𝛷(sqrt(~x)) => (sum(candidate_sqrt(~x, 0.5); init = one(~x)), ~x);
-                     @rule 𝛷(1 / sqrt(~x)) => (sum(candidate_sqrt(~x, -0.5);
-                                                   init = one(~x)), ~x);
+                     @rule 𝛷(^(~x, ~k::is_abs_half)) => (sum(sqrt_rule(~x, ~k); init = one(~x)), ~x);
+                     @rule 𝛷(sqrt(~x)) => (sum(sqrt_rule(~x, 0.5); init = one(~x)), ~x);
+                     @rule 𝛷(1 / sqrt(~x)) => (sum(sqrt_rule(~x, -0.5); init = one(~x)), ~x);
                      # rational functions                                                              
-                     @rule 𝛷(1 / ^(~x::is_poly, ~k::is_pos_int)) => (sum(candidate_pow_minus(~x,
-                                                                                             -~k);
-                                                                         init = one(~x)),
-                                                                     ~x)
-                     @rule 𝛷(1 / ~x::is_poly) => (sum(candidate_pow_minus(~x, -1);
-                                                      init = one(~x)), ~x);
+                     @rule 𝛷(1 / ^(~x::is_univar_poly, ~k::is_pos_int)) => (sum(pow_minus_rule(~x,-~k); init = one(~x)), ~x)
+                     @rule 𝛷(1 / ~x::is_univar_poly) => (sum(pow_minus_rule(~x, -1); init = one(~x)), ~x);
                      @rule 𝛷(^(~x, -1)) => (log(~x), ~x)
-                     @rule 𝛷(^(~x, ~k::is_neg_int)) => (sum(^(~x, i) for i in (~k + 1):-1),
-                                                        ~x)
+                     @rule 𝛷(^(~x, ~k::is_neg_int)) => (sum(^(~x, i) for i in (~k + 1):-1), ~x)
                      @rule 𝛷(1 / ~x) => (log(~x), ~x)
-                     @rule 𝛷(^(~x, ~k::is_pos_int)) => (sum(^(~x, i + 1)
-                                                            for i in 1:(~k + 1)),
-                                                        ~x)
+                     @rule 𝛷(^(~x, ~k::is_pos_int)) => (sum(^(~x, i + 1) for i in 1:(~k + 1)), ~x)
                      @rule 𝛷(1) => (𝑥, 1)
                      @rule 𝛷(~x) => ((~x + ^(~x, 2)), ~x)]
 
 function apply_partial_int_rules(eq, x)
-    y, dy = expand(Fixpoint(Prewalk(Chain(partial_int_rules))))(𝛷(value(eq)))
-    D = Differential(x)
-    return y, guard_zero(expand_derivatives(D(dy)))
+    y, dy = Chain(partial_int_rules)(𝛷(value(eq)))
+    return y, guard_zero(diff(dy, x))
 end
+
+################################################################
+
+function erfi_rule(eq)
+    if is_univar_poly(eq)
+        x = var(eq)
+        return erfi_(x)      
+    end
+    return 0
+end
+
+function pow_minus_rule(p, k; abstol = 1e-8)
+    if !is_univar_poly(p)
+        return [p^k, p^(k + 1), log(p)]
+    end
+
+    x = var(p)
+    d = poly_deg(p)
+
+    for j in 1:10  # will try 10 times to find the roots
+        r, s = find_roots(p, x)
+        if length(r) + length(s) >= d
+            break
+        end
+    end
+    s = s[1:2:end]
+    r = nice_parameter.(r)
+    s = nice_parameter.(s)
+
+    # ∫ 1 / ((x-z₁)(x-z₂)) dx = ... + c₁ * log(x-z₁) + c₂ * log(x-z₂)
+    q = Any[log(x - u) for u in r]
+    for i in eachindex(s)
+        β = s[i]
+        if abs(imag(β)) > abstol
+            push!(q, atan((x - real(β)) / imag(β)))
+            push!(q, (1 + x) * log(x^2 - 2 * real(β) * x + abs2(β)))
+        else
+            push!(q, log(x - real(β)))
+        end
+    end
+    q = unique(q)
+
+    if k ≈ -1
+        return [[p^k]; q]
+    else
+        return [[p^k, p^(k + 1)]; q]
+    end
+end
+
+function sqrt_rule(p, k)
+    h = Any[p^k, p^(k + 1)]
+    
+    if !is_univar_poly(p)
+        return h
+    end    
+    
+    x = var(p)
+    
+    if poly_deg(p) == 2
+        r, s = find_roots(p, x)
+        l = leading(p, x)
+        if length(r) == 2
+            if sum(r) ≈ 0
+                r₁ = abs(r[1])
+                if l > 0
+                    push!(h, acosh(x / r₁))
+                else
+                    push!(h, asin(x / r₁))
+                end
+            end
+        elseif real(s[1]) ≈ 0
+            push!(h, asinh(x / imag.(s[1])))
+        end
+    end
+
+    Δ = expand_derivatives(Differential(x)(p))
+    push!(h, log(0.5 * Δ + sqrt(p)))
+    return h
+end
+
