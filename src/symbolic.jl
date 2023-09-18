@@ -1,41 +1,25 @@
-function extract_real(y)
-    if istree(y)
-        if is_add(y)
-            return sum(extract_real(t) for t in args(y))
-        elseif is_mul(y)
-            return prod(extract_real(t) for t in args(y))
-        elseif is_div(y)
-            return extract_real(numer(y)) / extract_real(denom(y))
-        elseif is_pow(y)
-            q = args(p)[1]
-            k = args(p)[2]
-            return extract_real(q) ^ k
-        else
-            return y
-        end
-    else
-        return real(y)
-    end
-end
-
-
-function beautify(coef)
-    if is_add(coef)
-        return sum(beautify(t) for t in args(coef))
-    elseif is_mul(coef)
-        return prod(beautify(t) for t in args(coef))
-    elseif is_pow(coef)
-        p = args(coef)[1]
-        k = args(coef)[2]
+"""
+    Convers floats to integers/rational numbers with small denominators 
+    if possible
+"""
+function beautify(eq)
+    if is_add(eq)
+        return sum(beautify(t) for t in args(eq))
+    elseif is_mul(eq)
+        return prod(beautify(t) for t in args(eq))
+    elseif is_pow(eq)
+        p = args(eq)[1]
+        k = args(eq)[2]
         return beautify(p) ^ k
-    elseif is_div(coef)
-        return beautify(numer(coef)) / beautify(denom(coef))
-    elseif is_number(coef)
-        return nice_parameter(coef)
+    elseif is_div(eq)
+        return beautify(numer(eq)) / beautify(denom(eq))
+    elseif is_number(eq)
+        return nice_parameter(eq)
     else
-        return coef
+        return eq
     end
 end
+
 
 ###################################################################
 

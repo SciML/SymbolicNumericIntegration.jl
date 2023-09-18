@@ -109,7 +109,7 @@ function integrate_sum(eq, x; bypass = false, kwargs...)
         ε₀ = max(ε₀, ε)
     end
 
-    if !isequal(unsolved, 0) && isempty(const_params(unsolved, x))
+    if !isequal(unsolved, 0) && isempty(sym_consts(unsolved, x))
         eq = factor_rational(simplify_trigs(unsolved))
 
         if !isequal(eq, unsolved)
