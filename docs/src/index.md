@@ -2,13 +2,13 @@
 
 **SymbolicNumericIntegration.jl** is a hybrid symbolic/numerical integration package that works on the [Julia Symbolics](https://docs.sciml.ai/Symbolics/stable/) expressions.
 
-**SymbolicNumericIntegration.jl** uses a randomized algorithm based on a hybrid of the *method of undetermined coefficients* and *sparse regression* and can solve a large subset of basic standard integrals (polynomials, exponential/logarithmic, trigonometric and hyperbolic, inverse trigonometric and hyperbolic, rational and square root). The symbolic part of the algorithm is similar (but not identical) to Risch-Bronstein's poor man's integrator and generates a list of ansatzes (candidate terms). The numerical part uses sparse regression adopted from the Sparse identification of nonlinear dynamics (SINDy) algorithm to prune down the ansatzes and find the corresponding coefficients. The basis of how it works and the theory of integration using the Symbolic-Numeric methods refer to [Basis of Symbolic-Numeric Integration](https://github.com/SciML/SymbolicNumericIntegration.jl/blob/main/docs/theory.ipynb). 
+**SymbolicNumericIntegration.jl** uses a randomized algorithm based on a hybrid of the *method of undetermined coefficients* and *sparse regression* and can solve a large subset of basic standard integrals (polynomials, exponential/logarithmic, trigonometric and hyperbolic, inverse trigonometric and hyperbolic, rational and square root). The symbolic part of the algorithm is similar (but not identical) to Risch-Bronstein's poor man's integrator and generates a list of ansatzes (candidate terms). The numerical part uses sparse regression adopted from the Sparse identification of nonlinear dynamics (SINDy) algorithm to prune down the ansatzes and find the corresponding coefficients. The basis of how it works and the theory of integration using the Symbolic-Numeric methods refer to [Basis of Symbolic-Numeric Integration](https://github.com/SciML/SymbolicNumericIntegration.jl/blob/main/docs/theory.ipynb).
 
-[hyint](https://github.com/siravan/hyint) is the python counterpart of **SymbolicNumericIntegration.jl** that works with **sympy** expressions. 
+[hyint](https://github.com/siravan/hyint) is the python counterpart of **SymbolicNumericIntegration.jl** that works with **sympy** expressions.
 
-Originally, **SymbolicNumericIntegration.jl** expected only univariate expression with *constant* real or complex coefficients as input. As of version 1.2, `integrate` function accepts symbolic constants for a subset of solvable integrals. 
+Originally, **SymbolicNumericIntegration.jl** expected only univariate expression with *constant* real or complex coefficients as input. As of version 1.2, `integrate` function accepts symbolic constants for a subset of solvable integrals.
 
-`integrate` returns a tuple with three values. The first one is the solved integral, the second one is the sum of the unsolved terms, and the third value is the residual error. If `integrate` is successful, the unsolved portion is reported as 0. If we pass `detailed=false` to `integrate', the output is simplified to only the resulting integrals. In this case, `nothing` is returned if the integral cannot be solved. Note that the simplified output will become the default in a future version. 
+`integrate` returns a tuple with three values. The first one is the solved integral, the second one is the sum of the unsolved terms, and the third value is the residual error. If `integrate` is successful, the unsolved portion is reported as 0. If we pass `detailed=false` to `integrate', the output is simplified to only the resulting integrals. In this case, `nothing` is returned if the integral cannot be solved. Note that the simplified output will become the default in a future version.
 
 ## Installation
 
@@ -36,29 +36,32 @@ julia> integrate((5 + 2x)^-1)
 ((1//2)*log((5//2) + x), 0, 0.0)
 
 # detailed simplifies the output to just the resulting integral
-julia> integrate(x^2 / (16 + x^2); detailed=false)
+
+julia> integrate(x^2 / (16 + x^2); detailed = false)
 x + 4atan((-1//4)*x)
 
-julia> integrate(x^2 * log(x); detailed=false)
+julia> integrate(x^2 * log(x); detailed = false)
 (1//3)*(x^3)*log(x) - (1//9)*(x^3)
 
-julia> integrate(sec(x) * tan(x); detailed=false)
+julia> integrate(sec(x) * tan(x); detailed = false)
 sec(x)
 
 # Here, a is a symbolic constant; therefore, we need to explicitly
 # define the independent variable (say, x). Also, we set
-# `symbolic=true` to force using the symbolic solver 
-julia> integrate(sin(a*x), x; detailed=false, symbolic=true)
+# `symbolic=true` to force using the symbolic solver
+
+julia> integrate(sin(a * x), x; detailed = false, symbolic = true)
 (-cos(a*x)) / a
 
-julia> integrate(x^2 * cos(a*x), x; detailed=false, symbolic=true)
+julia> integrate(x^2 * cos(a * x), x; detailed = false, symbolic = true)
 ((a^2)*(x^2)*sin(a*x) + 2.0a*x*cos(a*x) - 2.0sin(a*x)) / (a^3)
 
 # multiple symbolic constants
-julia> integrate(cosh(a*x) * exp(b*x), x; detailed=false, symbolic=true)
+
+julia> integrate(cosh(a * x) * exp(b * x), x; detailed = false, symbolic = true)
 (a*sinh(a*x)*exp(b*x) - b*cosh(a*x)*exp(b*x)) / (a^2 - (b^2))
 
-julia> integrate(log(log(a*x)) / x, x; detailed=false, symbolic=true)
+julia> integrate(log(log(a * x)) / x, x; detailed = false, symbolic = true)
 log(a*x)*log(log(a*x)) - log(a*x)
 ```
 

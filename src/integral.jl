@@ -46,16 +46,16 @@ Output:
 - `err`: the numerical error in reaching the solution
 """
 function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 10,
-                   radius = 1.0,
-                   show_basis = false, opt = STLSQ(exp.(-10:1:0)), bypass = false,
-                   symbolic = false, max_basis = 100, verbose = false, complex_plane = true,
-                   homotopy = true, use_optim = false, detailed = true)
+    radius = 1.0,
+    show_basis = false, opt = STLSQ(exp.(-10:1:0)), bypass = false,
+    symbolic = false, max_basis = 100, verbose = false, complex_plane = true,
+    homotopy = true, use_optim = false, detailed = true)
     eq = expand(eq)
 
     if x == nothing
         vars = get_variables(eq)
         if length(vars) > 1
-            error("Multiple symbolic variables detect. Please pass the independent variable to `integrate`")            
+            error("Multiple symbolic variables detect. Please pass the independent variable to `integrate`")
         elseif length(vars) == 1
             x = vars[1]
         else
@@ -68,7 +68,7 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
 
     # eq is a constant
     if !isdependent(eq, x)
-        if detailed 
+        if detailed
             return x * eq, 0, 0
         else
             return x * eq
@@ -76,9 +76,9 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
     end
 
     s, u, ε = integrate_sum(eq, x; bypass, abstol, num_trials, num_steps,
-                            radius, show_basis, opt, symbolic,
-                            max_basis, verbose, complex_plane, use_optim)
-    
+        radius, show_basis, opt, symbolic,
+        max_basis, verbose, complex_plane, use_optim)
+
     if detailed
         return s, u, ε
     else
@@ -153,23 +153,23 @@ function integrate_term(eq, x; kwargs...)
     args = Dict(kwargs)
     abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
     radius = args[:abstol], args[:num_steps],
-             args[:num_trials], args[:show_basis], args[:symbolic],
-             args[:verbose],
-             args[:max_basis], args[:radius]
+    args[:num_trials], args[:show_basis], args[:symbolic],
+    args[:verbose],
+    args[:max_basis], args[:radius]
 
     if is_number(eq)
         y = eq * x
         return y, 0, 0
     end
-    
+
     params = sym_consts(eq, x)
     has_sym_consts = !isempty(params)
-    
+
     if has_sym_consts && !symbolic
         @info("The input expression has constant parameters: [$(join(params, ", "))], forcing `symbolic = true`")
         symbolic = true
     end
-    
+
     if symbolic
         y = integrate_symbolic(eq, x; abstol, radius)
         if y == nothing
@@ -182,14 +182,14 @@ function integrate_term(eq, x; kwargs...)
         end
     end
 
-    eq = cache(eq)    
+    eq = cache(eq)
     basis1 = generate_basis(eq, x, false)
-    
+
     if has_sym_consts
         # kernel-based ansatz generator does not work correctly with sym consts
         basis2 = basis1
     else
-        basis2 = generate_basis(eq, x, true) 
+        basis2 = generate_basis(eq, x, true)
     end
 
     if show_basis
@@ -207,15 +207,15 @@ function integrate_term(eq, x; kwargs...)
     # rescue
     εᵣ = Inf
     yᵣ = 0
-    
+
     for i in 1:num_steps
         if length(basis1) > max_basis
             break
-        end        
+        end
 
         for j in 1:num_trials
             basis = isodd(j) ? basis1 : basis2
-            r = radius 
+            r = radius
             y, ε = try_integrate(eq, x, basis, r; kwargs...)
 
             ε = accept_solution(eq, x, y, r)
@@ -225,7 +225,7 @@ function integrate_term(eq, x; kwargs...)
                 εᵣ = ε
                 yᵣ = y
             end
-        end     
+        end
 
         if i < num_steps
             basis1, ok1 = expand_basis(prune_basis(eq, x, basis1, radius; kwargs...), x)
@@ -233,7 +233,7 @@ function integrate_term(eq, x; kwargs...)
 
             if !ok1 && ~ok2
                 break
-            end            
+            end
         end
     end
 

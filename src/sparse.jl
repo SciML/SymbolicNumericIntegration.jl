@@ -2,7 +2,7 @@
 function solve_sparse(eq, x, basis, radius; kwargs...)
     args = Dict(kwargs)
     abstol, opt, complex_plane = args[:abstol], args[:opt], args[:complex_plane]
-    
+
     A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
 
     # find a linearly independent subset of the basis
@@ -52,14 +52,14 @@ function init_basis_matrix(eq, x, basis, radius, complex_plane; abstol = 1e-6)
 
     # A is an nxn matrix holding the values of the fragments at n random points
     A = zeros(Complex{Float64}, (n, n))
-    X = zeros(Complex{Float64}, n)    
-    
+    X = zeros(Complex{Float64}, n)
+
     S = subs_symbols(eq, x)
     if !isempty(S)
         eq = substitute(eq, S)
         basis = [substitute(y, S) for y in basis]
     end
-    
+
     eq_fun = fun!(eq, x)
     Δbasis_fun = deriv_fun!.(basis, x)
 
@@ -109,7 +109,7 @@ function modify_basis_matrix!(A, X, eq, x, basis, radius; abstol = 1e-6)
 end
 
 function DataDrivenSparse.active_set!(idx::BitMatrix, p::SoftThreshold,
-                                      x::Matrix{ComplexF64}, λ::Float64)
+    x::Matrix{ComplexF64}, λ::Float64)
     DataDrivenSparse.active_set!(idx, p, abs.(x), λ)
 end
 
@@ -119,8 +119,8 @@ function sparse_fit(A, basis, opt; abstol = 1e-6)
     try
         b = ones((1, n))
         solver = SparseLinearSolver(opt,
-                                    options = DataDrivenCommonOptions(verbose = false,
-                                                                      maxiters = 1000))
+            options = DataDrivenCommonOptions(verbose = false,
+                maxiters = 1000))
         res, _... = solver(A', b)
         q₀ = DataDrivenSparse.coef(first(res))
 
@@ -130,8 +130,8 @@ function sparse_fit(A, basis, opt; abstol = 1e-6)
             return nothing, Inf
         end   # eliminating complex coefficients
         return sum(q[i] * expr(basis[i]) for i in 1:length(basis) if q[i] != 0;
-                   init = 0),
-               abs(ε)
+            init = 0),
+        abs(ε)
     catch e
         println("Error from sparse_fit", e)
         return nothing, Inf
@@ -169,61 +169,70 @@ function find_dense(A, basis; abstol = 1e-6)
     return nothing, Inf
 end
 
-
 ###############################################################################
 
-
-function hints(eq, x, basis; radius=5.0, abstol=1e-6, opt=STLSQ(exp.(-10:1:0)), complex_plane=true)
+function hints(eq,
+    x,
+    basis;
+    radius = 5.0,
+    abstol = 1e-6,
+    opt = STLSQ(exp.(-10:1:0)),
+    complex_plane = true)
     A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
 
     # find a linearly independent subset of the basis
     l = find_independent_subset(A; abstol)
     A, basis = A[l, l], basis[l]
-    
+
     n, m = size(A)
 
     try
         b = ones((1, n))
         solver = SparseLinearSolver(opt,
-                                    options = DataDrivenCommonOptions(verbose = false,
-                                                                      maxiters = 1000))
+            options = DataDrivenCommonOptions(verbose = false,
+                maxiters = 1000))
         res, _... = solver(A', b)
         q = DataDrivenSparse.coef(first(res))
-        err = abs(rms(A * q' .- 1)) 
+        err = abs(rms(A * q' .- 1))
         if err < abstol
             sel = abs.(q) .> abstol
             h = [basis[i] for i in 1:length(basis) if sel[i]]
-        else 
+        else
             h = []
         end
         return h, err
     catch e
         # println("Error from hints: ", e)        
     end
-    
+
     return 0, Inf
 end
 
-
-function best_hints(eq, x, basis; radius=5.0, abstol=1e-6, opt=STLSQ(exp.(-10:1:0)), complex_plane=true, num_trials=10)        
+function best_hints(eq,
+    x,
+    basis;
+    radius = 5.0,
+    abstol = 1e-6,
+    opt = STLSQ(exp.(-10:1:0)),
+    complex_plane = true,
+    num_trials = 10)
     H = []
-    L = Int[]    
-    
+    L = Int[]
+
     for _ in 1:num_trials
-        try 
-            h, err = hints(eq, x, basis; radius, abstol, opt, complex_plane)            
+        try
+            h, err = hints(eq, x, basis; radius, abstol, opt, complex_plane)
             push!(H, h)
             push!(L, err < abstol ? length(h) : length(basis))
         catch e
             #
         end
     end
-    
+
     if isempty(L)
         return nothing
     end
-    
+
     _, idx = findmin(L)
     return H[idx]
 end
-

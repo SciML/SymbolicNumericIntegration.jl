@@ -205,78 +205,76 @@ basic_integrals = [
     1 / log(x) - 1 / log(x)^2,
 ]
 
-
 sym_integrals = [
     # Basic Forms
-    a*x^2,
-    a*x + b*x^2 - c*x^3,
+    a * x^2,
+    a * x + b * x^2 - c * x^3,
     a / x,
-    1 / (a*x + 5),
+    1 / (a * x + 5),
     1 / (x + a)^2,
     (x + a)^3,
     x * (x - a)^4,
     1 / (a + x^2),
     sqrt(x - a),
-    1 / sqrt(a*x - 1),
-    x * sqrt(a*x + b),
-    log(a*x),
-    x * log(a*x),
-    x^2 * log(a*x),
-    log(a*x) / x,
-    log(x^2 - a*x + b),
-    log(a*x)^2,
-    x^2 * log(a*x+b)^2,
-    exp(a*x),
-    x * exp(a*x),
-    x^2 * exp(a*x),
-    x * exp(a*x^2),
-    sin(a*x),
-    sin(a*x)^2,
-    cos(a*x + b)^2,
-    sin(a*x) * cos(a*x),
-    sin(a*x) * cos(b*x),
-    tan(a*x),
-    sec(a*x),
-    x * cos(a*x),
-    x^2 * cos(a*x),
-    exp(a*x) * sin(b*x),
-    x * exp(a*x) * sin(a*x),
-    x * exp(a*x) * cos(b*x),
-    cosh(a*x),
-    exp(a*x) * cosh(b*x),
-    cos(a*x) * cosh(b*x),
-    sin(a*x) * cos(b*x) * exp(c*x),
-    sin(a*x) * sinh(b*x) * exp(c*x),
-    sec(a*x)^2 * tan(a*x),
-    exp(a*x) / (1 + exp(a*x)),
-    exp(a*x) / exp(b*x),
-    cos(exp(a*x)) * sin(exp(a*x)) * exp(a*x),
-    1 / (x * log(a*x)),
-    log(log(a*x)) / x,
-    sin(log(a*x)),
-    x / (exp(a*x) - b),    
-    exp(a*x) / (b*exp(a*x) + c),
-    exp(a*x) * exp(exp(a*x)),
-    log(cos(a*x)) * tan(a*x),
+    1 / sqrt(a * x - 1),
+    x * sqrt(a * x + b),
+    log(a * x),
+    x * log(a * x),
+    x^2 * log(a * x),
+    log(a * x) / x,
+    log(x^2 - a * x + b),
+    log(a * x)^2,
+    x^2 * log(a * x + b)^2,
+    exp(a * x),
+    x * exp(a * x),
+    x^2 * exp(a * x),
+    x * exp(a * x^2),
+    sin(a * x),
+    sin(a * x)^2,
+    cos(a * x + b)^2,
+    sin(a * x) * cos(a * x),
+    sin(a * x) * cos(b * x),
+    tan(a * x),
+    sec(a * x),
+    x * cos(a * x),
+    x^2 * cos(a * x),
+    exp(a * x) * sin(b * x),
+    x * exp(a * x) * sin(a * x),
+    x * exp(a * x) * cos(b * x),
+    cosh(a * x),
+    exp(a * x) * cosh(b * x),
+    cos(a * x) * cosh(b * x),
+    sin(a * x) * cos(b * x) * exp(c * x),
+    sin(a * x) * sinh(b * x) * exp(c * x),
+    sec(a * x)^2 * tan(a * x),
+    exp(a * x) / (1 + exp(a * x)),
+    exp(a * x) / exp(b * x),
+    cos(exp(a * x)) * sin(exp(a * x)) * exp(a * x),
+    1 / (x * log(a * x)),
+    log(log(a * x)) / x,
+    sin(log(a * x)),
+    x / (exp(a * x) - b),
+    exp(a * x) / (b * exp(a * x) + c),
+    exp(a * x) * exp(exp(a * x)),
+    log(cos(a * x)) * tan(a * x),
     1 / (x^3 + a),
-    exp(a*x+b) / x,
+    exp(a * x + b) / x,
     sin(x + a) / (x + a),
-    cos(a*x) / x,
-    x / log(a*x^2),
+    cos(a * x) / x,
+    x / log(a * x^2),
     # bypass = true
     β,      # turn of bypass = true
-    exp(a*x) / x - exp(a*x) / x^2,
-    cos(a*x) / x - sin(a*x) / x^2,
+    exp(a * x) / x - exp(a * x) / x^2,
+    cos(a * x) / x - sin(a * x) / x^2,
 ]
 
-
-function test_integrals(basic=true, subs=nothing;  kw...)
+function test_integrals(basic = true, subs = nothing; kw...)
     args = isempty(kw) ? Dict() : Dict(kw)
     args[:detailed] = false
     misses = []
-    k = 1        
-    
-    integrals = basic ? basic_integrals : sym_integrals    
+    k = 1
+
+    integrals = basic ? basic_integrals : sym_integrals
     args[:symbolic] = !basic
 
     for (i, eq) in enumerate(integrals)
@@ -288,7 +286,7 @@ function test_integrals(basic=true, subs=nothing;  kw...)
             if subs != nothing
                 eq = substitute(eq, subs)
             end
-            
+
             printstyled(k, ": "; color = :blue)
             k += 1
             printstyled(eq, " =>\n"; color = :green)
@@ -314,6 +312,6 @@ end
 
 @testset "integral" begin
     n = test_integrals(; symbolic = false, verbose = false, homotopy = true, num_steps = 2,
-                       num_trials = 10)
+        num_trials = 10)
     @test n > 0
 end

@@ -10,7 +10,7 @@ function beautify(eq)
     elseif is_pow(eq)
         p = args(eq)[1]
         k = args(eq)[2]
-        return beautify(p) ^ k
+        return beautify(p)^k
     elseif is_div(eq)
         return beautify(numer(eq)) / beautify(denom(eq))
     elseif is_number(eq)
@@ -19,7 +19,6 @@ function beautify(eq)
         return eq
     end
 end
-
 
 ###################################################################
 
@@ -42,7 +41,6 @@ function equiv(y, x)
     end
 end
 
-
 """
     Splits an expression into a list of terms
 """
@@ -54,7 +52,6 @@ function split_terms(eq, x)
         return [equiv(eq, x)]
     end
 end
-
 
 """
     Checks whether y is a holonomic function, i.e., is closed 
@@ -72,12 +69,12 @@ end
 """
 function is_holonomic(y, x)
     y = value(y)
-    
+
     if is_polynomial(y, x)
         return false
     end
-    
-    if is_number(y) 
+
+    if is_number(y)
         return true
     end
 
@@ -98,12 +95,11 @@ function is_holonomic(y, x)
     return false
 end
 
-
 """
     Generates a list of ansatzes based on repetative differentiation. 
     It works for holonomic functions, which are closed under differentiation.
 """
-function blender(y, x; n=3)
+function blender(y, x; n = 3)
     basis = value(y)
     for i in 1:n
         new_basis = basis
@@ -133,14 +129,14 @@ end
     Returns:
         a dict of sym : value pairs
 """
-function subs_symbols(eq, x; include_x=false, radius=5.0)
+function subs_symbols(eq, x; include_x = false, radius = 5.0)
     S = Dict()
     for v in get_variables(value(eq))
         if !isequal(v, x)
             S[v] = randn()
         end
     end
-    
+
     if include_x
         S[x] = randn()
     end
@@ -148,14 +144,13 @@ function subs_symbols(eq, x; include_x=false, radius=5.0)
     return S
 end
 
-
 """
     Splits terms into a part dependent on x and a part constant w.r.t. x    
     For example, `atomize(a*sin(b*x), x)` is `(a, sin(b*x))`)
 """
 function atomize(eq, x)
     eq = value(eq)
-    
+
     if is_mul(eq)
         coef = 1
         atom = 1
@@ -164,22 +159,21 @@ function atomize(eq, x)
             coef *= c
             atom *= a
         end
-        return (coef, atom)            
+        return (coef, atom)
     elseif is_div(eq)
         c1, a1 = atomize(numer(eq), x)
         c2, a2 = atomize(denom(eq), x)
-        return (c1/c2, a1/a2)
+        return (c1 / c2, a1 / a2)
     elseif isdependent(eq, x)
         return (1, eq)
     else
         return (eq, 1)
-    end   
+    end
 end
-
 
 function atomize(eq)
     eq = value(eq)
-    
+
     if is_mul(eq)
         coef = 1
         atom = 1
@@ -188,24 +182,21 @@ function atomize(eq)
             coef *= c
             atom *= a
         end
-        return (coef, atom)            
+        return (coef, atom)
     elseif is_div(eq)
         c1, a1 = atomize(numer(eq))
         c2, a2 = atomize(denom(eq))
-        return (c1/c2, a1/a2)
+        return (c1 / c2, a1 / a2)
     elseif is_number(eq)
         return (eq, 1)
     else
         return (1, eq)
-    end   
+    end
 end
-
-
 
 ############################## Numerical Utils ##############################
 
 @variables θ[1:30]
-
 
 """
     Given an integral problem ∫eq dx = Σ θ[i]*basis[i], where 
@@ -214,14 +205,14 @@ end
 """
 function make_eqs(eq, x, basis)
     frags = Dict()
-    
+
     for d in terms(eq)
         c, a = atomize(d, x)
         frags[a] = c
     end
-    
+
     vars = []
-    
+
     for (i, b) in enumerate(basis)
         db = expand_fraction(diff(b, x), x)
 
@@ -229,13 +220,12 @@ function make_eqs(eq, x, basis)
             c, a = atomize(d, x)
             frags[a] = get(frags, a, 0) + c * θ[i]
         end
-        
+
         push!(vars, θ[i])
     end
-  
+
     return [y ~ 0 for y in values(frags)], vars, frags
 end
-
 
 """
     make_Ab transforms the output of make_eqs to a linear
@@ -255,24 +245,23 @@ function make_Ab(eqs, vars)
     n = length(vars)
     L = [eq.lhs for eq in eqs]
     S = Dict(v => 0 for v in vars)
-    
-    b = Array{Num,1}(undef, n)
-    for i = 1:n
+
+    b = Array{Num, 1}(undef, n)
+    for i in 1:n
         b[i] = substitute(L[i], S)
     end
 
-    A = Array{Num,2}(undef, (n, n))
+    A = Array{Num, 2}(undef, (n, n))
 
-    for j = 1:n
-        S = Dict(v => (i==j ? 1 : 0) for (i, v) in enumerate(vars))
-        for i = 1:n
+    for j in 1:n
+        S = Dict(v => (i == j ? 1 : 0) for (i, v) in enumerate(vars))
+        for i in 1:n
             A[i, j] = substitute(L[i], S) - b[i]
         end
     end
 
     return A, b
 end
-
 
 """
     If the output of make_eqs is under-determined, make_square employs
@@ -281,16 +270,15 @@ end
 function make_square(eq, x, vars, frags)
     n = length(vars)
     eqs = []
-    
-    for i = 1:n
-        S = subs_symbols(eq, x; include_x=true)
-        q = sum(substitute(k, S) * v for (k,v) in frags)
+
+    for i in 1:n
+        S = subs_symbols(eq, x; include_x = true)
+        q = sum(substitute(k, S) * v for (k, v) in frags)
         push!(eqs, q ~ 0)
     end
-    
-    return eqs 
-end
 
+    return eqs
+end
 
 """
     Generates the final integral based on the list of coefficients and
@@ -300,12 +288,11 @@ function apply_coefs(q, ker, x)
     s = 0
     for (coef, expr) in zip(q, ker)
         s += beautify(coef) * expr
-    end    
+    end
     s = simplify(s)
     c, a = atomize(s)
     return beautify(c) * a
 end
-
 
 """
     The main entry point for symbolic integration.
@@ -317,38 +304,38 @@ end
     Returns:
         the integral or nothing if no solution
 """
-function integrate_symbolic(eq, x; abstol=1e-6, radius=1.0)    
+function integrate_symbolic(eq, x; abstol = 1e-6, radius = 1.0)
     eq = expand(eq)
-    
+
     if is_holonomic(eq, x)
         basis = blender(eq, x)
     else
-        basis = generate_homotopy(eq, x)        
+        basis = generate_homotopy(eq, x)
     end
 
     ker = best_hints(eq, x, basis)
-    
+
     if ker == nothing
         return nothing
     end
-    
+
     ker = [atomize(y, x)[2] for y in ker]
-    
+
     eqs, vars, frags = make_eqs(eq, x, ker)
-    
+
     try
         if length(eqs) != length(vars)
             eqs = make_square(eq, x, vars, frags)
         end
-        A, b = make_Ab(eqs, vars)        
+        A, b = make_Ab(eqs, vars)
         q = A \ b
-        q = value.(q)        
+        q = value.(q)
         sol = apply_coefs(q, ker, x)
 
         # test if sol is the correct integral of eq
-        S = subs_symbols(eq, x; include_x=true, radius)
+        S = subs_symbols(eq, x; include_x = true, radius)
         err = substitute(diff(sol, x) - eq, S)
-        
+
         if abs(err) < abstol
             return sol
         else
@@ -356,12 +343,7 @@ function integrate_symbolic(eq, x; abstol=1e-6, radius=1.0)
         end
     catch e
         # println(e)
-    end    
+    end
 
     return nothing
 end
-
-
-
-
-
