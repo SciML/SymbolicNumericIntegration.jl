@@ -198,7 +198,7 @@ function hints(eq, x, basis; radius=5.0, abstol=1e-6, opt=STLSQ(exp.(-10:1:0)), 
         end
         return h, err
     catch e
-        println("Error from hints", e)        
+        # println("Error from hints: ", e)        
     end
     
     return 0, Inf
@@ -207,7 +207,7 @@ end
 
 function best_hints(eq, x, basis; radius=5.0, abstol=1e-6, opt=STLSQ(exp.(-10:1:0)), complex_plane=true, num_trials=10)        
     H = []
-    L = Int[]
+    L = Int[]    
     
     for _ in 1:num_trials
         try 

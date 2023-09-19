@@ -11,7 +11,7 @@ include("axiom.jl")
 
 ##############################################################################
 
-@variables x a b β
+@variables x a b c β
 
 """
     a list of basic standard integral tests
@@ -209,6 +209,7 @@ basic_integrals = [
 sym_integrals = [
     # Basic Forms
     a*x^2,
+    a*x + b*x^2 - c*x^3,
     a / x,
     1 / (a*x + 5),
     1 / (x + a)^2,
@@ -238,20 +239,23 @@ sym_integrals = [
     sec(a*x),
     x * cos(a*x),
     x^2 * cos(a*x),
-    sin(a*x)^2 * cos(b*x)^3,
     exp(a*x) * sin(b*x),
     x * exp(a*x) * sin(a*x),
     x * exp(a*x) * cos(b*x),
     cosh(a*x),
     exp(a*x) * cosh(b*x),
     cos(a*x) * cosh(b*x),
+    sin(a*x) * cos(b*x) * exp(c*x),
+    sin(a*x) * sinh(b*x) * exp(c*x),
     sec(a*x)^2 * tan(a*x),
     exp(a*x) / (1 + exp(a*x)),
+    exp(a*x) / exp(b*x),
     cos(exp(a*x)) * sin(exp(a*x)) * exp(a*x),
     1 / (x * log(a*x)),
     log(log(a*x)) / x,
     sin(log(a*x)),
-    x / (exp(a*x) - b),
+    x / (exp(a*x) - b),    
+    exp(a*x) / (b*exp(a*x) + c),
     exp(a*x) * exp(exp(a*x)),
     log(cos(a*x)) * tan(a*x),
     1 / (x^3 + a),
@@ -266,14 +270,14 @@ sym_integrals = [
 ]
 
 
-function test_integrals(basis=true, subs=nothing;  kw...)
+function test_integrals(basic=true, subs=nothing;  kw...)
     args = isempty(kw) ? Dict() : Dict(kw)
     args[:detailed] = false
     misses = []
     k = 1        
     
-    integrals = basis ? basic_integrals : sym_integrals    
-    args[:symbolic] = !basis
+    integrals = basic ? basic_integrals : sym_integrals    
+    args[:symbolic] = !basic
 
     for (i, eq) in enumerate(integrals)
         if isequal(eq, β)

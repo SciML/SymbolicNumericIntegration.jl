@@ -29,7 +29,7 @@ Keyword Arguments:
 - `num_trials` (default: `10`): the number of trials in each step (no changes to the basis)
 - `show_basis` (default: `false`): if true, the basis (list of candidate terms) is printed
 - `bypass` (default: `false`): if true do not integrate terms separately but consider all at once
-- `symbolic` (default: `false`): try symbolic integration first (will be forced if `eq` has constant parameters)
+- `symbolic` (default: `false`): try symbolic integration first (will be forced if `eq` has symbolic constants)
 - `max_basis` (default: `100`): the maximum number of candidate terms to consider
 - `verbose` (default: `false`): print a detailed report
 - `complex_plane` (default: `true`): generate random test points on the complex plane (if false, the points will be on real axis)
@@ -37,6 +37,7 @@ Keyword Arguments:
 - `opt` (default: `STLSQ(exp.(-10:1:0))`): the sparse regression optimizer (from DataDrivenSparse)
 - `homotopy` (default: `true`): use the homotopy algorithm to generate the basis (*deprecated*, will be removed in a future version)
 - `use_optim` (default: `false`): use Optim.jl `minimize` function instead of the STLSQ algorithm (*experimental*)
+- `detailed` (default: `true`): `(solved, unsolved, err)` output format. If `detailed=false`, only the final integral is returned. 
 
 Output:
 -------
@@ -52,11 +53,12 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
     eq = expand(eq)
 
     if x == nothing
-        if !isempty(sym_consts(eq, x))
+        vars = get_variables(eq)
+        if length(vars) > 1
             error("Multiple symbolic variables detect. Please pass the independent variable to `integrate`")            
-        end
-        x = var(eq)
-        if x == nothing
+        elseif length(vars) == 1
+            x = vars[1]
+        else
             @syms 𝑥
             x = 𝑥
         end

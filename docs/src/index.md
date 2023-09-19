@@ -2,10 +2,13 @@
 
 **SymbolicNumericIntegration.jl** is a hybrid symbolic/numerical integration package that works on the [Julia Symbolics](https://docs.sciml.ai/Symbolics/stable/) expressions.
 
-**SymbolicNumericIntegration.jl** uses a randomized algorithm based on a hybrid of the *method of undetermined coefficients* and *sparse regression* and can solve a large subset of basic standard integrals (polynomials, exponential/logarithmic, trigonometric and hyperbolic, inverse trigonometric and hyperbolic, rational and square root).
-The basis of how it works and the theory of integration using the Symbolic-Numeric methods refer to [Basis of Symbolic-Numeric Integration](https://github.com/SciML/SymbolicNumericIntegration.jl/blob/main/docs/theory.ipynb).
+**SymbolicNumericIntegration.jl** uses a randomized algorithm based on a hybrid of the *method of undetermined coefficients* and *sparse regression* and can solve a large subset of basic standard integrals (polynomials, exponential/logarithmic, trigonometric and hyperbolic, inverse trigonometric and hyperbolic, rational and square root). The symbolic part of the algorithm is similar (but not identical) to Risch-Bronstein's poor man's integrator and generates a list of ansatzes (candidate terms). The numerical part uses sparse regression adopted from the Sparse identification of nonlinear dynamics (SINDy) algorithm to prune down the ansatzes and find the corresponding coefficients. The basis of how it works and the theory of integration using the Symbolic-Numeric methods refer to [Basis of Symbolic-Numeric Integration](https://github.com/SciML/SymbolicNumericIntegration.jl/blob/main/docs/theory.ipynb). 
 
-Function `integrate` returns the integral of a univariate expression with *constant* real or complex coefficients. `integrate` returns a tuple with three values. The first one is the solved integral, the second one is the sum of the unsolved terms, and the third value is the residual error. If `integrate` is successful, the unsolved portion is reported as 0.
+[hyint](https://github.com/siravan/hyint) is the python counterpart of **SymbolicNumericIntegration.jl** that works with **sympy** expressions. 
+
+Originally, **SymbolicNumericIntegration.jl** expected only univariate expression with *constant* real or complex coefficients as input. As of version 1.2, `integrate` function accepts symbolic constants for a subset of solvable integrals. 
+
+`integrate` returns a tuple with three values. The first one is the solved integral, the second one is the sum of the unsolved terms, and the third value is the residual error. If `integrate` is successful, the unsolved portion is reported as 0. If we pass `detailed=false` to `integrate', the output is simplified to only the resulting integrals. In this case, `nothing` is returned if the integral cannot be solved. Note that the simplified output will become the default in a future version. 
 
 ## Installation
 
@@ -22,7 +25,7 @@ Examples:
 using Symbolics
 using SymbolicNumericIntegration
 
-@variables x
+@variables x a b
 ```
 
 ```julia
@@ -32,44 +35,31 @@ julia> integrate(3x^3 + 2x - 5)
 julia> integrate((5 + 2x)^-1)
 ((1//2)*log((5//2) + x), 0, 0.0)
 
-julia> integrate(1 / (6 + x^2 - (5x)))
-(log(x - 3) - log(x - 2), 0, 3.339372764128952e-16)
+# detailed simplifies the output to just the resulting integral
+julia> integrate(x^2 / (16 + x^2); detailed=false)
+x + 4atan((-1//4)*x)
 
-julia> integrate(1 / (x^2 - 16))
-((1//8)*log(x - 4) - ((1//8)*log(4 + x)), 0, 1.546926788028958e-16)
+julia> integrate(x^2 * log(x); detailed=false)
+(1//3)*(x^3)*log(x) - (1//9)*(x^3)
 
-julia> integrate(x^2 / (16 + x^2))
-(x + 4atan((-1//4)*x), 0, 1.3318788420751984e-16)
+julia> integrate(sec(x) * tan(x); detailed=false)
+sec(x)
 
-julia> integrate(x^2 / sqrt(4 + x^2))
-((1//2)*x*((4 + x^2)^0.5) - ((2//1)*log(x + sqrt(4 + x^2))), 0, 8.702422633074313e-17)
+# Here, a is a symbolic constant; therefore, we need to explicitly
+# define the independent variable (say, x). Also, we set
+# `symbolic=true` to force using the symbolic solver 
+julia> integrate(sin(a*x), x; detailed=false, symbolic=true)
+(-cos(a*x)) / a
 
-julia> integrate(x^2 * log(x))
-((1//3)*log(x)*(x^3) - ((1//9)*(x^3)), 0, 0)
+julia> integrate(x^2 * cos(a*x), x; detailed=false, symbolic=true)
+((a^2)*(x^2)*sin(a*x) + 2.0a*x*cos(a*x) - 2.0sin(a*x)) / (a^3)
 
-julia> integrate(x^2 * exp(x))
-(2exp(x) + exp(x)*(x^2) - (2x*exp(x)), 0, 0)
+# multiple symbolic constants
+julia> integrate(cosh(a*x) * exp(b*x), x; detailed=false, symbolic=true)
+(a*sinh(a*x)*exp(b*x) - b*cosh(a*x)*exp(b*x)) / (a^2 - (b^2))
 
-julia> integrate(tan(2x))
-((-1//2)*log(cos(2x)), 0, 0)
-
-julia> integrate(sec(x) * tan(x))
-(cos(x)^-1, 0, 0)
-
-julia> integrate(cosh(2x) * exp(x))
-((2//3)*exp(x)*sinh(2x) - ((1//3)*exp(x)*cosh(2x)), 0, 7.073930088880992e-8)
-
-julia> integrate(cosh(x) * sin(x))
-((1//2)*sin(x)*sinh(x) - ((1//2)*cos(x)*cosh(x)), 0, 4.8956233716268386e-17)
-
-julia> integrate(cosh(2x) * sin(3x))
-(0.153845sinh(2x)*sin(3x) - (0.23077cosh(2x)*cos(3x)), 0, 4.9807620877373405e-6)
-
-julia> integrate(log(log(x)) * (x^-1))
-(log(x)*log(log(x)) - log(x), 0, 0)
-
-julia> integrate(exp(x^2))
-(0, exp(x^2), Inf)    # as expected!
+julia> integrate(log(log(a*x)) / x, x; detailed=false, symbolic=true)
+log(a*x)*log(log(a*x)) - log(a*x)
 ```
 
 SymbolicNumericIntegration.jl exports some special integral functions (defined over Complex numbers) and uses them in solving integrals:
@@ -83,13 +73,13 @@ For examples:
 
 ```
 julia> integrate(exp(x + 1) / (x + 1))
-(SymbolicNumericIntegration.Ei(1 + x), 0, 1.1796119636642288e-16)
+(SymbolicNumericIntegration.Ei(1 + x), 0, 0.0)
 
-julia> integrate(x * cos(x^2 - 1) / (x^2 - 1))
-((1//2)*SymbolicNumericIntegration.Ci(x^2 - 1), 0, 2.7755575615628914e-17)
+julia> integrate(x * cos(a*x^2 - 1) / (a*x^2 - 1), x; detailed=false, symbolic=true)
+((1//2)*SymbolicNumericIntegration.Ci(a*(x^2) - 1)) / a
 
-julia> integrate(1 / (x*log(log(x))))
-(SymbolicNumericIntegration.Li(log(x)), 0, 1.1102230246251565e-16)
+julia> integrate(1 / (x*log(log(x))), x; detailed=false, symbolic=true)
+SymbolicNumericIntegration.Li(log(x))
 ```
 
 ```@docs
@@ -197,34 +187,4 @@ Pkg.status(; mode = PKGMODE_MANIFEST) # hide
 
 ```@raw html
 </details>
-```
-
-```@raw html
-You can also download the 
-<a href="
-```
-
-```@eval
-using TOML
-version = TOML.parse(read("../../Project.toml", String))["version"]
-name = TOML.parse(read("../../Project.toml", String))["name"]
-link = "https://github.com/SciML/" * name * ".jl/tree/gh-pages/v" * version *
-       "/assets/Manifest.toml"
-```
-
-```@raw html
-">manifest</a> file and the
-<a href="
-```
-
-```@eval
-using TOML
-version = TOML.parse(read("../../Project.toml", String))["version"]
-name = TOML.parse(read("../../Project.toml", String))["name"]
-link = "https://github.com/SciML/" * name * ".jl/tree/gh-pages/v" * version *
-       "/assets/Project.toml"
-```
-
-```@raw html
-">project</a> file.
 ```
