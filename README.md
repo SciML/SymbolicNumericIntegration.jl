@@ -20,19 +20,20 @@ the documentation, which contains the unreleased features.
 
 ## Example
 
-```julia
+```
 julia> using SymbolicNumericIntegration
-using Symbolics
+julia> using Symbolics
 
 julia> @variables x a b
 
 julia> integrate(3x^3 + 2x - 5)
-
-julia> integrate(exp(a * x), x; symbolic = true)
 (x^2 + (3//4)*(x^4) - (5//1)*x, 0, 0)
 
-julia> integrate(sin(a * x) * cos(b * x), x; symbolic = true, detailed = false)
+julia> integrate(exp(a * x), x; symbolic = true)
 (exp(a*x) / a, 0, 0)
+
+julia> integrate(sin(a * x) * cos(b * x), x; symbolic = true, detailed = false)
+(-a*cos(a*x)*cos(b*x) - b*sin(a*x)*sin(b*x)) / (a^2 - (b^2))
 ```
 
 # Citation

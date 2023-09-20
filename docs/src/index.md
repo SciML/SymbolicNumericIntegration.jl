@@ -14,58 +14,61 @@ Originally, **SymbolicNumericIntegration.jl** expected only univariate expressio
 
 To install SymbolicNumericIntegration.jl, use the Julia package manager:
 
-```julia
+```
 using Pkg
 Pkg.add("SymbolicNumericIntegration")
 ```
 
 Examples:
 
-```julia
+```
 julia> using SymbolicNumericIntegration
-using Symbolics
+julia> using Symbolics
 
 julia> @variables x a b
 
-julia> integrate(3x^3 + 2x - 5)
+# if `detailed = true` (default), the output is a tuple of (solution, unsolved portion, err)
 
-julia> integrate((5 + 2x)^-1)
+julia> integrate(3x^3 + 2x - 5)
 (x^2 + (3//4)*(x^4) - (5x), 0, 0)
 
-julia> integrate(x^2 / (16 + x^2); detailed = false)
+julia> integrate((5 + 2x)^-1)
 ((1//2)*log((5//2) + x), 0, 0.0)
 
 # `detailed = false` simplifies the output to just the resulting integral
 
-julia> integrate(x^2 * log(x); detailed = false)
+julia> integrate(x^2 / (16 + x^2); detailed = false)
 x + 4atan((-1//4)*x)
 
-julia> integrate(sec(x) * tan(x); detailed = false)
+julia> integrate(x^2 * log(x); detailed = false)
 (1//3)*(x^3)*log(x) - (1//9)*(x^3)
 
-julia> integrate(sin(a * x), x; detailed = false, symbolic = true)
+julia> integrate(sec(x) * tan(x); detailed = false)
 sec(x)
 
-# Here, a is a symbolic constant; therefore, we need to explicitly
-# define the independent variable (say, x). Also, we set
+# Symbolic integration. Here, a is a symbolic constant; therefore, we need 
+# to explicitly define the independent variable (say, x). Also, we set
 # `symbolic = true` to force using the symbolic solver
 
-julia> integrate(x^2 * cos(a * x), x; detailed = false, symbolic = true)
+julia> integrate(sin(a * x), x; detailed = false, symbolic = true)
 (-cos(a*x)) / a
 
-julia> integrate(cosh(a * x) * exp(b * x), x; detailed = false, symbolic = true)
+julia> integrate(x^2 * cos(a * x), x; detailed = false, symbolic = true)
 ((a^2)*(x^2)*sin(a*x) + 2.0a*x*cos(a*x) - 2.0sin(a*x)) / (a^3)
+
+julia> integrate(log(log(a * x)) / x, x; detailed = false, symbolic = true)
+log(a*x)*log(log(a*x)) - log(a*x)
 
 # multiple symbolic constants
 
-julia> integrate(log(log(a * x)) / x, x; detailed = false, symbolic = true)
+julia> integrate(cosh(a * x) * exp(b * x), x; detailed = false, symbolic = true)
 (a*sinh(a*x)*exp(b*x) - b*cosh(a*x)*exp(b*x)) / (a^2 - (b^2))
-
-julia> integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
-log(a*x)*log(log(a*x)) - log(a*x)
 
 # definite integration, passing a tuple of (x, lower bound, higher bound) in the 
 # second argument
+
+julia> integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
+(sin(a) - a*cos(a)) / (a^2)
 ```
 
 SymbolicNumericIntegration.jl exports some special integral functions (defined over Complex numbers) and uses them in solving integrals:
@@ -98,7 +101,7 @@ integrate(eq, x; kwargs...)
 
 Additionally, 12 test suites from the *Rule-based Integrator* ([Rubi](https://rulebasedintegration.org/)) are included in the `/test` directory. For example, we can test the first one as below. *Axiom* refers to the format of the test files)
 
-```julia
+```
 using SymbolicNumericIntegration
 include("test/axiom.jl")  # note, you may need to use the correct path
 
