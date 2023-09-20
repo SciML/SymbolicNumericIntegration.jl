@@ -22,51 +22,50 @@ Pkg.add("SymbolicNumericIntegration")
 Examples:
 
 ```julia
-julia> using Symbolics
 julia> using SymbolicNumericIntegration
+using Symbolics
 
 julia> @variables x a b
 
 julia> integrate(3x^3 + 2x - 5)
-(x^2 + (3//4)*(x^4) - (5x), 0, 0)
 
 julia> integrate((5 + 2x)^-1)
+(x^2 + (3//4)*(x^4) - (5x), 0, 0)
+
+julia> integrate(x^2 / (16 + x^2); detailed = false)
 ((1//2)*log((5//2) + x), 0, 0.0)
 
 # `detailed = false` simplifies the output to just the resulting integral
 
-julia> integrate(x^2 / (16 + x^2); detailed = false)
+julia> integrate(x^2 * log(x); detailed = false)
 x + 4atan((-1//4)*x)
 
-julia> integrate(x^2 * log(x); detailed = false)
+julia> integrate(sec(x) * tan(x); detailed = false)
 (1//3)*(x^3)*log(x) - (1//9)*(x^3)
 
-julia> integrate(sec(x) * tan(x); detailed = false)
+julia> integrate(sin(a * x), x; detailed = false, symbolic = true)
 sec(x)
 
 # Here, a is a symbolic constant; therefore, we need to explicitly
 # define the independent variable (say, x). Also, we set
 # `symbolic = true` to force using the symbolic solver
 
-julia> integrate(sin(a * x), x; detailed = false, symbolic = true)
+julia> integrate(x^2 * cos(a * x), x; detailed = false, symbolic = true)
 (-cos(a*x)) / a
 
-julia> integrate(x^2 * cos(a * x), x; detailed = false, symbolic = true)
+julia> integrate(cosh(a * x) * exp(b * x), x; detailed = false, symbolic = true)
 ((a^2)*(x^2)*sin(a*x) + 2.0a*x*cos(a*x) - 2.0sin(a*x)) / (a^3)
 
 # multiple symbolic constants
 
-julia> integrate(cosh(a * x) * exp(b * x), x; detailed = false, symbolic = true)
+julia> integrate(log(log(a * x)) / x, x; detailed = false, symbolic = true)
 (a*sinh(a*x)*exp(b*x) - b*cosh(a*x)*exp(b*x)) / (a^2 - (b^2))
 
-julia> integrate(log(log(a * x)) / x, x; detailed = false, symbolic = true)
+julia> integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
 log(a*x)*log(log(a*x)) - log(a*x)
 
 # definite integration, passing a tuple of (x, lower bound, higher bound) in the 
 # second argument
-
-julia> integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
-(sin(a) - a*cos(a)) / (a^2)
 ```
 
 SymbolicNumericIntegration.jl exports some special integral functions (defined over Complex numbers) and uses them in solving integrals:
