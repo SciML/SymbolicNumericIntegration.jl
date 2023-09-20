@@ -35,7 +35,7 @@ julia> integrate(3x^3 + 2x - 5)
 julia> integrate((5 + 2x)^-1)
 ((1//2)*log((5//2) + x), 0, 0.0)
 
-# detailed simplifies the output to just the resulting integral
+# `detailed = false` simplifies the output to just the resulting integral
 
 julia> integrate(x^2 / (16 + x^2); detailed = false)
 x + 4atan((-1//4)*x)
@@ -48,7 +48,7 @@ sec(x)
 
 # Here, a is a symbolic constant; therefore, we need to explicitly
 # define the independent variable (say, x). Also, we set
-# `symbolic=true` to force using the symbolic solver
+# `symbolic = true` to force using the symbolic solver
 
 julia> integrate(sin(a * x), x; detailed = false, symbolic = true)
 (-cos(a*x)) / a
@@ -63,6 +63,12 @@ julia> integrate(cosh(a * x) * exp(b * x), x; detailed = false, symbolic = true)
 
 julia> integrate(log(log(a * x)) / x, x; detailed = false, symbolic = true)
 log(a*x)*log(log(a*x)) - log(a*x)
+
+# definite integration, passing a tuple of (x, lower bound, higher bound) in the 
+# second argument
+
+julia> integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
+(sin(a) - a*cos(a)) / (a^2)
 ```
 
 SymbolicNumericIntegration.jl exports some special integral functions (defined over Complex numbers) and uses them in solving integrals:

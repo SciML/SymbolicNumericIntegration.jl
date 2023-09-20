@@ -10,17 +10,25 @@ Base.signbit(x::SymbolicUtils.Sym{Number}) = false
 is the main entry point to integrate a univariate expression `eq` with respect to `x' (optional). 
 
 ```julia
-integrate(x * sin(2x))
+julia> using Symbolics, SymbolNumericIntegration
 
-# output
+julia> @variables x a
 
+julia> integrate(x * sin(2x))
 ((1//4)*sin(2x) - (1//2)*x*cos(2x), 0, 0)
+
+julia> integrate(x * sin(a*x), x; symbolic=true, detailed=false)
+(sin(a*x) - a*x*cos(a*x)) / (a^2)
+
+julia> integrate(x * sin(a*x), (x, 0, 1); symbolic=true, detailed=false)
+(sin(a) - a*cos(a)) / (a^2)
 ```
 
 Arguments:
 ----------
 - `eq`: a univariate expression
-- `x`: the independent variable (optional)
+- `x`: independent variable (optional if `eq` is univariate) or a tuple 
+        of (independent variable, lower bound, upper bound) for definite integration.
 
 Keyword Arguments:
 ------------------
