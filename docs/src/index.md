@@ -22,13 +22,11 @@ Pkg.add("SymbolicNumericIntegration")
 Examples:
 
 ```julia
-using Symbolics
-using SymbolicNumericIntegration
+julia> using Symbolics
+julia> using SymbolicNumericIntegration
 
-@variables x a b
-```
+julia> @variables x a b
 
-```julia
 julia> integrate(3x^3 + 2x - 5)
 (x^2 + (3//4)*(x^4) - (5x), 0, 0)
 
