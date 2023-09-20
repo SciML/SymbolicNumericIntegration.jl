@@ -14,14 +14,14 @@ Originally, **SymbolicNumericIntegration.jl** expected only univariate expressio
 
 To install SymbolicNumericIntegration.jl, use the Julia package manager:
 
-```
+```julia
 using Pkg
 Pkg.add("SymbolicNumericIntegration")
 ```
 
 Examples:
 
-```
+```julia
 julia> using SymbolicNumericIntegration
 julia> using Symbolics
 
@@ -80,7 +80,7 @@ SymbolicNumericIntegration.jl exports some special integral functions (defined o
 
 For examples:
 
-```
+```julia
 julia> integrate(exp(x + 1) / (x + 1))
 (SymbolicNumericIntegration.Ei(1 + x), 0, 0.0)
 
