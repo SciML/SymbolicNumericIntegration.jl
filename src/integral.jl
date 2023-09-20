@@ -87,6 +87,27 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
 end
 
 """
+    Definite integral
+"""
+function integrate(eq, xx::Tuple; kwargs...)
+    x, lo, hi = xx
+    sol = integrate(eq, x; kwargs...)
+
+    if sol isa Tuple
+        if first(sol) != 0 && sol[2] == 0
+            return substitute(first(sol), Dict(x => hi)) -
+                   substitute(first(sol), Dict(x => lo))
+        else
+            return nothing
+        end
+    elseif sol != nothing
+        return substitute(sol, Dict(x => hi)) - substitute(sol, Dict(x => lo))
+    end
+
+    return nothing
+end
+
+"""
     integrate_sum(eq, x; kwargs...) 
 
 applies the integral summation rule ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx

@@ -70,8 +70,9 @@ end
 function is_holonomic(y, x)
     y = value(y)
 
+    # technically, polynomials are not holonomic, but practically we can include them
     if is_polynomial(y, x)
-        return false
+        return true
     end
 
     if is_number(y)
@@ -79,7 +80,8 @@ function is_holonomic(y, x)
     end
 
     if is_term(y)
-        return operation(y) in [sin, cos, sinh, cosh, exp]
+        return operation(y) in [sin, cos, sinh, cosh, exp] &&
+               is_polynomial(args(y)[1], x)
     end
 
     if is_pow(y)
@@ -113,6 +115,7 @@ function blender(y, x; n = 3)
         end
     end
 
+    basis = expand(x + basis + x * basis)
     return split_terms(basis, x)
 end
 
@@ -289,9 +292,38 @@ function apply_coefs(q, ker, x)
     for (coef, expr) in zip(q, ker)
         s += beautify(coef) * expr
     end
-    s = simplify(s)
+
+    try
+        s = simplify(s)
+    catch e
+        # println(e)
+    end
+
     c, a = atomize(s)
     return beautify(c) * a
+end
+
+function solve_eqs(eq, x, ker, eqs, vars; abstol = 1e-6, radius = 1.0, verbose = false)
+    try
+        A, b = make_Ab(eqs, vars)
+        q = A \ b
+        q = value.(q)
+        sol = apply_coefs(q, ker, x)
+
+        # test if sol solves ∫ eq dx
+        S = subs_symbols(eq, x; include_x = true, radius)
+        err = substitute(diff(sol, x) - eq, S)
+
+        if abs(err) < abstol
+            return sol
+        end
+    catch e
+        if verbose
+            @warn(e)
+        end
+    end
+
+    return nothing
 end
 
 """
@@ -304,7 +336,7 @@ end
     Returns:
         the integral or nothing if no solution
 """
-function integrate_symbolic(eq, x; abstol = 1e-6, radius = 1.0)
+function integrate_symbolic(eq, x; abstol = 1e-6, radius = 1.0, verbose = false)
     eq = expand(eq)
 
     if is_holonomic(eq, x)
@@ -323,27 +355,18 @@ function integrate_symbolic(eq, x; abstol = 1e-6, radius = 1.0)
 
     eqs, vars, frags = make_eqs(eq, x, ker)
 
-    try
-        if length(eqs) != length(vars)
+    sol = solve_eqs(eq, x, ker, eqs, vars; abstol, radius, verbose)
+
+    if sol == nothing
+        try
             eqs = make_square(eq, x, vars, frags)
+            sol = solve_eqs(eq, x, ker, eqs, vars; abstol, radius, verbose)
+        catch e
+            if verbose
+                @warn(e)
+            end
         end
-        A, b = make_Ab(eqs, vars)
-        q = A \ b
-        q = value.(q)
-        sol = apply_coefs(q, ker, x)
-
-        # test if sol is the correct integral of eq
-        S = subs_symbols(eq, x; include_x = true, radius)
-        err = substitute(diff(sol, x) - eq, S)
-
-        if abs(err) < abstol
-            return sol
-        else
-            return nothing
-        end
-    catch e
-        # println(e)
     end
 
-    return nothing
+    return sol
 end

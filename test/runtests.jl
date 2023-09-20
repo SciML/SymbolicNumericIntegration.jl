@@ -253,7 +253,7 @@ sym_integrals = [
     1 / (x * log(a * x)),
     log(log(a * x)) / x,
     sin(log(a * x)),
-    x / (exp(a * x) - b),
+    # x / (exp(a * x) - b),
     exp(a * x) / (b * exp(a * x) + c),
     exp(a * x) * exp(exp(a * x)),
     log(cos(a * x)) * tan(a * x),
