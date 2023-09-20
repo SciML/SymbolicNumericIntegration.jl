@@ -20,7 +20,7 @@ the documentation, which contains the unreleased features.
 
 ## Example
 
-```julia
+```
 julia> using SymbolicNumericIntegration
 using Symbolics
 
