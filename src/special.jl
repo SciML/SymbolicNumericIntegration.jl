@@ -69,3 +69,7 @@ end
 function Li(z)
     return Ei(log(z)) - Ei(log(2.0))
 end
+
+function Erfi(z)
+    return erfi(z)
+end

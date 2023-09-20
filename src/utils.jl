@@ -39,8 +39,9 @@ end
 #isdependent(eq, x) = !isequal(expand_derivatives(Differential(x)(eq)), 0)
 
 function isdependent(eq, x)
-    vars = get_variables(eq)
-    return length(vars) == 1 && isequal(x, vars[1])
+    return any(isequal(x, v) for v in get_variables(eq))
+    # vars = get_variables(eq)
+    # return length(vars) == 1 && isequal(x, vars[1])
 end
 
 """

@@ -10,17 +10,25 @@ Base.signbit(x::SymbolicUtils.Sym{Number}) = false
 is the main entry point to integrate a univariate expression `eq` with respect to `x' (optional). 
 
 ```julia
-integrate(x * sin(2x))
+julia> using Symbolics, SymbolNumericIntegration
 
-# output
+julia> @variables x a
 
+julia> integrate(x * sin(2x))
 ((1//4)*sin(2x) - (1//2)*x*cos(2x), 0, 0)
+
+julia> integrate(x * sin(a*x), x; symbolic=true, detailed=false)
+(sin(a*x) - a*x*cos(a*x)) / (a^2)
+
+julia> integrate(x * sin(a*x), (x, 0, 1); symbolic=true, detailed=false)
+(sin(a) - a*cos(a)) / (a^2)
 ```
 
 Arguments:
 ----------
 - `eq`: a univariate expression
-- `x`: the independent variable (optional)
+- `x`: independent variable (optional if `eq` is univariate) or a tuple 
+        of (independent variable, lower bound, upper bound) for definite integration.
 
 Keyword Arguments:
 ------------------
@@ -29,7 +37,7 @@ Keyword Arguments:
 - `num_trials` (default: `10`): the number of trials in each step (no changes to the basis)
 - `show_basis` (default: `false`): if true, the basis (list of candidate terms) is printed
 - `bypass` (default: `false`): if true do not integrate terms separately but consider all at once
-- `symbolic` (default: `false`): try symbolic integration first
+- `symbolic` (default: `false`): try symbolic integration first (will be forced if `eq` has symbolic constants)
 - `max_basis` (default: `100`): the maximum number of candidate terms to consider
 - `verbose` (default: `false`): print a detailed report
 - `complex_plane` (default: `true`): generate random test points on the complex plane (if false, the points will be on real axis)
@@ -37,6 +45,7 @@ Keyword Arguments:
 - `opt` (default: `STLSQ(exp.(-10:1:0))`): the sparse regression optimizer (from DataDrivenSparse)
 - `homotopy` (default: `true`): use the homotopy algorithm to generate the basis (*deprecated*, will be removed in a future version)
 - `use_optim` (default: `false`): use Optim.jl `minimize` function instead of the STLSQ algorithm (*experimental*)
+- `detailed` (default: `true`): `(solved, unsolved, err)` output format. If `detailed=false`, only the final integral is returned. 
 
 Output:
 -------
@@ -45,15 +54,19 @@ Output:
 - `err`: the numerical error in reaching the solution
 """
 function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 10,
-                   radius = 1.0,
-                   show_basis = false, opt = STLSQ(exp.(-10:1:0)), bypass = false,
-                   symbolic = true, max_basis = 100, verbose = false, complex_plane = true,
-                   homotopy = true, use_optim = false)
+    radius = 1.0,
+    show_basis = false, opt = STLSQ(exp.(-10:1:0)), bypass = false,
+    symbolic = false, max_basis = 100, verbose = false, complex_plane = true,
+    homotopy = true, use_optim = false, detailed = true)
     eq = expand(eq)
 
     if x == nothing
-        x = var(eq)
-        if x == nothing
+        vars = get_variables(eq)
+        if length(vars) > 1
+            error("Multiple symbolic variables detect. Please pass the independent variable to `integrate`")
+        elseif length(vars) == 1
+            x = vars[1]
+        else
             @syms 𝑥
             x = 𝑥
         end
@@ -61,22 +74,49 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
         x = value(x)    # needed for the transition from @syms to @variables
     end
 
-    l = Logger(verbose)
-
     # eq is a constant
     if !isdependent(eq, x)
-        return x * eq, 0, 0
+        if detailed
+            return x * eq, 0, 0
+        else
+            return x * eq
+        end
     end
 
-    s, u, ϵ = integrate_sum(eq, x, l; bypass, abstol, num_trials, num_steps,
-                            radius, show_basis, opt, symbolic,
-                            max_basis, verbose, complex_plane, use_optim)
-    # return simplify(s), u, ϵ
-    return s, u, ϵ
+    s, u, ε = integrate_sum(eq, x; bypass, abstol, num_trials, num_steps,
+        radius, show_basis, opt, symbolic,
+        max_basis, verbose, complex_plane, use_optim)
+
+    if detailed
+        return s, u, ε
+    else
+        return isequal(s, 0) ? nothing : s
+    end
 end
 
 """
-    integrate_sum(eq, x, l; kwargs...) 
+    Definite integral
+"""
+function integrate(eq, xx::Tuple; kwargs...)
+    x, lo, hi = xx
+    sol = integrate(eq, x; kwargs...)
+
+    if sol isa Tuple
+        if first(sol) != 0 && sol[2] == 0
+            return substitute(first(sol), Dict(x => hi)) -
+                   substitute(first(sol), Dict(x => lo))
+        else
+            return nothing
+        end
+    elseif sol != nothing
+        return substitute(sol, Dict(x => hi)) - substitute(sol, Dict(x => lo))
+    end
+
+    return nothing
+end
+
+"""
+    integrate_sum(eq, x; kwargs...) 
 
 applies the integral summation rule ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
 
@@ -84,60 +124,49 @@ inputs:
 ------
 - eq: the integrand
 - x: the indepedent variable
-- l: a logger
 
 The output is the same as `integrate`
 """
-function integrate_sum(eq, x, l; bypass = false, kwargs...)
+function integrate_sum(eq, x; bypass = false, kwargs...)
     solved = 0
     unsolved = 0
-    ϵ₀ = 0
+    ε₀ = 0
     ts = bypass ? [eq] : terms(eq)
 
-    if length(ts) > 1
-        inform(l, "Integrating sum", ts)
-    end
-
     for p in ts
-        s, u, ϵ = integrate_term(p, x, l; kwargs...)
+        s, u, ε = integrate_term(p, x; kwargs...)
         solved += s
         unsolved += u
-        ϵ₀ = max(ϵ₀, ϵ)
+        ε₀ = max(ε₀, ε)
     end
 
-    if !isequal(unsolved, 0)
+    if !isequal(unsolved, 0) && isempty(sym_consts(unsolved, x))
         eq = factor_rational(simplify_trigs(unsolved))
 
         if !isequal(eq, unsolved)
             eq = expand(eq)
             unsolved = 0
-            ϵ₀ = 0
+            ε₀ = 0
             ts = bypass ? [eq] : terms(eq)
 
-            if length(ts) > 1
-                inform(l, "Integrating transformed sum", ts)
-            else
-                inform(l, "Transforming the expression", ts[1])
-            end
-
             for p in ts
-                s, u, ϵ = integrate_term(p, x, l; kwargs...)
+                s, u, ε = integrate_term(p, x; kwargs...)
                 solved += s
                 unsolved += u
-                ϵ₀ = max(ϵ₀, ϵ)
+                ε₀ = max(ε₀, ε)
 
                 if !isequal(u, 0)   # premature termination on the first failure
-                    return 0, eq, ϵ₀
+                    return 0, eq, ε₀
                 end
             end
         end
     end
 
-    return expand(solved), unsolved, ϵ₀
+    return expand(solved), unsolved, ε₀
 end
 
 """
-    integrate_term(eq, x, l; kwargs...) 
+    integrate_term(eq, x; kwargs...) 
     
 is the central part of the code that tries different methods to integrate `eq`,
 which is assume to be a single term.
@@ -146,45 +175,66 @@ inputs:
 -------
 - eq: the integrand
 - x: the indepedent variable
-- l: a logger
 
 The output is the same as `integrate`
 """
-function integrate_term(eq, x, l; kwargs...)
+function integrate_term(eq, x; kwargs...)
     args = Dict(kwargs)
     abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
     radius = args[:abstol], args[:num_steps],
-             args[:num_trials], args[:show_basis], args[:symbolic],
-             args[:verbose],
-             args[:max_basis], args[:radius]
-
-    attempt(l, "Integrating term", eq)
+    args[:num_trials], args[:show_basis], args[:symbolic],
+    args[:verbose],
+    args[:max_basis], args[:radius]
 
     if is_number(eq)
         y = eq * x
-        result(l, "Successful", y)
         return y, 0, 0
     end
 
+    params = sym_consts(eq, x)
+    has_sym_consts = !isempty(params)
+
+    if has_sym_consts && !symbolic
+        @info("The input expression has constant parameters: [$(join(params, ", "))], forcing `symbolic = true`")
+        symbolic = true
+    end
+
+    if symbolic
+        y = integrate_symbolic(eq, x; abstol, radius)
+        if y == nothing
+            if has_sym_consts
+                @info("Symbolic integration failed. Try changing constant parameters ([$(join(params, ", "))]) to numerical values.")
+                return 0, eq, Inf
+            end
+        else
+            return y, 0, 0
+        end
+    end
+
     eq = cache(eq)
-    basis1 = generate_basis(eq, x, true)
-    basis2 = generate_basis(eq, x, false)
+    basis1 = generate_basis(eq, x, false)
+
+    if has_sym_consts
+        # kernel-based ansatz generator does not work correctly with sym consts
+        basis2 = basis1
+    else
+        basis2 = generate_basis(eq, x, true)
+    end
 
     if show_basis
-        inform(l, "Generating basis (|β| = $(length(basis1)))", basis1)
+        @info("Generating basis (|β| = $(length(basis1))): $basis1")
     end
 
     if length(basis1) > max_basis
-        result(l, "|β| = $(length(basis1)) is too large")
         return 0, expr(eq), Inf
     end
 
     # D = Differential(x)
-    ϵ₀ = Inf
+    ε₀ = Inf
     y₀ = 0
 
     # rescue
-    ϵᵣ = Inf
+    εᵣ = Inf
     yᵣ = 0
 
     for i in 1:num_steps
@@ -192,34 +242,19 @@ function integrate_term(eq, x, l; kwargs...)
             break
         end
 
-        if symbolic
-            y, ϵ = try_symbolic(Float64, expr(eq), x, expr.(basis1), deriv!.(basis1, x);
-                                kwargs...)
-
-            if !isequal(y, 0) && accept_solution(eq, x, y, radius) < abstol
-                result(l, "Successful symbolic", y)
-                return y, 0, 0
-            else
-                inform(l, "Failed symbolic")
-            end
-        end
-
         for j in 1:num_trials
             basis = isodd(j) ? basis1 : basis2
-            r = radius #*sqrt(2)^j
-            y, ϵ = try_integrate(eq, x, basis, r; kwargs...)
+            r = radius
+            y, ε = try_integrate(eq, x, basis, r; kwargs...)
 
-            ϵ = accept_solution(eq, x, y, r)
-            if ϵ < abstol
-                result(l, "Successful numeric (attempt $j out of $num_trials)", y)
-                return y, 0, ϵ
-            elseif ϵ < ϵᵣ
-                ϵᵣ = ϵ
+            ε = accept_solution(eq, x, y, r)
+            if ε < abstol
+                return y, 0, ε
+            elseif ε < εᵣ
+                εᵣ = ε
                 yᵣ = y
             end
         end
-
-        inform(l, "Failed numeric")
 
         if i < num_steps
             basis1, ok1 = expand_basis(prune_basis(eq, x, basis1, radius; kwargs...), x)
@@ -228,21 +263,13 @@ function integrate_term(eq, x, l; kwargs...)
             if !ok1 && ~ok2
                 break
             end
-
-            if show_basis
-                inform(l, "Expanding the basis (|β| = $(length(basis)))", basis1)
-            elseif verbose
-                inform(l, "Expanding the basis (|β| = $(length(basis)))")
-            end
         end
     end
 
-    if ϵᵣ < abstol * 10
-        result(l, "Accepting numeric (rescued)", yᵣ)
-        return yᵣ, 0, ϵᵣ
+    if εᵣ < abstol * 10
+        return yᵣ, 0, εᵣ
     else
-        result(l, "Unsucessful", eq)
-        return 0, expr(eq), ϵ₀
+        return 0, expr(eq), ε₀
     end
 end
 
