@@ -86,6 +86,8 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
     s, u, ε = integrate_sum(eq, x; bypass, abstol, num_trials, num_steps,
         radius, show_basis, opt, symbolic,
         max_basis, verbose, complex_plane, use_optim)
+        
+    s = beautify(s)
 
     if detailed
         return s, u, ε

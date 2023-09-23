@@ -9,7 +9,7 @@ function solve_sparse(eq, x, basis, radius; kwargs...)
     l = find_independent_subset(A; abstol)
     A, basis = A[l, l], basis[l]
 
-    y₁, ε₁ = sparse_fit(A, basis, opt; abstol)
+    y₁, ε₁ = sparse_fit(A, basis; abstol, opt)
     if ε₁ < abstol
         return y₁, ε₁, basis
     end
@@ -30,7 +30,7 @@ function solve_sparse(eq, x, basis, radius; kwargs...)
 
     # moving toward the poles
     modify_basis_matrix!(A, X, eq, x, basis, radius; abstol)
-    y₄, ε₄ = sparse_fit(A, basis, opt; abstol)
+    y₄, ε₄ = sparse_fit(A, basis; abstol, opt)
 
     if ε₄ < abstol || ε₄ < ε₁
         return y₄, ε₄
@@ -49,6 +49,8 @@ end
 
 function init_basis_matrix(eq, x, basis, radius, complex_plane; abstol = 1e-6)
     n = length(basis)
+    eq = value(eq)
+    basis = value.(basis)
 
     # A is an nxn matrix holding the values of the fragments at n random points
     A = zeros(Complex{Float64}, (n, n))
@@ -81,7 +83,7 @@ function init_basis_matrix(eq, x, basis, radius, complex_plane; abstol = 1e-6)
                 end
             end
         catch e
-            println("Error from init_basis_matrix!: ", e)
+              println("Error from init_basis_matrix!: ", e)
         end
         l -= 1
     end
@@ -113,7 +115,7 @@ function DataDrivenSparse.active_set!(idx::BitMatrix, p::SoftThreshold,
     DataDrivenSparse.active_set!(idx, p, abs.(x), λ)
 end
 
-function sparse_fit(A, basis, opt; abstol = 1e-6)
+function sparse_fit(A, basis; abstol = 1e-6, opt = STLSQ(exp.(-10:1:0)))
     n, m = size(A)
 
     try

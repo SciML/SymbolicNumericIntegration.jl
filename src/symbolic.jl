@@ -31,7 +31,7 @@ function equiv(y, x)
     if is_add(y)
         return sum(equiv(u, x) for u in args(y))
     elseif is_mul(y)
-        return prod(isdependent(u, x) ? u : 1 for u in args(y))
+        return prod(isdependent(u, x) ? u : 1 for u in args(y))        
     elseif is_div(y)
         return expand_fraction(y, x)
     elseif is_number(y)
@@ -132,20 +132,21 @@ end
     Returns:
         a dict of sym : value pairs
 """
-function subs_symbols(eq, x; include_x = false, radius = 5.0)
+function subs_symbols(eq, x; include_x = false, radius = 5.0, as_complex=true)
     S = Dict()
     for v in get_variables(value(eq))
         if !isequal(v, x)
-            S[v] = randn()
+            S[v] = as_complex ? Complex(randn()) : randn()
         end
     end
 
     if include_x
-        S[x] = randn()
+        S[x] = as_complex ? Complex(randn()) : randn()
     end
 
     return S
 end
+
 
 """
     Splits terms into a part dependent on x and a part constant w.r.t. x    
@@ -209,8 +210,8 @@ end
 function make_eqs(eq, x, basis)
     frags = Dict()
 
-    for d in terms(eq)
-        c, a = atomize(d, x)
+    for term in terms(eq)
+        c, a = atomize(term, x)
         frags[a] = c
     end
 
@@ -219,8 +220,8 @@ function make_eqs(eq, x, basis)
     for (i, b) in enumerate(basis)
         db = expand_fraction(diff(b, x), x)
 
-        for d in terms(db)
-            c, a = atomize(d, x)
+        for term in terms(db)
+            c, a = atomize(term, x)
             frags[a] = get(frags, a, 0) + c * θ[i]
         end
 
@@ -277,7 +278,14 @@ function make_square(eq, x, vars, frags)
     for i in 1:n
         S = subs_symbols(eq, x; include_x = true)
         q = sum(substitute(k, S) * v for (k, v) in frags)
-        push!(eqs, q ~ 0)
+        Q = (q ~ 0)
+        if Q isa Array
+            # Q returns a complex array
+            # a different pathway is needed here!
+            return nothing
+        else
+            push!(eqs, Q)
+        end
     end
 
     return eqs
@@ -303,6 +311,70 @@ function apply_coefs(q, ker, x)
     return beautify(c) * a
 end
 
+"""
+    The main entry point for symbolic integration.
+    
+    Argu:
+        eq: the expression to integrate
+        x: independent variable
+        
+    Returns:
+        the integral or nothing if no solution
+"""
+function integrate_symbolic(eq, x; abstol = 1e-6, radius = 1.0, verbose = false, num_steps=2)
+    eq = expand(eq)
+    coef, eq = atomize(eq, x)
+
+    if is_holonomic(eq, x)
+        basis = blender(eq, x)
+    else
+        basis = generate_homotopy(eq, x)
+    end
+    
+    for k = 1:num_steps    
+        sol = try_symbolic(eq, x, basis; abstol, radius, verbose)
+    
+        if sol != nothing
+            return coef * sol            
+        end        
+       
+        if k < num_steps 
+            basis = expand_basis_symbolic(basis, x) 
+        end
+    end
+    
+    return nothing
+end
+
+
+function try_symbolic(eq, x, basis; abstol = 1e-6, radius = 1.0, verbose = false)
+    ker = best_hints(eq, x, basis)
+
+    if ker == nothing
+        return nothing
+    end
+
+    ker = [atomize(y, x)[2] for y in ker]
+    eqs, vars, frags = make_eqs(eq, x, ker)
+    sol = solve_eqs(eq, x, ker, eqs, vars; abstol, radius, verbose)
+
+    if sol == nothing
+        try
+            eqs = make_square(eq, x, vars, frags)
+            if eqs != nothing
+                sol = solve_eqs(eq, x, ker, eqs, vars; abstol, radius, verbose=false)
+            end
+        catch e
+            if verbose
+                @warn(e)
+            end
+        end
+    end
+
+    return sol
+end
+
+
 function solve_eqs(eq, x, ker, eqs, vars; abstol = 1e-6, radius = 1.0, verbose = false)
     try
         A, b = make_Ab(eqs, vars)
@@ -326,47 +398,11 @@ function solve_eqs(eq, x, ker, eqs, vars; abstol = 1e-6, radius = 1.0, verbose =
     return nothing
 end
 
-"""
-    The main entry point for symbolic integration.
+
+function expand_basis_symbolic(basis, x)
+    b = sum(basis)
+    basis = split_terms(expand((1+x)*(b + diff(b, x))), x)    
     
-    Argu:
-        eq: the expression to integrate
-        x: independent variable
-        
-    Returns:
-        the integral or nothing if no solution
-"""
-function integrate_symbolic(eq, x; abstol = 1e-6, radius = 1.0, verbose = false)
-    eq = expand(eq)
-
-    if is_holonomic(eq, x)
-        basis = blender(eq, x)
-    else
-        basis = generate_homotopy(eq, x)
-    end
-
-    ker = best_hints(eq, x, basis)
-
-    if ker == nothing
-        return nothing
-    end
-
-    ker = [atomize(y, x)[2] for y in ker]
-
-    eqs, vars, frags = make_eqs(eq, x, ker)
-
-    sol = solve_eqs(eq, x, ker, eqs, vars; abstol, radius, verbose)
-
-    if sol == nothing
-        try
-            eqs = make_square(eq, x, vars, frags)
-            sol = solve_eqs(eq, x, ker, eqs, vars; abstol, radius, verbose)
-        catch e
-            if verbose
-                @warn(e)
-            end
-        end
-    end
-
-    return sol
+    return basis
 end
+
