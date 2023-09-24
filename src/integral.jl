@@ -53,11 +53,22 @@ Output:
 - `unsolved`: the residual unsolved portion of the input
 - `err`: the numerical error in reaching the solution
 """
-function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 10,
+function integrate(eq, x = nothing; 
+    abstol = 1e-6, 
+    num_steps = 2, 
+    num_trials = 10,
     radius = 1.0,
-    show_basis = false, opt = STLSQ(exp.(-10:1:0)), bypass = false,
-    symbolic = false, max_basis = 100, verbose = false, complex_plane = true,
-    homotopy = true, use_optim = false, detailed = true)
+    show_basis = false, 
+    opt = STLSQ(exp.(-10:1:0)), 
+    bypass = false,
+    symbolic = false, 
+    max_basis = 100, 
+    verbose = false, 
+    complex_plane = true,
+    homotopy = true, 
+    use_optim = false, 
+    detailed = true)
+    
     eq = expand(eq)
 
     if x == nothing
@@ -82,11 +93,12 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
             return x * eq
         end
     end
+    
+    plan = NumericalPlan(abstol, radius, complex_plane, opt)
 
-    s, u, ε = integrate_sum(eq, x; bypass, abstol, num_trials, num_steps,
-        radius, show_basis, opt, symbolic,
-        max_basis, verbose, complex_plane, use_optim)
-        
+    s, u, ε = integrate_sum(eq, x; plan, bypass, num_trials, num_steps,
+        show_basis, symbolic, max_basis, verbose, use_optim)
+
     s = beautify(s)
 
     if detailed
@@ -182,11 +194,11 @@ The output is the same as `integrate`
 """
 function integrate_term(eq, x; kwargs...)
     args = Dict(kwargs)
-    abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
-    radius = args[:abstol], args[:num_steps],
-    args[:num_trials], args[:show_basis], args[:symbolic],
-    args[:verbose],
-    args[:max_basis], args[:radius]
+    plan, num_steps, num_trials, show_basis, symbolic, verbose, max_basis = 
+        args[:plan], args[:num_steps], args[:num_trials], args[:show_basis], 
+        args[:symbolic], args[:verbose], args[:max_basis]
+        
+    abstol = plan.abstol
 
     if is_number(eq)
         y = eq * x
@@ -202,7 +214,7 @@ function integrate_term(eq, x; kwargs...)
     end
 
     if symbolic
-        y = integrate_symbolic(eq, x; abstol, radius)
+        y = integrate_symbolic(eq, x; plan)
         if y == nothing
             if has_sym_consts
                 @info("Symbolic integration failed. Try changing constant parameters ([$(join(params, ", "))]) to numerical values.")
@@ -246,11 +258,11 @@ function integrate_term(eq, x; kwargs...)
 
         for j in 1:num_trials
             basis = isodd(j) ? basis1 : basis2
-            r = radius
-            y, ε = try_integrate(eq, x, basis, r; kwargs...)
+            y, ε = try_integrate(eq, x, basis; plan)
 
-            ε = accept_solution(eq, x, y, r)
-            if ε < abstol
+            ε = accept_solution(eq, x, y; plan)
+
+            if ε < abstol            
                 return y, 0, ε
             elseif ε < εᵣ
                 εᵣ = ε
@@ -259,8 +271,8 @@ function integrate_term(eq, x; kwargs...)
         end
 
         if i < num_steps
-            basis1, ok1 = expand_basis(prune_basis(eq, x, basis1, radius; kwargs...), x)
-            basis2, ok2 = expand_basis(prune_basis(eq, x, basis2, radius; kwargs...), x)
+            basis1, ok1 = expand_basis(prune_basis(eq, x, basis1; plan), x)
+            basis2, ok2 = expand_basis(prune_basis(eq, x, basis2; plan), x)
 
             if !ok1 && ~ok2
                 break
@@ -278,7 +290,7 @@ end
 ###############################################################################
 
 """
-	try_integrate(eq, x, basis, radius; kwargs...) 
+	try_integrate(eq, x, basis; plan) 
 	
 is the main dispatch point to call different sparse solvers. It tries to 
 find a linear combination of the basis, whose derivative is equal to eq
@@ -288,19 +300,13 @@ output:
 - solved: the solved integration problem or 0 otherwise
 - err: the numerical error in reaching the solution
 """
-function try_integrate(eq, x, basis, radius; kwargs...)
-    args = Dict(kwargs)
-    use_optim = args[:use_optim]
-
+function try_integrate(eq, x, basis; plan = default_plan())
     if isempty(basis)
         return 0, Inf
     end
 
-    if use_optim
-        return solve_optim(eq, x, basis, radius; kwargs...)
-    else
-        return solve_sparse(eq, x, basis, radius; kwargs...)
-    end
+    # return solve_optim(eq, x, basis; plan)
+    return solve_sparse(eq, x, basis; plan)    
 end
 
 #################################################################################
@@ -310,10 +316,11 @@ end
 	
 is used for debugging and should not be called in the course of normal execution
 """
-function integrate_basis(eq, x = var(eq); abstol = 1e-6, radius = 1.0, complex_plane = true)
+function integrate_basis(eq, x = var(eq); plan = default_plan())
     eq = cache(expand(eq))
     basis = generate_basis(eq, x, false)
     n = length(basis)
-    A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
+    A, X = init_basis_matrix(eq, x, basis; plan)
     return basis, A, X
 end
+

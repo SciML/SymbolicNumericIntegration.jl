@@ -1,15 +1,15 @@
 
-function solve_sparse(eq, x, basis, radius; kwargs...)
-    args = Dict(kwargs)
-    abstol, opt, complex_plane = args[:abstol], args[:opt], args[:complex_plane]
 
-    A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
+function solve_sparse(eq, x, basis; plan = default_plan())    
+    abstol = plan.abstol
+
+    A, X = init_basis_matrix(eq, x, basis; plan)
 
     # find a linearly independent subset of the basis
     l = find_independent_subset(A; abstol)
     A, basis = A[l, l], basis[l]
 
-    y₁, ε₁ = sparse_fit(A, basis; abstol, opt)
+    y₁, ε₁ = sparse_fit(A, basis; plan)
     if ε₁ < abstol
         return y₁, ε₁, basis
     end
@@ -29,8 +29,8 @@ function solve_sparse(eq, x, basis, radius; kwargs...)
     end
 
     # moving toward the poles
-    modify_basis_matrix!(A, X, eq, x, basis, radius; abstol)
-    y₄, ε₄ = sparse_fit(A, basis; abstol, opt)
+    modify_basis_matrix!(A, X, eq, x, basis)
+    y₄, ε₄ = sparse_fit(A, basis; plan)
 
     if ε₄ < abstol || ε₄ < ε₁
         return y₄, ε₄
@@ -39,15 +39,13 @@ function solve_sparse(eq, x, basis, radius; kwargs...)
     end
 end
 
-function prune_basis(eq, x, basis, radius; kwargs...)
-    args = Dict(kwargs)
-    abstol, complex_plane = args[:abstol], args[:complex_plane]
-    A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
-    l = find_independent_subset(A; abstol)
+function prune_basis(eq, x, basis; plan = default_plan())
+    A, X = init_basis_matrix(eq, x, basis; plan)
+    l = find_independent_subset(A; plan.abstol)
     return basis[l]
 end
 
-function init_basis_matrix(eq, x, basis, radius, complex_plane; abstol = 1e-6)
+function init_basis_matrix(eq, x, basis; plan = default_plan())
     n = length(basis)
     eq = value(eq)
     basis = value.(basis)
@@ -70,7 +68,7 @@ function init_basis_matrix(eq, x, basis, radius, complex_plane; abstol = 1e-6)
 
     while k <= n && l > 0
         try
-            x₀ = test_point(complex_plane, radius)
+            x₀ = test_point(plan.complex_plane, plan.radius)
             X[k] = x₀
             b₀ = eq_fun(X[k])
 
@@ -91,7 +89,7 @@ function init_basis_matrix(eq, x, basis, radius, complex_plane; abstol = 1e-6)
     return A, X
 end
 
-function modify_basis_matrix!(A, X, eq, x, basis, radius; abstol = 1e-6)
+function modify_basis_matrix!(A, X, eq, x, basis)
     n, m = size(A)
     eq_fun = fun!(eq, x)
     Δeq_fun = deriv_fun!(eq, x)
@@ -115,12 +113,12 @@ function DataDrivenSparse.active_set!(idx::BitMatrix, p::SoftThreshold,
     DataDrivenSparse.active_set!(idx, p, abs.(x), λ)
 end
 
-function sparse_fit(A, basis; abstol = 1e-6, opt = STLSQ(exp.(-10:1:0)))
+function sparse_fit(A, basis; plan = default_plan())
     n, m = size(A)
 
     try
         b = ones((1, n))
-        solver = SparseLinearSolver(opt,
+        solver = SparseLinearSolver(plan.opt,
             options = DataDrivenCommonOptions(verbose = false,
                 maxiters = 1000))
         res, _... = solver(A', b)
@@ -140,7 +138,8 @@ function sparse_fit(A, basis; abstol = 1e-6, opt = STLSQ(exp.(-10:1:0)))
     end
 end
 
-function find_singlet(A, basis; abstol)
+
+function find_singlet(A, basis; abstol = 1e-6)
     σ = vec(std(A; dims = 1))
     μ = vec(mean(A; dims = 1))
     l = (σ .< abstol) .* (abs.(μ) .> abstol)
@@ -151,6 +150,7 @@ function find_singlet(A, basis; abstol)
         return nothing, Inf
     end
 end
+
 
 function find_dense(A, basis; abstol = 1e-6)
     n = size(A, 1)
@@ -173,15 +173,9 @@ end
 
 ###############################################################################
 
-function hints(eq,
-    x,
-    basis;
-    radius = 5.0,
-    abstol = 1e-6,
-    opt = STLSQ(exp.(-10:1:0)),
-    complex_plane = true)
-    A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
-
+function hints(eq, x, basis; plan = default_plan())    
+    abstol = plan.abstol
+    A, X = init_basis_matrix(eq, x, basis; plan)
     # find a linearly independent subset of the basis
     l = find_independent_subset(A; abstol)
     A, basis = A[l, l], basis[l]
@@ -190,7 +184,7 @@ function hints(eq,
 
     try
         b = ones((1, n))
-        solver = SparseLinearSolver(opt,
+        solver = SparseLinearSolver(plan.opt,
             options = DataDrivenCommonOptions(verbose = false,
                 maxiters = 1000))
         res, _... = solver(A', b)
@@ -210,22 +204,15 @@ function hints(eq,
     return 0, Inf
 end
 
-function best_hints(eq,
-    x,
-    basis;
-    radius = 5.0,
-    abstol = 1e-6,
-    opt = STLSQ(exp.(-10:1:0)),
-    complex_plane = true,
-    num_trials = 10)
+function best_hints(eq, x, basis; plan = default_plan(), num_trials = 10)
     H = []
     L = Int[]
 
     for _ in 1:num_trials
         try
-            h, err = hints(eq, x, basis; radius, abstol, opt, complex_plane)
+            h, err = hints(eq, x, basis; plan)
             push!(H, h)
-            push!(L, err < abstol ? length(h) : length(basis))
+            push!(L, err < plan.abstol ? length(h) : length(basis))
         catch e
             #
         end
