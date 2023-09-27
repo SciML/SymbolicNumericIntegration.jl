@@ -57,7 +57,7 @@ function integrate(eq, x = nothing;
     abstol = 1e-6, 
     num_steps = 2, 
     num_trials = 10,
-    radius = 1.0,
+    radius = 5.0,
     show_basis = false, 
     opt = STLSQ(exp.(-10:1:0)), 
     bypass = false,
@@ -243,7 +243,6 @@ function integrate_term(eq, x; kwargs...)
         return 0, expr(eq), Inf
     end
 
-    # D = Differential(x)
     ε₀ = Inf
     y₀ = 0
 
@@ -259,7 +258,6 @@ function integrate_term(eq, x; kwargs...)
         for j in 1:num_trials
             basis = isodd(j) ? basis1 : basis2
             y, ε = try_integrate(eq, x, basis; plan)
-
             ε = accept_solution(eq, x, y; plan)
 
             if ε < abstol            

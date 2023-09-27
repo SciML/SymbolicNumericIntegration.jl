@@ -152,49 +152,26 @@ end
     Splits terms into a part dependent on x and a part constant w.r.t. x    
     For example, `atomize(a*sin(b*x), x)` is `(a, sin(b*x))`)
 """
-function atomize(eq, x)
+function atomize(eq, xs...)
     eq = value(eq)
 
     if is_mul(eq)
         coef = 1
         atom = 1
         for t in args(eq)
-            c, a = atomize(t, x)
+            c, a = atomize(t, xs...)
             coef *= c
             atom *= a
         end
         return (coef, atom)
     elseif is_div(eq)
-        c1, a1 = atomize(numer(eq), x)
-        c2, a2 = atomize(denom(eq), x)
+        c1, a1 = atomize(numer(eq), xs...)
+        c2, a2 = atomize(denom(eq), xs...)
         return (c1 / c2, a1 / a2)
-    elseif isdependent(eq, x)
+    elseif any(isdependent(eq, x) for x in xs)
         return (1, eq)
     else
         return (eq, 1)
-    end
-end
-
-function atomize(eq)
-    eq = value(eq)
-
-    if is_mul(eq)
-        coef = 1
-        atom = 1
-        for t in args(eq)
-            c, a = atomize(t)
-            coef *= c
-            atom *= a
-        end
-        return (coef, atom)
-    elseif is_div(eq)
-        c1, a1 = atomize(numer(eq))
-        c2, a2 = atomize(denom(eq))
-        return (c1 / c2, a1 / a2)
-    elseif is_number(eq)
-        return (eq, 1)
-    else
-        return (1, eq)
     end
 end
 
@@ -308,7 +285,7 @@ function apply_coefs(q, ker, x)
         # println(e)
     end
 
-    c, a = atomize(s)
+    c, a = atomize(s, get_variables(s)...)
     return beautify(c) * a
 end
 
@@ -322,7 +299,7 @@ end
     Returns:
         the integral or nothing if no solution
 """
-function integrate_symbolic(eq, x; plan = default_plan(), num_steps=2)
+function integrate_symbolic(eq, x; plan = default_plan(), num_steps=1)
     eq = expand(eq)
     coef, eq = atomize(eq, x)
 
@@ -348,7 +325,7 @@ function integrate_symbolic(eq, x; plan = default_plan(), num_steps=2)
 end
 
 
-function try_symbolic(eq, x, basis; plan = default_plan())
+function try_symbolic(eq, x, basis; plan = default_plan(), try_square=true, try_sparse=true)
     ker = best_hints(eq, x, basis; plan)
 
     if ker == nothing
@@ -359,14 +336,26 @@ function try_symbolic(eq, x, basis; plan = default_plan())
     eqs, vars, frags = make_eqs(eq, x, ker)
     sol = solve_eqs(eq, x, ker, eqs, vars; plan)
 
-    if sol == nothing
+    if sol == nothing && try_square
         try
             eqs = make_square(eq, x, vars, frags)
             if eqs != nothing
                 sol = solve_eqs(eq, x, ker, eqs, vars; plan)
-            end
+            end                        
         catch e
-            #
+            # println(e)
+        end
+    end
+    
+    if sol == nothing && try_sparse
+        try
+            A, X, V, basis = generate_sparse_AX(eq, x, ker; plan)
+            sol, ε = solve_sparse(eq, x, basis; plan, AX=(A, X, V))
+
+            ε = accept_solution(eq, x, sol; plan)
+            sol = (ε < plan.abstol ? sol : nothing)
+        catch e
+            # println(e)
         end
     end
 
@@ -378,18 +367,12 @@ function solve_eqs(eq, x, ker, eqs, vars; plan = default_plan())
     try
         A, b = make_Ab(eqs, vars)
         q = A \ b
-        q = value.(q)
-        sol = apply_coefs(q, ker, x)
-
-        # test if sol solves ∫ eq dx
-        S = subs_symbols(eq, x; include_x = true, plan.radius)
-        err = substitute(diff(sol, x) - eq, S)
-
-        if abs(err) < plan.abstol
-            return sol
-        end
+        q = value.(q)        
+        sol = apply_coefs(q, ker, x)                
+        ε = accept_solution(eq, x, sol; plan)
+        return ε < plan.abstol ? sol : nothing
     catch e
-        # 
+        # println(e) 
     end
 
     return nothing
@@ -405,96 +388,42 @@ end
 
 ##################################################################
 
+complex_from_num(x) = Complex(value(real(x)), value(imag(x)))
 
-function filter_frags(eq, x, vars, frags; radius = 1.0)
-    n = length(frags)    
-    S = subs_symbols(eq, x; radius)    
-    fn = [fun!(substitute(f, S), x) for f in keys(frags)] 
-    
-    A = zeros(Complex{Float64}, (n,n))
-    
-    for i = 1:n
-        x₀ = test_point(true, radius)
-        
-        for j = 1:n
-            A[i, j] = fn[j](x₀)
-        end
-    end
-    
-    l = find_independent_subset(A)
-    frags_new = Dict()
-    w = 0
-    
-    for (i, (k, v)) in enumerate(frags)
-        if l[i]
-            push!(frags_new, k => v)   
-            w += v
-        end
-    end
-    
-    vars_new = vars # get_variables(w)    
-    eqs = [y ~ 0 for y in values(frags_new)]
-    
-    return eqs, vars_new, frags_new
-end
-
-
-function sparse_symbolic(eq, x, ker, vars, frags; abstol = 1e-6, radius = 1.0, verbose=false)
+function generate_sparse_AX(eq, x, ker, deriv=true; plan = default_plan(), nv=1)
     eq = value(eq)
-    params = [v for v in get_variables(eq) if !isequal(v, x)]
-    np = length(params)
-    nv = length(vars)
-    n = nv * (1 + np)
+    params = sym_consts(eq, x)
     
-    b = zeros(Complex{Float64}, n)
-    B = zeros(Complex{Float64}, (n, nv))
-    P = zeros(Complex{Float64}, (n, np))
-    A = zeros(Complex{Float64}, (n, n))
-    
-    Y = sum(k*v for (k, v) in frags)
-    
-    selector = []
-    
-    for j = 1:nv
-        push!(selector, Dict(v => (i == j ? 1 : 0) for (i, v) in enumerate(vars)))
+    basis = []
+    for p in [[1]; params]
+        for y in ker            
+            push!(basis, y*p)
+        end
+    end
+    basis = unique(basis)    
+
+    if deriv
+        Δbasis = [diff(y, x) for y in basis]    
+    else
+        Δbasis = basis   
     end
     
-    for i = 1:n
-        S = subs_symbols(eq, x; include_x = true, radius)        
-        b[i] = substitute(eq, S)
+    n = length(basis)
+    
+    A = zeros(Complex{Float64}, (n+nv, n))    
+    X = zeros(Complex{Float64}, n+nv)
+    
+    for i = 1:n+nv
+        S = subs_symbols(eq, x; include_x = true, plan.radius)        
+        X[i] = S[x]        
+        b₀ = complex_from_num(substitute(eq, S))
 
-        for (j, p) in enumerate(params)
-            P[i, j] = substitute(p, S)
-        end
-
-        y = substitute(Y, S)
-        
-        for j in 1:nv
-            u = substitute(y, selector[j])            
-            B[i, j] = Complex(value(real(u)), value(imag(u)))
+        for j in 1:n            
+            A[i, j] = complex_from_num(substitute(Δbasis[j], S)) / b₀
         end        
     end
     
-    A[:, 1:nv] .= B
-    
-    for j in 1:np
-        for i = 1:n
-            A[i, j*nv+1:(j+1)*nv] .= B[i, :] * P[i, j]
-        end
-    end
-    
-    l = find_independent_subset(A)
-    println(l)
-    A = A[:, l]
-    
-    opt = STLSQ(exp.(-10:1:0))
-    
-    solver = SparseLinearSolver(opt,
-            options = DataDrivenCommonOptions(verbose = false,
-                maxiters = 1000))
-    res, _... = solver(A, b')
-    q₀ = DataDrivenSparse.coef(first(res))
-    
-    return A, B, b, P, q₀
+    return A[1:n,:], X[1:n], A[n+1:end,:], basis
 end
+
 

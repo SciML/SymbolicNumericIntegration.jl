@@ -21,8 +21,10 @@ accept_solution(eq::ExprCache, x, sol, radius) = accept_solution(expr(eq), x, so
 
 function accept_solution(eq, x, sol; plan = default_plan())
     try
-        x₀ = test_point(plan.complex_plane, plan.radius)
-        Δ = substitute(diff(sol, x) - expr(eq), Dict(x => x₀))
+        # x₀ = test_point(plan.complex_plane, plan.radius)
+        # Δ = substitute(diff(sol, x) - expr(eq), Dict(x => x₀))
+        S = subs_symbols(eq, x; include_x = true, plan.radius)        
+        Δ = substitute(diff(sol, x) - expr(eq), S)
         return abs(Δ)
     catch e
         #

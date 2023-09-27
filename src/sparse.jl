@@ -1,17 +1,21 @@
 
 
-function solve_sparse(eq, x, basis; plan = default_plan())    
+function solve_sparse(eq, x, basis; plan = default_plan(), AX = nothing)    
     abstol = plan.abstol
 
-    A, X = init_basis_matrix(eq, x, basis; plan)
+    if AX == nothing
+        A, X, V = init_basis_matrix(eq, x, basis; plan)
+    else
+        A, X, V = AX
+    end
 
     # find a linearly independent subset of the basis
     l = find_independent_subset(A; abstol)
-    A, basis = A[l, l], basis[l]
+    A, V, basis = A[:,l], V[:,l], basis[l]
 
-    y₁, ε₁ = sparse_fit(A, basis; plan)
+    y₁, ε₁ = sparse_fit(A, V, basis; plan)
     if ε₁ < abstol
-        return y₁, ε₁, basis
+        return y₁, ε₁
     end
 
     rank = sum(l)
@@ -30,7 +34,7 @@ function solve_sparse(eq, x, basis; plan = default_plan())
 
     # moving toward the poles
     modify_basis_matrix!(A, X, eq, x, basis)
-    y₄, ε₄ = sparse_fit(A, basis; plan)
+    y₄, ε₄ = sparse_fit(A, V, basis; plan)
 
     if ε₄ < abstol || ε₄ < ε₁
         return y₄, ε₄
@@ -45,14 +49,13 @@ function prune_basis(eq, x, basis; plan = default_plan())
     return basis[l]
 end
 
-function init_basis_matrix(eq, x, basis; plan = default_plan())
+function init_basis_matrix(eq, x, basis; plan = default_plan(), nv=1)
     n = length(basis)
     eq = value(eq)
     basis = value.(basis)
 
-    # A is an nxn matrix holding the values of the fragments at n random points
-    A = zeros(Complex{Float64}, (n, n))
-    X = zeros(Complex{Float64}, n)
+    A = zeros(Complex{Float64}, (n+nv, n))
+    X = zeros(Complex{Float64}, n+nv)
 
     S = subs_symbols(eq, x)
     if !isempty(S)
@@ -64,9 +67,9 @@ function init_basis_matrix(eq, x, basis; plan = default_plan())
     Δbasis_fun = deriv_fun!.(basis, x)
 
     k = 1
-    l = 10 * n# max attempt
+    l = 10 * (n+nv) # max attempt
 
-    while k <= n && l > 0
+    while k <= n+nv && l > 0
         try
             x₀ = test_point(plan.complex_plane, plan.radius)
             X[k] = x₀
@@ -86,7 +89,7 @@ function init_basis_matrix(eq, x, basis; plan = default_plan())
         l -= 1
     end
 
-    return A, X
+    return A[1:n,:], X[1:n], A[n+1:end,:]
 end
 
 function modify_basis_matrix!(A, X, eq, x, basis)
@@ -113,7 +116,7 @@ function DataDrivenSparse.active_set!(idx::BitMatrix, p::SoftThreshold,
     DataDrivenSparse.active_set!(idx, p, abs.(x), λ)
 end
 
-function sparse_fit(A, basis; plan = default_plan())
+function sparse_fit(A, V, basis; plan = default_plan())
     n, m = size(A)
 
     try
@@ -124,16 +127,18 @@ function sparse_fit(A, basis; plan = default_plan())
         res, _... = solver(A', b)
         q₀ = DataDrivenSparse.coef(first(res))
 
-        ε = rms(A * q₀' .- 1)
+        ε = rms(V * q₀' .- 1)
         q = nice_parameter.(q₀)
+        
         if sum(iscomplex.(q)) > 2
             return nothing, Inf
         end   # eliminating complex coefficients
-        return sum(q[i] * expr(basis[i]) for i in 1:length(basis) if q[i] != 0;
-            init = 0),
-        abs(ε)
+        
+        sol = sum(q[i] * expr(basis[i]) for i in 1:length(basis) if q[i] != 0; init = 0)
+        return sol, abs(ε)
+        
     catch e
-        println("Error from sparse_fit", e)
+        println("Error from sparse_fit: ", e)
         return nothing, Inf
     end
 end
@@ -175,10 +180,10 @@ end
 
 function hints(eq, x, basis; plan = default_plan())    
     abstol = plan.abstol
-    A, X = init_basis_matrix(eq, x, basis; plan)
+    A, X, V = init_basis_matrix(eq, x, basis; plan)
     # find a linearly independent subset of the basis
     l = find_independent_subset(A; abstol)
-    A, basis = A[l, l], basis[l]
+    A, V, basis = A[:,l], V[:,l], basis[l]
 
     n, m = size(A)
 
@@ -189,14 +194,17 @@ function hints(eq, x, basis; plan = default_plan())
                 maxiters = 1000))
         res, _... = solver(A', b)
         q = DataDrivenSparse.coef(first(res))
-        err = abs(rms(A * q' .- 1))
-        if err < abstol
+        
+        ε = abs(rms(V * q' .- 1))
+        
+        if ε < abstol
             sel = abs.(q) .> abstol
-            h = [basis[i] for i in 1:length(basis) if sel[i]]
+            h = [basis[i] for i in 1:length(basis) if sel[i]]            
         else
             h = []
         end
-        return h, err
+        
+        return h, ε
     catch e
         # println("Error from hints: ", e)        
     end
@@ -211,8 +219,10 @@ function best_hints(eq, x, basis; plan = default_plan(), num_trials = 10)
     for _ in 1:num_trials
         try
             h, err = hints(eq, x, basis; plan)
-            push!(H, h)
-            push!(L, err < plan.abstol ? length(h) : length(basis))
+            if err < plan.abstol
+                push!(H, h)
+                push!(L, length(h))
+            end
         catch e
             #
         end
