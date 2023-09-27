@@ -3,7 +3,7 @@ module SymbolicNumericIntegration
 using SymbolicUtils
 using SymbolicUtils: istree, operation, arguments
 using Symbolics
-using Symbolics: value, get_variables, expand_derivatives, coeff
+using Symbolics: value, get_variables, expand_derivatives, coeff, Equation
 using SymbolicUtils.Rewriters
 using SymbolicUtils: exprtype, BasicSymbolic
 

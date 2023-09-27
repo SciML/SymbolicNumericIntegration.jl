@@ -31,6 +31,8 @@ function solve_sparse(eq, x, basis; plan = default_plan(), AX = nothing)
             return y₃, ε₃
         end
     end
+    
+    return y₁, ε₁
 
     # moving toward the poles
     modify_basis_matrix!(A, X, eq, x, basis)

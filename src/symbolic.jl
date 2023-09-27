@@ -119,7 +119,7 @@ function blender(y, x; n = 3)
     return split_terms(basis, x)
 end
 
-#################################################################################
+############################## Utils ###############################
 
 """
     Returns a dictionary of the symbolic constants in the expression
@@ -175,99 +175,6 @@ function atomize(eq, xs...)
     end
 end
 
-############################## Numerical Utils ##############################
-
-@variables θ[1:30]
-
-"""
-    Given an integral problem ∫eq dx = Σ θ[i]*basis[i], where 
-    θs are coefficients and basis is a list of ansatzes, make_eqs
-    generates a list of (hopefully linear!) equations in θs.
-"""
-function make_eqs(eq, x, basis)
-    frags = Dict()
-
-    for term in terms(eq)
-        c, a = atomize(term, x)        
-        frags[a] = c
-    end
-
-    for (i, b) in enumerate(basis)
-        db = expand_fraction(diff(b, x), x)
-
-        for term in terms(db)
-            c, a = atomize(term, x)                        
-            frags[a] = get(frags, a, 0) + c * θ[i]
-        end        
-    end
-    
-    vars = [θ[i] for i=1:length(basis)]
-    return [y ~ 0 for y in values(frags)], vars, frags
-end
-
-"""
-    make_Ab transforms the output of make_eqs to a linear
-    system.
-    
-    Args:
-    --------
-        eqs: a list of n linear equations in θs
-        vars: the list of variables, i.e., θ[1], θ[2],...
-        
-    Returns:
-    --------
-        A: an n-by-n symbolic matrix
-        b: a symbolic venctor of length n
-"""
-function make_Ab(eqs, vars)
-    n = length(eqs)
-    m = length(vars)
-    
-    L = [eq.lhs for eq in eqs]
-    S = Dict(v => 0 for v in vars)
-
-    b = Array{Num, 1}(undef, n)
-    for i in 1:n
-        b[i] = substitute(L[i], S)
-    end
-
-    A = Array{Num, 2}(undef, (n, m))
-
-    for j in 1:m
-        S = Dict(v => (i == j ? 1 : 0) for (i, v) in enumerate(vars))
-        for i in 1:n
-            A[i, j] = substitute(L[i], S) - b[i]
-        end
-    end
-
-    return A, b
-end
-
-"""
-    If the output of make_eqs is under-determined, make_square employs
-    numerical methods to generate a solvable system. 
-"""
-function make_square(eq, x, vars, frags)
-    n = length(vars)
-    eqs = []
-    S = subs_symbols(eq, x)
-
-    for i in 1:n
-        S[x] = Complex(randn())
-        # S = subs_symbols(eq, x; include_x = true)
-        q = sum(substitute(k, S) * v for (k, v) in frags)
-        Q = (q ~ 0)
-        if Q isa Array
-            # Q returns a complex array
-            # a different pathway is needed here!
-            return nothing
-        else
-            push!(eqs, Q)
-        end
-    end
-
-    return eqs
-end
 
 """
     Generates the final integral based on the list of coefficients and
@@ -289,6 +196,20 @@ function apply_coefs(q, ker, x)
     return beautify(c) * a
 end
 
+
+function expand_basis_symbolic(basis, x)
+    b = sum(basis)
+    basis = split_terms(expand((1+x)*(b + diff(b, x))), x)    
+    
+    return basis
+end
+
+
+complex_from_num(x) = Complex(value(real(x)), value(imag(x)))
+
+
+################################ Refactoring ##########################################
+
 """
     The main entry point for symbolic integration.
     
@@ -300,6 +221,29 @@ end
         the integral or nothing if no solution
 """
 function integrate_symbolic(eq, x; plan = default_plan(), num_steps=1)
+    prob = Problem(eq, x; plan, num_steps)
+
+    if prob != nothing
+        return solver(prob)
+    end
+    
+    return nothing
+end
+
+
+Expression = Union{Num, BasicSymbolic, Number}
+
+struct Problem
+    eq::Expression          # integrand
+    x::Expression           # independent variable
+    coef::Expression        # coefficient of the integrand
+    ker::Array{Expression}  # the pruned list of the basis expressions (kernel)
+    plan::NumericalPlan     # the numerial plan, containing various parameters
+    num_steps::Int          # the number of expansion attempts
+end
+
+
+function Problem(eq, x; plan = default_plan(), num_steps=1)
     eq = expand(eq)
     coef, eq = atomize(eq, x)
 
@@ -309,23 +253,6 @@ function integrate_symbolic(eq, x; plan = default_plan(), num_steps=1)
         basis = generate_homotopy(eq, x)
     end
     
-    for k = 1:num_steps    
-        sol = try_symbolic(eq, x, basis; plan)
-    
-        if sol != nothing
-            return coef * sol            
-        end        
-       
-        if k < num_steps 
-            basis = expand_basis_symbolic(basis, x) 
-        end
-    end
-    
-    return nothing
-end
-
-
-function try_symbolic(eq, x, basis; plan = default_plan(), try_square=true, try_sparse=true)
     ker = best_hints(eq, x, basis; plan)
 
     if ker == nothing
@@ -333,44 +260,109 @@ function try_symbolic(eq, x, basis; plan = default_plan(), try_square=true, try_
     end
 
     ker = [atomize(y, x)[2] for y in ker]
-    eqs, vars, frags = make_eqs(eq, x, ker)
-    sol = solve_eqs(eq, x, ker, eqs, vars; plan)
-
-    if sol == nothing && try_square
-        try
-            eqs = make_square(eq, x, vars, frags)
-            if eqs != nothing
-                sol = solve_eqs(eq, x, ker, eqs, vars; plan)
-            end                        
-        catch e
-            # println(e)
-        end
-    end
     
-    if sol == nothing && try_sparse
-        try
-            A, X, V, basis = generate_sparse_AX(eq, x, ker; plan)
-            sol, ε = solve_sparse(eq, x, basis; plan, AX=(A, X, V))
-
-            ε = accept_solution(eq, x, sol; plan)
-            sol = (ε < plan.abstol ? sol : nothing)
-        catch e
-            # println(e)
-        end
-    end
-
-    return sol
+    return Problem(
+        eq,
+        x,
+        coef,
+        ker,
+        plan,
+        num_steps
+    )
 end
 
 
-function solve_eqs(eq, x, ker, eqs, vars; plan = default_plan())
+# returns true if sol solves the integration problem represented by prob
+function accept(prob, sol)
+    if sol != nothing
+        ε = accept_solution(prob.eq, prob.x, sol; prob.plan)
+        return ε < prob.plan.abstol
+    end
+    return false
+end
+
+
+# `solve` would be a better name but is confused with the Symbolic solve function.
+function solver(prob::Problem)
+    # First, we attempt fully symbolic integration
+    alg = SymbolicIntegrator(prob)
+    sol = solver(prob, alg)
+
+    if accept(prob, sol)
+        return sol * prob.coef
+    end
+    
+    # Next, dense numeric integration
+    alg = make_square(prob, alg)
+    if alg != nothing
+        sol = solver(prob, alg)
+    
+        if accept(prob, sol)
+            return sol * prob.coef
+        end
+    end
+    
+    # Finally, sparse numeric integration
+    alg = NumericIntegrator(prob)
+    sol = solver(prob, alg)
+
+    if accept(prob, sol)
+        return sol * prob.coef
+    end
+    
+    return nothing
+end
+
+
+subs_symbols(prob::Problem) = subs_symbols(prob.eq, prob.x)
+
+
+abstract type IntegrationAlgorithm end
+
+
+struct SymbolicIntegrator <: IntegrationAlgorithm
+   eqs::Vector{Equation}        # list of equations of the form Σ θ[i]*frag[i] ~ 0  
+   vars::Vector{Expression}     # list of dummy variables (θ[1], θ[2], ...)
+   frags::Dict                  # Dict of fragments of form frag => expression in θs
+end
+
+
+@variables θ[1:30]
+
+function SymbolicIntegrator(prob::Problem)
+    frags = Dict()
+    x = prob.x
+
+    for term in terms(prob.eq)
+        c, a = atomize(term, x)        
+        frags[a] = c
+    end
+
+    for (i, b) in enumerate(prob.ker)
+        db = expand_fraction(diff(b, x), x)
+
+        for term in terms(db)
+            c, a = atomize(term, x)                        
+            frags[a] = get(frags, a, 0) + c * θ[i]
+        end        
+    end    
+    
+    return SymbolicIntegrator(
+        [y ~ 0 for y in values(frags)], 
+        [θ[i] for i=1:length(prob.ker)], 
+        frags
+    )
+end
+
+
+function solver(prob::Problem, alg::SymbolicIntegrator)       
+    plan = prob.plan
+    
     try
-        A, b = make_Ab(eqs, vars)
-        q = A \ b
-        q = value.(q)        
-        sol = apply_coefs(q, ker, x)                
-        ε = accept_solution(eq, x, sol; plan)
-        return ε < plan.abstol ? sol : nothing
+        sys = linearize(alg)
+        q = solver(sys)
+        sol = apply_coefs(q, prob.ker, prob.x)
+        return sol        
     catch e
         # println(e) 
     end
@@ -379,19 +371,47 @@ function solve_eqs(eq, x, ker, eqs, vars; plan = default_plan())
 end
 
 
-function expand_basis_symbolic(basis, x)
-    b = sum(basis)
-    basis = split_terms(expand((1+x)*(b + diff(b, x))), x)    
+# If the linear system generated by the SymbolicIntegrator solver is
+# under-determined, make_square uses semi-numerical methods to 
+# generate a full-rank linear system.
+# 
+# The output is another SymbolicIntegrator.
+function make_square(prob::Problem, alg::SymbolicIntegrator)
+    n = length(alg.vars)
+    eqs = []
+    S = subs_symbols(prob)
+
+    for i in 1:n
+        S[prob.x] = Complex(randn())
+        q = sum(substitute(k, S) * v for (k, v) in alg.frags)
+        Q = (q ~ 0)
+        if Q isa Array
+            # Q returns a complex array
+            # a different pathway is needed here!
+            return nothing
+        else
+            push!(eqs, Q)
+        end
+    end
     
-    return basis
+    SymbolicIntegrator(
+        eqs, 
+        alg.vars, 
+        alg.frags
+    )
 end
 
-##################################################################
 
-complex_from_num(x) = Complex(value(real(x)), value(imag(x)))
+struct NumericIntegrator
+    A::AbstractMatrix           # training dataset as a normalized linear system 
+    X::AbstractVector           # vector of test points
+    V::AbstractMatrix           # verification dataset
+    basis::Vector{Expression}   # expand basis 
+end
 
-function generate_sparse_AX(eq, x, ker, deriv=true; plan = default_plan(), nv=1)
-    eq = value(eq)
+
+function NumericIntegrator(prob::Problem; nv=1)
+    eq, x, ker, plan = value(prob.eq), prob.x, prob.ker, prob.plan    
     params = sym_consts(eq, x)
     
     basis = []
@@ -402,12 +422,7 @@ function generate_sparse_AX(eq, x, ker, deriv=true; plan = default_plan(), nv=1)
     end
     basis = unique(basis)    
 
-    if deriv
-        Δbasis = [diff(y, x) for y in basis]    
-    else
-        Δbasis = basis   
-    end
-    
+    Δbasis = [diff(y, x) for y in basis]    
     n = length(basis)
     
     A = zeros(Complex{Float64}, (n+nv, n))    
@@ -423,7 +438,59 @@ function generate_sparse_AX(eq, x, ker, deriv=true; plan = default_plan(), nv=1)
         end        
     end
     
-    return A[1:n,:], X[1:n], A[n+1:end,:], basis
+    return NumericIntegrator(
+        A[1:n,:], 
+        X[1:n], 
+        A[n+1:end,:], 
+        basis
+    )
 end
 
+function solver(prob::Problem, alg::NumericIntegrator)
+    sol, _ = solve_sparse(prob.eq, prob.x, alg.basis; prob.plan, AX=(alg.A, alg.X, alg.V))
+    return sol
+end
+
+
+struct LinearSystem
+    # linear system is Ax = b
+    A::AbstractMatrix   
+    b::AbstractVector
+end
+
+
+function linearize(alg::SymbolicIntegrator)
+    eqs, vars = alg.eqs, alg.vars
+
+    n = length(eqs)
+    m = length(vars)
+    
+    L = [eq.lhs for eq in eqs]
+    S = Dict(v => 0 for v in vars)
+
+    b = Array{Num, 1}(undef, n)
+    for i in 1:n
+        b[i] = substitute(L[i], S)
+    end
+
+    A = Array{Num, 2}(undef, (n, m))
+
+    for j in 1:m
+        S = Dict(v => (i == j ? 1 : 0) for (i, v) in enumerate(vars))
+        for i in 1:n
+            A[i, j] = substitute(L[i], S) - b[i]
+        end
+    end
+
+    return LinearSystem(
+        A,
+        b
+    )
+end
+
+
+function solver(sys::LinearSystem)
+    q = sys.A \ sys.b
+    return value.(q)    
+end
 
