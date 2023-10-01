@@ -21,17 +21,17 @@ the documentation, which contains the unreleased features.
 ## Example
 
 ```julia
-julia> using Symbolics
+using Symbolics
 using SymbolicNumericIntegration
 
-julia> @variables x a b
+@variables x a b
 
-julia> integrate(3x^3 + 2x - 5)
+integrate(3x^3 + 2x - 5)
 
-julia> integrate(exp(a * x), x; symbolic = true)
+integrate(exp(a * x), x; symbolic = true)
 (x^2 + (3//4)*(x^4) - (5//1)*x, 0, 0)
 
-julia> integrate(sin(a * x) * cos(b * x), x; symbolic = true, detailed = false)
+integrate(sin(a * x) * cos(b * x), x; symbolic = true, detailed = false)
 (exp(a*x) / a, 0, 0)
 ```
 
