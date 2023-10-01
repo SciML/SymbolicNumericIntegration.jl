@@ -70,7 +70,7 @@ end
 is_poly(eq) = !isnan(poly_deg(eq))
 is_linear_poly(eq) = poly_deg(eq) == 1
 
-# rules to extract the kernel (the solvable portion) of an expression
+# rules to extract the kernel (the holomorphic portion) of an expression
 s_rules = [@rule Ω(+(~~xs)) => sum(map(Ω, ~~xs))
     @rule Ω(*(~~xs)) => prod(map(Ω, ~~xs))
 # @rule Ω(~x / ~y) => Ω(~x) * Ω(^(~y, -1))
@@ -79,6 +79,7 @@ s_rules = [@rule Ω(+(~~xs)) => sum(map(Ω, ~~xs))
     @rule Ω(~x::is_linear_poly) => ~x
     @rule Ω(sin(~x::is_linear_poly)) => sin(~x)
     @rule Ω(cos(~x::is_linear_poly)) => cos(~x)
+    @rule Ω(exp(~x + ~y)) => exp(~x) * exp(~y)
     @rule Ω(sinh(~x::is_linear_poly)) => sinh(~x)
     @rule Ω(cosh(~x::is_linear_poly)) => cosh(~x)
     @rule Ω(exp(~x::is_linear_poly)) => exp(~x)
@@ -274,7 +275,12 @@ h_rules = [@rule +(~~xs) => ω + sum(~~xs)
 # complexity returns a measure of the complexity of an equation
 # it is roughly similar ro kolmogorov complexity
 function complexity(eq)
-    _, eq = ops(eq)
-    h = Prewalk(PassThrough(Chain(h_rules)))(eq)
-    return substitute(h, Dict(ω => 1))
+    eq = value(eq)
+    if istree(eq)
+        return 1 + sum(complexity(t) for t in args(eq))
+    elseif is_number(eq)
+        return abs(eq)
+    else
+        return 1
+    end
 end

@@ -3,11 +3,20 @@ module SymbolicNumericIntegration
 using SymbolicUtils
 using SymbolicUtils: istree, operation, arguments
 using Symbolics
-using Symbolics: value, get_variables, expand_derivatives
+using Symbolics: value, get_variables, expand_derivatives, coeff, Equation
 using SymbolicUtils.Rewriters
 using SymbolicUtils: exprtype, BasicSymbolic
 
 using DataDrivenDiffEq, DataDrivenSparse
+
+struct NumericalPlan
+    abstol::Float64
+    radius::Float64
+    complex_plane::Bool
+    opt::DataDrivenDiffEq.AbstractDataDrivenAlgorithm
+end
+
+default_plan() = NumericalPlan(1e-6, 5.0, true, STLSQ(exp.(-10:1:0)))
 
 include("utils.jl")
 include("tree.jl")
@@ -24,10 +33,10 @@ export Ei, Si, Ci, Li
 
 include("numeric_utils.jl")
 include("sparse.jl")
-include("optim.jl")
+# include("optim.jl")
 include("integral.jl")
 
-export integrate, generate_basis
+export integrate, generate_basis, best_hints
 
 include("symbolic.jl")
 

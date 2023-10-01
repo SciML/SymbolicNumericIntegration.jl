@@ -1,6 +1,6 @@
 using DataStructures
 
-# this is the main heurisctic used to find the test fragments
+# this is the old heurisctic used to find the test fragments
 function generate_basis(eq, x, try_kernel = true)
     if !try_kernel
         S = sum(generate_homotopy(expr(eq), x))

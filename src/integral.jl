@@ -43,21 +43,35 @@ Keyword Arguments:
 - `complex_plane` (default: `true`): generate random test points on the complex plane (if false, the points will be on real axis)
 - `radius` (default: `1.0`): the radius of the disk in the complex plane to generate random test points
 - `opt` (default: `STLSQ(exp.(-10:1:0))`): the sparse regression optimizer (from DataDrivenSparse)
-- `homotopy` (default: `true`): use the homotopy algorithm to generate the basis (*deprecated*, will be removed in a future version)
-- `use_optim` (default: `false`): use Optim.jl `minimize` function instead of the STLSQ algorithm (*experimental*)
+- `homotopy` (default: `true`): *deprecated*, will be removed in a future version
+- `use_optim` (default: `false`): *deprecated*, will be removed in a future version
 - `detailed` (default: `true`): `(solved, unsolved, err)` output format. If `detailed=false`, only the final integral is returned. 
 
-Output:
--------
-- `solved`: the solved integral 
-- `unsolved`: the residual unsolved portion of the input
-- `err`: the numerical error in reaching the solution
+Returns a tuple of (solved, unsolved, err) if `detailed == true`, where
+
+    solved: the solved integral 
+    unsolved: the residual unsolved portion of the input
+    err: the numerical error in reaching the solution
+
+Returns the resulting integral or nothing if `detailed == false`
 """
-function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 10,
-    radius = 1.0,
-    show_basis = false, opt = STLSQ(exp.(-10:1:0)), bypass = false,
-    symbolic = false, max_basis = 100, verbose = false, complex_plane = true,
-    homotopy = true, use_optim = false, detailed = true)
+function integrate(eq, x = nothing;
+    abstol = 1e-6,
+    num_steps = 2,
+    num_trials = 10,
+    radius = 5.0,
+    show_basis = false,
+    opt = STLSQ(exp.(-10:1:0)),
+    bypass = false,
+    symbolic = false,
+    max_basis = 100,
+    verbose = false,
+    complex_plane = true,
+    homotopy = true,
+    use_optim = false,
+    detailed = true)
+    deprecation_warnings(; homotopy, use_optim)
+
     eq = expand(eq)
 
     if x == nothing
@@ -83,9 +97,12 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
         end
     end
 
-    s, u, ε = integrate_sum(eq, x; bypass, abstol, num_trials, num_steps,
-        radius, show_basis, opt, symbolic,
-        max_basis, verbose, complex_plane, use_optim)
+    plan = NumericalPlan(abstol, radius, complex_plane, opt)
+
+    s, u, ε = integrate_sum(eq, x; plan, bypass, num_trials, num_steps,
+        show_basis, symbolic, max_basis, verbose, use_optim)
+
+    s = beautify(s)
 
     if detailed
         return s, u, ε
@@ -94,9 +111,7 @@ function integrate(eq, x = nothing; abstol = 1e-6, num_steps = 2, num_trials = 1
     end
 end
 
-"""
-    Definite integral
-"""
+# Definite integral
 function integrate(eq, xx::Tuple; kwargs...)
     x, lo, hi = xx
     sol = integrate(eq, x; kwargs...)
@@ -115,18 +130,7 @@ function integrate(eq, xx::Tuple; kwargs...)
     return nothing
 end
 
-"""
-    integrate_sum(eq, x; kwargs...) 
-
-applies the integral summation rule ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
-
-inputs:
-------
-- eq: the integrand
-- x: the indepedent variable
-
-The output is the same as `integrate`
-"""
+# integrate_sum applies the integral summation rule ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
 function integrate_sum(eq, x; bypass = false, kwargs...)
     solved = 0
     unsolved = 0
@@ -165,26 +169,18 @@ function integrate_sum(eq, x; bypass = false, kwargs...)
     return expand(solved), unsolved, ε₀
 end
 
-"""
-    integrate_term(eq, x; kwargs...) 
-    
-is the central part of the code that tries different methods to integrate `eq`,
-which is assume to be a single term.
-
-inputs:
--------
-- eq: the integrand
-- x: the indepedent variable
-
-The output is the same as `integrate`
-"""
+# integrate_term is the central part of the univariate integration code that 
+# tries different methods to integrate `eq`.
+#
+# note: this function will be replaced with solver(prob::Problem) in symbolic.jl
+# in a future version
 function integrate_term(eq, x; kwargs...)
     args = Dict(kwargs)
-    abstol, num_steps, num_trials, show_basis, symbolic, verbose, max_basis,
-    radius = args[:abstol], args[:num_steps],
-    args[:num_trials], args[:show_basis], args[:symbolic],
-    args[:verbose],
-    args[:max_basis], args[:radius]
+    plan, num_steps, num_trials, show_basis, symbolic, verbose, max_basis = args[:plan],
+    args[:num_steps], args[:num_trials], args[:show_basis],
+    args[:symbolic], args[:verbose], args[:max_basis]
+
+    abstol = plan.abstol
 
     if is_number(eq)
         y = eq * x
@@ -200,7 +196,7 @@ function integrate_term(eq, x; kwargs...)
     end
 
     if symbolic
-        y = integrate_symbolic(eq, x; abstol, radius)
+        y = integrate_symbolic(eq, x; plan)
         if y == nothing
             if has_sym_consts
                 @info("Symbolic integration failed. Try changing constant parameters ([$(join(params, ", "))]) to numerical values.")
@@ -229,7 +225,6 @@ function integrate_term(eq, x; kwargs...)
         return 0, expr(eq), Inf
     end
 
-    # D = Differential(x)
     ε₀ = Inf
     y₀ = 0
 
@@ -244,10 +239,9 @@ function integrate_term(eq, x; kwargs...)
 
         for j in 1:num_trials
             basis = isodd(j) ? basis1 : basis2
-            r = radius
-            y, ε = try_integrate(eq, x, basis, r; kwargs...)
+            y, ε = try_integrate(eq, x, basis; plan)
+            ε = accept_solution(eq, x, y; plan)
 
-            ε = accept_solution(eq, x, y, r)
             if ε < abstol
                 return y, 0, ε
             elseif ε < εᵣ
@@ -257,8 +251,8 @@ function integrate_term(eq, x; kwargs...)
         end
 
         if i < num_steps
-            basis1, ok1 = expand_basis(prune_basis(eq, x, basis1, radius; kwargs...), x)
-            basis2, ok2 = expand_basis(prune_basis(eq, x, basis2, radius; kwargs...), x)
+            basis1, ok1 = expand_basis(prune_basis(eq, x, basis1; plan), x)
+            basis2, ok2 = expand_basis(prune_basis(eq, x, basis2; plan), x)
 
             if !ok1 && ~ok2
                 break
@@ -273,45 +267,24 @@ function integrate_term(eq, x; kwargs...)
     end
 end
 
-###############################################################################
-
-"""
-	try_integrate(eq, x, basis, radius; kwargs...) 
-	
-is the main dispatch point to call different sparse solvers. It tries to 
-find a linear combination of the basis, whose derivative is equal to eq
-
-output:
--------
-- solved: the solved integration problem or 0 otherwise
-- err: the numerical error in reaching the solution
-"""
-function try_integrate(eq, x, basis, radius; kwargs...)
-    args = Dict(kwargs)
-    use_optim = args[:use_optim]
-
+# try_integrate is the main dispatch point to call different sparse solvers. 
+# It tries to find a linear combination of the basis, whose derivative is 
+# equal to eq
+function try_integrate(eq, x, basis; plan = default_plan())
     if isempty(basis)
         return 0, Inf
     end
 
-    if use_optim
-        return solve_optim(eq, x, basis, radius; kwargs...)
-    else
-        return solve_sparse(eq, x, basis, radius; kwargs...)
-    end
+    # return solve_optim(eq, x, basis; plan)
+    return solve_sparse(eq, x, basis; plan)
 end
 
-#################################################################################
+function deprecation_warnings(; use_optim = false, homotopy = true)
+    if use_optim
+        @warn("use_optim is deprecated and will be removed in a future version")
+    end
 
-"""
-	integrate_basis(eq, x; kwargs...)
-	
-is used for debugging and should not be called in the course of normal execution
-"""
-function integrate_basis(eq, x = var(eq); abstol = 1e-6, radius = 1.0, complex_plane = true)
-    eq = cache(expand(eq))
-    basis = generate_basis(eq, x, false)
-    n = length(basis)
-    A, X = init_basis_matrix(eq, x, basis, radius, complex_plane; abstol)
-    return basis, A, X
+    if !homotopy
+        @warn("homotopy is deprecated and will be removed in a future version")
+    end
 end

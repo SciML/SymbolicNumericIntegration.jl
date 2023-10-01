@@ -45,18 +45,14 @@ function is_polynomial(p, x)
     end
 end
 
-"""
-    Checks whether p is a univariate polynomial
-"""
+# Checks whether p is a univariate polynomial
 function is_univar_poly(p)
     p = value(p)
     vars = get_variables(p)
     return length(vars) == 1 && is_polynomial(p, vars[1])
 end
 
-"""
-    Expands (Σ Ai) / B to Σ(Ai / B)
-"""
+# Expands (Σ Ai) / B to Σ(Ai / B)
 function expand_fraction(eq, x)
     if is_add(eq)
         return sum(expand_fraction(t, x) for t in args(eq))
@@ -74,9 +70,7 @@ function expand_fraction(eq, x)
     end
 end
 
-"""
-    Returns the list of symbolic constants 
-"""
+# Returns the list of symbolic constants 
 function sym_consts(eq, x)
     return [v for v in get_variables(eq) if !isequal(v, x)]
 end
