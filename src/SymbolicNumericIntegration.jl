@@ -11,8 +11,8 @@ using DataDrivenDiffEq, DataDrivenSparse
 
 struct NumericalPlan
     abstol::Float64
-    radius::Float64    
-    complex_plane::Bool    
+    radius::Float64
+    complex_plane::Bool
     opt::DataDrivenDiffEq.AbstractDataDrivenAlgorithm
 end
 
@@ -36,7 +36,7 @@ include("sparse.jl")
 # include("optim.jl")
 include("integral.jl")
 
-export integrate, generate_basis
+export integrate, generate_basis, best_hints
 
 include("symbolic.jl")
 

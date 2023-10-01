@@ -9,7 +9,7 @@ makedocs(sitename = "SymbolicNumericIntegration.jl",
     authors = "Shahriar Iravanian",
     modules = [SymbolicNumericIntegration],
     clean = true, doctest = false, linkcheck = true,
-    warnonly = [:missing_docs],
+    # warnonly = [:missing_docs],
     format = Documenter.HTML(assets = ["assets/favicon.ico"],
         canonical = "https://docs.sciml.ai/SymbolicNumericIntegration/stable/"),
     pages = pages)

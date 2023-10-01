@@ -1,4 +1,3 @@
-
 abstract type Op end
 
 struct Add <: Op end
@@ -33,20 +32,12 @@ end
 
 ############################################################################
 
-"""
-    isdependent returns true if eq is dependent on x
-"""
-#isdependent(eq, x) = !isequal(expand_derivatives(Differential(x)(eq)), 0)
-
+# isdependent returns true if eq is dependent on x
 function isdependent(eq, x)
     return any(isequal(x, v) for v in get_variables(eq))
-    # vars = get_variables(eq)
-    # return length(vars) == 1 && isequal(x, vars[1])
 end
 
-"""
-    is_number(x) returns true if x is a concrete numerical type
-"""
+# is_number(x) returns true if x is a concrete numerical type
 is_number(x::T) where {T <: Integer} = true
 # is_number(x::T) where {T <: Real} = true
 is_number(x::T) where {T <: Float32} = true
@@ -56,19 +47,6 @@ is_number(x::T) where {T <: Rational} = true
 is_number(x) = false
 
 is_proper(x) = is_number(x) && !isnan(x) && !isinf(x)
-
-"""
-    check_poly checks if a Symbolic expression is a polynomial
-"""
-# function check_poly(eq, x)
-#     if deg(eq, x) == 0 return :not_poly end
-#     coefs = values(collect_powers(value(eq), x))
-#     if any(z -> isdependent(restore_x(z,x),x), coefs) return :not_poly end
-#     if any(z -> z isa Complex, coefs) return :complex_poly end
-#     return :real_poly
-# end
-
-# is_linear_poly(eq, x) = check_poly(eq, x) != :not_poly && deg(eq, x) == 1
 
 function leading(eq, x)
     l = 0
@@ -86,9 +64,7 @@ function leading(eq, x)
     l
 end
 
-"""
-    deg(p) returns the degree of p if p is a polynomial
-"""
+# deg(p) returns the degree of p if p is a polynomial
 deg(::Add, p, x) = maximum(deg(t, x) for t in arguments(p))
 deg(::Mul, p, x) = sum(deg(t, x) for t in arguments(p); init = 0)
 
@@ -105,9 +81,7 @@ deg(::Any, p, x) = 0
 
 deg(p, x) = deg(ops(p)..., x)
 
-"""
-    var(p) returns the unique variable of an expression (is exists)
-"""
+# var(p) returns the unique variable of an expression (is exists)
 function var(p)
     vars = get_variables(p)
     if length(vars) == 1
@@ -145,10 +119,8 @@ count_rule1 = @rule ^(pox(~k, ~n1), ~n2) => isequal(~k, 1) ? pox(1, ~n1 * ~n2) :
 count_rule2 = @rule pox(~k1, ~n1) * pox(~k2, ~n2) => pox(~k1 * ~k2, ~n1 + ~n2)
 count_rule3 = @acrule pox(~k, ~n) * ~u::is_not_pox => pox(~k * ~u, ~n)
 
-"""
-    collect_powers separates the powers of x in eq (a polynomial) and returns
-    a dictionary of power => term
-"""
+# collect_powers separates the powers of x in eq (a polynomial) and 
+# returns a dictionary of power => term
 function collect_powers(eq, x)
     eq = expand(expand_derivatives(eq))
     eq = replace_x(eq, x)

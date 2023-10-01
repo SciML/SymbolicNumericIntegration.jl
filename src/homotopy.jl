@@ -80,6 +80,9 @@ end
 
 guard_zero(x) = isequal(x, 0) ? one(x) : x
 
+# The core of ansatz generation.
+# The name is not accurate and should be changed (not really homotopy, 
+# just inspired from!)
 function generate_homotopy(eq, x)
     eq = value(eq)
     x = value(x)
@@ -95,7 +98,7 @@ function generate_homotopy(eq, x)
     for i in 1:length(ks)
         μ = u[i]
         y, dy = apply_partial_int_rules(sub[μ], x)
-        
+
         y = substitute(y, sub)
         ∂y = guard_zero(diff(dy, x))
 
@@ -157,8 +160,9 @@ partial_int_rules = [
     @rule 𝛷(~x, asech(~u)) => (asech(~u), ~u)
     @rule 𝛷(~x, acoth(~u)) => (~u * acot(~u) + log(~u + 1), ~u)
 # logarithmic and exponential functions
-    @rule 𝛷(~x, log(~u)) => (~u + ~u * log(~u) + sum(pow_minus_rule(~u, ~x, -1); init = one(~u)),
-    ~u);
+    @rule 𝛷(~x, log(~u)) => (~u + ~u * log(~u) +
+                             sum(pow_minus_rule(~u, ~x, -1); init = one(~u)),
+    ~u)
     @rule 𝛷(~x, 1 / log(~u)) => (log(log(~u)) + li(~u), ~u)
     @rule 𝛷(~x, exp(~u)) => (exp(~u) + ei(~u) + erfi_(~x), ~u)
     @rule 𝛷(~x, ^(exp(~u), ~k::is_neg)) => (^(exp(-~u), -~k), ~u)
@@ -167,10 +171,13 @@ partial_int_rules = [
     @rule 𝛷(~x, sqrt(~u)) => (sum(sqrt_rule(~u, ~x, 0.5); init = one(~u)), ~u);
     @rule 𝛷(~x, 1 / sqrt(~u)) => (sum(sqrt_rule(~u, ~x, -0.5); init = one(~u)), ~u);
 # rational functions                                                              
-    @rule 𝛷(~x, 1 / ^(~u::is_univar_poly, ~k::is_pos_int)) => (sum(pow_minus_rule(~u, ~x, -~k);
+    @rule 𝛷(~x, 1 / ^(~u::is_univar_poly, ~k::is_pos_int)) => (sum(pow_minus_rule(~u,
+            ~x,
+            -~k);
         init = one(~u)),
+    ~u)
+    @rule 𝛷(~x, 1 / ~u::is_univar_poly) => (sum(pow_minus_rule(~u, ~x, -1); init = one(~u)),
     ~u);
-    @rule 𝛷(~x, 1 / ~u::is_univar_poly) => (sum(pow_minus_rule(~u, ~x, -1); init = one(~u)), ~u);
     @rule 𝛷(~x, ^(~u, -1)) => (log(~u) + ~u * log(~u), ~u)
     @rule 𝛷(~x, ^(~u, ~k::is_neg_int)) => (sum(^(~u, i) for i in (~k + 1):-1), ~u)
     @rule 𝛷(~x, 1 / ~u) => (log(~u), ~u)
@@ -187,7 +194,7 @@ end
 
 function pow_minus_rule(p, x, k; abstol = 1e-8)
     if !is_univar_poly(p)
-        return [p^k, p^(k + 1), log(p), p*log(p)]
+        return [p^k, p^(k + 1), log(p), p * log(p)]
     end
 
     # x = var(p)
@@ -203,7 +210,7 @@ function pow_minus_rule(p, x, k; abstol = 1e-8)
     r = nice_parameter.(r)
     s = nice_parameter.(s)
 
-    # ∫ 1 / ((x-z₁)(x-z₂)) dx = ... + c₁ * log(x-z₁) + c₂ * log(x-z₂)
+    # applying ∫ 1 / ((x-z₁)(x-z₂)) dx = ... + c₁ * log(x-z₁) + c₂ * log(x-z₂)
     q = Any[log(x - u) for u in r]
     for i in eachindex(s)
         β = s[i]
@@ -225,9 +232,9 @@ end
 
 function sqrt_rule(p, x, k)
     h = Any[p^k, p^(k + 1)]
-    
+
     Δ = diff(p, x)
-    push!(h, log(Δ/2 + sqrt(p)))
+    push!(h, log(Δ / 2 + sqrt(p)))
 
     if !is_univar_poly(p)
         return h
@@ -254,4 +261,3 @@ function sqrt_rule(p, x, k)
 
     return h
 end
-

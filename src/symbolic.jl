@@ -1,7 +1,7 @@
-"""
-    Convers floats to integers/rational numbers with small denominators 
-    if possible
-"""
+########################### Utility functions #########################
+
+# beautify convers floats to integers/rational numbers with small 
+# denominators if possible
 function beautify(eq)
     if is_add(eq)
         return sum(beautify(t) for t in args(eq))
@@ -20,18 +20,14 @@ function beautify(eq)
     end
 end
 
-###################################################################
-
-"""
-    Removes numerical coefficients from terms
-"""
+# equiv removes numerical coefficients from terms
 function equiv(y, x)
     y = expand(value(y))
 
     if is_add(y)
         return sum(equiv(u, x) for u in args(y))
     elseif is_mul(y)
-        return prod(isdependent(u, x) ? u : 1 for u in args(y))        
+        return prod(isdependent(u, x) ? u : 1 for u in args(y))
     elseif is_div(y)
         return expand_fraction(y, x)
     elseif is_number(y)
@@ -41,9 +37,7 @@ function equiv(y, x)
     end
 end
 
-"""
-    Splits an expression into a list of terms
-"""
+# split_terms splits an expression into a list of terms
 function split_terms(eq, x)
     eq = value(eq)
     if is_add(eq)
@@ -53,24 +47,23 @@ function split_terms(eq, x)
     end
 end
 
-"""
-    Checks whether y is a holonomic function, i.e., is closed 
-    under differentiation w.r.t. x
-    
-    For our purpose, we define a holonomic function as one composed
-    of the positive powers of x, sin, cos, exp, sinh, and cosh
-    
-    Args:
-        y: the expression to check for holonomy
-        x: independent variable
-        
-    Returns:
-        true if y is holonomic
-"""
+# is_holonomic checks whether y is a holonomic function, i.e., 
+# is closed under differentiation w.r.t. x
+#    
+# For our purpose, we define a holonomic function as one composed
+# of the positive powers of x, sin, cos, exp, sinh, and cosh
+#    
+#   Args:
+#       y: the expression to check for holonomy
+#       x: independent variable
+#        
+#   Returns:
+#       true if y is holonomic
 function is_holonomic(y, x)
     y = value(y)
 
-    # technically, polynomials are not holonomic, but practically we can include them
+    # technically, polynomials are not holonomic, but 
+    # practically we can include them
     if is_polynomial(y, x)
         return true
     end
@@ -97,10 +90,9 @@ function is_holonomic(y, x)
     return false
 end
 
-"""
-    Generates a list of ansatzes based on repetative differentiation. 
-    It works for holonomic functions, which are closed under differentiation.
-"""
+# blender generates a list of ansatzes based on repetative 
+# differentiation. It works for holonomic functions, which 
+# are closed under differentiation.
 function blender(y, x; n = 3)
     basis = value(y)
     for i in 1:n
@@ -119,20 +111,19 @@ function blender(y, x; n = 3)
     return split_terms(basis, x)
 end
 
-############################## Utils ###############################
-
-"""
-    Returns a dictionary of the symbolic constants in the expression
-    and random real value assignments.
-
-    Args:
-        eq: the integrands
-        x: independent variable
-
-    Returns:
-        a dict of sym : value pairs
-"""
-function subs_symbols(eq, x; include_x = false, radius = 5.0, as_complex=true)
+# subs_symbols returns a dictionary of the symbolic constants 
+# in the expression and random real value assignments.
+#
+#   Args:
+#       eq: the integrands
+#       x: independent variable
+#
+#   Returns:
+#       a dict of sym => random value pairs
+#
+# note that the values are real by wrapped in a complex wrapper
+# to prevent functions like sqrt and log from throwing errors
+function subs_symbols(eq, x; include_x = false, radius = 5.0, as_complex = true)
     S = Dict()
     for v in get_variables(value(eq))
         if !isequal(v, x)
@@ -147,11 +138,10 @@ function subs_symbols(eq, x; include_x = false, radius = 5.0, as_complex=true)
     return S
 end
 
-
-"""
-    Splits terms into a part dependent on x and a part constant w.r.t. x    
-    For example, `atomize(a*sin(b*x), x)` is `(a, sin(b*x))`)
-"""
+# atomize splits terms into a part dependent on x and a part 
+# constant w.r.t. variables in xs. 
+#
+# For example, `atomize(a*sin(b*x), x)` is `(a, sin(b*x))`)
 function atomize(eq, xs...)
     eq = value(eq)
 
@@ -175,12 +165,9 @@ function atomize(eq, xs...)
     end
 end
 
-
-"""
-    Generates the final integral based on the list of coefficients and
-    a list of ansatzes (ker).
-"""
-function apply_coefs(q, ker, x)
+# apply_coefs generates the final integral based on the list 
+# of coefficients (q) and a list of ansatzes (ker).
+function apply_coefs(q, ker)
     s = 0
     for (coef, expr) in zip(q, ker)
         s += beautify(coef) * expr
@@ -196,55 +183,54 @@ function apply_coefs(q, ker, x)
     return beautify(c) * a
 end
 
-
+# expand_basis_symbolic expands basis (a list of ansatzes)
+# by differentiation and multiplying by x
+#
+# It is a newer version of expand_basis in candidate.jl and
+# will eventually replaces it
 function expand_basis_symbolic(basis, x)
     b = sum(basis)
     Δb = sum(diff(y, x) for y in basis)
-    basis = split_terms(expand((1+x)*(b + Δb)), x)    
-    
+    basis = split_terms(expand((1 + x) * (b + Δb)), x)
+
     return basis
 end
 
-
 complex_from_num(x) = Complex(value(real(x)), value(imag(x)))
 
+########################### Symbolic Integration #############################
 
-################################ Refactoring ##########################################
-
-"""
-    The main entry point for symbolic integration.
-    
-    Argu:
-        eq: the expression to integrate
-        x: independent variable
-        
-    Returns:
-        the integral or nothing if no solution
-"""
-function integrate_symbolic(eq, x; plan = default_plan(), num_steps=1)
-    prob = Problem(eq, x; plan, num_steps)
+# integrate_symbolic is the main entry point for symbolic integration.
+#    
+#   Argu:
+#       eq: the expression to integrate
+#       x: independent variable
+#        
+#   Returns:
+#       the integral or nothing if no solution
+function integrate_symbolic(eq, x; plan = default_plan())
+    prob = Problem(eq, x; plan)
 
     if prob != nothing
         return solver(prob)
     end
-    
+
     return nothing
 end
 
-
 Expression = Union{Num, BasicSymbolic, Number}
 
+# The pre-processed integral problem
 struct Problem
     eq::Expression          # integrand
     x::Expression           # independent variable
     coef::Expression        # coefficient of the integrand
     ker::Array{Expression}  # the pruned list of the basis expressions (kernel)
     plan::NumericalPlan     # the numerial plan, containing various parameters
-    num_steps::Int          # the number of expansion attempts
 end
 
-
-function Problem(eq, x; plan = default_plan(), num_steps=1)
+# Constructor to create a Problem for integrand eq 
+function Problem(eq, x; plan = default_plan())
     eq = expand(eq)
     coef, eq = atomize(eq, x)
 
@@ -253,7 +239,7 @@ function Problem(eq, x; plan = default_plan(), num_steps=1)
     else
         basis = generate_homotopy(eq, x)
     end
-    
+
     ker = best_hints(eq, x, basis; plan)
 
     if ker == nothing
@@ -265,17 +251,13 @@ function Problem(eq, x; plan = default_plan(), num_steps=1)
     end
 
     ker = [atomize(y, x)[2] for y in ker]
-    
-    return Problem(
-        eq,
+
+    return Problem(eq,
         x,
         coef,
         ker,
-        plan,
-        num_steps
-    )
+        plan)
 end
-
 
 # returns true if sol solves the integration problem represented by prob
 function accept(prob, sol)
@@ -286,27 +268,26 @@ function accept(prob, sol)
     return false
 end
 
-
 # `solve` would be a better name but is confused with the Symbolic solve function.
 function solver(prob::Problem)
-    # First, we attempt fully symbolic integration
+    # First, attempt fully symbolic integration
     alg = SymbolicIntegrator(prob)
     sol = solver(prob, alg)
 
     if accept(prob, sol)
         return sol * prob.coef
     end
-    
+
     # Next, dense numeric integration
     alg = make_square(prob, alg)
     if alg != nothing
         sol = solver(prob, alg)
-    
+
         if accept(prob, sol)
             return sol * prob.coef
         end
     end
-    
+
     # Finally, sparse numeric integration
     alg = NumericIntegrator(prob)
     sol = solver(prob, alg)
@@ -314,32 +295,30 @@ function solver(prob::Problem)
     if accept(prob, sol)
         return sol * prob.coef
     end
-    
+
     return nothing
 end
 
-
 subs_symbols(prob::Problem) = subs_symbols(prob.eq, prob.x)
-
 
 abstract type IntegrationAlgorithm end
 
-
 struct SymbolicIntegrator <: IntegrationAlgorithm
-   eqs::Vector{Equation}        # list of equations of the form Σ θ[i]*frag[i] ~ 0  
-   vars::Vector{Expression}     # list of dummy variables (θ[1], θ[2], ...)
-   frags::Dict                  # Dict of fragments of form frag => expression in θs
+    eqs::Vector{Equation}        # list of equations of the form Σ θ[i]*frag[i] ~ 0  
+    vars::Vector{Expression}     # list of dummy variables (θ[1], θ[2], ...)
+    frags::Dict                  # Dict of fragments of form frag => expression in θs
 end
-
 
 @variables θ[1:30]
 
+# Constructor creating a SymbolicIntegrator algorithm 
+# from an integration Problem
 function SymbolicIntegrator(prob::Problem)
     frags = Dict()
     x = prob.x
 
     for term in terms(prob.eq)
-        c, a = atomize(term, x)        
+        c, a = atomize(term, x)
         frags[a] = c
     end
 
@@ -347,27 +326,24 @@ function SymbolicIntegrator(prob::Problem)
         db = expand_fraction(diff(b, x), x)
 
         for term in terms(db)
-            c, a = atomize(term, x)                        
+            c, a = atomize(term, x)
             frags[a] = get(frags, a, 0) + c * θ[i]
-        end        
-    end    
-    
-    return SymbolicIntegrator(
-        [y ~ 0 for y in values(frags)], 
-        [θ[i] for i=1:length(prob.ker)], 
-        frags
-    )
+        end
+    end
+
+    return SymbolicIntegrator([y ~ 0 for y in values(frags)],
+        [θ[i] for i in 1:length(prob.ker)],
+        frags)
 end
 
-
-function solver(prob::Problem, alg::SymbolicIntegrator)       
+function solver(prob::Problem, alg::SymbolicIntegrator)
     plan = prob.plan
-    
+
     try
         sys = linearize(alg)
         q = solver(sys)
-        sol = apply_coefs(q, prob.ker, prob.x)
-        return sol        
+        sol = apply_coefs(q, prob.ker)
+        return sol
     catch e
         # println(e) 
     end
@@ -375,12 +351,11 @@ function solver(prob::Problem, alg::SymbolicIntegrator)
     return nothing
 end
 
-
 # If the linear system generated by the SymbolicIntegrator solver is
 # under-determined, make_square uses semi-numerical methods to 
 # generate a full-rank linear system.
 # 
-# The output is another SymbolicIntegrator.
+# The output is another SymbolicIntegrator or nothing if unsuccessful.
 function make_square(prob::Problem, alg::SymbolicIntegrator)
     n = length(alg.vars)
     eqs = []
@@ -398,14 +373,11 @@ function make_square(prob::Problem, alg::SymbolicIntegrator)
             push!(eqs, Q)
         end
     end
-    
-    SymbolicIntegrator(
-        eqs, 
-        alg.vars, 
-        alg.frags
-    )
-end
 
+    SymbolicIntegrator(eqs,
+        alg.vars,
+        alg.frags)
+end
 
 struct NumericIntegrator
     A::AbstractMatrix           # training dataset as a normalized linear system 
@@ -414,62 +386,60 @@ struct NumericIntegrator
     basis::Vector{Expression}   # expand basis 
 end
 
-
-function NumericIntegrator(prob::Problem; nv=1)
-    eq, x, ker, plan = value(prob.eq), prob.x, prob.ker, prob.plan    
+# Constructor to create a NumericIntegrator algorithm from prob
+#
+# nv is the number of validation points
+function NumericIntegrator(prob::Problem; nv = 1)
+    eq, x, ker, plan = value(prob.eq), prob.x, prob.ker, prob.plan
     params = sym_consts(eq, x)
-    
+
     basis = []
     for p in [[1]; params]
-        for y in ker            
-            push!(basis, y*p)
+        for y in ker
+            push!(basis, y * p)
         end
     end
-    basis = unique(basis)    
+    basis = unique(basis)
 
-    Δbasis = [diff(y, x) for y in basis]    
+    Δbasis = [diff(y, x) for y in basis]
     n = length(basis)
-    
-    A = zeros(Complex{Float64}, (n+nv, n))    
-    X = zeros(Complex{Float64}, n+nv)
-    
-    for i = 1:n+nv
-        S = subs_symbols(eq, x; include_x = true, plan.radius)        
-        X[i] = S[x]        
+
+    A = zeros(Complex{Float64}, (n + nv, n))
+    X = zeros(Complex{Float64}, n + nv)
+
+    for i in 1:(n + nv)
+        S = subs_symbols(eq, x; include_x = true, plan.radius)
+        X[i] = S[x]
         b₀ = complex_from_num(substitute(eq, S))
 
-        for j in 1:n            
+        for j in 1:n
             A[i, j] = complex_from_num(substitute(Δbasis[j], S)) / b₀
-        end        
+        end
     end
-    
-    return NumericIntegrator(
-        A[1:n,:], 
-        X[1:n], 
-        A[n+1:end,:], 
-        basis
-    )
+
+    return NumericIntegrator(A[1:n, :],
+        X[1:n],
+        A[(n + 1):end, :],
+        basis)
 end
 
 function solver(prob::Problem, alg::NumericIntegrator)
-    sol, _ = solve_sparse(prob.eq, prob.x, alg.basis; prob.plan, AX=(alg.A, alg.X, alg.V))
+    sol, _ = solve_sparse(prob.eq, prob.x, alg.basis; prob.plan, AX = (alg.A, alg.X, alg.V))
     return sol
 end
 
-
 struct LinearSystem
     # linear system is Ax = b
-    A::AbstractMatrix   
+    A::AbstractMatrix
     b::AbstractVector
 end
-
 
 function linearize(alg::SymbolicIntegrator)
     eqs, vars = alg.eqs, alg.vars
 
     n = length(eqs)
     m = length(vars)
-    
+
     L = [eq.lhs for eq in eqs]
     S = Dict(v => 0 for v in vars)
 
@@ -487,15 +457,11 @@ function linearize(alg::SymbolicIntegrator)
         end
     end
 
-    return LinearSystem(
-        A,
-        b
-    )
+    return LinearSystem(A,
+        b)
 end
-
 
 function solver(sys::LinearSystem)
     q = sys.A \ sys.b
-    return value.(q)    
+    return value.(q)
 end
-

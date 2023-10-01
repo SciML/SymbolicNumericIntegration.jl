@@ -47,30 +47,31 @@ Keyword Arguments:
 - `use_optim` (default: `false`): *deprecated*, will be removed in a future version
 - `detailed` (default: `true`): `(solved, unsolved, err)` output format. If `detailed=false`, only the final integral is returned. 
 
-Output:
--------
-- `solved`: the solved integral 
-- `unsolved`: the residual unsolved portion of the input
-- `err`: the numerical error in reaching the solution
+Returns a tuple of (solved, unsolved, err) if `detailed == true`, where
+
+    solved: the solved integral 
+    unsolved: the residual unsolved portion of the input
+    err: the numerical error in reaching the solution
+
+Returns the resulting integral or nothing if `detailed == false`
 """
-function integrate(eq, x = nothing; 
-    abstol = 1e-6, 
-    num_steps = 2, 
+function integrate(eq, x = nothing;
+    abstol = 1e-6,
+    num_steps = 2,
     num_trials = 10,
     radius = 5.0,
-    show_basis = false, 
-    opt = STLSQ(exp.(-10:1:0)), 
+    show_basis = false,
+    opt = STLSQ(exp.(-10:1:0)),
     bypass = false,
-    symbolic = false, 
-    max_basis = 100, 
-    verbose = false, 
+    symbolic = false,
+    max_basis = 100,
+    verbose = false,
     complex_plane = true,
-    homotopy = true, 
-    use_optim = false, 
-    detailed = true)    
-    
-    deprecation_warnings(; homotopy, use_optim)   
-    
+    homotopy = true,
+    use_optim = false,
+    detailed = true)
+    deprecation_warnings(; homotopy, use_optim)
+
     eq = expand(eq)
 
     if x == nothing
@@ -95,7 +96,7 @@ function integrate(eq, x = nothing;
             return x * eq
         end
     end
-    
+
     plan = NumericalPlan(abstol, radius, complex_plane, opt)
 
     s, u, ε = integrate_sum(eq, x; plan, bypass, num_trials, num_steps,
@@ -110,9 +111,7 @@ function integrate(eq, x = nothing;
     end
 end
 
-"""
-    Definite integral
-"""
+# Definite integral
 function integrate(eq, xx::Tuple; kwargs...)
     x, lo, hi = xx
     sol = integrate(eq, x; kwargs...)
@@ -131,18 +130,7 @@ function integrate(eq, xx::Tuple; kwargs...)
     return nothing
 end
 
-"""
-    integrate_sum(eq, x; kwargs...) 
-
-applies the integral summation rule ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
-
-inputs:
-------
-- eq: the integrand
-- x: the indepedent variable
-
-The output is the same as `integrate`
-"""
+# integrate_sum applies the integral summation rule ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
 function integrate_sum(eq, x; bypass = false, kwargs...)
     solved = 0
     unsolved = 0
@@ -181,25 +169,17 @@ function integrate_sum(eq, x; bypass = false, kwargs...)
     return expand(solved), unsolved, ε₀
 end
 
-"""
-    integrate_term(eq, x; kwargs...) 
-    
-is the central part of the code that tries different methods to integrate `eq`,
-which is assume to be a single term.
-
-inputs:
--------
-- eq: the integrand
-- x: the indepedent variable
-
-The output is the same as `integrate`
-"""
+# integrate_term is the central part of the univariate integration code that 
+# tries different methods to integrate `eq`.
+#
+# note: this function will be replaced with solver(prob::Problem) in symbolic.jl
+# in a future version
 function integrate_term(eq, x; kwargs...)
     args = Dict(kwargs)
-    plan, num_steps, num_trials, show_basis, symbolic, verbose, max_basis = 
-        args[:plan], args[:num_steps], args[:num_trials], args[:show_basis], 
-        args[:symbolic], args[:verbose], args[:max_basis]
-        
+    plan, num_steps, num_trials, show_basis, symbolic, verbose, max_basis = args[:plan],
+    args[:num_steps], args[:num_trials], args[:show_basis],
+    args[:symbolic], args[:verbose], args[:max_basis]
+
     abstol = plan.abstol
 
     if is_number(eq)
@@ -262,7 +242,7 @@ function integrate_term(eq, x; kwargs...)
             y, ε = try_integrate(eq, x, basis; plan)
             ε = accept_solution(eq, x, y; plan)
 
-            if ε < abstol            
+            if ε < abstol
                 return y, 0, ε
             elseif ε < εᵣ
                 εᵣ = ε
@@ -287,37 +267,24 @@ function integrate_term(eq, x; kwargs...)
     end
 end
 
-###############################################################################
-
-"""
-	try_integrate(eq, x, basis; plan) 
-	
-is the main dispatch point to call different sparse solvers. It tries to 
-find a linear combination of the basis, whose derivative is equal to eq
-
-output:
--------
-- solved: the solved integration problem or 0 otherwise
-- err: the numerical error in reaching the solution
-"""
+# try_integrate is the main dispatch point to call different sparse solvers. 
+# It tries to find a linear combination of the basis, whose derivative is 
+# equal to eq
 function try_integrate(eq, x, basis; plan = default_plan())
     if isempty(basis)
         return 0, Inf
     end
 
     # return solve_optim(eq, x, basis; plan)
-    return solve_sparse(eq, x, basis; plan)    
+    return solve_sparse(eq, x, basis; plan)
 end
 
-#################################################################################
-
-function deprecation_warnings(; use_optim=false, homotopy=true)
+function deprecation_warnings(; use_optim = false, homotopy = true)
     if use_optim
         @warn("use_optim is deprecated and will be removed in a future version")
     end
-    
+
     if !homotopy
         @warn("homotopy is deprecated and will be removed in a future version")
     end
 end
-

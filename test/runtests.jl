@@ -197,11 +197,11 @@ basic_integrals = [
     1 / log(3x - 1),
     1 / (x * log(log(x))),
     x / log(x^2),
-        # from Geddes & Stefanus
-    exp(1 / (1 + log(x)))*((2*log(x)+1)/x),
+    # from Geddes & Stefanus
+    exp(1 / (1 + log(x))) * ((2 * log(x) + 1) / x),
     1 / (1 + exp(x)),
     sin(2x) * exp(x),
-    -10*exp(x^-10) / x^11,
+    -10 * exp(x^-10) / x^11,
     # bypass = true
     β,      # turn of bypass = true
     (log(x - 1) + (x - 1)^-1) * log(x),
@@ -217,7 +217,7 @@ sym_integrals = [
     a / x,
     1 / (a * x + 5),
     1 / (x + a),
-    x / (x + a),    
+    x / (x + a),
     1 / (x + a)^2,
     x / (x + a)^2,
     (x + a)^3,
@@ -233,7 +233,7 @@ sym_integrals = [
     log(x^2 - a * x + b),
     log(a * x)^2,
     log(a + x),
-    log(a + x^2) * x,    
+    log(a + x^2) * x,
     # x^2 * log(a * x + b)^2,
     exp(a * x),
     x * exp(a * x),
@@ -262,6 +262,7 @@ sym_integrals = [
     cos(exp(a * x)) * sin(exp(a * x)) * exp(a * x),
     1 / (x * log(a * x)),
     log(log(a * x)) / x,
+    log(a + log(x)) / x,
     sin(log(a * x)),
     # x / (exp(a * x) - b),
     exp(a * x) / (b * exp(a * x) + c),

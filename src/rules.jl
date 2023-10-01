@@ -70,7 +70,7 @@ end
 is_poly(eq) = !isnan(poly_deg(eq))
 is_linear_poly(eq) = poly_deg(eq) == 1
 
-# rules to extract the kernel (the solvable portion) of an expression
+# rules to extract the kernel (the holomorphic portion) of an expression
 s_rules = [@rule Ω(+(~~xs)) => sum(map(Ω, ~~xs))
     @rule Ω(*(~~xs)) => prod(map(Ω, ~~xs))
 # @rule Ω(~x / ~y) => Ω(~x) * Ω(^(~y, -1))
@@ -284,4 +284,3 @@ function complexity(eq)
         return 1
     end
 end
-
