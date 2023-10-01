@@ -199,7 +199,8 @@ end
 
 function expand_basis_symbolic(basis, x)
     b = sum(basis)
-    basis = split_terms(expand((1+x)*(b + diff(b, x))), x)    
+    Δb = sum(diff(y, x) for y in basis)
+    basis = split_terms(expand((1+x)*(b + Δb)), x)    
     
     return basis
 end
@@ -256,7 +257,11 @@ function Problem(eq, x; plan = default_plan(), num_steps=1)
     ker = best_hints(eq, x, basis; plan)
 
     if ker == nothing
-        return nothing
+        basis = expand_basis_symbolic(basis, x)
+        ker = best_hints(eq, x, basis; plan)
+        if ker == nothing
+            return nothing
+        end
     end
 
     ker = [atomize(y, x)[2] for y in ker]

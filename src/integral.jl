@@ -43,8 +43,8 @@ Keyword Arguments:
 - `complex_plane` (default: `true`): generate random test points on the complex plane (if false, the points will be on real axis)
 - `radius` (default: `1.0`): the radius of the disk in the complex plane to generate random test points
 - `opt` (default: `STLSQ(exp.(-10:1:0))`): the sparse regression optimizer (from DataDrivenSparse)
-- `homotopy` (default: `true`): use the homotopy algorithm to generate the basis (*deprecated*, will be removed in a future version)
-- `use_optim` (default: `false`): use Optim.jl `minimize` function instead of the STLSQ algorithm (*experimental*)
+- `homotopy` (default: `true`): *deprecated*, will be removed in a future version
+- `use_optim` (default: `false`): *deprecated*, will be removed in a future version
 - `detailed` (default: `true`): `(solved, unsolved, err)` output format. If `detailed=false`, only the final integral is returned. 
 
 Output:
@@ -67,7 +67,9 @@ function integrate(eq, x = nothing;
     complex_plane = true,
     homotopy = true, 
     use_optim = false, 
-    detailed = true)
+    detailed = true)    
+    
+    deprecation_warnings(; homotopy, use_optim)   
     
     eq = expand(eq)
 
@@ -309,16 +311,13 @@ end
 
 #################################################################################
 
-"""
-	integrate_basis(eq, x; kwargs...)
-	
-is used for debugging and should not be called in the course of normal execution
-"""
-function integrate_basis(eq, x = var(eq); plan = default_plan())
-    eq = cache(expand(eq))
-    basis = generate_basis(eq, x, false)
-    n = length(basis)
-    A, X = init_basis_matrix(eq, x, basis; plan)
-    return basis, A, X
+function deprecation_warnings(; use_optim=false, homotopy=true)
+    if use_optim
+        @warn("use_optim is deprecated and will be removed in a future version")
+    end
+    
+    if !homotopy
+        @warn("homotopy is deprecated and will be removed in a future version")
+    end
 end
 
