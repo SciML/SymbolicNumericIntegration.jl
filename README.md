@@ -27,12 +27,13 @@ using SymbolicNumericIntegration
 @variables x a b
 
 integrate(3x^3 + 2x - 5)
+(x^2 + (3 // 4) * (x^4) - (5 // 1) * x, 0, 0)
 
 integrate(exp(a * x), x; symbolic = true)
-(x^2 + (3//4)*(x^4) - (5//1)*x, 0, 0)
+(exp(a * x) / a, 0, 0)
 
 integrate(sin(a * x) * cos(b * x), x; symbolic = true, detailed = false)
-(exp(a*x) / a, 0, 0)
+(-a * cos(a * x) * cos(b * x) - b * sin(a * x) * sin(b * x)) / (a^2 - (b^2))
 ```
 
 # Citation
@@ -42,7 +43,7 @@ If you use SymbolicNumericIntegration.jl in your research, please cite [this pap
 ```
 
 @article{Iravanian2022,
-author = {Shahriar Iravanian and Carl Julius Martensen and Alessandro Cheli and Shashi Gowda and Anand Jain and Julia Computing and Yingbo Ma and Chris Rackauckas},
+author = {Shahriar Iravanian and Carl Julius Martensen and Alessandro Cheli and Shashi Gowda and Anand Jain and Yingbo Ma and Chris Rackauckas},
 doi = {10.48550/arxiv.2201.12468},
 month = {1},
 title = {Symbolic-Numeric Integration of Univariate Expressions based on Sparse Regression},
