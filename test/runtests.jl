@@ -214,6 +214,7 @@ sym_integrals = [
     # Basic Forms
     a * x^2,
     a * x + b * x^2 - c * x^3,
+    (3(x^2) + 3(a^2) - 4) / (4 * a * b),
     a / x,
     1 / (a * x + 5),
     1 / (x + a),
