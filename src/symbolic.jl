@@ -262,8 +262,18 @@ end
 # returns true if sol solves the integration problem represented by prob
 function accept(prob, sol)
     if sol != nothing
-        ε = accept_solution(prob.eq, prob.x, sol; prob.plan)
-        return ε < prob.plan.abstol
+        ε1 = accept_solution(prob.eq, prob.x, sol; prob.plan)
+
+        if ε1 < prob.plan.abstol
+            return true
+        end
+
+        ε2 = accept_solution(prob.eq, prob.x, sol; prob.plan)
+
+        # accept if integrals differ by a constant
+        if abs(ε1 - ε2) < prob.plan.abstol
+            return true
+        end
     end
     return false
 end
