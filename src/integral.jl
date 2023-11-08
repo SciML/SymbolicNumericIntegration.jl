@@ -20,7 +20,7 @@ julia> integrate(x * sin(2x))
 julia> integrate(x * sin(a*x), x; symbolic=true, detailed=false)
 (sin(a*x) - a*x*cos(a*x)) / (a^2)
 
-julia> integrate(x * sin(a*x), (x, 0, 1); check symbolic=true, detailed=false)
+julia> integrate(x * sin(a*x), (x, 0, 1); symbolic=true, detailed=false)
 (sin(a) - a*cos(a)) / (a^2)
 ```
 
