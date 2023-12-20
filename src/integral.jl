@@ -56,20 +56,20 @@ Returns a tuple of (solved, unsolved, err) if `detailed == true`, where
 Returns the resulting integral or nothing if `detailed == false`
 """
 function integrate(eq, x = nothing;
-    abstol = 1e-6,
-    num_steps = 2,
-    num_trials = 10,
-    radius = 5.0,
-    show_basis = false,
-    opt = STLSQ(exp.(-10:1:0)),
-    bypass = false,
-    symbolic = false,
-    max_basis = 100,
-    verbose = false,
-    complex_plane = true,
-    homotopy = true,
-    use_optim = false,
-    detailed = true)
+        abstol = 1e-6,
+        num_steps = 2,
+        num_trials = 10,
+        radius = 5.0,
+        show_basis = false,
+        opt = STLSQ(exp.(-10:1:0)),
+        bypass = false,
+        symbolic = false,
+        max_basis = 100,
+        verbose = false,
+        complex_plane = true,
+        homotopy = true,
+        use_optim = false,
+        detailed = true)
     deprecation_warnings(; homotopy, use_optim)
 
     eq = expand(eq)
@@ -130,6 +130,32 @@ function integrate(eq, xx::Tuple; kwargs...)
     return nothing
 end
 
+function get_solved(p, sol)
+    if sol isa Tuple
+        s = sol[1]
+        return s == nothing ? 0 : s
+    else
+        return sol == nothing ? 0 : sol
+    end
+end
+
+function get_unsolved(p, sol)
+    if sol isa Tuple
+        u = sol[2]
+        return u == nothing ? 0 : u
+    else
+        return sol == 0 || sol == nothing ? p : 0
+    end
+end
+
+function get_err(p, sol)
+    if sol isa Tuple
+        return sol[3]
+    else
+        return sol == 0 || sol == nothing ? Inf : 0
+    end
+end
+
 # integrate_sum applies the integral summation rule ∫ Σᵢ fᵢ(x) dx = Σᵢ ∫ fᵢ(x) dx
 function integrate_sum(eq, x; bypass = false, kwargs...)
     solved = 0
@@ -138,10 +164,10 @@ function integrate_sum(eq, x; bypass = false, kwargs...)
     ts = bypass ? [eq] : terms(eq)
 
     for p in ts
-        s, u, ε = integrate_term(p, x; kwargs...)
-        solved += s
-        unsolved += u
-        ε₀ = max(ε₀, ε)
+        sol = integrate_term(p, x; kwargs...)
+        solved += get_solved(p, sol)
+        unsolved += get_unsolved(p, sol)
+        ε₀ = max(ε₀, get_err(p, sol))
     end
 
     if !isequal(unsolved, 0) && isempty(sym_consts(unsolved, x))
@@ -154,10 +180,10 @@ function integrate_sum(eq, x; bypass = false, kwargs...)
             ts = bypass ? [eq] : terms(eq)
 
             for p in ts
-                s, u, ε = integrate_term(p, x; kwargs...)
-                solved += s
-                unsolved += u
-                ε₀ = max(ε₀, ε)
+                sol = integrate_term(p, x; kwargs...)
+                solved += get_solved(p, sol)
+                unsolved += get_unsolved(p, sol)
+                ε₀ = max(ε₀, get_err(p, sol))
 
                 if !isequal(u, 0)   # premature termination on the first failure
                     return 0, eq, ε₀

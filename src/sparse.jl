@@ -123,7 +123,7 @@ end
 
 # This is needed to fix a bug/omission in DataDrivenSparse
 function DataDrivenSparse.active_set!(idx::BitMatrix, p::SoftThreshold,
-    x::Matrix{ComplexF64}, λ::Float64)
+        x::Matrix{ComplexF64}, λ::Float64)
     DataDrivenSparse.active_set!(idx, p, abs.(x), λ)
 end
 
