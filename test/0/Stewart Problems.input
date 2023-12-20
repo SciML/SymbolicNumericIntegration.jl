@@ -275,7 +275,8 @@ lst: '[
 [(1+x^5)/(-10*x-3*x^2+x^3),x,3,19*x+3/2*x^2+1/3*x^3+3126/35*log(5-x)-1/10*log(x)-31/14*log(2+x)],
 [1/(x*sqrt(log(x))),x,2,2*sqrt(log(x))],
 [(5+2*x)/(-3+x),x,2,2*x+11*log(3-x)],
-[%e^(%e^x+x),x,2,%e^(%e^x)],
+-- the following is changed from %e^(%e^x+x) to %e^(%e^x)*%e^(x)  (SI)
+[%e^(%e^x)*%e^(x),x,2,%e^(%e^x)],
 [cos(x)^2*sin(x)^2,x,3,1/8*x+1/8*cos(x)*sin(x)-1/4*cos(x)^3*sin(x)],
 [(-cos(x)+sin(x))/(cos(x)+sin(x)),x,1,-log(cos(x)+sin(x))],
 [x/sqrt(1-x^2),x,1,-sqrt(1-x^2)],
