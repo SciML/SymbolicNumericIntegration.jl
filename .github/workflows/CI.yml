@@ -19,7 +19,6 @@ jobs:
           - Core
         version:
           - '1'
-          - '1.6'
     env:
       PYTHON: python3
 
