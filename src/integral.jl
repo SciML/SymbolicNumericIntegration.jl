@@ -107,7 +107,11 @@ function integrate(eq, x = nothing;
     if detailed
         return s, u, ε
     else
-        return isequal(s, 0) ? nothing : s
+        if !isequal(s, 0) && !isequal(u, 0)
+            @info("Integration is partially successful. Pass `detailed = true` to `integrate` for details")
+        end
+
+        return isequal(s, 0) || !isequal(u, 0) ? nothing : s
     end
 end
 
