@@ -1,8 +1,6 @@
 using LinearAlgebra
 using Statistics: mean, std
 
-Base.signbit(z::Complex{T}) where {T <: Number} = signbit(real(z))
-Base.signbit(x::SymbolicUtils.Sym{Number}) = false
 
 """
     integrate(eq, x; kwargs...)

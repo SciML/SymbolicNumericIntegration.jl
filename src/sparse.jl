@@ -52,9 +52,9 @@ function prune_basis(eq, x, basis; plan = default_plan())
     return basis[l]
 end
 
-# init_basis_matrix tranforms the integration problem into a linear system
-# 
-# It returns A, X, V, where 
+# init_basis_matrix transforms the integration problem into a linear system
+#
+# It returns A, X, V, where
 #
 #   A: the normalized training matrix, we seek a vector q such that A * q = 1
 #   X: a vector of complex test points
@@ -217,14 +217,14 @@ function hints(eq, x, basis; plan = default_plan())
 
         return h, ε
     catch e
-        # println("Error from hints: ", e)        
+        # println("Error from hints: ", e)
     end
 
     return 0, Inf
 end
 
 # best_hints works is the link between numerical and symbolic integration.
-# It convers a symbolic integrad eq into a univariate expression, performs
+# It converts a symbolic integrad eq into a univariate expression, performs
 # symbolic-numeric integration, and the returns a list of symbolic ansatzes
 # corresponding to the solution
 function best_hints(eq, x, basis; plan = default_plan(), num_trials = 10)
