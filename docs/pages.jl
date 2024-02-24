@@ -2,5 +2,5 @@
 
 pages = [
     "Home" => "index.md",
-    "symbolicnumericintegration.md",
+    "symbolicnumericintegration.md"
 ]

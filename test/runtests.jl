@@ -207,7 +207,7 @@ basic_integrals = [
     (log(x - 1) + (x - 1)^-1) * log(x),
     exp(x) / x - exp(x) / x^2,
     cos(x) / x - sin(x) / x^2,
-    1 / log(x) - 1 / log(x)^2,
+    1 / log(x) - 1 / log(x)^2
 ]
 
 sym_integrals = [
@@ -277,7 +277,7 @@ sym_integrals = [
     # bypass = true
     β,      # turn of bypass = true
     exp(a * x) / x - exp(a * x) / x^2,
-    cos(a * x) / x - sin(a * x) / x^2,
+    cos(a * x) / x - sin(a * x) / x^2
 ]
 
 function test_integrals(basic = true, subs = nothing; kw...)
