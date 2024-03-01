@@ -38,11 +38,13 @@ jobs:
             ${{ runner.os }}-test-
             ${{ runner.os }}-
       - run: >
-          sudo apt-get install --no-install-recommends python3-setuptools python3-wheel
-          && pip3 install sympy
+          sudo apt-get install --no-install-recommends python3-setuptools python3-wheel && pip3 install sympy
+
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
         with:
           file: lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
