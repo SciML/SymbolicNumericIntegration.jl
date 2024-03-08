@@ -7,6 +7,8 @@ using SymbolicUtils.Rewriters
 
 using Test
 
+@testset "Quality Assurance" begin include("qa.jl") end
+
 include("axiom.jl")
 
 ##############################################################################
