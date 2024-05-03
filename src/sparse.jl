@@ -250,3 +250,24 @@ function best_hints(eq, x, basis; plan = default_plan(), num_trials = 10)
     _, idx = findmin(L)
     return H[idx]
 end
+
+############################################################################
+
+# Fixing missing NaNMath complex functions.
+# Note: this is a temporary hack until upstream (NaNMath or SymbolicUtils) is fixed.
+
+using NaNMath
+
+NaNMath.sin(x::Complex) = sin(x)
+NaNMath.cos(x::Complex) = cos(x)
+NaNMath.tan(x::Complex) = tan(x)
+NaNMath.asin(x::Complex) = asin(x)
+NaNMath.acos(x::Complex) = acos(x)
+NaNMath.acosh(x::Complex) = acosh(x)
+NaNMath.atanh(x::Complex) = atanh(x)
+NaNMath.log(x::Complex) = log(x)
+NaNMath.log2(x::Complex) = log2(x)
+NaNMath.log10(x::Complex) = log10(x)
+NaNMath.lgamma(x::Complex) = lgamma(x)
+NaNMath.log1p(x::Complex) = log1p(x)
+
