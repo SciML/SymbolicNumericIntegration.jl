@@ -258,6 +258,7 @@ end
 
 using NaNMath
 
+NaNMath.sqrt(x::Complex) = sqrt(x)
 NaNMath.sin(x::Complex) = sin(x)
 NaNMath.cos(x::Complex) = cos(x)
 NaNMath.tan(x::Complex) = tan(x)
@@ -270,4 +271,3 @@ NaNMath.log2(x::Complex) = log2(x)
 NaNMath.log10(x::Complex) = log10(x)
 NaNMath.lgamma(x::Complex) = lgamma(x)
 NaNMath.log1p(x::Complex) = log1p(x)
-
