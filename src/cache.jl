@@ -24,24 +24,24 @@ end
 
 function fun!(c::ExprCache, xs...)
     if c.f == nothing
-        c.f = build_function(expr(c), xs...; expression = false)
+        c.f = build_function(expr(c), xs...; expression = false, nanmath = false)
     end
     return c.f
 end
 
 function fun!(c, xs...)
-    return build_function(c, xs...; expression = false)
+    return build_function(c, xs...; expression = false, nanmath = false)
 end
 
 function deriv_fun!(c::ExprCache, xs...)
     if c.δf == nothing
-        c.δf = build_function(deriv!(c, xs...), xs...; expression = false)
+        c.δf = build_function(deriv!(c, xs...), xs...; expression = false, nanmath = false)
     end
     return c.δf
 end
 
 function deriv_fun!(c, xs...)
-    return build_function(deriv!(c, xs...), xs...; expression = false)
+    return build_function(deriv!(c, xs...), xs...; expression = false, nanmath = false)
 end
 
 Base.show(io::IO, c::ExprCache) = show(expr(c))
