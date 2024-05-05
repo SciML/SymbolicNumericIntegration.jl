@@ -80,22 +80,22 @@ function init_basis_matrix(eq, x, basis; plan = default_plan(), nv = 1)
     l = 10 * (n + nv) # max attempt
 
     while k <= n + nv && l > 0
-        #try
-        x₀ = test_point(plan.complex_plane, plan.radius)
-        X[k] = x₀
-        b₀ = eq_fun(X[k])
+        try
+            x₀ = test_point(plan.complex_plane, plan.radius)
+            X[k] = x₀
+            b₀ = eq_fun(X[k])
 
-        if is_proper(b₀)
-            for j in 1:n
-                A[k, j] = Δbasis_fun[j](X[k]) / b₀
+            if is_proper(b₀)
+                for j in 1:n
+                    A[k, j] = Δbasis_fun[j](X[k]) / b₀
+                end
+                if all(is_proper, A[k, :])
+                    k += 1
+                end
             end
-            if all(is_proper, A[k, :])
-                k += 1
-            end
+        catch e
+            println("Error from init_basis_matrix: ", e)
         end
-        #catch e
-        #    println("Error from init_basis_matrix: ", e)
-        #end
         l -= 1
     end
 

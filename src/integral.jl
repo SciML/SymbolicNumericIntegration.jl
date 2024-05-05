@@ -27,7 +27,7 @@ julia> integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
 ## Arguments:
 
   - `eq`: a univariate expression
-  - `x`ex: independent variable (optional if `eq` is univariate) or a tuple
+  - `x`: independent variable (optional if `eq` is univariate) or a tuple
     of (independent variable, lower bound, upper bound) for definite integration.
 
 ## Keyword Arguments:
