@@ -27,7 +27,7 @@ julia> integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
 ## Arguments:
 
   - `eq`: a univariate expression
-  - `x`: independent variable (optional if `eq` is univariate) or a tuple
+  - `x`ex: independent variable (optional if `eq` is univariate) or a tuple
     of (independent variable, lower bound, upper bound) for definite integration.
 
 ## Keyword Arguments:
@@ -230,10 +230,9 @@ function integrate_term(eq, x; kwargs...)
         if y == nothing
             if has_sym_consts
                 @info("Symbolic integration failed. Try changing constant parameters ([$(join(params, ", "))]) to numerical values.")
-                return 0, eq, Inf
             end
-        else
-            return y, 0, 0
+
+            return 0, eq, Inf
         end
     end
 
