@@ -230,10 +230,9 @@ function integrate_term(eq, x; kwargs...)
         if y == nothing
             if has_sym_consts
                 @info("Symbolic integration failed. Try changing constant parameters ([$(join(params, ", "))]) to numerical values.")
-                return 0, eq, Inf
             end
-        else
-            return y, 0, 0
+
+            return 0, eq, Inf
         end
     end
 

@@ -94,7 +94,7 @@ function init_basis_matrix(eq, x, basis; plan = default_plan(), nv = 1)
                 end
             end
         catch e
-            println("Error from init_basis_matrix!: ", e)
+            println("Error from init_basis_matrix: ", e)
         end
         l -= 1
     end
@@ -216,7 +216,7 @@ function hints(eq, x, basis; plan = default_plan())
         end
 
         return h, ε
-    catch e
+    catch
         # println("Error from hints: ", e)        
     end
 
