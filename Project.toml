@@ -21,7 +21,7 @@ LinearAlgebra = "<0.0.1, 1"
 SpecialFunctions = "2"
 Statistics = "1.9"
 SymbolicUtils = "1.4"
-Symbolics = "5.12"
+Symbolics = "5.12, 6"
 julia = "1.9"
 
 [extras]
