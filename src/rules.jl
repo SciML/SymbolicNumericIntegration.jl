@@ -278,7 +278,7 @@ h_rules = [@rule +(~~xs) => ω + sum(~~xs)
 # it is roughly similar ro kolmogorov complexity
 function complexity(eq)
     eq = value(eq)
-    if istree(eq)
+    if iscall(eq)
         return 1 + sum(complexity(t) for t in args(eq))
     elseif is_number(eq)
         return abs(eq)
