@@ -18,10 +18,10 @@ DataDrivenDiffEq = "1.5"
 DataDrivenSparse = "0.1.2"
 DataStructures = "0.18.13"
 LinearAlgebra = "<0.0.1, 1"
-SpecialFunctions = "2"
+SpecialFunctions = "2.1"
 Statistics = "<0.0.1, 1"
 SymbolicUtils = "2, 3"
-Symbolics = "5.30, 6"
+Symbolics = "5.31, 6"
 julia = "1.9"
 
 [extras]
