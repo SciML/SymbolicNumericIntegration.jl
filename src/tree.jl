@@ -2,22 +2,22 @@
 
 function is_add(eq)
     y = value(eq)
-    return istree(y) && exprtype(y) == SymbolicUtils.ADD
+    return iscall(y) && exprtype(y) == SymbolicUtils.ADD
 end
 
 function is_mul(eq)
     y = value(eq)
-    return istree(y) && exprtype(y) == SymbolicUtils.MUL
+    return iscall(y) && exprtype(y) == SymbolicUtils.MUL
 end
 
 function is_pow(eq)
     y = value(eq)
-    return istree(y) && exprtype(y) == SymbolicUtils.POW
+    return iscall(y) && exprtype(y) == SymbolicUtils.POW
 end
 
 function is_div(eq)
     y = value(eq)
-    return istree(y) && exprtype(y) == SymbolicUtils.DIV
+    return iscall(y) && exprtype(y) == SymbolicUtils.DIV
 end
 
 is_term(eq) = SymbolicUtils.isterm(value(eq))
@@ -25,7 +25,7 @@ is_term(eq) = SymbolicUtils.isterm(value(eq))
 
 function args(eq)
     eq = value(eq)
-    return istree(eq) ? arguments(eq) : []
+    return iscall(eq) ? arguments(eq) : []
 end
 
 diff(eq, x) = expand_derivatives(Differential(x)(eq))

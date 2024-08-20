@@ -99,7 +99,7 @@ end
 # pox(k,n) means k*x^n
 @syms pox(k, n)
 
-is_pox(x) = istree(x) && operation(x) == pox
+is_pox(x) = iscall(x) && operation(x) == pox
 is_not_pox(x) = !is_pox(x)
 
 get_coef(p) = is_pox(p) ? arguments(p)[1] : p
@@ -127,7 +127,7 @@ function collect_powers(eq, x)
     #eq = Prewalk(PassThrough(count_rule1))(eq)
     eq = Fixpoint(Prewalk(PassThrough(Chain([count_rule1, count_rule2, count_rule3]))))(eq)
 
-    if !istree(eq)
+    if !iscall(eq)
         return Dict{Any, Any}(0 => eq)
     elseif is_pox(eq)
         return Dict{Any, Any}(get_power(eq) => get_coef(eq))
