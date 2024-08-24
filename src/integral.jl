@@ -99,7 +99,7 @@ function integrate(eq, x = nothing;
 
     plan = NumericalPlan(abstol, radius, complex_plane, opt)
 
-    s, u, ε = integrate_sum(eq, x; plan, bypass, num_trials, num_steps,
+    s, u, ε = integrate_term(eq, x; plan, bypass, num_trials, num_steps,
         show_basis, symbolic, max_basis, verbose, use_optim)
 
     s = beautify(s)
@@ -226,14 +226,7 @@ function integrate_term(eq, x; kwargs...)
     end
 
     if symbolic
-        y = integrate_symbolic(eq, x; plan)
-        if y == nothing
-            if has_sym_consts
-                @info("Symbolic integration failed. Try changing constant parameters ([$(join(params, ", "))]) to numerical values.")
-            end
-
-            return 0, eq, Inf
-        end
+        return try_symbolic(eq, x, has_sym_consts, params)
     end
 
     eq = cache(eq)
@@ -306,6 +299,20 @@ function try_integrate(eq, x, basis; plan = default_plan())
 
     # return solve_optim(eq, x, basis; plan)
     return solve_sparse(eq, x, basis; plan)
+end
+
+function try_symbolic(eq, x, has_sym_consts = false, params = []; plan = default_plan())
+    y = integrate_symbolic(eq, x; plan)
+
+    if y == nothing
+        if has_sym_consts && !isempty(params)
+            @info("Symbolic integration failed. Try changing constant parameters ([$(join(params, ", "))]) to numerical values.")
+        end
+
+        return 0, eq, Inf
+    else
+        return y, 0, 0
+    end
 end
 
 function deprecation_warnings(; use_optim = false, homotopy = true)
