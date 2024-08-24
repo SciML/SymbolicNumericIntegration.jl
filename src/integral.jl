@@ -99,7 +99,7 @@ function integrate(eq, x = nothing;
 
     plan = NumericalPlan(abstol, radius, complex_plane, opt)
 
-    s, u, ε = integrate_term(eq, x; plan, bypass, num_trials, num_steps,
+    s, u, ε = integrate_sum(eq, x; plan, bypass, num_trials, num_steps,
         show_basis, symbolic, max_basis, verbose, use_optim)
 
     s = beautify(s)
