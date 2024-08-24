@@ -1,7 +1,8 @@
 module SymbolicNumericIntegration
 
+using TermInterface: iscall
 using SymbolicUtils
-using SymbolicUtils: iscall, operation, arguments
+using SymbolicUtils: operation, arguments
 using Symbolics
 using Symbolics: value, get_variables, expand_derivatives, coeff, Equation
 using SymbolicUtils.Rewriters
@@ -33,7 +34,6 @@ export Ei, Si, Ci, Li
 
 include("numeric_utils.jl")
 include("sparse.jl")
-# include("optim.jl")
 include("integral.jl")
 
 export integrate, generate_basis, best_hints
