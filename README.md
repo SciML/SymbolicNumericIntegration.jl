@@ -11,6 +11,7 @@
 
 **SymbolicNumericIntegration.jl** is a hybrid symbolic/numerical integration package that works on the [Julia Symbolics](https://github.com/JuliaSymbolics/Symbolics.jl) expressions.
 
+
 ## Tutorials and Documentation
 
 For information on using the package,
