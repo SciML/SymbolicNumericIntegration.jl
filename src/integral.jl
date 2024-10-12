@@ -10,7 +10,7 @@ Base.signbit(x::SymbolicUtils.Sym{Number}) = false
 is the main entry point to integrate a univariate expression `eq` with respect to `x' (optional).
 
 ```julia
-julia> using Symbolics, SymbolNumericIntegration
+julia> using Symbolics, SymbolicNumericIntegration
 
 julia> @variables x a
 
