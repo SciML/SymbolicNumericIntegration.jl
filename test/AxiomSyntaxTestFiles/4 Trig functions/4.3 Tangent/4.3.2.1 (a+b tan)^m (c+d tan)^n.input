@@ -355,7 +355,7 @@ lst: '[
 [cot(c+d*x)^2/(a+%i*a*tan(c+d*x))^(4/3),x,14,1/8*x/(2^(1/3)*a^(4/3))-1/8*%i*log(cos(c+d*x))/(2^(1/3)*a^(4/3)*d)+2/3*%i*log(tan(c+d*x))/(a^(4/3)*d)-2*%i*log(a^(1/3)-(a+%i*a*tan(c+d*x))^(1/3))/(a^(4/3)*d)-3/8*%i*log(2^(1/3)*a^(1/3)-(a+%i*a*tan(c+d*x))^(1/3))/(2^(1/3)*a^(4/3)*d)-4*%i*atan((a^(1/3)+2*(a+%i*a*tan(c+d*x))^(1/3))/(a^(1/3)*sqrt(3)))/(a^(4/3)*d*sqrt(3))-1/4*%i*atan((a^(1/3)+2^(2/3)*(a+%i*a*tan(c+d*x))^(1/3))/(a^(1/3)*sqrt(3)))*sqrt(3)/(2^(1/3)*a^(4/3)*d)+(-11/8*%i)/(d*(a+%i*a*tan(c+d*x))^(4/3))-cot(c+d*x)/(d*(a+%i*a*tan(c+d*x))^(4/3))+(-19/4*%i)/(a*d*(a+%i*a*tan(c+d*x))^(1/3))],
 [1/(a+%i*a*tan(c+d*x))^(5/3),x,7,-1/8*x/(2^(2/3)*a^(5/3))+1/8*%i*log(cos(c+d*x))/(2^(2/3)*a^(5/3)*d)+3/8*%i*log(2^(1/3)*a^(1/3)-(a+%i*a*tan(c+d*x))^(1/3))/(2^(2/3)*a^(5/3)*d)-1/4*%i*atan((a^(1/3)+2^(2/3)*(a+%i*a*tan(c+d*x))^(1/3))/(a^(1/3)*sqrt(3)))*sqrt(3)/(2^(2/3)*a^(5/3)*d)+3/10*%i/(d*(a+%i*a*tan(c+d*x))^(5/3))+3/8*%i/(a*d*(a+%i*a*tan(c+d*x))^(2/3))],
 
--- Integrands of the form (a+I a Tan[e+f x])^m (d Tan[e+f x])^n with n synbolic
+-- Integrands of the form (a+I a Tan[e+f x])^m (d Tan[e+f x])^n with n symbolic
 [(e*tan(c+d*x))^m*(a+%i*a*tan(c+d*x)),x,2,a*hypergeometric(1,1+m,2+m,%i*tan(c+d*x))*(e*tan(c+d*x))^(1+m)/(d*e*(1+m))],
 [(e*tan(c+d*x))^m*(a-%i*a*tan(c+d*x)),x,2,a*hypergeometric(1,1+m,2+m,-%i*tan(c+d*x))*(e*tan(c+d*x))^(1+m)/(d*e*(1+m))],
 [(d*tan(e+f*x))^n*(a+%i*a*tan(e+f*x))^4,x,6,-2*a^4*(16+11*n+2*n^2)*(d*tan(e+f*x))^(1+n)/(d*f*(3+n)*(2+3*n+n^2))+8*a^4*hypergeometric(1,1+n,2+n,%i*tan(e+f*x))*(d*tan(e+f*x))^(1+n)/(d*f*(1+n))-(d*tan(e+f*x))^(1+n)*(a^2+%i*a^2*tan(e+f*x))^2/(d*f*(3+n))-2*(4+n)*(d*tan(e+f*x))^(1+n)*(a^4+%i*a^4*tan(e+f*x))/(d*f*(2+n)*(3+n))],
@@ -373,7 +373,7 @@ lst: '[
 [(d*tan(e+f*x))^n/(a+%i*a*tan(e+f*x))^(1/2),x,3,AppellF1(1+n,3/2,1,2+n,-%i*tan(e+f*x),%i*tan(e+f*x))*sqrt(1+%i*tan(e+f*x))*(d*tan(e+f*x))^(1+n)/(d*f*(1+n)*sqrt(a+%i*a*tan(e+f*x)))],
 [(d*tan(e+f*x))^n/(a+%i*a*tan(e+f*x))^(3/2),x,3,AppellF1(1+n,5/2,1,2+n,-%i*tan(e+f*x),%i*tan(e+f*x))*sqrt(1+%i*tan(e+f*x))*(d*tan(e+f*x))^(1+n)/(a*d*f*(1+n)*sqrt(a+%i*a*tan(e+f*x)))],
 
--- Integrands of the form (a+I a Tan[e+f x])^m (d Tan[e+f x])^n with m synbolic
+-- Integrands of the form (a+I a Tan[e+f x])^m (d Tan[e+f x])^n with m symbolic
 [(d*tan(e+f*x))^n*(a+%i*a*tan(e+f*x))^m,x,3,AppellF1(1+n,1-m,1,2+n,-%i*tan(e+f*x),%i*tan(e+f*x))*(d*tan(e+f*x))^(1+n)*(a+%i*a*tan(e+f*x))^m/(d*f*(1+n)*(1+%i*tan(e+f*x))^m)],
 [tan(c+d*x)^4*(a+%i*a*tan(c+d*x))^m,x,6,2*%i*(a+%i*a*tan(c+d*x))^m/(d*(6+5*m+m^2))-1/2*%i*hypergeometric(1,m,1+m,1/2*(1+%i*tan(c+d*x)))*(a+%i*a*tan(c+d*x))^m/(d*m)-%i*m*tan(c+d*x)^2*(a+%i*a*tan(c+d*x))^m/(d*(6+5*m+m^2))+tan(c+d*x)^3*(a+%i*a*tan(c+d*x))^m/(d*(3+m))+%i*(6+3*m+m^2)*(a+%i*a*tan(c+d*x))^(1+m)/(a*d*(3+m)*(2+3*m+m^2))],
 [tan(c+d*x)^3*(a+%i*a*tan(c+d*x))^m,x,5,-2*(a+%i*a*tan(c+d*x))^m/(d*m*(2+m))+1/2*hypergeometric(1,m,1+m,1/2*(1+%i*tan(c+d*x)))*(a+%i*a*tan(c+d*x))^m/(d*m)+tan(c+d*x)^2*(a+%i*a*tan(c+d*x))^m/(d*(2+m))-m*(a+%i*a*tan(c+d*x))^(1+m)/(a*d*(2+3*m+m^2))],
