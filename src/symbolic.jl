@@ -1,6 +1,6 @@
 ########################### Utility functions #########################
 
-# beautify convers floats to integers/rational numbers with small 
+# beautify converts floats to integers/rational numbers with small 
 # denominators if possible
 function beautify(eq)
     if is_add(eq)
@@ -90,7 +90,7 @@ function is_holonomic(y, x)
     return false
 end
 
-# blender generates a list of ansatzes based on repetative 
+# blender generates a list of ansatzes based on repetitive 
 # differentiation. It works for holonomic functions, which 
 # are closed under differentiation.
 function blender(y, x; n = 3)
@@ -226,7 +226,7 @@ struct Problem
     x::Expression           # independent variable
     coef::Expression        # coefficient of the integrand
     ker::Array{Expression}  # the pruned list of the basis expressions (kernel)
-    plan::NumericalPlan     # the numerial plan, containing various parameters
+    plan::NumericalPlan     # the numerical plan, containing various parameters
 end
 
 # Constructor to create a Problem for integrand eq 

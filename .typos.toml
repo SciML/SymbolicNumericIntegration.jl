@@ -71,3 +71,6 @@ MTK = "MTK"
 ODE = "ODE"
 PDE = "PDE"
 SDE = "SDE"
+
+# SymbolicNumericIntegration specific terms
+numer = "numer"  # Numerator function name (mathematical term)
