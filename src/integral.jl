@@ -99,7 +99,8 @@ function integrate(eq, x = nothing;
 
     plan = NumericalPlan(abstol, radius, complex_plane, opt)
 
-    s, u, ε = integrate_sum(eq, x; plan, bypass, num_trials, num_steps,
+    s, u,
+    ε = integrate_sum(eq, x; plan, bypass, num_trials, num_steps,
         show_basis, symbolic, max_basis, verbose, use_optim)
 
     s = beautify(s)
@@ -206,7 +207,12 @@ end
 # in a future version
 function integrate_term(eq, x; kwargs...)
     args = Dict(kwargs)
-    plan, num_steps, num_trials, show_basis, symbolic, verbose, max_basis = args[:plan],
+    plan, num_steps,
+    num_trials,
+    show_basis,
+    symbolic,
+    verbose,
+    max_basis = args[:plan],
     args[:num_steps], args[:num_trials], args[:show_basis],
     args[:symbolic], args[:verbose], args[:max_basis]
 
