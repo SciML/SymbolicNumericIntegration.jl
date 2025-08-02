@@ -66,7 +66,7 @@ julia&gt; integrate(x * sin(a * x), x; symbolic = true, detailed = false)
 julia&gt; integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
 (sin(a) - a*cos(a)) / (a^2)</code></pre><p><strong>Arguments:</strong></p><ul><li><code>eq</code>: a univariate expression</li><li><code>x</code>: independent variable (optional if <code>eq</code> is univariate) or a tuple of (independent variable, lower bound, upper bound) for definite integration.</li></ul><p><strong>Keyword Arguments:</strong></p><ul><li><code>abstol</code> (default: <code>1e-6</code>): the desired tolerance</li><li><code>num_steps</code> (default: <code>2</code>): the number of different steps with expanding basis to be tried</li><li><code>num_trials</code> (default: <code>10</code>): the number of trials in each step (no changes to the basis)</li><li><code>show_basis</code> (default: <code>false</code>): if true, the basis (list of candidate terms) is printed</li><li><code>bypass</code> (default: <code>false</code>): if true do not integrate terms separately but consider all at once</li><li><code>symbolic</code> (default: <code>false</code>): try symbolic integration first (will be forced if <code>eq</code> has symbolic constants)</li><li><code>max_basis</code> (default: <code>100</code>): the maximum number of candidate terms to consider</li><li><code>verbose</code> (default: <code>false</code>): print a detailed report</li><li><code>complex_plane</code> (default: <code>true</code>): generate random test points on the complex plane (if false, the points will be on real axis)</li><li><code>radius</code> (default: <code>1.0</code>): the radius of the disk in the complex plane to generate random test points</li><li><code>opt</code> (default: <code>STLSQ(exp.(-10:1:0))</code>): the sparse regression optimizer (from DataDrivenSparse)</li><li><code>homotopy</code> (default: <code>true</code>): <em>deprecated</em>, will be removed in a future version</li><li><code>use_optim</code> (default: <code>false</code>): <em>deprecated</em>, will be removed in a future version</li><li><code>detailed</code> (default: <code>true</code>): <code>(solved, unsolved, err)</code> output format. If <code>detailed=false</code>, only the final integral is returned.</li></ul><p>Returns a tuple of (solved, unsolved, err) if <code>detailed == true</code>, where</p><pre><code class="nohighlight hljs">solved: the solved integral 
 unsolved: the residual unsolved portion of the input
-err: the numerical error in reaching the solution</code></pre><p>Returns the resulting integral or nothing if <code>detailed == false</code></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/SciML/SymbolicNumericIntegration.jl/blob/ce498f710ef45cc7374aff8bbdce35fc1caa3778/src/integral.jl#L7-L57">source</a></section></article><h2 id="Testing"><a class="docs-heading-anchor" href="#Testing">Testing</a><a id="Testing-1"></a><a class="docs-heading-anchor-permalink" href="#Testing" title="Permalink"></a></h2><p><code>test/runtests.jl</code> contains a test suite of 170 easy to moderate test integrals (can be run by calling <code>test_integrals</code>). Currently, <strong>SymbolicNumericIntegration.jl</strong> solves more than 95% of its test suite.</p><p>Additionally, 12 test suites from the <em>Rule-based Integrator</em> (<a href="https://rulebasedintegration.org/">Rubi</a>) are included in the <code>/test</code> directory. For example, we can test the first one as below. <em>Axiom</em> refers to the format of the test files)</p><pre><code class="nohighlight hljs">using SymbolicNumericIntegration
+err: the numerical error in reaching the solution</code></pre><p>Returns the resulting integral or nothing if <code>detailed == false</code></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/SciML/SymbolicNumericIntegration.jl/blob/4462ecc477e3e653def862535c1011d0f4de4837/src/integral.jl#L7-L57">source</a></section></article><h2 id="Testing"><a class="docs-heading-anchor" href="#Testing">Testing</a><a id="Testing-1"></a><a class="docs-heading-anchor-permalink" href="#Testing" title="Permalink"></a></h2><p><code>test/runtests.jl</code> contains a test suite of 170 easy to moderate test integrals (can be run by calling <code>test_integrals</code>). Currently, <strong>SymbolicNumericIntegration.jl</strong> solves more than 95% of its test suite.</p><p>Additionally, 12 test suites from the <em>Rule-based Integrator</em> (<a href="https://rulebasedintegration.org/">Rubi</a>) are included in the <code>/test</code> directory. For example, we can test the first one as below. <em>Axiom</em> refers to the format of the test files)</p><pre><code class="nohighlight hljs">using SymbolicNumericIntegration
 include(&quot;test/axiom.jl&quot;)  # note, you may need to use the correct path
 
 L = convert_axiom(:Apostle)   # can also use L = convert_axiom(1)  
@@ -127,11 +127,11 @@ Threads: 1 default, 0 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [2445eb08] DataDrivenDiffEq v1.9.0
   [5b588203] DataDrivenSparse v0.1.3
   [82cc6244] DataInterpolations v8.3.1
-  [864edb3b] DataStructures v0.18.22
+⌅ [864edb3b] DataStructures v0.18.22
   [e2d170a0] DataValueInterfaces v1.0.0
   [244e2a9f] DefineSingletons v0.1.2
   [8bb1440f] DelimitedFiles v1.9.1
-  [2b5f629d] DiffEqBase v6.179.0
+  [2b5f629d] DiffEqBase v6.180.0
   [459566f4] DiffEqCallbacks v4.8.0
   [77a26b50] DiffEqNoiseProcess v5.24.1
   [163ba53b] DiffResults v1.1.0
@@ -180,7 +180,7 @@ Threads: 1 default, 0 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [692b3bcd] JLLWrappers v1.7.1
   [682c06a0] JSON v0.21.4
   [ae98c720] Jieko v0.2.1
-  [98e50ef6] JuliaFormatter v2.1.2
+  [98e50ef6] JuliaFormatter v2.1.5
 ⌅ [70703baa] JuliaSyntax v0.4.10
   [b14d175d] JuliaVariables v0.2.4
   [ccbc3e58] JumpProcesses v9.16.1
@@ -193,7 +193,7 @@ Threads: 1 default, 0 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [5078a376] LazyArrays v2.6.2
   [87fe0de2] LineSearch v0.1.4
   [d3d80556] LineSearches v7.4.0
-  [7ed4a6bd] LinearSolve v3.23.0
+  [7ed4a6bd] LinearSolve v3.24.0
   [2ab3a3ac] LogExpFunctions v0.3.29
   [c2834f40] MLCore v1.0.0
   [d8e11817] MLStyle v0.4.17
@@ -249,7 +249,7 @@ Threads: 1 default, 0 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [7e49a35a] RuntimeGeneratedFunctions v0.5.15
   [9dfe8606] SCCNonlinearSolve v1.4.0
   [94e857df] SIMDTypes v0.1.0
-  [0bca4576] SciMLBase v2.106.0
+  [0bca4576] SciMLBase v2.107.0
   [19f34311] SciMLJacobianOperators v0.1.8
   [c0aeaf25] SciMLOperators v1.4.0
   [431bcebd] SciMLPublic v1.0.0
@@ -278,7 +278,7 @@ Threads: 1 default, 0 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [19f23fe9] SymbolicLimits v0.2.2
   [78aadeae] SymbolicNumericIntegration v1.9.0 `~/work/SymbolicNumericIntegration.jl/SymbolicNumericIntegration.jl`
   [d1185830] SymbolicUtils v3.29.0
-  [0c5d862f] Symbolics v6.46.0
+  [0c5d862f] Symbolics v6.48.1
   [3783bdb8] TableTraits v1.0.1
   [bd369af6] Tables v1.12.1
   [ed4db957] TaskLocalValues v0.1.3
@@ -292,7 +292,7 @@ Threads: 1 default, 0 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [781d530d] TruncatedStacktraces v1.4.0
   [5c2747f8] URIs v1.6.1
   [3a884ed6] UnPack v1.0.2
-  [1986cc42] Unitful v1.23.1
+  [1986cc42] Unitful v1.24.0
   [a7c27f48] Unityper v0.1.6
   [013be700] UnsafeAtomics v0.3.0
   [897b6980] WeakValueDicts v0.1.0
@@ -354,4 +354,4 @@ Threads: 1 default, 0 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [8e850b90] libblastrampoline_jll v5.11.0+0
   [8e850ede] nghttp2_jll v1.59.0+0
   [3f19e933] p7zip_jll v17.4.0+2
-Info Packages marked with ⌅ have new versions available but compatibility constraints restrict them from upgrading. To see why use `status --outdated -m`</code></pre></details><p>You can also download the <a href="https://github.com/SciML/SymbolicNumericIntegration.jl/tree/gh-pages/v1.9.0/assets/Manifest.toml">manifest</a> file and the <a href="https://github.com/SciML/SymbolicNumericIntegration.jl/tree/gh-pages/v1.9.0/assets/Project.toml">project</a> file.</p></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="symbolicnumericintegration/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Wednesday 30 July 2025 05:57">Wednesday 30 July 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+Info Packages marked with ⌅ have new versions available but compatibility constraints restrict them from upgrading. To see why use `status --outdated -m`</code></pre></details><p>You can also download the <a href="https://github.com/SciML/SymbolicNumericIntegration.jl/tree/gh-pages/v1.9.0/assets/Manifest.toml">manifest</a> file and the <a href="https://github.com/SciML/SymbolicNumericIntegration.jl/tree/gh-pages/v1.9.0/assets/Project.toml">project</a> file.</p></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="symbolicnumericintegration/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Saturday 2 August 2025 06:41">Saturday 2 August 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
