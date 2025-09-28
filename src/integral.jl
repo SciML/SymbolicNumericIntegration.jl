@@ -155,7 +155,7 @@ function integrate(eq, xx::Tuple; kwargs...)
     sol = integrate(eq, x; kwargs...)
 
     if sol isa Tuple
-        if !isequal(first(sol), 0) && sol[2] == 0
+        if !isequal(first(sol), 0) && isequal(sol[2], 0)
             hi_val = eval_at_bound(first(sol), x, hi)
             lo_val = eval_at_bound(first(sol), x, lo)
             result = hi_val - lo_val
@@ -167,7 +167,7 @@ function integrate(eq, xx::Tuple; kwargs...)
         else
             return nothing
         end
-    elseif sol != nothing
+    elseif sol !== nothing
         hi_val = eval_at_bound(sol, x, hi)
         lo_val = eval_at_bound(sol, x, lo)
         result = hi_val - lo_val
@@ -184,18 +184,18 @@ end
 function get_solved(p, sol)
     if sol isa Tuple
         s = sol[1]
-        return s == nothing ? 0 : s
+        return s === nothing ? 0 : s
     else
-        return sol == nothing ? 0 : sol
+        return sol === nothing ? 0 : sol
     end
 end
 
 function get_unsolved(p, sol)
     if sol isa Tuple
         u = sol[2]
-        return u == nothing ? 0 : u
+        return u === nothing ? 0 : u
     else
-        return sol == 0 || sol == nothing ? p : 0
+        return isequal(sol, 0) || sol === nothing ? p : 0
     end
 end
 
@@ -203,7 +203,7 @@ function get_err(p, sol)
     if sol isa Tuple
         return sol[3]
     else
-        return sol == 0 || sol == nothing ? Inf : 0
+        return isequal(sol, 0) || sol === nothing ? Inf : 0
     end
 end
 
