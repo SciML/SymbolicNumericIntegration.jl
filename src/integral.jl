@@ -122,7 +122,7 @@ function integrate(eq, xx::Tuple; kwargs...)
     sol = integrate(eq, x; kwargs...)
 
     if sol isa Tuple
-        if !isequal(sol, 0) && sol[2] == 0
+        if !isequal(sol, 0) && sol[2] == 0 
             return substitute(first(sol), Dict(x => hi)) -
                    substitute(first(sol), Dict(x => lo))
         else
