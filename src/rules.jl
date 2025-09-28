@@ -110,27 +110,27 @@ trigs_rules = [@rule tan(~x) => sin(~x) / cos(~x)
                @rule csc(~x) => one(~x) / sin(~x)
                @rule cot(~x) => cos(~x) / sin(~x)
                @rule sin(~n::is_int_gt_one *
-                         ~x) => sin((~n - 1) * ~x) * cos(~x) +
-                                cos((~n - 1) * ~x) * sin(~x)
+               ~x) => sin((~n - 1) * ~x) * cos(~x) +
+                      cos((~n - 1) * ~x) * sin(~x)
                @rule cos(~n::is_int_gt_one *
-                         ~x) => cos((~n - 1) * ~x) * cos(~x) -
-                                sin((~n - 1) * ~x) * sin(~x)
+               ~x) => cos((~n - 1) * ~x) * cos(~x) -
+                      sin((~n - 1) * ~x) * sin(~x)
                @rule tan(~n::is_int_gt_one *
-                         ~x) => (tan((~n - 1) * ~x) + tan(~x)) /
-                                (1 - tan((~n - 1) * ~x) * tan(~x))
+               ~x) => (tan((~n - 1) * ~x) + tan(~x)) /
+                      (1 - tan((~n - 1) * ~x) * tan(~x))
                @rule csc(~n::is_int_gt_one *
-                         ~x) => sec((~n - 1) * ~x) * sec(~x) *
-                                csc((~n - 1) * ~x) * csc(~x) /
-                                (sec((~n - 1) * ~x) * csc(~x) +
-                                 csc((~n - 1) * ~x) * sec(~x))
+               ~x) => sec((~n - 1) * ~x) * sec(~x) *
+                      csc((~n - 1) * ~x) * csc(~x) /
+                      (sec((~n - 1) * ~x) * csc(~x) +
+                       csc((~n - 1) * ~x) * sec(~x))
                @rule sec(~n::is_int_gt_one *
-                         ~x) => sec((~n - 1) * ~x) * sec(~x) *
-                                csc((~n - 1) * ~x) * csc(~x) /
-                                (csc((~n - 1) * ~x) * csc(~x) -
-                                 sec((~n - 1) * ~x) * sec(~x))
+               ~x) => sec((~n - 1) * ~x) * sec(~x) *
+                      csc((~n - 1) * ~x) * csc(~x) /
+                      (csc((~n - 1) * ~x) * csc(~x) -
+                       sec((~n - 1) * ~x) * sec(~x))
                @rule cot(~n::is_int_gt_one *
-                         ~x) => (cot((~n - 1) * ~x) * cot(~x) - 1) /
-                                (cot((~n - 1) * ~x) + cot(~x))
+               ~x) => (cot((~n - 1) * ~x) * cot(~x) - 1) /
+                      (cot((~n - 1) * ~x) + cot(~x))
                @rule 1 / sin(~x) => csc(~x)
                @rule 1 / cos(~x) => sec(~x)
                @rule 1 / tan(~x) => cot(~x)
@@ -147,21 +147,21 @@ trigs_rules = [@rule tan(~x) => sin(~x) / cos(~x)
                @rule cos(~x + ~y) => cos(~x) * cos(~y) - sin(~x) * sin(~y)
                @rule tan(~x + ~y) => (tan(~x) + tan(~y)) / (1 - tan(~x) * tan(~y))
                @rule csc(~x +
-                         ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) /
-                                (sec(~x) * csc(~y) + csc(~x) * sec(~y))
+               ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) /
+                      (sec(~x) * csc(~y) + csc(~x) * sec(~y))
                @rule sec(~x +
-                         ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) /
-                                (csc(~x) * csc(~y) - sec(~x) * sec(~y))
+               ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) /
+                      (csc(~x) * csc(~y) - sec(~x) * sec(~y))
                @rule cot(~x + ~y) => (cot(~x) * cot(~y) - 1) / (cot(~x) + cot(~y))
                @rule sin(~x - ~y) => sin(~x) * cos(~y) - cos(~x) * sin(~y)
                @rule cos(~x - ~y) => cos(~x) * cos(~y) + sin(~x) * sin(~y)
                @rule tan(~x - ~y) => (tan(~x) - tan(~y)) / (1 + tan(~x) * tan(~y))
                @rule csc(~x -
-                         ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) /
-                                (sec(~x) * csc(~y) - csc(~x) * sec(~y))
+               ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) /
+                      (sec(~x) * csc(~y) - csc(~x) * sec(~y))
                @rule sec(~x -
-                         ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) /
-                                (csc(~x) * csc(~y) + sec(~x) * sec(~y))
+               ~y) => sec(~x) * sec(~y) * csc(~x) * csc(~y) /
+                      (csc(~x) * csc(~y) + sec(~x) * sec(~y))
                @rule cot(~x - ~y) => (cot(~x) * cot(~y) + 1) / (cot(~x) - cot(~y))
 
                # @rule sin(2*~x) => 2*sin(~x)*cos(~x)
@@ -250,8 +250,8 @@ rational_rules = [@rule Ω(+(~~xs)) => sum(map(Ω, ~~xs))
                       decompose_rational(~x),
                       -~k))
                   @rule Ω(~x /
-                          ^(~y::is_poly, ~k::is_pos_int)) => expand(~x *
-                                                                    ^(
+                  ^(~y::is_poly, ~k::is_pos_int)) => expand(~x *
+                                                            ^(
                       decompose_rational(~y),
                       ~k))
                   @rule Ω(~x / ~y::is_poly) => expand(~x * decompose_rational(~y))
