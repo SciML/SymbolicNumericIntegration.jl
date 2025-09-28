@@ -49,7 +49,7 @@ julia> integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
 
 Returns a tuple of (solved, unsolved, err) if `detailed == true`, where
 
-    solved: the solved integral 
+    solved: the solved integral
     unsolved: the residual unsolved portion of the input
     err: the numerical error in reaching the solution
 
@@ -122,7 +122,7 @@ function integrate(eq, xx::Tuple; kwargs...)
     sol = integrate(eq, x; kwargs...)
 
     if sol isa Tuple
-        if first(sol) != 0 && sol[2] == 0
+        if !isequal(sol, 0) && sol[2] == 0
             return substitute(first(sol), Dict(x => hi)) -
                    substitute(first(sol), Dict(x => lo))
         else
@@ -200,7 +200,7 @@ function integrate_sum(eq, x; bypass = false, kwargs...)
     return expand(solved), unsolved, ε₀
 end
 
-# integrate_term is the central part of the univariate integration code that 
+# integrate_term is the central part of the univariate integration code that
 # tries different methods to integrate `eq`.
 #
 # note: this function will be replaced with solver(prob::Problem) in symbolic.jl
@@ -295,8 +295,8 @@ function integrate_term(eq, x; kwargs...)
     end
 end
 
-# try_integrate is the main dispatch point to call different sparse solvers. 
-# It tries to find a linear combination of the basis, whose derivative is 
+# try_integrate is the main dispatch point to call different sparse solvers.
+# It tries to find a linear combination of the basis, whose derivative is
 # equal to eq
 function try_integrate(eq, x, basis; plan = default_plan())
     if isempty(basis)
