@@ -72,6 +72,11 @@ function integrate(eq, x = nothing;
         detailed = true)
     deprecation_warnings(; homotopy, use_optim)
 
+    # Check if eq is a vector/array expression and throw an error
+    if eq isa AbstractArray || eq isa AbstractVector
+        error("Vector expressions are not supported. Please use element-wise integration with `integrate.([expr1, expr2, ...], x)` instead.")
+    end
+
     eq = expand(eq)
 
     if x == nothing
