@@ -1,5 +1,6 @@
 module SymbolicNumericIntegration
 
+using ForwardDiff
 using TermInterface: iscall
 using SymbolicUtils
 using SymbolicUtils: operation, arguments
