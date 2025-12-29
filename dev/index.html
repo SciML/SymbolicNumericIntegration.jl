@@ -46,7 +46,7 @@ integrate(cosh(a * x) * exp(b * x), x; detailed = false, symbolic = true)
 # second argument
 
 integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
-(sin(a) - a * cos(a)) / (a^2)</code></pre><p>SymbolicNumericIntegration.jl exports some special integral functions (defined over Complex numbers) and uses them in solving integrals:</p><ul><li><code>Ei</code>: exponential integral (define as ∫ exp(x) / x dx)</li><li><code>Si</code>: sine integral (define as ∫ sin(x) / x dx)</li><li><code>Ci</code>: cosine integral (define as ∫ cos(x) / x dx)</li><li><code>Li</code>: logarithmic integral (define as ∫ 1 / log(x) dx)</li></ul><p>For examples:</p><pre><code class="language-julia hljs">integrate(exp(x + 1) / (x + 1))
+(sin(a) - a * cos(a)) / (a^2)</code></pre><p>SymbolicNumericIntegration.jl exports some special integral functions (defined over Complex numbers) and uses them in solving integrals:</p><ul><li><code>Ei</code>: exponential integral (defined as ∫ exp(x) / x dx)</li><li><code>Si</code>: sine integral (defined as ∫ sin(x) / x dx)</li><li><code>Ci</code>: cosine integral (defined as ∫ cos(x) / x dx)</li><li><code>Li</code>: logarithmic integral (defined as ∫ 1 / log(x) dx)</li></ul><p>For example:</p><pre><code class="language-julia hljs">integrate(exp(x + 1) / (x + 1))
 (SymbolicNumericIntegration.Ei(1 + x), 0, 0.0)
 
 integrate(x * cos(a * x^2 - 1) / (a * x^2 - 1), x; detailed = false, symbolic = true)
@@ -66,54 +66,56 @@ julia&gt; integrate(x * sin(a * x), x; symbolic = true, detailed = false)
 julia&gt; integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
 (sin(a) - a*cos(a)) / (a^2)</code></pre><p><strong>Arguments:</strong></p><ul><li><code>eq</code>: a univariate expression</li><li><code>x</code>: independent variable (optional if <code>eq</code> is univariate) or a tuple of (independent variable, lower bound, upper bound) for definite integration.</li></ul><p><strong>Keyword Arguments:</strong></p><ul><li><code>abstol</code> (default: <code>1e-6</code>): the desired tolerance</li><li><code>num_steps</code> (default: <code>2</code>): the number of different steps with expanding basis to be tried</li><li><code>num_trials</code> (default: <code>10</code>): the number of trials in each step (no changes to the basis)</li><li><code>show_basis</code> (default: <code>false</code>): if true, the basis (list of candidate terms) is printed</li><li><code>bypass</code> (default: <code>false</code>): if true do not integrate terms separately but consider all at once</li><li><code>symbolic</code> (default: <code>false</code>): try symbolic integration first (will be forced if <code>eq</code> has symbolic constants)</li><li><code>max_basis</code> (default: <code>100</code>): the maximum number of candidate terms to consider</li><li><code>verbose</code> (default: <code>false</code>): print a detailed report</li><li><code>complex_plane</code> (default: <code>true</code>): generate random test points on the complex plane (if false, the points will be on real axis)</li><li><code>radius</code> (default: <code>1.0</code>): the radius of the disk in the complex plane to generate random test points</li><li><code>opt</code> (default: <code>STLSQ(exp.(-10:1:0))</code>): the sparse regression optimizer (from DataDrivenSparse)</li><li><code>homotopy</code> (default: <code>true</code>): <em>deprecated</em>, will be removed in a future version</li><li><code>use_optim</code> (default: <code>false</code>): <em>deprecated</em>, will be removed in a future version</li><li><code>detailed</code> (default: <code>true</code>): <code>(solved, unsolved, err)</code> output format. If <code>detailed=false</code>, only the final integral is returned.</li></ul><p>Returns a tuple of (solved, unsolved, err) if <code>detailed == true</code>, where</p><pre><code class="language-julia hljs">solved: the solved integral
 unsolved: the residual unsolved portion of the input
-err: the numerical error in reaching the solution</code></pre><p>Returns the resulting integral or nothing if <code>detailed == false</code></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/SciML/SymbolicNumericIntegration.jl/blob/82297c48f8e147adec63d0ec85964b67c0fdc168/src/integral.jl#L7-L57">source</a></section></details></article><h2 id="Testing"><a class="docs-heading-anchor" href="#Testing">Testing</a><a id="Testing-1"></a><a class="docs-heading-anchor-permalink" href="#Testing" title="Permalink"></a></h2><p><code>test/runtests.jl</code> contains a test suite of 170 easy to moderate test integrals (can be run by calling <code>test_integrals</code>). Currently, <strong>SymbolicNumericIntegration.jl</strong> solves more than 95% of its test suite.</p><p>Additionally, 12 test suites from the <em>Rule-based Integrator</em> (<a href="https://rulebasedintegration.org/">Rubi</a>) are included in the <code>/test</code> directory. For example, we can test the first one as below. <em>Axiom</em> refers to the format of the test files)</p><pre><code class="nohighlight hljs">using SymbolicNumericIntegration
+err: the numerical error in reaching the solution</code></pre><p>Returns the resulting integral or nothing if <code>detailed == false</code></p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/SciML/SymbolicNumericIntegration.jl/blob/071129256778fa6e951a7f545542435ca5d11c22/src/integral.jl#L7-L57">source</a></section></details></article><h2 id="Testing"><a class="docs-heading-anchor" href="#Testing">Testing</a><a id="Testing-1"></a><a class="docs-heading-anchor-permalink" href="#Testing" title="Permalink"></a></h2><p><code>test/runtests.jl</code> contains a test suite of 170 easy to moderate test integrals (can be run by calling <code>test_integrals</code>). Currently, <strong>SymbolicNumericIntegration.jl</strong> solves more than 95% of its test suite.</p><p>Additionally, 12 test suites from the <em>Rule-based Integrator</em> (<a href="https://rulebasedintegration.org/">Rubi</a>) are included in the <code>/test</code> directory. For example, we can test the first one as below. <em>Axiom</em> refers to the format of the test files)</p><pre><code class="nohighlight hljs">using SymbolicNumericIntegration
 include(&quot;test/axiom.jl&quot;)  # note, you may need to use the correct path
 
 L = convert_axiom(:Apostle)   # can also use L = convert_axiom(1)  
-test_axiom(L, false; bypass = false, verbose = false, homotopy = true)</code></pre><p>The test suites description based on the header of the files in the Rubi directory are</p><table><tr><th style="text-align: left">name</th><th style="text-align: left">id</th><th style="text-align: left">comment</th></tr><tr><td style="text-align: left">:Apostle</td><td style="text-align: left">1</td><td style="text-align: left">Tom M. Apostol - Calculus, Volume I, Second Edition (1967)</td></tr><tr><td style="text-align: left">:Bondarenko</td><td style="text-align: left">2</td><td style="text-align: left">Vladimir Bondarenko Integration Problems</td></tr><tr><td style="text-align: left">:Bronstein</td><td style="text-align: left">3</td><td style="text-align: left">Manuel Bronstein - Symbolic Integration Tutorial (1998)</td></tr><tr><td style="text-align: left">:Charlwood</td><td style="text-align: left">4</td><td style="text-align: left">Kevin Charlwood - Integration on Computer Algebra Systems (2008)</td></tr><tr><td style="text-align: left">:Hearn</td><td style="text-align: left">5</td><td style="text-align: left">Anthony Hearn - Reduce Integration Test Package</td></tr><tr><td style="text-align: left">:Hebisch</td><td style="text-align: left">6</td><td style="text-align: left">Waldek Hebisch - email May 2013</td></tr><tr><td style="text-align: left">:Jeffrey</td><td style="text-align: left">7</td><td style="text-align: left">David Jeffrey - Rectifying Transformations for Trig Integration (1997)</td></tr><tr><td style="text-align: left">:Moses</td><td style="text-align: left">8</td><td style="text-align: left">Joel Moses - Symbolic Integration Ph.D. Thesis (1967)</td></tr><tr><td style="text-align: left">:Stewart</td><td style="text-align: left">9</td><td style="text-align: left">James Stewart - Calculus (1987)</td></tr><tr><td style="text-align: left">:Timofeev</td><td style="text-align: left">10</td><td style="text-align: left">A. F. Timofeev - Integration of Functions (1948)</td></tr><tr><td style="text-align: left">:Welz</td><td style="text-align: left">11</td><td style="text-align: left">Martin Welz - posts on Sci.Math.Symbolic</td></tr><tr><td style="text-align: left">:Webster</td><td style="text-align: left">12</td><td style="text-align: left">Michael Wester</td></tr></table><h2 id="Citation"><a class="docs-heading-anchor" href="#Citation">Citation</a><a id="Citation-1"></a><a class="docs-heading-anchor-permalink" href="#Citation" title="Permalink"></a></h2><p>If you use <strong>SymbolicNumericIntegration.jl</strong>, please cite <a href="https://arxiv.org/abs/2201.12468">Symbolic-Numeric Integration of Univariate Expressions based on Sparse Regression</a>:</p><pre><code class="nohighlight hljs">@article{Iravanian2022,   
+test_axiom(L, false; bypass = false, verbose = false, homotopy = true)</code></pre><p>The test suites description based on the header of the files in the Rubi directory are</p><table><tr><th style="text-align: left">name</th><th style="text-align: left">id</th><th style="text-align: left">comment</th></tr><tr><td style="text-align: left">:Apostle</td><td style="text-align: left">1</td><td style="text-align: left">Tom M. Apostol - Calculus, Volume I, Second Edition (1967)</td></tr><tr><td style="text-align: left">:Bondarenko</td><td style="text-align: left">2</td><td style="text-align: left">Vladimir Bondarenko Integration Problems</td></tr><tr><td style="text-align: left">:Bronstein</td><td style="text-align: left">3</td><td style="text-align: left">Manuel Bronstein - Symbolic Integration Tutorial (1998)</td></tr><tr><td style="text-align: left">:Charlwood</td><td style="text-align: left">4</td><td style="text-align: left">Kevin Charlwood - Integration on Computer Algebra Systems (2008)</td></tr><tr><td style="text-align: left">:Hearn</td><td style="text-align: left">5</td><td style="text-align: left">Anthony Hearn - Reduce Integration Test Package</td></tr><tr><td style="text-align: left">:Hebisch</td><td style="text-align: left">6</td><td style="text-align: left">Waldek Hebisch - email May 2013</td></tr><tr><td style="text-align: left">:Jeffrey</td><td style="text-align: left">7</td><td style="text-align: left">David Jeffrey - Rectifying Transformations for Trig Integration (1997)</td></tr><tr><td style="text-align: left">:Moses</td><td style="text-align: left">8</td><td style="text-align: left">Joel Moses - Symbolic Integration Ph.D. Thesis (1967)</td></tr><tr><td style="text-align: left">:Stewart</td><td style="text-align: left">9</td><td style="text-align: left">James Stewart - Calculus (1987)</td></tr><tr><td style="text-align: left">:Timofeev</td><td style="text-align: left">10</td><td style="text-align: left">A. F. Timofeev - Integration of Functions (1948)</td></tr><tr><td style="text-align: left">:Welz</td><td style="text-align: left">11</td><td style="text-align: left">Martin Welz - posts on Sci.Math.Symbolic</td></tr><tr><td style="text-align: left">:Wester</td><td style="text-align: left">12</td><td style="text-align: left">Michael Wester</td></tr></table><h2 id="Citation"><a class="docs-heading-anchor" href="#Citation">Citation</a><a id="Citation-1"></a><a class="docs-heading-anchor-permalink" href="#Citation" title="Permalink"></a></h2><p>If you use <strong>SymbolicNumericIntegration.jl</strong>, please cite <a href="https://arxiv.org/abs/2201.12468">Symbolic-Numeric Integration of Univariate Expressions based on Sparse Regression</a>:</p><pre><code class="nohighlight hljs">@article{Iravanian2022,   
    author = {Shahriar Iravanian and Carl Julius Martensen and Alessandro Cheli and Shashi Gowda and Anand Jain and Julia Computing and Yingbo Ma and Chris Rackauckas},
    doi = {10.48550/arxiv.2201.12468},
    month = {1},
    title = {Symbolic-Numeric Integration of Univariate Expressions based on Sparse Regression},
    url = {https://arxiv.org/abs/2201.12468v2},
    year = {2022},
-}</code></pre><h2 id="Contributing"><a class="docs-heading-anchor" href="#Contributing">Contributing</a><a id="Contributing-1"></a><a class="docs-heading-anchor-permalink" href="#Contributing" title="Permalink"></a></h2><ul><li><p>Please refer to the <a href="https://github.com/SciML/ColPrac/blob/master/README.md">SciML ColPrac: Contributor&#39;s Guide on Collaborative Practices for Community Packages</a> for guidance on PRs, issues, and other matters relating to contributing to SciML.</p></li><li><p>See the <a href="https://github.com/SciML/SciMLStyle">SciML Style Guide</a> for common coding practices and other style decisions.</p></li><li><p>There are a few community forums:</p><ul><li>The #diffeq-bridged and #sciml-bridged channels in the <a href="https://julialang.org/slack/">Julia Slack</a></li><li>The #diffeq-bridged and #sciml-bridged channels in the <a href="https://julialang.zulipchat.com/#narrow/stream/279055-sciml-bridged">Julia Zulip</a></li><li>On the <a href="https://discourse.julialang.org">Julia Discourse forums</a></li><li>See also <a href="https://sciml.ai/community/">SciML Community page</a></li></ul></li></ul><h2 id="Reproducibility"><a class="docs-heading-anchor" href="#Reproducibility">Reproducibility</a><a id="Reproducibility-1"></a><a class="docs-heading-anchor-permalink" href="#Reproducibility" title="Permalink"></a></h2><details><summary>The documentation of this SciML package was built using these direct dependencies,</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/github-runners/demeter4-15/_work/SymbolicNumericIntegration.jl/SymbolicNumericIntegration.jl/docs/Project.toml`
+}</code></pre><h2 id="Contributing"><a class="docs-heading-anchor" href="#Contributing">Contributing</a><a id="Contributing-1"></a><a class="docs-heading-anchor-permalink" href="#Contributing" title="Permalink"></a></h2><ul><li><p>Please refer to the <a href="https://github.com/SciML/ColPrac/blob/master/README.md">SciML ColPrac: Contributor&#39;s Guide on Collaborative Practices for Community Packages</a> for guidance on PRs, issues, and other matters relating to contributing to SciML.</p></li><li><p>See the <a href="https://github.com/SciML/SciMLStyle">SciML Style Guide</a> for common coding practices and other style decisions.</p></li><li><p>There are a few community forums:</p><ul><li>The #diffeq-bridged and #sciml-bridged channels in the <a href="https://julialang.org/slack/">Julia Slack</a></li><li>The #diffeq-bridged and #sciml-bridged channels in the <a href="https://julialang.zulipchat.com/#narrow/stream/279055-sciml-bridged">Julia Zulip</a></li><li>On the <a href="https://discourse.julialang.org">Julia Discourse forums</a></li><li>See also <a href="https://sciml.ai/community/">SciML Community page</a></li></ul></li></ul><h2 id="Reproducibility"><a class="docs-heading-anchor" href="#Reproducibility">Reproducibility</a><a id="Reproducibility-1"></a><a class="docs-heading-anchor-permalink" href="#Reproducibility" title="Permalink"></a></h2><details><summary>The documentation of this SciML package was built using these direct dependencies,</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/github-runners/deepsea4-12/_work/SymbolicNumericIntegration.jl/SymbolicNumericIntegration.jl/docs/Project.toml`
   [e30172f5] Documenter v1.16.1
-  [78aadeae] SymbolicNumericIntegration v1.9.1 `~/github-runners/demeter4-15/_work/SymbolicNumericIntegration.jl/SymbolicNumericIntegration.jl`</code></pre></details><details><summary>and using this machine and Julia version.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Julia Version 1.12.2
-Commit ca9b6662be4 (2025-11-20 16:25 UTC)
+  [78aadeae] SymbolicNumericIntegration v1.9.1 `~/github-runners/deepsea4-12/_work/SymbolicNumericIntegration.jl/SymbolicNumericIntegration.jl`</code></pre></details><details><summary>and using this machine and Julia version.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Julia Version 1.12.3
+Commit 966d0af0fdf (2025-12-15 11:20 UTC)
 Build Info:
   Official https://julialang.org release
 Platform Info:
   OS: Linux (x86_64-linux-gnu)
-  CPU: 64 × AMD EPYC 9354 32-Core Processor
+  CPU: 128 × AMD EPYC 7513 32-Core Processor
   WORD_SIZE: 64
-  LLVM: libLLVM-18.1.7 (ORCJIT, znver4)
+  LLVM: libLLVM-18.1.7 (ORCJIT, znver3)
   GC: Built with stock GC
-Threads: 1 default, 1 interactive, 1 GC (on 64 virtual cores)</code></pre></details><details><summary>A more complete overview of all dependencies and their versions is also provided.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/github-runners/demeter4-15/_work/SymbolicNumericIntegration.jl/SymbolicNumericIntegration.jl/docs/Manifest.toml`
-  [47edcb42] ADTypes v1.19.0
+Threads: 1 default, 1 interactive, 1 GC (on 128 virtual cores)
+Environment:
+  JULIA_DEPOT_PATH = /home/chrisrackauckas/github-runners/deepsea4-12/.julia</code></pre></details><details><summary>A more complete overview of all dependencies and their versions is also provided.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/github-runners/deepsea4-12/_work/SymbolicNumericIntegration.jl/SymbolicNumericIntegration.jl/docs/Manifest.toml`
+  [47edcb42] ADTypes v1.20.0
   [a4c015fc] ANSIColoredPrinters v0.0.1
   [1520ce14] AbstractTrees v0.4.5
-  [7d9f7c33] Accessors v0.1.42
+  [7d9f7c33] Accessors v0.1.43
   [79e6a3ab] Adapt v4.4.0
   [66dad0bd] AliasTables v1.1.3
   [dce04be8] ArgCheck v2.5.0
   [ec485272] ArnoldiMethod v0.4.0
   [4fba245c] ArrayInterface v7.22.0
-  [4c555306] ArrayLayouts v1.12.1
+  [4c555306] ArrayLayouts v1.12.2
   [a9b6321e] Atomix v1.1.2
   [198e06fe] BangBang v0.4.6
   [9718e550] Baselet v0.1.1
   [e2ed5e7c] Bijections v0.2.2
   [62783981] BitTwiddlingConvenienceFunctions v0.1.6
   [8e7c35d0] BlockArrays v1.9.3
-  [70df07ce] BracketingNonlinearSolve v1.6.0
+  [70df07ce] BracketingNonlinearSolve v1.6.1
   [2a0fbf3d] CPUSummary v0.2.7
   [d360d2e6] ChainRulesCore v1.26.0
   [fb6a15b2] CloseOpenIntervals v0.1.13
   [944b1d66] CodecZlib v0.7.8
 ⌅ [861a8166] Combinatorics v1.0.2
   [a80b9123] CommonMark v0.9.1
-  [38540f10] CommonSolve v0.2.4
+  [38540f10] CommonSolve v0.2.6
   [bbf7d656] CommonSubexpressions v0.3.1
   [f70d9fcc] CommonWorldInvalidations v1.0.0
   [34da2185] Compat v4.18.1
@@ -125,19 +127,19 @@ Threads: 1 default, 1 interactive, 1 GC (on 64 virtual cores)</code></pre></deta
   [adafc99b] CpuId v0.3.1
   [a8cc5b0e] Crayons v4.1.1
   [9a962f9c] DataAPI v1.16.0
-  [2445eb08] DataDrivenDiffEq v1.10.0
+⌃ [2445eb08] DataDrivenDiffEq v1.11.0
   [5b588203] DataDrivenSparse v0.1.3
-  [82cc6244] DataInterpolations v8.7.0
+  [82cc6244] DataInterpolations v8.8.0
 ⌅ [864edb3b] DataStructures v0.18.22
   [e2d170a0] DataValueInterfaces v1.0.0
   [244e2a9f] DefineSingletons v0.1.2
   [8bb1440f] DelimitedFiles v1.9.1
-  [2b5f629d] DiffEqBase v6.192.0
-  [459566f4] DiffEqCallbacks v4.10.1
+  [2b5f629d] DiffEqBase v6.194.0
+  [459566f4] DiffEqCallbacks v4.11.0
   [77a26b50] DiffEqNoiseProcess v5.24.1
   [163ba53b] DiffResults v1.1.0
   [b552c78f] DiffRules v1.15.1
-  [a0c0ee7d] DifferentiationInterface v0.7.12
+  [a0c0ee7d] DifferentiationInterface v0.7.13
   [8d63f2c5] DispatchDoctor v0.4.26
   [31c24e10] Distributions v0.25.122
   [ffbed154] DocStringExtensions v0.9.5
@@ -163,13 +165,13 @@ Threads: 1 default, 1 interactive, 1 GC (on 64 virtual cores)</code></pre></deta
   [77dc65aa] FunctionWrappersWrappers v0.1.3
   [46192b85] GPUArraysCore v0.2.0
   [d7ba0133] Git v1.5.0
-  [c27321d9] Glob v1.3.1
-  [86223c79] Graphs v1.13.1
+  [c27321d9] Glob v1.4.0
+⌃ [86223c79] Graphs v1.13.1
   [076d061b] HashArrayMappedTries v0.2.0
   [34004b35] HypergeometricFunctions v0.3.28
   [b5f81e59] IOCapture v1.0.0
   [615f187c] IfElse v0.1.1
-  [3263718b] ImplicitDiscreteSolve v1.2.0
+  [3263718b] ImplicitDiscreteSolve v1.5.0
   [d25df0c9] Inflate v0.1.5
   [22cec73e] InitialValues v0.3.1
   [18e54dd8] IntegerMathUtils v0.1.3
@@ -183,14 +185,14 @@ Threads: 1 default, 1 interactive, 1 GC (on 64 virtual cores)</code></pre></deta
   [98e50ef6] JuliaFormatter v2.2.0
 ⌅ [70703baa] JuliaSyntax v0.4.10
   [b14d175d] JuliaVariables v0.2.4
-  [ccbc3e58] JumpProcesses v9.19.2
+  [ccbc3e58] JumpProcesses v9.19.3
   [63c18a36] KernelAbstractions v0.9.39
   [b964fa9f] LaTeXStrings v1.4.0
   [23fbe1c1] Latexify v0.16.10
   [10f19ff3] LayoutPointers v0.1.17
   [0e77f7df] LazilyInitializedFields v1.3.0
   [87fe0de2] LineSearch v0.1.4
-  [d3d80556] LineSearches v7.4.1
+  [d3d80556] LineSearches v7.5.1
   [2ab3a3ac] LogExpFunctions v0.3.29
   [e6f89c97] LoggingExtras v1.2.0
   [c2834f40] MLCore v1.0.0
@@ -202,21 +204,21 @@ Threads: 1 default, 1 interactive, 1 GC (on 64 virtual cores)</code></pre></deta
   [bb5d69b7] MaybeInplace v0.1.4
   [128add7d] MicroCollections v0.2.0
   [e1d29d7a] Missings v1.2.0
-  [961ee093] ModelingToolkit v10.29.0
+⌅ [961ee093] ModelingToolkit v10.31.2
   [2e0e35c7] Moshi v0.3.7
   [46d2c3a1] MuladdMacro v0.2.4
 ⌃ [102ac46a] MultivariatePolynomials v0.5.9
   [d8a4904e] MutableArithmetics v1.6.7
   [d41bc354] NLSolversBase v7.10.0
-  [872c559c] NNlib v0.9.31
+⌃ [872c559c] NNlib v0.9.31
   [77ba4419] NaNMath v1.1.3
   [71a1bf82] NameResolution v0.1.5
-  [be0214bd] NonlinearSolveBase v2.4.0
+  [be0214bd] NonlinearSolveBase v2.9.0
   [6fe1bfb0] OffsetArrays v1.17.0
-  [429524aa] Optim v1.13.2
+  [429524aa] Optim v1.13.3
   [bac558e1] OrderedCollections v1.8.1
-  [bbf590c4] OrdinaryDiffEqCore v1.36.0
-  [90014a1f] PDMats v0.11.36
+  [bbf590c4] OrdinaryDiffEqCore v2.3.0
+  [90014a1f] PDMats v0.11.37
   [d96e819e] Parameters v0.12.3
   [69de0a69] Parsers v2.8.3
   [e409e4f3] PoissonRandom v0.4.7
@@ -225,7 +227,7 @@ Threads: 1 default, 1 interactive, 1 GC (on 64 virtual cores)</code></pre></deta
   [85a6dd25] PositiveFactorizations v0.2.4
   [d236fae5] PreallocationTools v0.4.34
   [aea7be01] PrecompileTools v1.3.3
-  [21216c6a] Preferences v1.5.0
+  [21216c6a] Preferences v1.5.1
   [8162dcfd] PrettyPrint v0.2.0
   [08abe8d2] PrettyTables v3.1.2
   [27ebfcd6] Primes v0.5.7
@@ -235,27 +237,26 @@ Threads: 1 default, 1 interactive, 1 GC (on 64 virtual cores)</code></pre></deta
   [74087812] Random123 v1.7.1
   [e6cf234a] RandomNumbers v1.6.0
   [3cdcf5f2] RecipesBase v1.3.4
-  [731186ca] RecursiveArrayTools v3.39.0
+  [731186ca] RecursiveArrayTools v3.42.1
   [189a3867] Reexport v1.2.2
   [2792f1a3] RegistryInstances v0.1.0
   [ae029012] Requires v1.3.1
   [ae5879a3] ResettableStacks v1.1.1
   [79098fc4] Rmath v0.9.0
   [7e49a35a] RuntimeGeneratedFunctions v0.5.16
-  [9dfe8606] SCCNonlinearSolve v1.6.0
+  [9dfe8606] SCCNonlinearSolve v1.8.0
   [94e857df] SIMDTypes v0.1.0
-  [0bca4576] SciMLBase v2.127.0
-  [19f34311] SciMLJacobianOperators v0.1.11
-  [a6db7da4] SciMLLogging v1.5.0
-  [c0aeaf25] SciMLOperators v1.13.0
+  [0bca4576] SciMLBase v2.130.0
+  [19f34311] SciMLJacobianOperators v0.1.12
+  [a6db7da4] SciMLLogging v1.7.1
+  [c0aeaf25] SciMLOperators v1.14.1
   [431bcebd] SciMLPublic v1.0.0
   [53ae85a6] SciMLStructures v1.7.0
   [7e506255] ScopedValues v1.5.0
   [efcf1570] Setfield v1.1.2
   [605ecd9f] ShowCases v0.1.0
-  [727e6d20] SimpleNonlinearSolve v2.9.0
+  [727e6d20] SimpleNonlinearSolve v2.10.0
   [699a6c99] SimpleTraits v0.9.5
-  [ce78b400] SimpleUnPack v1.1.0
   [a2af1166] SortingAlgorithms v1.2.2
   [276daf66] SpecialFunctions v2.6.1
   [171d559e] SplittablesBase v0.1.15
@@ -264,17 +265,17 @@ Threads: 1 default, 1 interactive, 1 GC (on 64 virtual cores)</code></pre></deta
   [90137ffa] StaticArrays v1.9.15
   [1e83bf80] StaticArraysCore v1.4.4
   [10745b16] Statistics v1.11.1
-  [82ae8749] StatsAPI v1.7.1
-  [2913bbd2] StatsBase v0.34.8
+  [82ae8749] StatsAPI v1.8.0
+  [2913bbd2] StatsBase v0.34.9
   [4c63d2b9] StatsFuns v1.5.2
   [7792a7ef] StrideArraysCore v0.5.8
   [892a3eda] StringManipulation v0.4.2
   [ec057cc2] StructUtils v2.6.0
   [2efcf032] SymbolicIndexingInterface v0.3.46
 ⌃ [19f23fe9] SymbolicLimits v0.2.3
-  [78aadeae] SymbolicNumericIntegration v1.9.1 `~/github-runners/demeter4-15/_work/SymbolicNumericIntegration.jl/SymbolicNumericIntegration.jl`
+  [78aadeae] SymbolicNumericIntegration v1.9.1 `~/github-runners/deepsea4-12/_work/SymbolicNumericIntegration.jl/SymbolicNumericIntegration.jl`
 ⌅ [d1185830] SymbolicUtils v3.32.0
-⌅ [0c5d862f] Symbolics v6.57.0
+⌅ [0c5d862f] Symbolics v6.58.0
   [3783bdb8] TableTraits v1.0.1
   [bd369af6] Tables v1.12.1
   [ed4db957] TaskLocalValues v0.1.3
@@ -288,14 +289,14 @@ Threads: 1 default, 1 interactive, 1 GC (on 64 virtual cores)</code></pre></deta
   [781d530d] TruncatedStacktraces v1.4.0
   [5c2747f8] URIs v1.6.1
   [3a884ed6] UnPack v1.0.2
-  [1986cc42] Unitful v1.25.1
+  [1986cc42] Unitful v1.27.0
   [a7c27f48] Unityper v0.1.6
   [013be700] UnsafeAtomics v0.3.0
   [2e619515] Expat_jll v2.7.3+0
   [61579ee1] Ghostscript_jll v9.55.1+0
   [020c3dae] Git_LFS_jll v3.7.0+0
-  [f8c6e375] Git_jll v2.51.3+0
-  [aacddb02] JpegTurbo_jll v3.1.3+0
+  [f8c6e375] Git_jll v2.52.0+0
+  [aacddb02] JpegTurbo_jll v3.1.4+0
   [94ce4f54] Libiconv_jll v1.18.0+0
   [9bd350c2] OpenSSH_jll v10.2.1+0
   [efe28fd5] OpenSpecFun_jll v0.5.6+0
@@ -318,7 +319,7 @@ Threads: 1 default, 1 interactive, 1 GC (on 64 virtual cores)</code></pre></deta
   [d6f4376e] Markdown v1.11.0
   [a63ad114] Mmap v1.11.0
   [ca575930] NetworkOptions v1.3.0
-  [44cfe95a] Pkg v1.12.0
+  [44cfe95a] Pkg v1.12.1
   [de0858da] Printf v1.11.0
   [3fa0cd96] REPL v1.11.0
   [9a3f8284] Random v1.11.0
@@ -348,4 +349,4 @@ Threads: 1 default, 1 interactive, 1 GC (on 64 virtual cores)</code></pre></deta
   [8e850b90] libblastrampoline_jll v5.15.0+0
   [8e850ede] nghttp2_jll v1.64.0+1
   [3f19e933] p7zip_jll v17.7.0+0
-Info Packages marked with ⌃ and ⌅ have new versions available. Those with ⌃ may be upgradable, but those with ⌅ are restricted by compatibility constraints from upgrading. To see why use `status --outdated -m`</code></pre></details><p>You can also download the <a href="https://github.com/SciML/SymbolicNumericIntegration.jl/tree/gh-pages/v1.9.1/assets/Manifest.toml">manifest</a> file and the <a href="https://github.com/SciML/SymbolicNumericIntegration.jl/tree/gh-pages/v1.9.1/assets/Project.toml">project</a> file.</p></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="symbolicnumericintegration/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Tuesday 25 November 2025 14:49">Tuesday 25 November 2025</span>. Using Julia version 1.12.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+Info Packages marked with ⌃ and ⌅ have new versions available. Those with ⌃ may be upgradable, but those with ⌅ are restricted by compatibility constraints from upgrading. To see why use `status --outdated -m`</code></pre></details><p>You can also download the <a href="https://github.com/SciML/SymbolicNumericIntegration.jl/tree/gh-pages/v1.9.1/assets/Manifest.toml">manifest</a> file and the <a href="https://github.com/SciML/SymbolicNumericIntegration.jl/tree/gh-pages/v1.9.1/assets/Project.toml">project</a> file.</p></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="symbolicnumericintegration/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Monday 29 December 2025 04:59">Monday 29 December 2025</span>. Using Julia version 1.12.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
