@@ -73,12 +73,12 @@ integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
 
 SymbolicNumericIntegration.jl exports some special integral functions (defined over Complex numbers) and uses them in solving integrals:
 
-  - `Ei`: exponential integral (define as ∫ exp(x) / x dx)
-  - `Si`: sine integral (define as ∫ sin(x) / x dx)
-  - `Ci`: cosine integral (define as ∫ cos(x) / x dx)
-  - `Li`: logarithmic integral (define as ∫ 1 / log(x) dx)
+  - `Ei`: exponential integral (defined as ∫ exp(x) / x dx)
+  - `Si`: sine integral (defined as ∫ sin(x) / x dx)
+  - `Ci`: cosine integral (defined as ∫ cos(x) / x dx)
+  - `Li`: logarithmic integral (defined as ∫ 1 / log(x) dx)
 
-For examples:
+For example:
 
 ```julia
 integrate(exp(x + 1) / (x + 1))
@@ -124,7 +124,7 @@ The test suites description based on the header of the files in the Rubi directo
 | :Stewart    | 9  | James Stewart - Calculus (1987)                                        |
 | :Timofeev   | 10 | A. F. Timofeev - Integration of Functions (1948)                       |
 | :Welz       | 11 | Martin Welz - posts on Sci.Math.Symbolic                               |
-| :Webster    | 12 | Michael Wester                                                         |
+| :Wester     | 12 | Michael Wester                                                         |
 
 ## Citation
 
