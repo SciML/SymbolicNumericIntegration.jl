@@ -121,6 +121,30 @@ function integrate(eq, x = nothing;
     end
 end
 
+# Evaluate an expression at a bound, using limit for infinite bounds
+function eval_at_bound(expr, x, bound)
+    if isinf(bound)
+        # Use symbolic limits for infinite bounds
+        expr_unwrapped = value(expr)
+        x_unwrapped = value(x)
+        try
+            result = limit(expr_unwrapped, x_unwrapped, bound)
+            # limit returns a tuple (value, assumptions), extract the value
+            if result isa Tuple
+                return first(result)
+            else
+                return result
+            end
+        catch e
+            # If limit computation fails, fall back to direct substitution
+            # This may result in NaN for indeterminate forms
+            return substitute(expr, Dict(x => bound))
+        end
+    else
+        return substitute(expr, Dict(x => bound))
+    end
+end
+
 # Definite integral
 function integrate(eq, xx::Tuple; kwargs...)
     x, lo, hi = xx
@@ -128,13 +152,26 @@ function integrate(eq, xx::Tuple; kwargs...)
 
     if sol isa Tuple
         if !isequal(first(sol), 0) && sol[2] == 0
-            return substitute(first(sol), Dict(x => hi)) -
-                   substitute(first(sol), Dict(x => lo))
+            hi_val = eval_at_bound(first(sol), x, hi)
+            lo_val = eval_at_bound(first(sol), x, lo)
+            result = hi_val - lo_val
+            # Check if the result is valid (not NaN or undefined)
+            if result isa Number && (isnan(result) || isinf(result))
+                return nothing
+            end
+            return result
         else
             return nothing
         end
     elseif sol != nothing
-        return substitute(sol, Dict(x => hi)) - substitute(sol, Dict(x => lo))
+        hi_val = eval_at_bound(sol, x, hi)
+        lo_val = eval_at_bound(sol, x, lo)
+        result = hi_val - lo_val
+        # Check if the result is valid (not NaN or undefined)
+        if result isa Number && (isnan(result) || isinf(result))
+            return nothing
+        end
+        return result
     end
 
     return nothing
