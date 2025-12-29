@@ -38,9 +38,25 @@ integrate(sin(a * x) * cos(b * x), x; symbolic = true, detailed = false)
 
 # Citation
 
-If you use SymbolicNumericIntegration.jl in your research, please cite [this paper](https://arxiv.org/abs/2201.12468):
+If you use SymbolicNumericIntegration.jl in your research, please cite the [arxiv](https://arxiv.org/abs/2201.12468) and/or [ISSAC'24](https://dl.acm.org/doi/abs/10.1145/3666000.3669714) papers:
 
 ```
+
+@inproceedings{10.1145/3666000.3669714,
+author = {Iravanian, Shahriar and Gowda, Shashi and Rackauckas, Christopher},
+title = {Hybrid Symbolic-Numeric and Numerically-Assisted Symbolic Integration},
+year = {2024},
+isbn = {9798400706967},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3666000.3669714},
+doi = {10.1145/3666000.3669714},
+pages = {410–418},
+numpages = {9},
+keywords = {sparse regression, symbolic integration, symbolic-numeric computation},
+location = {Raleigh, NC, USA},
+series = {ISSAC '24}
+}
 
 @article{Iravanian2022,
 author = {Shahriar Iravanian and Carl Julius Martensen and Alessandro Cheli and Shashi Gowda and Anand Jain and Yingbo Ma and Chris Rackauckas},

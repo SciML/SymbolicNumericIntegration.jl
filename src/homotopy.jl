@@ -133,9 +133,9 @@ partial_int_rules = [
                      @rule 𝛷(~x, coth(~u)) => (log(sinh(~u)), ~u)
                      # 1/trigonometric functions
                      @rule 𝛷(~x, 1 /
-                                 sin(~u)) => (log(csc(~u) + cot(~u)) + log(sin(~u)), ~u)
+                     sin(~u)) => (log(csc(~u) + cot(~u)) + log(sin(~u)), ~u)
                      @rule 𝛷(~x, 1 /
-                                 cos(~u)) => (log(sec(~u) + tan(~u)) + log(cos(~u)), ~u)
+                     cos(~u)) => (log(sec(~u) + tan(~u)) + log(cos(~u)), ~u)
                      @rule 𝛷(~x, 1 / tan(~u)) => (log(sin(~u)) + log(tan(~u)), ~u)
                      @rule 𝛷(~x, 1 / csc(~u)) => (cos(~u) + log(csc(~u)), ~u)
                      @rule 𝛷(~x, 1 / sec(~u)) => (sin(~u) + log(sec(~u)), ~u)
@@ -163,7 +163,7 @@ partial_int_rules = [
                      @rule 𝛷(~x, acoth(~u)) => (~u * acot(~u) + log(~u + 1), ~u)
                      # logarithmic and exponential functions
                      @rule 𝛷(~x,
-                         log(~u)) => (
+                     log(~u)) => (
                          ~u + ~u * log(~u) +
                          sum(pow_minus_rule(~u, ~x, -1); init = one(~u)),
                          ~u)
@@ -176,18 +176,18 @@ partial_int_rules = [
                      @rule 𝛷(~x, sqrt(~u)) => (
                          sum(sqrt_rule(~u, ~x, 0.5); init = one(~u)), ~u)
                      @rule 𝛷(~x, 1 /
-                                 sqrt(~u)) => (
+                     sqrt(~u)) => (
                          sum(sqrt_rule(~u, ~x, -0.5); init = one(~u)), ~u)
                      # rational functions                                                              
                      @rule 𝛷(~x,
-                         1 / ^(~u::is_univar_poly, ~k::is_pos_int)) => (
+                     1 / ^(~u::is_univar_poly, ~k::is_pos_int)) => (
                          sum(pow_minus_rule(~u,
                                  ~x,
                                  -~k);
                              init = one(~u)),
                          ~u)
                      @rule 𝛷(
-                         ~x, 1 / ~u::is_univar_poly) => (
+                     ~x, 1 / ~u::is_univar_poly) => (
                          sum(pow_minus_rule(~u, ~x, -1); init = one(~u)),
                          ~u)
                      @rule 𝛷(~x, ^(~u, -1)) => (log(~u) + ~u * log(~u), ~u)
@@ -245,7 +245,7 @@ function pow_minus_rule(p, x, k; abstol = 1e-8)
 end
 
 function sqrt_rule(p, x, k)
-    h = Any[p ^ k, p ^ (k + 1)]
+    h = Any[p^k, p^(k + 1)]
 
     Δ = diff(p, x)
     push!(h, log(Δ / 2 + sqrt(p)))
