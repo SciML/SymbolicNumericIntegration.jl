@@ -70,7 +70,7 @@ function poly_deg(eq)
 end
 
 is_poly(eq) = !isnan(poly_deg(eq))
-is_linear_poly(eq) = poly_deg(eq) == 1
+is_linear_poly(eq) = isequal(poly_deg(eq), 1)
 
 # rules to extract the kernel (the holomorphic portion) of an expression
 s_rules = [

@@ -7,7 +7,7 @@ using SymbolicUtils: operation, arguments
 using Symbolics
 using Symbolics: value, get_variables, expand_derivatives, coeff, Equation
 using SymbolicUtils.Rewriters
-using SymbolicUtils: exprtype, BasicSymbolic
+using SymbolicUtils: issym, BasicSymbolic
 
 using SymbolicLimits: limit
 

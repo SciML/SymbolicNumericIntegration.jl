@@ -86,7 +86,7 @@ function integrate(
         if length(vars) > 1
             error("Multiple symbolic variables detect. Please pass the independent variable to `integrate`")
         elseif length(vars) == 1
-            x = vars[1]
+            x = first(vars)
         else
             @syms 𝑥
             x = 𝑥

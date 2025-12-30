@@ -36,7 +36,10 @@ function transform(eq, x)
     return p
 end
 
-@syms u[20]
+const u = let
+    @variables _u[1:20]
+    Symbolics.scalarize(_u)
+end
 
 function rename_factors(p, ab = ())
     n = length(p)
@@ -114,7 +117,7 @@ end
 
 ########################## Main Integration Rules ##################################
 
-@syms 𝛷(x, u)
+@syms 𝛷(x, w)
 
 partial_int_rules = [
     # trigonometric functions
@@ -269,7 +272,7 @@ function pow_minus_rule(p, x, k; abstol = 1.0e-8)
 end
 
 function sqrt_rule(p, x, k)
-    h = Any[p^k, p^(k + 1)]
+    h = Any[p ^ k, p ^ (k + 1)]
 
     Δ = diff(p, x)
     push!(h, log(Δ / 2 + sqrt(p)))
