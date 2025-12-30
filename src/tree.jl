@@ -2,25 +2,25 @@
 
 function is_add(eq)
     y = value(eq)
-    return iscall(y) && exprtype(y) == SymbolicUtils.ADD
+    return iscall(y) && operation(y) === (+)
 end
 
 function is_mul(eq)
     y = value(eq)
-    return iscall(y) && exprtype(y) == SymbolicUtils.MUL
+    return iscall(y) && operation(y) === (*)
 end
 
 function is_pow(eq)
     y = value(eq)
-    return iscall(y) && exprtype(y) == SymbolicUtils.POW
+    return iscall(y) && operation(y) === (^)
 end
 
 function is_div(eq)
     y = value(eq)
-    return iscall(y) && exprtype(y) == SymbolicUtils.DIV
+    return iscall(y) && operation(y) === (/)
 end
 
-is_term(eq) = SymbolicUtils.isterm(value(eq))
+is_term(eq) = iscall(value(eq)) && !issym(value(eq))
 # is_sym(eq) = SymbolicUtils.issym(value(eq))
 
 function args(eq)
@@ -49,7 +49,7 @@ end
 function is_univar_poly(p)
     p = value(p)
     vars = get_variables(p)
-    return length(vars) == 1 && is_polynomial(p, vars[1])
+    return length(vars) == 1 && is_polynomial(p, first(vars))
 end
 
 # Expands (Σ Ai) / B to Σ(Ai / B)
