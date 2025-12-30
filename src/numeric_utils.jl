@@ -24,8 +24,25 @@ function accept_solution(eq, x, sol; plan = default_plan())
         # x₀ = test_point(plan.complex_plane, plan.radius)
         # Δ = substitute(diff(sol, x) - expr(eq), Dict(x => x₀))
         S = subs_symbols(eq, x; include_x = true, plan.radius)
+        # Also substitute any symbols in sol that may not be in eq
+        for v in get_variables(value(sol))
+            if !haskey(S, v) && !isequal(v, x)
+                S[v] = Complex(randn())
+            end
+        end
         Δ = substitute(diff(sol, x) - expr(eq), S)
-        return abs(Δ)
+        result = abs(Δ)
+        # Ensure result is numeric, not symbolic
+        if result isa Number
+            return result
+        else
+            # Try to extract numeric value
+            val = Symbolics.unwrap(result)
+            if val isa Number
+                return abs(val)
+            end
+            return Inf
+        end
     catch e
         #
     end

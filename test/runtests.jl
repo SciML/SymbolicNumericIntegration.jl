@@ -335,7 +335,8 @@ end
 
     # Test that vector expressions throw an appropriate error
     @test_throws ErrorException("Vector expressions are not supported. Please use element-wise integration with `integrate.([expr1, expr2, ...], x)` instead.") integrate([x])
-    @test_throws ErrorException("Vector expressions are not supported. Please use element-wise integration with `integrate.([expr1, expr2, ...], x)` instead.") integrate([1, 2 * α], α)
+    @test_throws ErrorException("Vector expressions are not supported. Please use element-wise integration with `integrate.([expr1, expr2, ...], x)` instead.") integrate(
+        [1, 2 * α], α)
 
     # Test that scalar integration still works
     @test integrate(x) == ((1 // 2) * (x^2), 0, 0)
