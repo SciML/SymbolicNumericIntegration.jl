@@ -11,20 +11,21 @@ ops(eq) = nothing, eq
 ops(eq::Num) = ops(eq.val)
 
 function ops(eq::BasicSymbolic)
-    op = exprtype(eq)
-
-    if op == SymbolicUtils.ADD
-        return Add(), eq
-    elseif op == SymbolicUtils.MUL
-        return Mul(), eq
-    elseif op == SymbolicUtils.DIV
-        return Div(), eq
-    elseif op == SymbolicUtils.POW
-        return Pow(), eq
-    elseif op == SymbolicUtils.SYM
+    if issym(eq)
         return Sym(), eq
-    elseif op == SymbolicUtils.TERM
-        return Term(), eq
+    elseif iscall(eq)
+        op = operation(eq)
+        if op === (+)
+            return Add(), eq
+        elseif op === (*)
+            return Mul(), eq
+        elseif op === (/)
+            return Div(), eq
+        elseif op === (^)
+            return Pow(), eq
+        else
+            return Term(), eq
+        end
     else
         return nothing, eq
     end
@@ -85,7 +86,7 @@ deg(p, x) = deg(ops(p)..., x)
 function var(p)
     vars = get_variables(p)
     if length(vars) == 1
-        return vars[1]
+        return first(vars)
     elseif length(vars) == 0
         return nothing
     else
