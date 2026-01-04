@@ -70,7 +70,7 @@ function expand_fraction(eq, x)
     end
 end
 
-# Returns the list of symbolic constants 
+# Returns the list of symbolic constants
 function sym_consts(eq, x)
     return [v for v in get_variables(eq) if !isequal(v, x)]
 end

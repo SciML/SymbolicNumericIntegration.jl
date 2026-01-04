@@ -55,8 +55,9 @@ Returns a tuple of (solved, unsolved, err) if `detailed == true`, where
 
 Returns the resulting integral or nothing if `detailed == false`
 """
-function integrate(eq, x = nothing;
-        abstol = 1e-6,
+function integrate(
+        eq, x = nothing;
+        abstol = 1.0e-6,
         num_steps = 2,
         num_trials = 10,
         radius = 5.0,
@@ -69,7 +70,8 @@ function integrate(eq, x = nothing;
         complex_plane = true,
         homotopy = true,
         use_optim = false,
-        detailed = true)
+        detailed = true
+    )
     deprecation_warnings(; homotopy, use_optim)
 
     # Check if eq is a vector/array expression and throw an error
@@ -105,8 +107,10 @@ function integrate(eq, x = nothing;
     plan = NumericalPlan(abstol, radius, complex_plane, opt)
 
     s, u,
-    ε = integrate_sum(eq, x; plan, bypass, num_trials, num_steps,
-        show_basis, symbolic, max_basis, verbose, use_optim)
+        ε = integrate_sum(
+        eq, x; plan, bypass, num_trials, num_steps,
+        show_basis, symbolic, max_basis, verbose, use_optim
+    )
 
     s = beautify(s)
 
@@ -250,13 +254,13 @@ end
 function integrate_term(eq, x; kwargs...)
     args = Dict(kwargs)
     plan, num_steps,
-    num_trials,
-    show_basis,
-    symbolic,
-    verbose,
-    max_basis = args[:plan],
-    args[:num_steps], args[:num_trials], args[:show_basis],
-    args[:symbolic], args[:verbose], args[:max_basis]
+        num_trials,
+        show_basis,
+        symbolic,
+        verbose,
+        max_basis = args[:plan],
+        args[:num_steps], args[:num_trials], args[:show_basis],
+        args[:symbolic], args[:verbose], args[:max_basis]
 
     abstol = plan.abstol
 
@@ -368,7 +372,7 @@ function deprecation_warnings(; use_optim = false, homotopy = true)
         @warn("use_optim is deprecated and will be removed in a future version")
     end
 
-    if !homotopy
+    return if !homotopy
         @warn("homotopy is deprecated and will be removed in a future version")
     end
 end

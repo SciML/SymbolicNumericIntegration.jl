@@ -20,7 +20,7 @@ struct NumericalPlan
     opt::DataDrivenDiffEq.AbstractDataDrivenAlgorithm
 end
 
-default_plan() = NumericalPlan(1e-6, 5.0, true, STLSQ(exp.(-10:1:0)))
+default_plan() = NumericalPlan(1.0e-6, 5.0, true, STLSQ(exp.(-10:1:0)))
 
 include("utils.jl")
 include("tree.jl")

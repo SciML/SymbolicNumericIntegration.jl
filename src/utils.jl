@@ -61,7 +61,7 @@ function leading(eq, x)
             l = coef
         end
     end
-    l
+    return l
 end
 
 # deg(p) returns the degree of p if p is a polynomial
@@ -109,17 +109,17 @@ replace_x(eq, x) = substitute(eq, Dict(x => pox(1, 1)))
 
 function restore_x(eq, x)
     r = @rule pox(~k, ~n) => ~k * x^~n
-    Prewalk(PassThrough(r))(eq)
+    return Prewalk(PassThrough(r))(eq)
 end
 
 iscomplex(x) = x isa Complex
 
 count_rule1 = @rule ^(pox(~k, ~n1), ~n2) => isequal(~k, 1) ? pox(1, ~n1 * ~n2) :
-                                            pox(^(~k, ~n2), ~n1 * ~n2)
+    pox(^(~k, ~n2), ~n1 * ~n2)
 count_rule2 = @rule pox(~k1, ~n1) * pox(~k2, ~n2) => pox(~k1 * ~k2, ~n1 + ~n2)
 count_rule3 = @acrule pox(~k, ~n) * ~u::is_not_pox => pox(~k * ~u, ~n)
 
-# collect_powers separates the powers of x in eq (a polynomial) and 
+# collect_powers separates the powers of x in eq (a polynomial) and
 # returns a dictionary of power => term
 function collect_powers(eq, x)
     eq = expand(expand_derivatives(eq))

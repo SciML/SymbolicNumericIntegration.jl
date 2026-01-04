@@ -207,7 +207,7 @@ basic_integrals = [
     (log(x - 1) + (x - 1)^-1) * log(x),
     exp(x) / x - exp(x) / x^2,
     cos(x) / x - sin(x) / x^2,
-    1 / log(x) - 1 / log(x)^2
+    1 / log(x) - 1 / log(x)^2,
 ]
 
 sym_integrals = [
@@ -277,7 +277,7 @@ sym_integrals = [
     # bypass = true
     β,      # turn of bypass = true
     exp(a * x) / x - exp(a * x) / x^2,
-    cos(a * x) / x - sin(a * x) / x^2
+    cos(a * x) / x - sin(a * x) / x^2,
 ]
 
 function test_integrals(basic = true, subs = nothing; kw...)
@@ -323,8 +323,10 @@ function test_integrals(basic = true, subs = nothing; kw...)
 end
 
 @testset "integral" begin
-    n = test_integrals(; symbolic = false, verbose = false, homotopy = true, num_steps = 2,
-        num_trials = 10)
+    n = test_integrals(;
+        symbolic = false, verbose = false, homotopy = true, num_steps = 2,
+        num_trials = 10
+    )
     @test n > 0
 end
 
@@ -336,7 +338,7 @@ end
     @test_throws ErrorException("Vector expressions are not supported. Please use element-wise integration with `integrate.([expr1, expr2, ...], x)` instead.") integrate([1, 2 * α], α)
 
     # Test that scalar integration still works
-    @test integrate(x) == ((1//2)*(x^2), 0, 0)
+    @test integrate(x) == ((1 // 2) * (x^2), 0, 0)
     @test integrate(2 * α, α) == (α^2, 0, 0)
 
     # Test that element-wise integration works

@@ -2,7 +2,7 @@
 #   f is a symbolic equation to be solved (f ~ 0)
 #   x is the variable to solve
 #   x₀ is the initial guess
-function solve_newton(T, p, ∂p, x, x₀, zs; abstol = 1e-10, maxiter = 50, s = 1)
+function solve_newton(T, p, ∂p, x, x₀, zs; abstol = 1.0e-10, maxiter = 50, s = 1)
     d = Dict(x => x₀)
     xₙ = x₀
 
@@ -22,7 +22,7 @@ function solve_newton(T, p, ∂p, x, x₀, zs; abstol = 1e-10, maxiter = 50, s =
     return nothing
 end
 
-function find_roots(T, p, x; abstol = 1e-8, num_roots = 0)
+function find_roots(T, p, x; abstol = 1.0e-8, num_roots = 0)
     n = (num_roots == 0 ? poly_deg(p) : num_roots)
     abstol = T(abstol)
 
@@ -70,9 +70,9 @@ function find_roots(T, p, x; abstol = 1e-8, num_roots = 0)
         end
     end
 
-    sort(r), s
+    return sort(r), s
 end
 
-function find_roots(p, x; abstol = 1e-8, num_roots = 0)
-    find_roots(Float64, p, x; num_roots, abstol)
+function find_roots(p, x; abstol = 1.0e-8, num_roots = 0)
+    return find_roots(Float64, p, x; num_roots, abstol)
 end
