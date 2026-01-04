@@ -35,7 +35,7 @@ function expand_basis(basis, x; Kmax = 1000)
 
     b = sum(expr.(basis))
 
-    Kb = complexity(b)# Kolmogorov complexity
+    Kb = complexity(b) # Kolmogorov complexity
     if is_proper(Kb) && Kb > Kmax
         return basis, false
     end
@@ -61,7 +61,7 @@ function closure(eq, x; max_terms = 50)
         y = dequeue!(q)
         enqueue_expr!(S, q, expand_derivatives(D(y)), x)
     end
-    unique([[s for s in S]; [s * x for s in S]])
+    return unique([[s for s in S]; [s * x for s in S]])
 end
 
 ###############################################################################
@@ -72,11 +72,12 @@ function enqueue_expr!!(S, q, ::Add, eq, x)
     for t in arguments(eq)
         enqueue_expr!(S, q, t, x)
     end
+    return
 end
 
 function enqueue_expr!!(S, q, ::Any, eq, x)
     y = eq / coef(eq, x)
-    if y ∉ S && isdependent(y, x)
+    return if y ∉ S && isdependent(y, x)
         enqueue!(q, y)
         push!(S, y)
     end
@@ -88,11 +89,12 @@ function enqueue_expr!!(S, ::Add, eq, x)
     for t in arguments(eq)
         enqueue_expr!(S, t, x)
     end
+    return
 end
 
 function enqueue_expr!!(S, ::Any, eq, x)
     y = eq / coef(eq, x)
-    if y ∉ S && isdependent(y, x)
+    return if y ∉ S && isdependent(y, x)
         push!(S, y)
     end
 end

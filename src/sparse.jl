@@ -1,4 +1,3 @@
-
 # solve_sparse returns a sparse set of coefficients q such that
 # eq = sum( q[i] * diff(basis[i],x) for i in 1:length(basis) )
 function solve_sparse(eq, x, basis; plan = default_plan(), AX = nothing)
@@ -53,8 +52,8 @@ function prune_basis(eq, x, basis; plan = default_plan())
 end
 
 # init_basis_matrix transforms the integration problem into a linear system
-# 
-# It returns A, X, V, where 
+#
+# It returns A, X, V, where
 #
 #   A: the normalized training matrix, we seek a vector q such that A * q = 1
 #   X: a vector of complex test points
@@ -119,12 +118,15 @@ function modify_basis_matrix!(A, X, eq, x, basis)
             A[k, j] = Δbasis_fun[j](X[k]) / b₀
         end
     end
+    return
 end
 
 # This is needed to fix a bug/omission in DataDrivenSparse
-function DataDrivenSparse.active_set!(idx::BitMatrix, p::SoftThreshold,
-        x::Matrix{ComplexF64}, λ::Float64)
-    DataDrivenSparse.active_set!(idx, p, abs.(x), λ)
+function DataDrivenSparse.active_set!(
+        idx::BitMatrix, p::SoftThreshold,
+        x::Matrix{ComplexF64}, λ::Float64
+    )
+    return DataDrivenSparse.active_set!(idx, p, abs.(x), λ)
 end
 
 # Returns vector q, such that A * q = 1, and it passes
@@ -134,9 +136,13 @@ function sparse_fit(A, V, basis; plan = default_plan())
 
     try
         b = ones((1, n))
-        solver = SparseLinearSolver(plan.opt,
-            options = DataDrivenCommonOptions(verbose = false,
-                maxiters = 1000))
+        solver = SparseLinearSolver(
+            plan.opt,
+            options = DataDrivenCommonOptions(
+                verbose = false,
+                maxiters = 1000
+            )
+        )
         res, _... = solver(A', b)
         q₀ = DataDrivenSparse.coef(first(res))
 
@@ -156,7 +162,7 @@ function sparse_fit(A, V, basis; plan = default_plan())
     end
 end
 
-function find_singlet(A, basis; abstol = 1e-6)
+function find_singlet(A, basis; abstol = 1.0e-6)
     σ = vec(std(A; dims = 1))
     μ = vec(mean(A; dims = 1))
     l = (σ .< abstol) .* (abs.(μ) .> abstol)
@@ -168,7 +174,7 @@ function find_singlet(A, basis; abstol = 1e-6)
     end
 end
 
-function find_dense(A, basis; abstol = 1e-6)
+function find_dense(A, basis; abstol = 1.0e-6)
     n = size(A, 1)
     b = ones(n)
 
@@ -200,9 +206,13 @@ function hints(eq, x, basis; plan = default_plan())
 
     try
         b = ones((1, n))
-        solver = SparseLinearSolver(plan.opt,
-            options = DataDrivenCommonOptions(verbose = false,
-                maxiters = 1000))
+        solver = SparseLinearSolver(
+            plan.opt,
+            options = DataDrivenCommonOptions(
+                verbose = false,
+                maxiters = 1000
+            )
+        )
         res, _... = solver(A', b)
         q = DataDrivenSparse.coef(first(res))
 
@@ -217,7 +227,7 @@ function hints(eq, x, basis; plan = default_plan())
 
         return h, ε
     catch
-        # println("Error from hints: ", e)        
+        # println("Error from hints: ", e)
     end
 
     return 0, Inf

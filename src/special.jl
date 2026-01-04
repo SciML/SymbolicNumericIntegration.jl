@@ -1,6 +1,6 @@
 using SpecialFunctions
 
-# Adopted from mpmath (https://mpmath.org/), which is a Python library for real and 
+# Adopted from mpmath (https://mpmath.org/), which is a Python library for real and
 # complex floating-point arithmetic with arbitrary precision
 
 E1(z) = Complex(expint(z))

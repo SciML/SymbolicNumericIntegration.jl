@@ -89,7 +89,7 @@ function test_point(complex_plane, radius)
     end
 end
 
-function accept_integral(sol, ans, x; radius = 1.0, abstol = 1e-3, n = 5)
+function accept_integral(sol, ans, x; radius = 1.0, abstol = 1.0e-3, n = 5)
     try
         ϵ = zeros(n)
         for i in 1:n
@@ -143,5 +143,5 @@ function test_axiom(L; kwargs...)
     printstyled("Success     = ", n_ok, '\n'; color = :green)
     printstyled("Failure     = ", n_fail, '\n'; color = :red)
     printstyled("Discrepancy = ", n_diff, '\n'; color = :yellow)
-    printstyled("Exception   = ", n_catch, '\n'; color = :cyan)
+    return printstyled("Exception   = ", n_catch, '\n'; color = :cyan)
 end

@@ -1,8 +1,8 @@
 mutable struct ExprCache
-    eq::Any# the primary expression
-    f::Any# compiled eq
-    δeq::Any# the symbolic derivative of eq
-    δf::Any# compiled δeq
+    eq::Any # the primary expression
+    f::Any # compiled eq
+    δeq::Any # the symbolic derivative of eq
+    δf::Any # compiled δeq
 end
 
 cache(eq::ExprCache) = eq
