@@ -9,6 +9,8 @@ using Symbolics: value, get_variables, expand_derivatives, coeff, Equation
 using SymbolicUtils.Rewriters
 using SymbolicUtils: exprtype, BasicSymbolic
 
+using SymbolicLimits: limit
+
 using DataDrivenDiffEq, DataDrivenSparse
 
 struct NumericalPlan
