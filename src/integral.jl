@@ -125,6 +125,24 @@ function integrate(
     end
 end
 
+# Helper to extract numeric value from symbolic expression
+function extract_numeric_value(expr)
+    # Already a number
+    if expr isa Number
+        return expr
+    end
+    # Try to extract value from Num wrapper
+    try
+        val = Symbolics.value(Num(expr))
+        if val isa Number
+            return val
+        end
+    catch
+    end
+    # Return as-is if can't convert
+    return expr
+end
+
 # Evaluate an expression at a bound, using limit for infinite bounds
 function eval_at_bound(expr, x, bound)
     if isinf(bound)
@@ -135,17 +153,17 @@ function eval_at_bound(expr, x, bound)
             result = limit(expr_unwrapped, x_unwrapped, bound)
             # limit returns a tuple (value, assumptions), extract the value
             if result isa Tuple
-                return first(result)
-            else
-                return result
+                result = first(result)
             end
+            return extract_numeric_value(result)
         catch e
             # If limit computation fails, fall back to direct substitution
             # This may result in NaN for indeterminate forms
             return substitute(expr, Dict(x => bound))
         end
     else
-        return substitute(expr, Dict(x => bound))
+        result = substitute(expr, Dict(x => bound))
+        return extract_numeric_value(result)
     end
 end
 
@@ -158,7 +176,7 @@ function integrate(eq, xx::Tuple; kwargs...)
         if !isequal(first(sol), 0) && isequal(sol[2], 0)
             hi_val = eval_at_bound(first(sol), x, hi)
             lo_val = eval_at_bound(first(sol), x, lo)
-            result = hi_val - lo_val
+            result = extract_numeric_value(hi_val - lo_val)
             # Check if the result is valid (not NaN or undefined)
             if result isa Number && (isnan(result) || isinf(result))
                 return nothing
@@ -170,7 +188,7 @@ function integrate(eq, xx::Tuple; kwargs...)
     elseif sol !== nothing
         hi_val = eval_at_bound(sol, x, hi)
         lo_val = eval_at_bound(sol, x, lo)
-        result = hi_val - lo_val
+        result = extract_numeric_value(hi_val - lo_val)
         # Check if the result is valid (not NaN or undefined)
         if result isa Number && (isnan(result) || isinf(result))
             return nothing
