@@ -81,7 +81,7 @@ function integrate(
 
     eq = expand(eq)
 
-    if x == nothing
+    if x === nothing
         vars = get_variables(eq)
         if length(vars) > 1
             error("Multiple symbolic variables detect. Please pass the independent variable to `integrate`")
@@ -356,7 +356,7 @@ end
 function try_symbolic(eq, x, has_sym_consts = false, params = []; plan = default_plan())
     y = integrate_symbolic(eq, x; plan)
 
-    if y == nothing
+    if y === nothing
         if has_sym_consts && !isempty(params)
             @info("Symbolic integration failed. Try changing constant parameters ([$(join(params, ", "))]) to numerical values.")
         end
