@@ -131,24 +131,45 @@ function extract_numeric_value(expr)
     if expr isa Number
         return expr
     end
-    # Try to extract value from Num wrapper
+
+    # Unwrap Num type
+    if expr isa Num
+        expr = Symbolics.value(expr)
+        if expr isa Number
+            return expr
+        end
+    end
+
+    # Try Float64 conversion (works for BasicSymbolic numeric literals)
     try
-        val = Symbolics.value(Num(expr))
-        if val isa Number
-            return val
+        result = Float64(expr)
+        return result
+    catch
+    end
+
+    # Try converting to Julia expression and evaluating
+    # This handles cases like sin(0) that need to be evaluated
+    try
+        julia_expr = Symbolics.toexpr(expr)
+        result = Base.invokelatest(eval, julia_expr)
+        if result isa Number
+            return result
         end
     catch
     end
-    # Return as-is if can't convert
+
+    # Return as-is if conversion fails
     return expr
 end
 
 # Evaluate an expression at a bound, using limit for infinite bounds
 function eval_at_bound(expr, x, bound)
+    # Unwrap both expression and variable for consistent handling
+    expr_unwrapped = value(expr)
+    x_unwrapped = value(x)
+
     if isinf(bound)
         # Use symbolic limits for infinite bounds
-        expr_unwrapped = value(expr)
-        x_unwrapped = value(x)
         try
             result = limit(expr_unwrapped, x_unwrapped, bound)
             # limit returns a tuple (value, assumptions), extract the value
@@ -159,10 +180,10 @@ function eval_at_bound(expr, x, bound)
         catch e
             # If limit computation fails, fall back to direct substitution
             # This may result in NaN for indeterminate forms
-            return substitute(expr, Dict(x => bound))
+            return substitute(expr_unwrapped, Dict(x_unwrapped => bound))
         end
     else
-        result = substitute(expr, Dict(x => bound))
+        result = substitute(expr_unwrapped, Dict(x_unwrapped => bound))
         return extract_numeric_value(result)
     end
 end
