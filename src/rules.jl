@@ -129,7 +129,9 @@ function eval_numeric(expr)
     return expr
 end
 
-is_poly(eq) = let deg = poly_deg(eq); is_number(deg) && !isnan(deg) end
+is_poly(eq) = let deg = poly_deg(eq)
+    is_number(deg) && !isnan(deg)
+end
 is_linear_poly(eq) = poly_deg(eq) == 1
 
 # Helper to distribute Ω over a list with sum

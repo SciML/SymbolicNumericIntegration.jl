@@ -272,7 +272,7 @@ function pow_minus_rule(p, x, k; abstol = 1.0e-8)
 end
 
 function sqrt_rule(p, x, k)
-    h = Any[p ^ k, p ^ (k + 1)]
+    h = Any[p^k, p^(k + 1)]
 
     Δ = diff(p, x)
     push!(h, log(Δ / 2 + sqrt(p)))

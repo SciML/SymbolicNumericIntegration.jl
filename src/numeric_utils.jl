@@ -59,10 +59,12 @@ function accept_solution(eq, x, sol; plan = default_plan())
                 return abs(inner)
             end
             # Check if inner is structurally zero (e.g., abs(0))
-            if isequal(inner, 0) || (SymbolicUtils.iscall(inner) && SymbolicUtils.operation(inner) === abs &&
-                                     let arg = SymbolicUtils.arguments(inner)[1]
-                                         isequal(arg, 0) || (arg isa Real && arg == 0)
-                                     end)
+            if isequal(inner, 0) || (
+                    SymbolicUtils.iscall(inner) && SymbolicUtils.operation(inner) === abs &&
+                        let arg = SymbolicUtils.arguments(inner)[1]
+                        isequal(arg, 0) || (arg isa Real && arg == 0)
+                    end
+                )
                 return 0.0
             end
             # Try value extraction for symbolic wrapper (SymbolicUtils v4+)
