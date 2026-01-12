@@ -36,7 +36,10 @@ function transform(eq, x)
     return p
 end
 
-@syms u[20]
+const u = let
+    @variables _u[1:20]
+    Symbolics.scalarize(_u)
+end
 
 function rename_factors(p, ab = ())
     n = length(p)
@@ -114,7 +117,7 @@ end
 
 ########################## Main Integration Rules ##################################
 
-@syms 𝛷(x, u)
+@syms 𝛷(x, w)
 
 partial_int_rules = [
     # trigonometric functions

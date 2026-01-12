@@ -1,3 +1,15 @@
+# Helper to extract numeric value from symbolic substitution result
+function extract_numeric(T, expr)
+    try
+        # Try to get the underlying value from symbolic wrapper
+        val = Symbolics.value(Num(expr))
+        return T(val)
+    catch
+        # Fall back to direct conversion
+        return T(expr)
+    end
+end
+
 # solve_newton is a symbolic Newton-Ralphson solver
 #   f is a symbolic equation to be solved (f ~ 0)
 #   x is the variable to solve
@@ -8,8 +20,8 @@ function solve_newton(T, p, ∂p, x, x₀, zs; abstol = 1.0e-10, maxiter = 50, s
 
     for i in 1:maxiter
         d[x] = xₙ
-        f = T(substitute(p, d))
-        f′ = T(substitute(∂p, d))
+        f = extract_numeric(T, substitute(p, d))
+        f′ = extract_numeric(T, substitute(∂p, d))
         ρ = sum(1 / (xₙ - z) for z in zs; init = 0)
         xₙ₊₁ = xₙ - s * f / (f′ - s * ρ * f)
 
@@ -60,7 +72,7 @@ function find_roots(T, p, x; abstol = 1.0e-8, num_roots = 0)
                 push!(s, z)
 
                 z = conj(z)
-                if abs(Complex{T}(substitute(p, Dict(x => z)))) < abstol
+                if abs(extract_numeric(Complex{T}, substitute(p, Dict(x => z)))) < abstol
                     push!(zs, z)
                     push!(s, z)
                 end

@@ -24,8 +24,81 @@ function accept_solution(eq, x, sol; plan = default_plan())
         # x₀ = test_point(plan.complex_plane, plan.radius)
         # Δ = substitute(diff(sol, x) - expr(eq), Dict(x => x₀))
         S = subs_symbols(eq, x; include_x = true, plan.radius)
+        # Also substitute any symbols in sol that may not be in eq
+        # Use value() to ensure consistent comparison with x (which may be BasicSymbolic)
+        x_val = value(x)
+        for v in get_variables(value(sol))
+            if !haskey(S, v) && !isequal(v, x_val)
+                S[v] = Complex(randn())
+            end
+        end
         Δ = substitute(diff(sol, x) - expr(eq), S)
-        return abs(Δ)
+
+        # Check if Δ is zero - handle both Num and BasicSymbolic cases
+        # For Num, isequal works; for BasicSymbolic, we need to extract the value
+        if isequal(Δ, 0)
+            return 0.0
+        end
+        # Try to extract numeric value for BasicSymbolic zero
+        try
+            Δ_val = Symbolics.value(Num(Δ))
+            if Δ_val isa Real || Δ_val isa Complex
+                return abs(Δ_val)
+            end
+        catch
+        end
+
+        result = abs(Δ)
+
+        # Note: Num <: Number, so we must check for Num BEFORE Number
+        # First try to extract numeric value from Num type
+        if result isa Num
+            inner = Symbolics.unwrap(result)
+            # Check if unwrapped value is a concrete number (not symbolic)
+            if inner isa Real || inner isa Complex
+                return abs(inner)
+            end
+            # Check if inner is structurally zero (e.g., abs(0))
+            if isequal(inner, 0) || (
+                    SymbolicUtils.iscall(inner) && SymbolicUtils.operation(inner) === abs &&
+                        let arg = SymbolicUtils.arguments(inner)[1]
+                        isequal(arg, 0) || (arg isa Real && arg == 0)
+                    end
+                )
+                return 0.0
+            end
+            # Try value extraction for symbolic wrapper (SymbolicUtils v4+)
+            try
+                val = Symbolics.value(result)
+                if val isa Real || val isa Complex
+                    return abs(val)
+                end
+            catch
+            end
+            # If still symbolic, return Inf
+            return Inf
+        end
+        # For non-Num concrete numbers
+        if result isa Real || result isa Complex
+            return abs(result)
+        end
+        # Try to extract numeric value from symbolic wrapper (SymbolicUtils v4+)
+        try
+            val = Symbolics.value(Num(result))
+            if val isa Real || val isa Complex
+                return abs(val)
+            end
+        catch
+        end
+        # Fallback: try unwrap
+        try
+            val = Symbolics.unwrap(result)
+            if val isa Real || val isa Complex
+                return abs(val)
+            end
+        catch
+        end
+        return Inf
     catch e
         #
     end

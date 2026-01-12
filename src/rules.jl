@@ -1,5 +1,15 @@
 ########################## Predicates #########################################
 
+# Helper to extract numeric value from symbolic substitution result
+function extract_numeric_val(T, expr)
+    try
+        val = Symbolics.value(Num(expr))
+        return T(val)
+    catch
+        return T(expr)
+    end
+end
+
 is_pos_int(x) = is_proper(x) && isinteger(x) && x > 0
 is_neg_int(x) = is_proper(x) && isinteger(x) && x < 0
 is_int_gt_one(x) = is_proper(x) && isinteger(x) && x > 1
@@ -54,10 +64,15 @@ is_var(eq) = isequal(eq, var(eq))
 
 @syms Ω(x)
 
+# Helper to compute max of applying Ω to a list of expressions
+apply_max_omega(xs) = length(xs) == 1 ? Ω(xs[1]) : max(Ω(xs[1]), apply_max_omega(xs[2:end]))
+# Helper to compute sum of applying Ω to a list of expressions
+apply_sum_omega(xs) = length(xs) == 1 ? Ω(xs[1]) : Ω(xs[1]) + apply_sum_omega(xs[2:end])
+
 # rules to calculate the degree of a polynomial expression or NaN if not a poly
 p_rules = [
-    @rule Ω(+(~~xs)) => max(map(Ω, ~~xs)...)
-    @rule Ω(~x * ~y) => Ω(~x) + Ω(~y)
+    @rule Ω(+(~~xs)) => apply_max_omega(~~xs)
+    @rule Ω(*(~~xs)) => apply_sum_omega(~~xs)
     @rule Ω(^(~x, ~k::is_proper)) => is_pos_int(~k) ? ~k * Ω(~x) : NaN
     @rule Ω(~x::is_number) => 0
     @rule Ω(~x::is_var) => 1
@@ -66,16 +81,68 @@ p_rules = [
 
 function poly_deg(eq)
     ω = Prewalk(Chain(p_rules))(Ω(value(eq)))
-    return substitute(ω, Dict())
+    result = substitute(ω, Dict())
+    # Evaluate numeric expressions like max(0, 1) -> 1
+    result = eval_numeric(result)
+    # Convert symbolic numbers to Julia numbers
+    # This is needed because SymbolicUtils v4+ wraps literal numbers in symbolic containers
+    try
+        return Symbolics.value(Num(result))
+    catch
+        return result  # Return as-is if conversion fails
+    end
 end
 
-is_poly(eq) = !isnan(poly_deg(eq))
+# Helper function to evaluate purely numeric symbolic expressions
+function eval_numeric(expr)
+    # First try to extract as Julia number
+    if expr isa Number
+        return expr
+    end
+
+    if !SymbolicUtils.iscall(expr)
+        # Not a call - might be a symbolic literal number or symbol
+        # Try to extract value
+        try
+            return Symbolics.value(Num(expr))
+        catch
+            return expr
+        end
+    end
+
+    op = SymbolicUtils.operation(expr)
+    args = SymbolicUtils.arguments(expr)
+
+    # Recursively evaluate arguments
+    evaluated_args = [eval_numeric(a) for a in args]
+
+    # Check if all arguments are Julia numbers now
+    if all(a -> a isa Number, evaluated_args)
+        # Evaluate the operation
+        try
+            return op(evaluated_args...)
+        catch
+            return expr
+        end
+    end
+
+    return expr
+end
+
+is_poly(eq) = let deg = poly_deg(eq)
+    is_number(deg) && !isnan(deg)
+end
 is_linear_poly(eq) = poly_deg(eq) == 1
+
+# Helper to distribute Ω over a list with sum
+apply_sum_omega_kernel(xs) = length(xs) == 1 ? Ω(xs[1]) : Ω(xs[1]) + apply_sum_omega_kernel(xs[2:end])
+# Helper to distribute Ω over a list with product
+apply_prod_omega_kernel(xs) = length(xs) == 1 ? Ω(xs[1]) : Ω(xs[1]) * apply_prod_omega_kernel(xs[2:end])
 
 # rules to extract the kernel (the holomorphic portion) of an expression
 s_rules = [
-    @rule Ω(+(~~xs)) => sum(map(Ω, ~~xs))
-    @rule Ω(*(~~xs)) => prod(map(Ω, ~~xs))
+    @rule Ω(+(~~xs)) => apply_sum_omega_kernel(~~xs)
+    @rule Ω(*(~~xs)) => apply_prod_omega_kernel(~~xs)
     # @rule Ω(~x / ~y) => Ω(~x) * Ω(^(~y, -1))
     @rule Ω(^(~x::is_linear_poly, ~k::is_pos_int)) => ^(~x, ~k)
     @rule Ω(~x::is_var) => ~x
@@ -264,9 +331,9 @@ function decompose_rational(eq)
     for i in 1:n
         x₀ = test_point(false, 1.0)
         d = Dict(x => x₀)
-        b[i] = 1 / substitute(eq, d)
+        b[i] = 1 / extract_numeric_val(Complex, substitute(eq, d))
         for j in 1:n
-            A[i, j] = substitute(F[j], d)
+            A[i, j] = extract_numeric_val(Complex, substitute(F[j], d))
         end
     end
 
@@ -276,9 +343,14 @@ function decompose_rational(eq)
     return p
 end
 
+# Helper for rational rules - distribute Ω over sum
+apply_sum_omega_rat(xs) = length(xs) == 1 ? Ω(xs[1]) : Ω(xs[1]) + apply_sum_omega_rat(xs[2:end])
+# Helper for rational rules - distribute Ω over product
+apply_prod_omega_rat(xs) = length(xs) == 1 ? Ω(xs[1]) : Ω(xs[1]) * apply_prod_omega_rat(xs[2:end])
+
 rational_rules = [
-    @rule Ω(+(~~xs)) => sum(map(Ω, ~~xs))
-    @rule Ω(*(~~xs)) => prod(map(Ω, ~~xs))
+    @rule Ω(+(~~xs)) => apply_sum_omega_rat(~~xs)
+    @rule Ω(*(~~xs)) => apply_prod_omega_rat(~~xs)
     @rule Ω(^(~x::is_poly, ~k::is_neg_int)) => expand(
         ^(
             decompose_rational(~x),

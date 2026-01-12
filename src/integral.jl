@@ -81,12 +81,12 @@ function integrate(
 
     eq = expand(eq)
 
-    if x == nothing
+    if x === nothing
         vars = get_variables(eq)
         if length(vars) > 1
             error("Multiple symbolic variables detect. Please pass the independent variable to `integrate`")
         elseif length(vars) == 1
-            x = vars[1]
+            x = first(vars)
         else
             @syms 𝑥
             x = 𝑥
@@ -125,27 +125,66 @@ function integrate(
     end
 end
 
+# Helper to extract numeric value from symbolic expression
+function extract_numeric_value(expr)
+    # Already a number
+    if expr isa Number
+        return expr
+    end
+
+    # Unwrap Num type
+    if expr isa Num
+        expr = Symbolics.value(expr)
+        if expr isa Number
+            return expr
+        end
+    end
+
+    # Try Float64 conversion (works for BasicSymbolic numeric literals)
+    try
+        result = Float64(expr)
+        return result
+    catch
+    end
+
+    # Try converting to Julia expression and evaluating
+    # This handles cases like sin(0) that need to be evaluated
+    try
+        julia_expr = Symbolics.toexpr(expr)
+        result = Base.invokelatest(eval, julia_expr)
+        if result isa Number
+            return result
+        end
+    catch
+    end
+
+    # Return as-is if conversion fails
+    return expr
+end
+
 # Evaluate an expression at a bound, using limit for infinite bounds
 function eval_at_bound(expr, x, bound)
+    # Unwrap both expression and variable for consistent handling
+    expr_unwrapped = value(expr)
+    x_unwrapped = value(x)
+
     if isinf(bound)
         # Use symbolic limits for infinite bounds
-        expr_unwrapped = value(expr)
-        x_unwrapped = value(x)
         try
             result = limit(expr_unwrapped, x_unwrapped, bound)
             # limit returns a tuple (value, assumptions), extract the value
             if result isa Tuple
-                return first(result)
-            else
-                return result
+                result = first(result)
             end
+            return extract_numeric_value(result)
         catch e
             # If limit computation fails, fall back to direct substitution
             # This may result in NaN for indeterminate forms
-            return substitute(expr, Dict(x => bound))
+            return substitute(expr_unwrapped, Dict(x_unwrapped => bound))
         end
     else
-        return substitute(expr, Dict(x => bound))
+        result = substitute(expr_unwrapped, Dict(x_unwrapped => bound))
+        return extract_numeric_value(result)
     end
 end
 
@@ -155,10 +194,10 @@ function integrate(eq, xx::Tuple; kwargs...)
     sol = integrate(eq, x; kwargs...)
 
     if sol isa Tuple
-        if !isequal(first(sol), 0) && sol[2] == 0
+        if !isequal(first(sol), 0) && isequal(sol[2], 0)
             hi_val = eval_at_bound(first(sol), x, hi)
             lo_val = eval_at_bound(first(sol), x, lo)
-            result = hi_val - lo_val
+            result = extract_numeric_value(hi_val - lo_val)
             # Check if the result is valid (not NaN or undefined)
             if result isa Number && (isnan(result) || isinf(result))
                 return nothing
@@ -167,10 +206,10 @@ function integrate(eq, xx::Tuple; kwargs...)
         else
             return nothing
         end
-    elseif sol != nothing
+    elseif sol !== nothing
         hi_val = eval_at_bound(sol, x, hi)
         lo_val = eval_at_bound(sol, x, lo)
-        result = hi_val - lo_val
+        result = extract_numeric_value(hi_val - lo_val)
         # Check if the result is valid (not NaN or undefined)
         if result isa Number && (isnan(result) || isinf(result))
             return nothing
@@ -184,18 +223,18 @@ end
 function get_solved(p, sol)
     if sol isa Tuple
         s = sol[1]
-        return s == nothing ? 0 : s
+        return s === nothing ? 0 : s
     else
-        return sol == nothing ? 0 : sol
+        return sol === nothing ? 0 : sol
     end
 end
 
 function get_unsolved(p, sol)
     if sol isa Tuple
         u = sol[2]
-        return u == nothing ? 0 : u
+        return u === nothing ? 0 : u
     else
-        return sol == 0 || sol == nothing ? p : 0
+        return isequal(sol, 0) || sol === nothing ? p : 0
     end
 end
 
@@ -203,7 +242,7 @@ function get_err(p, sol)
     if sol isa Tuple
         return sol[3]
     else
-        return sol == 0 || sol == nothing ? Inf : 0
+        return isequal(sol, 0) || sol === nothing ? Inf : 0
     end
 end
 
@@ -356,7 +395,7 @@ end
 function try_symbolic(eq, x, has_sym_consts = false, params = []; plan = default_plan())
     y = integrate_symbolic(eq, x; plan)
 
-    if y == nothing
+    if y === nothing
         if has_sym_consts && !isempty(params)
             @info("Symbolic integration failed. Try changing constant parameters ([$(join(params, ", "))]) to numerical values.")
         end
