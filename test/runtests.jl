@@ -1,11 +1,19 @@
+using Test
+
+const GROUP = get(ENV, "GROUP", "All")
+
+if GROUP == "QA"
+    include("qa/qa.jl")
+end
+
+if GROUP == "All" || GROUP == "Core"
+
 using SymbolicNumericIntegration
 using SymbolicNumericIntegration: value
 using Symbolics
 
 using SymbolicUtils
 using SymbolicUtils.Rewriters
-
-using Test
 
 include("axiom.jl")
 
@@ -368,4 +376,6 @@ end
     # Finite bounds should still work
     result6 = integrate(x, (x, 0, 1); symbolic = false, detailed = false)
     @test result6 == 1 // 2
+end
+
 end
