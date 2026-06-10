@@ -10,6 +10,9 @@ using SymbolicUtils.Rewriters
 const GROUP = get(ENV, "GROUP", "All")
 
 if GROUP == "QA"
+    using Pkg
+    Pkg.activate(joinpath(@__DIR__, "qa"))
+    Pkg.instantiate()
     include("qa/qa.jl")
 end
 
