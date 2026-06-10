@@ -1,5 +1,12 @@
 using Test
 
+using SymbolicNumericIntegration
+using SymbolicNumericIntegration: value
+using Symbolics
+
+using SymbolicUtils
+using SymbolicUtils.Rewriters
+
 const GROUP = get(ENV, "GROUP", "All")
 
 if GROUP == "QA"
@@ -7,13 +14,6 @@ if GROUP == "QA"
 end
 
 if GROUP == "All" || GROUP == "Core"
-
-using SymbolicNumericIntegration
-using SymbolicNumericIntegration: value
-using Symbolics
-
-using SymbolicUtils
-using SymbolicUtils.Rewriters
 
 include("axiom.jl")
 
