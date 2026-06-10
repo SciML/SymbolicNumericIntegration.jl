@@ -1,3 +1,5 @@
+using Test
+
 using SymbolicNumericIntegration
 using SymbolicNumericIntegration: value
 using Symbolics
@@ -5,7 +7,16 @@ using Symbolics
 using SymbolicUtils
 using SymbolicUtils.Rewriters
 
-using Test
+const GROUP = get(ENV, "GROUP", "All")
+
+if GROUP == "QA"
+    using Pkg
+    Pkg.activate(joinpath(@__DIR__, "qa"))
+    Pkg.instantiate()
+    include("qa/qa.jl")
+end
+
+if GROUP == "All" || GROUP == "Core"
 
 include("axiom.jl")
 
@@ -368,4 +379,6 @@ end
     # Finite bounds should still work
     result6 = integrate(x, (x, 0, 1); symbolic = false, detailed = false)
     @test result6 == 1 // 2
+end
+
 end
