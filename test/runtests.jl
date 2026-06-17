@@ -7,6 +7,7 @@ using Symbolics
 using SymbolicUtils
 using SymbolicUtils.Rewriters
 
+using SafeTestsets
 using SciMLTesting
 
 run_tests(;
