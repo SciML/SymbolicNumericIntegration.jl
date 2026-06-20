@@ -22,8 +22,5 @@ run_tests(;
             include("definite_integral_tests.jl")
         end
     end,
-    groups = Dict(
-        # declared env => runs only for GROUP="QA", never under "All" (matches original)
-        "QA" => (; env = joinpath(@__DIR__, "qa"), body = joinpath(@__DIR__, "qa", "qa.jl")),
-    ),
+    qa = (; env = joinpath(@__DIR__, "qa"), body = joinpath(@__DIR__, "qa", "qa.jl")),
 )
