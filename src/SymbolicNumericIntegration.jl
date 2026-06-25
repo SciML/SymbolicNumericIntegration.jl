@@ -5,7 +5,7 @@ using TermInterface: iscall
 using SymbolicUtils
 using SymbolicUtils: operation, arguments
 using Symbolics
-using Symbolics: value, get_variables, expand_derivatives, coeff, Equation
+using Symbolics: value, get_variables, expand_derivatives, Equation
 using SymbolicUtils.Rewriters
 using SymbolicUtils: issym, BasicSymbolic
 
