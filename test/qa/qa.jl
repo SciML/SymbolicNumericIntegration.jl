@@ -19,16 +19,11 @@ run_qa(
         ),
         # Non-public names of upstream packages accessed via qualification.
         # AbstractDataDrivenAlgorithm: DataDrivenDiffEq; active_set!, coef:
-        # DataDrivenSparse; Sym: SymbolicUtils; toexpr: Symbolics.
+        # DataDrivenSparse; toexpr: Symbolics.
         all_qualified_accesses_are_public = (;
             ignore = (
-                :AbstractDataDrivenAlgorithm, :Sym, :active_set!, :coef, :toexpr,
+                :AbstractDataDrivenAlgorithm, :active_set!, :coef, :toexpr,
             ),
-        ),
-        # Non-public names explicitly imported from upstream packages.
-        # issym: SymbolicUtils.
-        all_explicit_imports_are_public = (;
-            ignore = (:issym,),
         ),
     ),
     # Heavy `using` of the Symbolics/SymbolicUtils/DataDriven stacks (macros +
