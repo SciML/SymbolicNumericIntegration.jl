@@ -12,10 +12,10 @@ run_qa(
     aqua_broken = (:piracies,),
     ei_kwargs = (;
         # Re-exports: accessed from the re-exporting module rather than the owner.
-        # coef -> StatsAPI (via DataDrivenSparse); scalarize/toexpr/unwrap ->
-        # SymbolicUtils[.Code] (via Symbolics).
+        # coef -> StatsAPI (via DataDrivenSparse); toexpr -> SymbolicUtils.Code
+        # (via Symbolics). Neither owner is a SciML make-public target.
         all_qualified_accesses_via_owners = (;
-            ignore = (:coef, :scalarize, :toexpr, :unwrap),
+            ignore = (:coef, :toexpr),
         ),
         # Non-public names of upstream packages accessed via qualification.
         # AbstractDataDrivenAlgorithm: DataDrivenDiffEq; active_set!, coef:
