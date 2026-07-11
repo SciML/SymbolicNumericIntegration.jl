@@ -233,10 +233,12 @@ function hints(eq, x, basis; plan = default_plan())
     return 0, Inf
 end
 
-# best_hints works is the link between numerical and symbolic integration.
-# It converts a symbolic integrad eq into a univariate expression, performs
-# symbolic-numeric integration, and the returns a list of symbolic ansatzes
-# corresponding to the solution
+"""
+    best_hints(eq, x, basis; plan = default_plan(), num_trials = 10)
+
+Select the smallest successful list of symbolic ansatz terms from repeated
+symbolic-numeric integrations of `eq` with respect to `x`.
+"""
 function best_hints(eq, x, basis; plan = default_plan(), num_trials = 10)
     H = []
     L = Int[]

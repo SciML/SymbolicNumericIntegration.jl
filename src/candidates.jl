@@ -1,6 +1,11 @@
 using DataStructures
 
-# this is the old heurisctic used to find the test fragments
+"""
+    generate_basis(eq, x, try_kernel = true)
+
+Generate candidate basis terms for symbolic-numeric integration of expression
+`eq` with respect to variable `x`.
+"""
 function generate_basis(eq, x, try_kernel = true)
     if !try_kernel
         S = sum(generate_homotopy(expr(eq), x))

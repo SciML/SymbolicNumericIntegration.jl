@@ -5,6 +5,7 @@ using SciMLTesting
 run_qa(
     SymbolicNumericIntegration;
     explicit_imports = true,
+    api_docs_kwargs = (; rendered = true),
     jet_kwargs = (; target_defined_modules = true),
     # Aqua piracy: Base.signbit(::Complex)/signbit(::SymbolicUtils.Sym) in
     # src/integral.jl + DataDrivenSparse.active_set! in src/sparse.jl
