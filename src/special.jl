@@ -5,6 +5,11 @@ using SpecialFunctions
 
 E1(z) = Complex(expint(z))
 
+"""
+    Ei(z)
+
+Return the exponential integral evaluated at `z` as a complex value.
+"""
 function Ei(z)
     if z isa Real
         return Complex(-expint(Complex(-z)))
@@ -21,6 +26,11 @@ function Ei(z)
     return v
 end
 
+"""
+    Ci(z)
+
+Return the cosine integral evaluated at `z` as a complex value.
+"""
 function Ci(z)
     if z isa Real
         return Complex(cosint(z))
@@ -46,6 +56,11 @@ function Ci(z)
     return v
 end
 
+"""
+    Si(z)
+
+Return the sine integral evaluated at `z` as a complex value.
+"""
 function Si(z)
     if z isa Real
         return Complex(sinint(z))
@@ -66,6 +81,11 @@ function Si(z)
     return v
 end
 
+"""
+    Li(z)
+
+Return the logarithmic integral evaluated at `z` as a complex value.
+"""
 function Li(z)
     return Ei(log(z)) - Ei(log(2.0))
 end
