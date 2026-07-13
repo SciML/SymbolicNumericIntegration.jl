@@ -18,7 +18,7 @@ TermInterface = "8ea1fca8-c5ef-4a55-8b96-4e9afe9c9a3c"
 
 [compat]
 DataDrivenDiffEq = "1.14.0"
-DataDrivenSparse = "0.1.4"
+DataDrivenSparse = "0.1.4, 0.2"
 DataStructures = "0.19"
 LinearAlgebra = "<0.0.1, 1"
 ForwardDiff = "0.10.38, 1"
