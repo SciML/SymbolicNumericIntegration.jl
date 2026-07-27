@@ -1,4 +1,4 @@
-# API
+# Public API
 
 ```@docs
 integrate

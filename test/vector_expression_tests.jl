@@ -13,6 +13,7 @@ using Test
 # Test that scalar integration still works
 @test integrate(x) == ((1 // 2) * (x^2), 0, 0)
 @test integrate(2 * α, α) == (α^2, 0, 0)
+@test isequal(integrate(x^2; symbolic = false, detailed = false), (1 // 3) * (x^3))
 
 # Test that element-wise integration works
 results = integrate.([1, 2 * α], α)

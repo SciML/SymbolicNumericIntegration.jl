@@ -38,7 +38,7 @@ end
 
 const u = let
     @variables _u[1:20]
-    Symbolics.scalarize(_u)
+    scalarize(_u)
 end
 
 function rename_factors(p, ab = ())
@@ -63,17 +63,17 @@ end
 
 ##############################################################################
 
-Symbolics.@register_symbolic Ei(z)
-Symbolics.@register_symbolic Si(z)
-Symbolics.@register_symbolic Ci(z)
-Symbolics.@register_symbolic Li(z)
-Symbolics.@register_symbolic Erfi(z)
+@register_symbolic Ei(z)
+@register_symbolic Si(z)
+@register_symbolic Ci(z)
+@register_symbolic Li(z)
+@register_symbolic Erfi(z)
 
-Symbolics.derivative(::typeof(Ei), args::NTuple{1, Any}, ::Val{1}) = exp(args[1]) / args[1]
-Symbolics.derivative(::typeof(Si), args::NTuple{1, Any}, ::Val{1}) = sin(args[1]) / args[1]
-Symbolics.derivative(::typeof(Ci), args::NTuple{1, Any}, ::Val{1}) = cos(args[1]) / args[1]
-Symbolics.derivative(::typeof(Li), args::NTuple{1, Any}, ::Val{1}) = 1 / log(args[1])
-function Symbolics.derivative(::typeof(Erfi), args::NTuple{1, Any}, ::Val{1})
+derivative(::typeof(Ei), args::NTuple{1, Any}, ::Val{1}) = exp(args[1]) / args[1]
+derivative(::typeof(Si), args::NTuple{1, Any}, ::Val{1}) = sin(args[1]) / args[1]
+derivative(::typeof(Ci), args::NTuple{1, Any}, ::Val{1}) = cos(args[1]) / args[1]
+derivative(::typeof(Li), args::NTuple{1, Any}, ::Val{1}) = 1 / log(args[1])
+function derivative(::typeof(Erfi), args::NTuple{1, Any}, ::Val{1})
     return 2 / sqrt(2) * exp(args[1]^2)
 end
 

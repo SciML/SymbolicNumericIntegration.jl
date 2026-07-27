@@ -41,7 +41,7 @@ function accept_solution(eq, x, sol; plan = default_plan())
         end
         # Try to extract numeric value for BasicSymbolic zero
         try
-            Δ_val = Symbolics.value(Num(Δ))
+            Δ_val = value(Num(Δ))
             if Δ_val isa Real || Δ_val isa Complex
                 return abs(Δ_val)
             end
@@ -53,15 +53,15 @@ function accept_solution(eq, x, sol; plan = default_plan())
         # Note: Num <: Number, so we must check for Num BEFORE Number
         # First try to extract numeric value from Num type
         if result isa Num
-            inner = Symbolics.unwrap(result)
+            inner = unwrap(result)
             # Check if unwrapped value is a concrete number (not symbolic)
             if inner isa Real || inner isa Complex
                 return abs(inner)
             end
             # Check if inner is structurally zero (e.g., abs(0))
             if isequal(inner, 0) || (
-                    SymbolicUtils.iscall(inner) && SymbolicUtils.operation(inner) === abs &&
-                        let arg = SymbolicUtils.arguments(inner)[1]
+                    iscall(inner) && operation(inner) === abs &&
+                        let arg = arguments(inner)[1]
                         isequal(arg, 0) || (arg isa Real && arg == 0)
                     end
                 )
@@ -69,7 +69,7 @@ function accept_solution(eq, x, sol; plan = default_plan())
             end
             # Try value extraction for symbolic wrapper (SymbolicUtils v4+)
             try
-                val = Symbolics.value(result)
+                val = value(result)
                 if val isa Real || val isa Complex
                     return abs(val)
                 end
@@ -84,7 +84,7 @@ function accept_solution(eq, x, sol; plan = default_plan())
         end
         # Try to extract numeric value from symbolic wrapper (SymbolicUtils v4+)
         try
-            val = Symbolics.value(Num(result))
+            val = value(Num(result))
             if val isa Real || val isa Complex
                 return abs(val)
             end
@@ -92,7 +92,7 @@ function accept_solution(eq, x, sol; plan = default_plan())
         end
         # Fallback: try unwrap
         try
-            val = Symbolics.unwrap(result)
+            val = unwrap(result)
             if val isa Real || val isa Complex
                 return abs(val)
             end

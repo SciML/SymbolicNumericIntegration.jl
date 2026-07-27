@@ -1,3 +1,10 @@
+"""
+    Op
+
+Internal expression-operation classification used by the candidate generator.
+This hierarchy is not a public extension interface: external packages must not
+subtype it or rely on its concrete operation markers.
+"""
 abstract type Op end
 
 struct Add <: Op end

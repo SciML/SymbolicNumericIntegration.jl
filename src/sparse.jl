@@ -121,12 +121,30 @@ function modify_basis_matrix!(A, X, eq, x, basis)
     return
 end
 
-# This is needed to fix a bug/omission in DataDrivenSparse
-function DataDrivenSparse.active_set!(
-        idx::BitMatrix, p::SoftThreshold,
-        x::Matrix{ComplexF64}, λ::Float64
+function sparse_coefficients(A, b, plan)
+    solver = SparseLinearSolver(
+        plan.opt,
+        options = DataDrivenCommonOptions(
+            verbose = false,
+            maxiters = 1000
+        )
     )
-    return DataDrivenSparse.active_set!(idx, p, abs.(x), λ)
+
+    if eltype(A) <: Real
+        res, _... = solver(A', b)
+        return vec(coef(first(res)))
+    end
+
+    # DataDrivenSparse's public STLSQ solver operates on real-valued threshold
+    # comparisons. Realifying the regression preserves the complex linear system
+    # without extending its private active-set implementation.
+    real_system = [real(A) -imag(A); imag(A) real(A)]
+    n = size(A, 1)
+    targets = permutedims(vcat(ones(n), zeros(n)))
+    res, _... = solver(real_system', targets)
+    q = vec(coef(first(res)))
+    m = size(A, 2)
+    return complex.(q[1:m], q[(m + 1):(2m)])
 end
 
 # Returns vector q, such that A * q = 1, and it passes
@@ -136,17 +154,9 @@ function sparse_fit(A, V, basis; plan = default_plan())
 
     try
         b = ones((1, n))
-        solver = SparseLinearSolver(
-            plan.opt,
-            options = DataDrivenCommonOptions(
-                verbose = false,
-                maxiters = 1000
-            )
-        )
-        res, _... = solver(A', b)
-        q₀ = DataDrivenSparse.coef(first(res))
+        q₀ = sparse_coefficients(A, b, plan)
 
-        ε = rms(V * q₀' .- 1)
+        ε = rms(V * q₀ .- 1)
         q = nice_parameter.(q₀)
 
         if sum(iscomplex.(q)) > 2
@@ -206,17 +216,9 @@ function hints(eq, x, basis; plan = default_plan())
 
     try
         b = ones((1, n))
-        solver = SparseLinearSolver(
-            plan.opt,
-            options = DataDrivenCommonOptions(
-                verbose = false,
-                maxiters = 1000
-            )
-        )
-        res, _... = solver(A', b)
-        q = DataDrivenSparse.coef(first(res))
+        q = sparse_coefficients(A, b, plan)
 
-        ε = abs(rms(V * q' .- 1))
+        ε = abs(rms(V * q .- 1))
 
         if ε < abstol
             sel = abs.(q) .> abstol
@@ -236,8 +238,23 @@ end
 """
     best_hints(eq, x, basis; plan = default_plan(), num_trials = 10)
 
-Select the smallest successful list of symbolic ansatz terms from repeated
-symbolic-numeric integrations of `eq` with respect to `x`.
+Select a compact successful candidate basis from repeated numerical trials.
+
+## Arguments
+
+  - `eq`: Scalar symbolic integrand.
+  - `x`: Independent symbolic variable.
+  - `basis`: Candidate terms, typically from `generate_basis(eq, x)`.
+
+## Keyword Arguments
+
+  - `plan`: Numerical verification configuration used for every trial.
+  - `num_trials`: Number of candidate-selection trials.
+
+## Returns
+
+The shortest successful vector of basis terms, or `nothing` when no trial passes
+the numerical residual tolerance.
 """
 function best_hints(eq, x, basis; plan = default_plan(), num_trials = 10)
     H = []

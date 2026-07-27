@@ -1,23 +1,35 @@
 module SymbolicNumericIntegration
 
-using ForwardDiff
-using TermInterface: iscall
-using SymbolicUtils
-using SymbolicUtils: operation, arguments
-using Symbolics
-using Symbolics: value, get_variables, expand_derivatives, Equation
-using SymbolicUtils.Rewriters
-using SymbolicUtils: issym, BasicSymbolic
-
+using DataDrivenDiffEq: DataDrivenCommonOptions
+using DataDrivenSparse: STLSQ, SparseLinearSolver
+using DataStructures: Queue
+using LinearAlgebra: diag, qr
+using SpecialFunctions: cosint, erfi, expint, sinint
+using StatsAPI: coef
+using Statistics: mean, std
 using SymbolicLimits: limit
+using SymbolicUtils: @acrule, @rule, @syms, BasicSymbolic, arguments, expand, issym, operation,
+    simplify, substitute
+using SymbolicUtils.Code: toexpr
+using SymbolicUtils.Rewriters: Chain, Fixpoint, PassThrough, Prewalk
+import Symbolics
+using Symbolics: @register_symbolic, @variables, Differential, Equation, Num, build_function,
+    expand_derivatives, get_variables, scalarize, unwrap, value
+import Symbolics: derivative
+using TermInterface: iscall
 
-using DataDrivenDiffEq, DataDrivenSparse
+"""
+    NumericalPlan
 
+Internal configuration for the numerical verification stage of symbolic-numeric
+integration. This type and its fields are implementation details, not an extension
+interface or part of the public API.
+"""
 struct NumericalPlan
     abstol::Float64
     radius::Float64
     complex_plane::Bool
-    opt::DataDrivenDiffEq.AbstractDataDrivenAlgorithm
+    opt
 end
 
 default_plan() = NumericalPlan(1.0e-6, 5.0, true, STLSQ(exp.(-10:1:0)))

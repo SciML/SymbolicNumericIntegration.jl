@@ -3,7 +3,7 @@
 # Helper to extract numeric value from symbolic substitution result
 function extract_numeric_val(T, expr)
     try
-        val = Symbolics.value(Num(expr))
+        val = value(Num(expr))
         return T(val)
     catch
         return T(expr)
@@ -87,7 +87,7 @@ function poly_deg(eq)
     # Convert symbolic numbers to Julia numbers
     # This is needed because SymbolicUtils v4+ wraps literal numbers in symbolic containers
     try
-        return Symbolics.value(Num(result))
+        return value(Num(result))
     catch
         return result  # Return as-is if conversion fails
     end
@@ -100,18 +100,18 @@ function eval_numeric(expr)
         return expr
     end
 
-    if !SymbolicUtils.iscall(expr)
+    if !iscall(expr)
         # Not a call - might be a symbolic literal number or symbol
         # Try to extract value
         try
-            return Symbolics.value(Num(expr))
+            return value(Num(expr))
         catch
             return expr
         end
     end
 
-    op = SymbolicUtils.operation(expr)
-    args = SymbolicUtils.arguments(expr)
+    op = operation(expr)
+    args = arguments(expr)
 
     # Recursively evaluate arguments
     evaluated_args = [eval_numeric(a) for a in args]
@@ -165,14 +165,14 @@ s_rules = [
 
 kernel(eq) = Prewalk(Chain(s_rules))(Ω(value(eq)))
 
-function coef(::Mul, eq, x)
+function term_coefficient(::Mul, eq, x)
     return prod(t for t in arguments(eq) if !isdependent(t, x); init = 1)
 end
-coef(::Add, eq, x) = minimum(abs(coef(t, x)) for t in arguments(eq))
-coef(::Any, eq, x) = is_number(eq) ? eq : 1
-coef(eq, x) = coef(ops(eq)..., x)
+term_coefficient(::Add, eq, x) = minimum(abs(term_coefficient(t, x)) for t in arguments(eq))
+term_coefficient(::Any, eq, x) = is_number(eq) ? eq : 1
+term_coefficient(eq, x) = term_coefficient(ops(eq)..., x)
 
-equivalent(eq, x) = eq / coef(eq, x)
+equivalent(eq, x) = eq / term_coefficient(eq, x)
 
 ########################## Transformation Rules ###############################
 

@@ -3,4 +3,5 @@
 pages = [
     "Home" => "index.md",
     "symbolicnumericintegration.md",
+    "Developer API" => "developer_api.md",
 ]
