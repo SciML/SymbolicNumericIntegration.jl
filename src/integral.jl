@@ -1,13 +1,11 @@
-using LinearAlgebra
-using Statistics: mean, std
-
-Base.signbit(z::Complex{T}) where {T <: Number} = signbit(real(z))
-Base.signbit(x::SymbolicUtils.Sym{Number}) = false
-
 """
     integrate(eq, x; kwargs...)
 
-is the main entry point to integrate a univariate expression `eq` with respect to `x' (optional).
+Compute an indefinite or definite integral of a scalar symbolic expression.
+
+`integrate` combines symbolic candidate generation with numerical verification. It
+accepts expressions constructed by Symbolics.jl and returns a detailed result by
+default so callers can distinguish a complete solution from a partial one.
 
 ```julia
 julia> using Symbolics, SymbolicNumericIntegration
@@ -24,36 +22,43 @@ julia> integrate(x * sin(a * x), (x, 0, 1); symbolic = true, detailed = false)
 (sin(a) - a*cos(a)) / (a^2)
 ```
 
-## Arguments:
+## Arguments
 
-  - `eq`: a univariate expression
-  - `x`: independent variable (optional if `eq` is univariate) or a tuple
-    of (independent variable, lower bound, upper bound) for definite integration.
+  - `eq`: Scalar symbolic integrand. Arrays are rejected; use broadcasting for
+    elementwise integration.
+  - `x`: Independent symbolic variable. Omit it only for an expression with exactly
+    one variable. Pass `(x, lower, upper)` to request a definite integral.
 
-## Keyword Arguments:
+## Keyword Arguments
 
   - `abstol` (default: `1e-6`): the desired tolerance
   - `num_steps` (default: `2`): the number of different steps with expanding basis to be tried
   - `num_trials` (default: `10`): the number of trials in each step (no changes to the basis)
-  - `show_basis` (default: `false`): if true, the basis (list of candidate terms) is printed
-  - `bypass` (default: `false`): if true do not integrate terms separately but consider all at once
-  - `symbolic` (default: `false`): try symbolic integration first (will be forced if `eq` has symbolic constants)
+  - `show_basis` (default: `false`): Print the generated candidate basis.
+  - `bypass` (default: `false`): Solve the complete expression rather than splitting
+    it into terms.
+  - `symbolic` (default: `false`): Attempt the symbolic solver first. This is forced
+    when the integrand has symbolic constants.
   - `max_basis` (default: `100`): the maximum number of candidate terms to consider
-  - `verbose` (default: `false`): print a detailed report
-  - `complex_plane` (default: `true`): generate random test points on the complex plane (if false, the points will be on real axis)
-  - `radius` (default: `1.0`): the radius of the disk in the complex plane to generate random test points
+  - `verbose` (default: `false`): Print solver diagnostics.
+  - `complex_plane` (default: `true`): Sample verification points in the complex
+    plane. Set to `false` to sample on the real axis.
+  - `radius` (default: `5.0`): Radius of the verification-point disk.
   - `opt` (default: `STLSQ(exp.(-10:1:0))`): the sparse regression optimizer (from DataDrivenSparse)
   - `homotopy` (default: `true`): *deprecated*, will be removed in a future version
   - `use_optim` (default: `false`): *deprecated*, will be removed in a future version
-  - `detailed` (default: `true`): `(solved, unsolved, err)` output format. If `detailed=false`, only the final integral is returned.
+  - `detailed` (default: `true`): Return `(solved, unsolved, err)`. When `false`,
+    return only a complete solution or `nothing`.
 
-Returns a tuple of (solved, unsolved, err) if `detailed == true`, where
+## Returns
+
+When `detailed = true`, return `(solved, unsolved, err)`, where
 
     solved: the solved integral
     unsolved: the residual unsolved portion of the input
     err: the numerical error in reaching the solution
 
-Returns the resulting integral or nothing if `detailed == false`
+When `detailed = false`, return the complete integral or `nothing`.
 """
 function integrate(
         eq, x = nothing;
@@ -134,7 +139,7 @@ function extract_numeric_value(expr)
 
     # Unwrap Num type
     if expr isa Num
-        expr = Symbolics.value(expr)
+        expr = value(expr)
         if expr isa Number
             return expr
         end
@@ -150,7 +155,7 @@ function extract_numeric_value(expr)
     # Try converting to Julia expression and evaluating
     # This handles cases like sin(0) that need to be evaluated
     try
-        julia_expr = Symbolics.toexpr(expr)
+        julia_expr = toexpr(expr)
         result = Base.invokelatest(eval, julia_expr)
         if result isa Number
             return result

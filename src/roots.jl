@@ -2,7 +2,7 @@
 function extract_numeric(T, expr)
     try
         # Try to get the underlying value from symbolic wrapper
-        val = Symbolics.value(Num(expr))
+        val = value(Num(expr))
         return T(val)
     catch
         # Fall back to direct conversion

@@ -313,6 +313,13 @@ end
 
 subs_symbols(prob::Problem) = subs_symbols(prob.eq, prob.x)
 
+"""
+    IntegrationAlgorithm
+
+Internal dispatch hierarchy for symbolic integration strategies. It is not part
+of the public API: its subtypes rely on `Problem`, `solver`, and cache details
+that are intentionally private, so external packages must not subtype it.
+"""
 abstract type IntegrationAlgorithm end
 
 struct SymbolicIntegrator <: IntegrationAlgorithm

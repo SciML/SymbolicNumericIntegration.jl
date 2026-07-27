@@ -1,10 +1,29 @@
-using DataStructures
-
 """
     generate_basis(eq, x, try_kernel = true)
 
-Generate candidate basis terms for symbolic-numeric integration of expression
-`eq` with respect to variable `x`.
+Generate candidate antiderivative terms for a symbolic-numeric integration problem.
+
+## Arguments
+
+  - `eq`: Scalar symbolic integrand.
+  - `x`: Independent symbolic variable.
+  - `try_kernel`: Whether to factor candidate kernels before generating terms.
+
+## Returns
+
+A vector of internal cached symbolic expressions. Pass the result to `best_hints`
+or use it to inspect the candidate basis; it is not a stable cache representation.
+
+## Examples
+
+```julia
+julia> using Symbolics, SymbolicNumericIntegration
+
+julia> @variables x
+
+julia> !isempty(generate_basis(x^2, x))
+true
+```
 """
 function generate_basis(eq, x, try_kernel = true)
     if !try_kernel
@@ -63,7 +82,7 @@ function closure(eq, x; max_terms = 50)
     enqueue_expr!(S, q, eq, x)
 
     while !isempty(q) && length(S) < max_terms
-        y = dequeue!(q)
+        y = popfirst!(q)
         enqueue_expr!(S, q, expand_derivatives(D(y)), x)
     end
     return unique([[s for s in S]; [s * x for s in S]])
@@ -81,9 +100,9 @@ function enqueue_expr!!(S, q, ::Add, eq, x)
 end
 
 function enqueue_expr!!(S, q, ::Any, eq, x)
-    y = eq / coef(eq, x)
+    y = eq / term_coefficient(eq, x)
     return if y ∉ S && isdependent(y, x)
-        enqueue!(q, y)
+        push!(q, y)
         push!(S, y)
     end
 end
@@ -98,7 +117,7 @@ function enqueue_expr!!(S, ::Add, eq, x)
 end
 
 function enqueue_expr!!(S, ::Any, eq, x)
-    y = eq / coef(eq, x)
+    y = eq / term_coefficient(eq, x)
     return if y ∉ S && isdependent(y, x)
         push!(S, y)
     end

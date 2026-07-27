@@ -1,5 +1,3 @@
-using SpecialFunctions
-
 # Adopted from mpmath (https://mpmath.org/), which is a Python library for real and
 # complex floating-point arithmetic with arbitrary precision
 
@@ -8,7 +6,18 @@ E1(z) = Complex(expint(z))
 """
     Ei(z)
 
-Return the exponential integral evaluated at `z` as a complex value.
+Return the exponential integral evaluated at `z` as a `Complex` value.
+
+## Arguments
+
+  - `z`: Real or complex evaluation point.
+
+## Examples
+
+```julia
+julia> Ei(1) isa Complex
+true
+```
 """
 function Ei(z)
     if z isa Real
@@ -29,7 +38,18 @@ end
 """
     Ci(z)
 
-Return the cosine integral evaluated at `z` as a complex value.
+Return the cosine integral evaluated at `z` as a `Complex` value.
+
+## Arguments
+
+  - `z`: Real or complex evaluation point.
+
+## Examples
+
+```julia
+julia> Ci(1) isa Complex
+true
+```
 """
 function Ci(z)
     if z isa Real
@@ -59,7 +79,18 @@ end
 """
     Si(z)
 
-Return the sine integral evaluated at `z` as a complex value.
+Return the sine integral evaluated at `z` as a `Complex` value.
+
+## Arguments
+
+  - `z`: Real or complex evaluation point.
+
+## Examples
+
+```julia
+julia> Si(1) isa Complex
+true
+```
 """
 function Si(z)
     if z isa Real
@@ -84,7 +115,18 @@ end
 """
     Li(z)
 
-Return the logarithmic integral evaluated at `z` as a complex value.
+Return the logarithmic integral evaluated at `z` as a `Complex` value.
+
+## Arguments
+
+  - `z`: Real or complex evaluation point.
+
+## Examples
+
+```julia
+julia> Li(3) isa Complex
+true
+```
 """
 function Li(z)
     return Ei(log(z)) - Ei(log(2.0))
