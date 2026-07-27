@@ -9,12 +9,12 @@ using StatsAPI: coef
 using Statistics: mean, std
 using SymbolicLimits: limit
 using SymbolicUtils: @acrule, @rule, @syms, BasicSymbolic, arguments, expand, issym, operation,
-                   simplify, substitute
+    simplify, substitute
 using SymbolicUtils.Code: toexpr
 using SymbolicUtils.Rewriters: Chain, Fixpoint, PassThrough, Prewalk
 import Symbolics
 using Symbolics: @register_symbolic, @variables, Differential, Equation, Num, build_function,
-                 expand_derivatives, get_variables, scalarize, unwrap, value
+    expand_derivatives, get_variables, scalarize, unwrap, value
 import Symbolics: derivative
 using TermInterface: iscall
 
