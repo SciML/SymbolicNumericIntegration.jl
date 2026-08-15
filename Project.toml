@@ -18,6 +18,7 @@ TermInterface = "8ea1fca8-c5ef-4a55-8b96-4e9afe9c9a3c"
 
 [compat]
 DataDrivenDiffEq = "1.14.0"
+ModelingToolkit = "11.26.7"
 DataDrivenSparse = "0.2"
 DataStructures = "0.19"
 LinearAlgebra = "<0.0.1, 1"
@@ -34,9 +35,10 @@ Test = "1"
 julia = "1.10"
 
 [extras]
+ModelingToolkit = "961ee093-0014-501f-94e3-6117800e7a78"
 SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 SciMLTesting = "09d9d899-5365-40a9-917a-5f67fddea283"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["SafeTestsets", "SciMLTesting", "Test"]
+test = ["ModelingToolkit", "SafeTestsets", "SciMLTesting", "Test"]
