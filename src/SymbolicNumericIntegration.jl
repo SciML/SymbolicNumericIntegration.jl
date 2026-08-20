@@ -55,4 +55,14 @@ export integrate, generate_basis, best_hints
 
 include("symbolic.jl")
 
+using PrecompileTools: @compile_workload, @setup_workload
+
+@setup_workload begin
+    @compile_workload begin
+        @variables x
+        integrate(x, x; symbolic = true, detailed = false)
+        integrate(exp(-x), (x, 0, Inf); symbolic = true, detailed = false)
+    end
+end
+
 end # module
